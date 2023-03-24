@@ -2,6 +2,8 @@
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
 // @version      1.0.0
+// @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
+// @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
 // @author       https://github.com/egorantonov
 // @match        https://3d.sytes.net/
