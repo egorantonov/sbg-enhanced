@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.0.0
+// @version      1.0.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -24,24 +24,22 @@ const sbgCompatibleVersion = '0.2.6'
 
 // informer
 const Informer = async () => {
-    console.log('SBG Enhanced UI, version 1.0.0')
-    let sbgCurrentVersion = await fetch('/api').then(response => {        
+    console.log('SBG Enhanced UI, version 1.0.1')
+    let sbgCurrentVersion = await fetch('/api/').then(response => {        
         return response.headers.get(sbgVersionHeader)
     })
 
     if (sbgCurrentVersion != sbgCompatibleVersion) {
         const alertShown = localStorage.getItem(euiIncompatibility)
 
-        if (!alertShown) {
-            alert(`⚠️ Enhanced UI may be incompatible with current version of SBG ${sbgCurrentVersion}`)
+        if (alertShown != 'true') {
+            alert(`⚠️ Enhanced UI may be incompatible with current version of SBG ${sbgCurrentVersion}. Check for updates.`)
             localStorage.setItem(euiIncompatibility, true)
         }
     }
     else {
         localStorage.setItem(euiIncompatibility, false)
     }
-    
-    
 }
 
 // makes close buttons look better
@@ -56,10 +54,13 @@ const BeautifyCloseButtons = () => {
     }
 }
 
-// disables draw button when outbound limit is reached
-const DisableDrawButton = () => {
+// hides draw button when outbound limit is reached
+const HideDrawButton = () => {
     let out = document.querySelector('#i-stat__line-out')
-    window.setInterval(() => { draw.style.display = out.innerText == outboundLinksLimit ? 'none' : 'block' }, interval)
+    let draw = document.querySelector('#draw')
+    !!draw && !!out && window.setInterval(() => { 
+        draw.style.display = out.innerText == outboundLinksLimit ? 'none' : 'block' 
+    }, interval)
 }
 
 const styleString = `       
@@ -83,7 +84,7 @@ window.addEventListener('load', async function () {
 
     await Informer()
     BeautifyCloseButtons()
-    DisableDrawButton()
+    HideDrawButton()
     AddStyles()
 
 }, false)
