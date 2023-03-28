@@ -21,6 +21,7 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.6'
+const onClick = 'click'
 
 // informer
 const Informer = async () => {
@@ -80,66 +81,74 @@ const AddStyles = () => {
     style.innerHTML = styleString
 }
 
+const asset64Prefix = 'https://raw.githubusercontent.com/egorantonov/sbg-enhanced/master/assets/64/'
+
 const badgeMap = new Map()
 badgeMap.set('Points Captured', { images: [
-    {tier: 40000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/liberator/liberator5-2/' },
-    {tier: 15000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/liberator/liberator4-2/' },
-    {tier: 5000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/liberator/liberator3/' },
-    {tier: 1000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/liberator/liberator2/' },
-    {tier: 100, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/liberator/liberator1/' },
+    {tier: 40000, value: `${asset64Prefix}liberator5-1.png` },
+    {tier: 15000, value: `${asset64Prefix}liberator4-1.png` },
+    {tier: 5000, value: `${asset64Prefix}liberator3.png` },
+    {tier: 1000, value: `${asset64Prefix}liberator2.png` },
+    {tier: 100, value: `${asset64Prefix}liberator1.png` },
 ]})
 badgeMap.set('Lines Drawn', { images: [
-    {tier: 100000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/connector/connector5-2/' },
-    {tier: 25000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/connector/connector4-2/' },
-    {tier: 5000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/connector/connector3/' },
-    {tier: 1000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/connector/connector2/' },
-    {tier: 50, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/connector/connector1/' },
+    {tier: 100000, value: `${asset64Prefix}connector5-1.png` },
+    {tier: 25000, value: `${asset64Prefix}connector4-1.png` },
+    {tier: 5000, value: `${asset64Prefix}connector3.png` },
+    {tier: 1000, value: `${asset64Prefix}connector2.png` },
+    {tier: 50, value: `${asset64Prefix}connector1.png` },
 ]})
 badgeMap.set('Unique Points Visited', { images: [
-    {tier: 30000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/explorer/explorer5-2/' },
-    {tier: 10000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/explorer/explorer4-2/' },
-    {tier: 2000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/explorer/explorer3/' },
-    {tier: 1000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/explorer/explorer2/' },
-    {tier: 100, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/explorer/explorer1/' },
+    {tier: 30000, value: `${asset64Prefix}explorer5-1.png` },
+    {tier: 10000, value: `${asset64Prefix}explorer4-1.png` },
+    {tier: 2000, value: `${asset64Prefix}explorer3.png` },
+    {tier: 1000, value: `${asset64Prefix}explorer2.png` },
+    {tier: 100, value: `${asset64Prefix}explorer1.png` },
 ]})
 badgeMap.set('Discoveries Done', { images: [
-    {tier: 200000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/hacker/hacker5-2/' },
-    {tier: 100000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/hacker/hacker4-2/' },
-    {tier: 30000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/hacker/hacker3/' },
-    {tier: 10000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/hacker/hacker2/' },
-    {tier: 2000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/hacker/hacker1/' },
+    {tier: 200000, value: `${asset64Prefix}hacker5-1.png` },
+    {tier: 100000, value: `${asset64Prefix}hacker4-1.png` },
+    {tier: 30000, value: `${asset64Prefix}hacker3.png` },
+    {tier: 10000, value: `${asset64Prefix}hacker2.png` },
+    {tier: 2000, value: `${asset64Prefix}hacker1.png` },
 ]})
 badgeMap.set('Points Captured', { images: [
-    {tier: 20000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/pioneer/pioneer5-2/' },
-    {tier: 5000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/pioneer/pioneer4-2/' },
-    {tier: 1000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/pioneer/pioneer3/' },
-    {tier: 200, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/pioneer/pioneer2/' },
-    {tier: 20, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/pioneer/pioneer1/' },
+    {tier: 20000, value: `${asset64Prefix}pioneer5-1.png` },
+    {tier: 5000, value: `${asset64Prefix}pioneer4-1.png` },
+    {tier: 1000, value: `${asset64Prefix}pioneer3.png` },
+    {tier: 200, value: `${asset64Prefix}pioneer2.png` },
+    {tier: 20, value: `${asset64Prefix}pioneer1.png` },
 ]})
 badgeMap.set('Cores Destroyed', { images: [
-    {tier: 225000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/purifier/purifier5-2/' },
-    {tier: 75000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/purifier/purifier4-2/' },
-    {tier: 22500, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/purifier/purifier3/' },
-    {tier: 7500, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/purifier/purifier2/' },
-    {tier: 1500, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/purifier/purifier1/' },
+    {tier: 225000, value: `${asset64Prefix}purifier5-1.png` },
+    {tier: 75000, value: `${asset64Prefix}purifier4-1.png` },
+    {tier: 22500, value: `${asset64Prefix}purifier3.png` },
+    {tier: 7500, value: `${asset64Prefix}purifier2.png` },
+    {tier: 1500, value: `${asset64Prefix}purifier1.png` },
 ]})
 badgeMap.set('Cores Deployed', { images: [
-    {tier: 150000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/builder/builder5-2/' },
-    {tier: 75000, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/builder/builder4-2/' },
-    {tier: 22500, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/builder/builder3/' },
-    {tier: 7500, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/builder/builder2/' },
-    {tier: 1500, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/builder/builder1/' },
+    {tier: 150000, value: `${asset64Prefix}builder5-1.png` },
+    {tier: 75000, value: `${asset64Prefix}builder4-1.png` },
+    {tier: 22500, value: `${asset64Prefix}builder3.png` },
+    {tier: 7500, value: `${asset64Prefix}builder2.png` },
+    {tier: 1500, value: `${asset64Prefix}builder1.png` },
 ]})
 badgeMap.set('Longest Point Ownership', { images: [
-    {tier: 150, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/guardian/guardian5-2/' },
-    {tier: 90, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/guardian/guardian4-2/' },
-    {tier: 20, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/guardian/guardian3/' },
-    {tier: 10, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/guardian/guardian2/' },
-    {tier: 3, value: 'https://fevgames.net/ingress/ingress-guide/concepts/medal/guardian/guardian1/' },
+    {tier: 150, value: `${asset64Prefix}guardian5-1.png` },
+    {tier: 90, value: `${asset64Prefix}guardian4-1.png` },
+    {tier: 20, value: `${asset64Prefix}guardian3.png` },
+    {tier: 10, value: `${asset64Prefix}guardian2.png` },
+    {tier: 3, value: `${asset64Prefix}guardian1.png` },
 ]})
 
 // adds badges
-const AddBadges = () => {
+const badgeImageClass = 'badge-image'
+const AddBadges = async () => {
+    let previousBadges = document.querySelectorAll(`.${badgeImageClass}`)
+    for (let i = 0; i < previousBadges.length; i++) {
+        previousBadges[i].remove()
+    }
+    await new Promise(r => setTimeout(r, 150)) // TODO: wait 150ms for the API response
     let parent = document.querySelector('.pr-stats')
     let stats = Array.from(document.querySelectorAll('.pr-stat'))
     for (let i = 0; i < stats.length; i++) {
@@ -155,12 +164,27 @@ const AddBadges = () => {
                 continue
             }
 
+            badgeImage.className = badgeImageClass
             badgeImage.src = currentTier.value
+            badgeImage.title = tier
             badgeImage.width = 32
             badgeImage.height = 32
 
             parent.prepend(badgeImage)
         }
+    }
+}
+
+const profileLinkClass = 'profile-link'
+const AddSelectPlayer = async () => {
+    await new Promise(r => setTimeout(r, 750)) // TODO: wait 750ms for the API response
+    let players = Array.from(document.querySelectorAll(`.${profileLinkClass}`)).filter(x => !!x.dataset.name)
+    for (let i = 0; i < players.length; i++) {
+        let player = players[i]
+        player.addEventListener(onClick, async () => {
+            console.log(player.dataset.name)
+            await AddBadges()
+        })
     }
 }
 
@@ -171,13 +195,25 @@ window.addEventListener('load', async function () {
     HideDrawButton()
     AddStyles()
 
-    let profile = document.querySelector('.profile-link')
+    let profile = document.querySelector(`.${profileLinkClass}`)
     if (!!profile) {
-        profile.addEventListener('click', () => {
-            window.setTimeout(() => {
-                AddBadges()
-            }, 500)
-        }, {once : true})
+        profile.addEventListener(onClick, async () => {            
+            await AddBadges()
+        })
+    }
+
+    const leaderBoard = document.querySelector('#leaderboard')
+    if (!!leaderBoard) {
+        leaderBoard.addEventListener(onClick, async () => {
+            await AddSelectPlayer()
+        })
+    }
+
+    const container = document.querySelector('#leaderboard__term-select')
+    if (!!container) {
+        container.addEventListener('change', async () => {
+            await AddSelectPlayer()
+        })
     }
 
 }, false)
