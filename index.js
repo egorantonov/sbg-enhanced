@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.0.1
+// @version      1.1.0
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -149,7 +149,7 @@ const AddBadges = () => {
         if (badgeMap.has(title)) {
             let tier = +stat.lastChild.innerText.replace(/,| days| km|/g, '')    
             let badgeImage = document.createElement('img')        
-            let currentTier = badgeMap.get(title).images.find(x => x.tier < tier)
+            let currentTier = badgeMap.get(title).images.find(x => x.tier <= tier)
             
             if (!currentTier) {
                 continue
