@@ -20,12 +20,13 @@ const defaultCloseButtonText = '[x]'
 const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
-const sbgCompatibleVersion = '0.2.6'
+const sbgCompatibleVersion = '0.2.7'
 const onClick = 'click'
+const onLoad = 'load'
 
 // informer
 const Informer = async () => {
-    console.log('SBG Enhanced UI, version 1.0.1')
+    console.log('SBG Enhanced UI, version 1.1.0')
     let sbgCurrentVersion = await fetch('/api/').then(response => {        
         return response.headers.get(sbgVersionHeader)
     })
@@ -71,7 +72,13 @@ const styleString = `
 
 .ol-layer__markers {
     filter: brightness(1.2);
-}`
+}
+
+.popup {
+    backdrop-filter: blur(5px);
+    background-color: var(--background-transp);
+}
+`
 
 // adds filter styles to the canvas wrapper layers
 const AddStyles = () => {
@@ -143,13 +150,27 @@ badgeMap.set('Longest Point Ownership', { images: [
 
 // adds badges
 const badgeImageClass = 'badge-image'
-const AddBadges = async () => {
+const RemoveBadges = () => {
+    let profilePopup = document.querySelector('.profile.popup')
+    let closeButton = profilePopup.querySelector('button.popup-close')
+    if (!!closeButton) {
+        closeButton.addEventListener(onClick, () => {
+            let previousBadges = profilePopup.querySelectorAll(`.${badgeImageClass}`)
+            for (let i = 0; i < previousBadges.length; i++) {
+                previousBadges[i].remove()
+            }
+        })
+    }
+}
+
+const AddBadges = () => {
+
     let previousBadges = document.querySelectorAll(`.${badgeImageClass}`)
     for (let i = 0; i < previousBadges.length; i++) {
         previousBadges[i].remove()
     }
-    await new Promise(r => setTimeout(r, 150)) // TODO: wait 150ms for the API response
-    let parent = document.querySelector('.pr-stats')
+
+    let container = document.querySelector('.pr-stats')
     let stats = Array.from(document.querySelectorAll('.pr-stat'))
     for (let i = 0; i < stats.length; i++) {
         let stat = stats[i]
@@ -167,52 +188,84 @@ const AddBadges = async () => {
             badgeImage.className = badgeImageClass
             badgeImage.src = currentTier.value
             badgeImage.title = tier
-            badgeImage.width = 32
-            badgeImage.height = 32
+            badgeImage.width = 40
+            badgeImage.height = 40
 
-            parent.prepend(badgeImage)
+            container.prepend(badgeImage)
         }
     }
 }
 
 const profileLinkClass = 'profile-link'
-const AddSelectPlayer = async () => {
-    await new Promise(r => setTimeout(r, 750)) // TODO: wait 750ms for the API response
-    let players = Array.from(document.querySelectorAll(`.${profileLinkClass}`)).filter(x => !!x.dataset.name)
-    for (let i = 0; i < players.length; i++) {
-        let player = players[i]
-        player.addEventListener(onClick, async () => {
-            console.log(player.dataset.name)
-            await AddBadges()
-        })
+// unused
+const AddLeaderBoardPlayerBadges = async () => {
+    let leaderBoardList = document.querySelector('ol.leaderboard__list')
+    if (!!leaderBoardList) {
+        let players = Array.from(leaderBoardList.querySelectorAll(`.${profileLinkClass}`))
+        for (let i = 0; i < players.length; i++) {
+            let player = players[i]
+            player.addEventListener(onClick, () => {
+                AddBadges()
+            })
+        }
     }
 }
 
-window.addEventListener('load', async function () {
+const onProfilePopupOpened = 'profilePopupOpened'
+const InitProfilePopupMutationObserver = () => {
+    const target = document.querySelector('.profile.popup')
+
+    const config = {
+        attributes: true,
+        attributeFilter: ['class']
+    }
+
+    const profilePopupObserver = new MutationObserver(records => {
+        if(!records[0].target.classList.contains('hidden')){
+            const event = new Event(onProfilePopupOpened, { bubbles: true });
+            records[0].target.dispatchEvent(event);
+        }
+      });
+
+    profilePopupObserver.observe(target, config);
+}
+
+const onProfileStatsChanged = 'profileStatsChanged'
+const InitProfileStatsMutationObserver = () => {
+    const target = document.querySelector('.pr-stats')
+
+    const config = {
+        childList: true
+    }
+
+    const profileStatsObserver = new MutationObserver(mutationsList => {
+        if (mutationsList.find(x => x.addedNodes.length && x.addedNodes[0].classList.contains('pr-stats__section'))) {
+            const event = new Event(onProfileStatsChanged, { bubbles: true });
+            mutationsList[0].target.dispatchEvent(event);
+        }
+    });
+
+    profileStatsObserver.observe(target, config);
+}
+
+const InitObservers = () => {
+    InitProfilePopupMutationObserver()
+    InitProfileStatsMutationObserver()
+}
+
+window.addEventListener(onLoad, async function () {
 
     await Informer()
     BeautifyCloseButtons()
     HideDrawButton()
     AddStyles()
+    InitObservers()
+    RemoveBadges()
 
-    let profile = document.querySelector(`.${profileLinkClass}`)
-    if (!!profile) {
-        profile.addEventListener(onClick, async () => {            
-            await AddBadges()
-        })
-    }
-
-    const leaderBoard = document.querySelector('#leaderboard')
-    if (!!leaderBoard) {
-        leaderBoard.addEventListener(onClick, async () => {
-            await AddSelectPlayer()
-        })
-    }
-
-    const container = document.querySelector('#leaderboard__term-select')
-    if (!!container) {
-        container.addEventListener('change', async () => {
-            await AddSelectPlayer()
+    const profilePopup = document.querySelector('.profile.popup')
+    if (!!profilePopup) {
+        profilePopup.addEventListener(onProfileStatsChanged, () => {
+            AddBadges()
         })
     }
 
