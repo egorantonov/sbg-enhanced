@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.1.0
+// @version      1.1.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -26,8 +26,8 @@ const onLoad = 'load'
 
 // informer
 const Informer = async () => {
-    console.log('SBG Enhanced UI, version 1.1.0')
-    let sbgCurrentVersion = await fetch('/api/').then(response => {        
+    console.log('SBG Enhanced UI, version 1.1.1')
+    const sbgCurrentVersion = await fetch('/api/').then(response => {        
         return response.headers.get(sbgVersionHeader)
     })
 
@@ -46,7 +46,7 @@ const Informer = async () => {
 
 // makes close buttons look better
 const BeautifyCloseButtons = () => {
-    let buttons = Array.from(document.querySelectorAll('button'))
+    const buttons = Array.from(document.querySelectorAll('button'))
     for (let i = 0; i < buttons.length; i++) {
         if (buttons[i].innerText === defaultCloseButtonText) {
             buttons[i].innerText = enhancedCloseButtonText
@@ -58,8 +58,8 @@ const BeautifyCloseButtons = () => {
 
 // hides draw button when outbound limit is reached
 const HideDrawButton = () => {
-    let out = document.querySelector('#i-stat__line-out')
-    let draw = document.querySelector('#draw')
+    const out = document.querySelector('#i-stat__line-out')
+    const draw = document.querySelector('#draw')
     !!draw && !!out && window.setInterval(() => { 
         draw.style.display = out.innerText == outboundLinksLimit ? 'none' : 'block' 
     }, interval)
@@ -78,18 +78,29 @@ const styleString = `
     backdrop-filter: blur(5px);
     background-color: var(--background-transp);
 }
+
+.game-menu > button, button#ops, .ol-control > button {
+    background-color: var(--background-transp);
+    backdrop-filter: blur(5px);
+    text-transform: uppercase;
+}
+
+.sbgcui_xpProgressBar {
+    background-color: var(--background-transp);
+    backdrop-filter: blur(5px);
+    border-radius: 5px;
+}
 `
 
 // adds filter styles to the canvas wrapper layers
 const AddStyles = () => {
-    let style = document.createElement('style')
+    const style = document.createElement('style')
     document.head.appendChild(style)
 
     style.innerHTML = styleString
 }
 
 const asset64Prefix = 'https://raw.githubusercontent.com/egorantonov/sbg-enhanced/master/assets/64/'
-
 const badgeMap = new Map()
 badgeMap.set('Points Captured', { images: [
     {tier: 40000, value: `${asset64Prefix}liberator5-1.png` },
@@ -151,8 +162,8 @@ badgeMap.set('Longest Point Ownership', { images: [
 // adds badges
 const badgeImageClass = 'badge-image'
 const RemoveBadges = () => {
-    let profilePopup = document.querySelector('.profile.popup')
-    let closeButton = profilePopup.querySelector('button.popup-close')
+    const profilePopup = document.querySelector('.profile.popup')
+    const closeButton = profilePopup.querySelector('button.popup-close')
     if (!!closeButton) {
         closeButton.addEventListener(onClick, () => {
             let previousBadges = profilePopup.querySelectorAll(`.${badgeImageClass}`)
@@ -165,26 +176,27 @@ const RemoveBadges = () => {
 
 const AddBadges = () => {
 
-    let previousBadges = document.querySelectorAll(`.${badgeImageClass}`)
+    const previousBadges = document.querySelectorAll(`.${badgeImageClass}`)
     for (let i = 0; i < previousBadges.length; i++) {
         previousBadges[i].remove()
     }
 
-    let container = document.querySelector('.pr-stats')
-    let stats = Array.from(document.querySelectorAll('.pr-stat'))
+    const container = document.querySelector('.pr-stats')
+    const stats = Array.from(document.querySelectorAll('.pr-stat'))
     for (let i = 0; i < stats.length; i++) {
-        let stat = stats[i]
-        let title = stat.firstChild.innerText
+        const stat = stats[i]
+        const title = stat.firstChild.innerText
 
         if (badgeMap.has(title)) {
-            let tier = +stat.lastChild.innerText.replace(/,| days| km|/g, '')    
-            let badgeImage = document.createElement('img')        
-            let currentTier = badgeMap.get(title).images.find(x => x.tier <= tier)
+            const tier = +stat.lastChild.innerText.replace(/,| days| km|/g, '')    
+                
+            const currentTier = badgeMap.get(title).images.find(x => x.tier <= tier)
             
             if (!currentTier) {
                 continue
             }
 
+            const badgeImage = document.createElement('img')    
             badgeImage.className = badgeImageClass
             badgeImage.src = currentTier.value
             badgeImage.title = tier
@@ -194,40 +206,6 @@ const AddBadges = () => {
             container.prepend(badgeImage)
         }
     }
-}
-
-const profileLinkClass = 'profile-link'
-// unused
-const AddLeaderBoardPlayerBadges = async () => {
-    let leaderBoardList = document.querySelector('ol.leaderboard__list')
-    if (!!leaderBoardList) {
-        let players = Array.from(leaderBoardList.querySelectorAll(`.${profileLinkClass}`))
-        for (let i = 0; i < players.length; i++) {
-            let player = players[i]
-            player.addEventListener(onClick, () => {
-                AddBadges()
-            })
-        }
-    }
-}
-
-const onProfilePopupOpened = 'profilePopupOpened'
-const InitProfilePopupMutationObserver = () => {
-    const target = document.querySelector('.profile.popup')
-
-    const config = {
-        attributes: true,
-        attributeFilter: ['class']
-    }
-
-    const profilePopupObserver = new MutationObserver(records => {
-        if(!records[0].target.classList.contains('hidden')){
-            const event = new Event(onProfilePopupOpened, { bubbles: true });
-            records[0].target.dispatchEvent(event);
-        }
-      });
-
-    profilePopupObserver.observe(target, config);
 }
 
 const onProfileStatsChanged = 'profileStatsChanged'
@@ -249,7 +227,6 @@ const InitProfileStatsMutationObserver = () => {
 }
 
 const InitObservers = () => {
-    InitProfilePopupMutationObserver()
     InitProfileStatsMutationObserver()
 }
 
