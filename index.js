@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.1.3
+// @version      1.2.0
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -15,7 +15,6 @@
 'use strict'
 
 const outboundLinksLimit = 20
-const interval = 100
 const defaultCloseButtonText = '[x]'
 const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
@@ -26,7 +25,7 @@ const onLoad = 'load'
 
 // informer
 const Informer = async () => {
-    console.log('SBG Enhanced UI, version 1.1.3')
+    console.log('SBG Enhanced UI, version 1.2.0')
     const sbgCurrentVersion = await fetch('/api/').then(response => {        
         return response.headers.get(sbgVersionHeader)
     })
@@ -56,27 +55,33 @@ const BeautifyCloseButtons = async () => {
     }
 }
 
-const styleString = `       
-.ol-layer__lines {
-    filter: opacity(.55);
-    animation: blink 3s linear infinite;
-}
+const styleString = `  
 
+/* LINES AND POINTS LAYERS */
 @keyframes blink {
     50% {
       filter: opacity(.45);
     }  
 }
 
+.ol-layer__lines {
+    filter: opacity(.55);
+    animation: blink 3s linear infinite;
+}
+
 .ol-layer__markers {
     filter: brightness(1.2);
 }
+
+/* POPUPS */
 
 .popup {
     backdrop-filter: blur(5px);
     background-color: var(--background-transp);
     border-radius: 5px;
 }
+
+/* BUTTONS */
 
 .game-menu > button, button#ops, .ol-control > button {
     background-color: var(--background-transp);
@@ -91,17 +96,90 @@ const styleString = `
     width: 2em;
 }
 
+.splide__arrow {
+    height: 3em;
+    width: 3em;
+    border: 1px solid buttonborder;
+    border-radius: 100px;
+    background: buttonface;
+}
+
+.splide__arrow svg {
+    fill: var(--text);
+}
+
+.discover-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: var(--progress);
+    filter: opacity(.3);
+}
+
+/* ATTACK SLIDER */
+
+#catalysers-list > .splide__slide {
+    min-width: max-content !important;
+    width: 100px !important;
+}
+
+/* DEPLOY SLIDER */
+
+#cores-list > .splide__slide {
+    min-width: max-content !important;
+    width: 80px !important;
+}
+
+/* DRAW LINE SLIDER */
+
+.refs-list__image>div {
+    border-radius: 5px;
+}
+
+.draw-slider-wrp .splide__slide {
+    width: calc(((75% + 1em) / 2) - 1em) !important;
+    max-width: 200px;
+    transition: all 0.2s ease-in-out;
+}
+
+.draw-slider-wrp .splide__slide.is-active {
+    transition: all 0.2s ease-in-out;
+}
+
+.draw-slider-wrp .splide__slide.is-active .refs-list__image>div {
+    box-shadow: 0px -5px 0px var(--level-9) inset;
+}
+
+.draw-slider-wrp .draw-slider-buttons {
+    justify-content: center;
+}
+
+.draw-slider-wrp .draw-slider-buttons button {
+    padding: 6px;
+    text-transform: uppercase;
+}
+
+/* POINT INFO */
+
 #i-image {
     border-radius: 5px;
 }
 
 .i-buttons {
     order: 1;
+    flex-wrap: nowrap;
+    margin: 0.5em 0 0.5em;
 }
 
 .i-buttons>button {
     padding: 6px;
+    min-width: fit-content;
     width: calc(25% - 0.25em);
+}
+
+.i-stat__cores {
+    margin-top: 0.5em;
 }
 
 .i-stat__core {
@@ -116,7 +194,12 @@ const styleString = `
     border-width: 2px;
 }
 
+.deploy-slider-error {
+    border-radius: 5px;
+}
+
 /* SBG CUI Enhancements*/
+
 .sbgcui_xpProgressBar {
     background-color: var(--background-transp);
     backdrop-filter: blur(5px);
@@ -245,6 +328,10 @@ const onPointStatsChanged = 'pointStatsChanged'
 const InitPointStatsMutationObserver = () => {
     const target = document.querySelector('#i-stat__line-out')
 
+    if (!target) {
+        return
+    }
+
     const config = {
         childList: true
     }
@@ -257,8 +344,8 @@ const InitPointStatsMutationObserver = () => {
     observer.observe(target, config)
 }
 
-// hides draw button when outbound limit is reached
-const HideDrawButton = () => {
+// disables draw button when outbound limit is reached
+const DisableDrawButton = () => {
 
     const infoPopup = document.querySelector('.info.popup')
     const draw = document.querySelector('#draw')
@@ -269,9 +356,62 @@ const HideDrawButton = () => {
                 draw.classList.add('loading')
             }
             else {
-                draw.removeAttribute('disabled')
-                draw.classList.contains('loading') && draw.classList.remove('loading')
+                
+                if (draw.classList.contains('loading')) {
+                     draw.classList.remove('loading')
+                     draw.removeAttribute('disabled')
+                }
             }
+        })
+    }
+}
+
+const onDiscoverChanged = 'discoverChanged'
+const InitDiscoverMutationObserver = () => {
+    const target = document.querySelector('#discover')
+
+    if (!target) {
+        return
+    }
+
+    const config = {
+        attributes: true,
+        attributeFilter: ['data-time']
+    }
+
+    const observer = new MutationObserver(mutationsList => {
+        const event = new Event(onDiscoverChanged, { bubbles: true })
+        mutationsList[0].target.dispatchEvent(event)
+    })
+
+    observer.observe(target, config)
+}
+
+const AddDiscoverProgress = () => {
+    const infoPopup = document.querySelector('.info.popup')
+    const discover = document.querySelector('#discover')
+    if (!!infoPopup && !!discover) {
+        const discoverProgress = document.createElement('div')    
+        discoverProgress.className = 'discover-progress'
+        discover.appendChild(discoverProgress)
+
+        infoPopup.addEventListener(onDiscoverChanged, (event) => {
+
+            if (event.target.dataset?.time > 0) {
+                discoverProgress.style.width = `${100*event.target.dataset.time/90}%`
+                discover.setAttribute('disabled', true)
+                discover.classList.add('loading')
+            }
+            else {
+                discoverProgress.style.width = 0
+                
+                if (discover.classList.contains('loading')) {
+                    discover.classList.remove('loading')
+                    discover.removeAttribute('disabled')
+                }
+            }
+
+            
         })
     }
 }
@@ -279,6 +419,10 @@ const HideDrawButton = () => {
 const onProfileStatsChanged = 'profileStatsChanged'
 const InitProfileStatsMutationObserver = () => {
     const target = document.querySelector('.pr-stats')
+
+    if (!target) {
+        return
+    }
 
     const config = {
         childList: true
@@ -291,22 +435,24 @@ const InitProfileStatsMutationObserver = () => {
         }
     });
 
-    observer.observe(target, config);
+    observer.observe(target, config)
 }
 
 const InitObservers = () => {
     InitPointStatsMutationObserver()
     InitProfileStatsMutationObserver()
+    InitDiscoverMutationObserver()
 }
 
 window.addEventListener(onLoad, async function () {
 
     await Informer()
+    AddStyles()
     InitObservers()
     await BeautifyCloseButtons()
-    HideDrawButton()
-    AddStyles()
+    DisableDrawButton()
     RemoveBadges()
+    AddDiscoverProgress()
 
     const profilePopup = document.querySelector('.profile.popup')
     if (!!profilePopup) {
