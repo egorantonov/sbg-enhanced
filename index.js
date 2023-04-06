@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.1.2
+// @version      1.1.3
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -26,7 +26,7 @@ const onLoad = 'load'
 
 // informer
 const Informer = async () => {
-    console.log('SBG Enhanced UI, version 1.1.2')
+    console.log('SBG Enhanced UI, version 1.1.3')
     const sbgCurrentVersion = await fetch('/api/').then(response => {        
         return response.headers.get(sbgVersionHeader)
     })
@@ -54,15 +54,6 @@ const BeautifyCloseButtons = async () => {
             buttons[i].dataset.round = true
         }
     }
-}
-
-// hides draw button when outbound limit is reached
-const HideDrawButton = () => {
-    const out = document.querySelector('#i-stat__line-out')
-    const draw = document.querySelector('#draw')
-    !!draw && !!out && window.setInterval(() => { 
-        draw.style.display = out.innerText == outboundLinksLimit ? 'none' : 'block' 
-    }, interval)
 }
 
 const styleString = `       
@@ -98,7 +89,6 @@ const styleString = `
     border-radius: 100px;
     height: 2em;
     width: 2em;
-    line-height: 2em;
 }
 
 #i-image {
@@ -115,7 +105,7 @@ const styleString = `
 }
 
 .i-stat__core {
-    border-style: dashed;
+    border-width: 1px;
     border-radius: 100px;
     width: 1.7em;
     height: 1.7em;
@@ -123,7 +113,7 @@ const styleString = `
 }
 
 .i-stat__core.selected {
-    border-style: solid
+    border-width: 2px;
 }
 
 /* SBG CUI Enhancements*/
@@ -251,6 +241,41 @@ const AddBadges = () => {
     }
 }
 
+const onPointStatsChanged = 'pointStatsChanged'
+const InitPointStatsMutationObserver = () => {
+    const target = document.querySelector('#i-stat__line-out')
+
+    const config = {
+        childList: true
+    }
+
+    const observer = new MutationObserver(mutationsList => {
+        const event = new Event(onPointStatsChanged, { bubbles: true })
+        mutationsList[0].target.dispatchEvent(event)
+    })
+
+    observer.observe(target, config)
+}
+
+// hides draw button when outbound limit is reached
+const HideDrawButton = () => {
+
+    const infoPopup = document.querySelector('.info.popup')
+    const draw = document.querySelector('#draw')
+    if (!!infoPopup && !!draw) {
+        infoPopup.addEventListener(onPointStatsChanged, (event) => {
+            if (event.target.innerText >= outboundLinksLimit) {
+                draw.setAttribute('disabled', true)
+                draw.classList.add('loading')
+            }
+            else {
+                draw.removeAttribute('disabled')
+                draw.classList.contains('loading') && draw.classList.remove('loading')
+            }
+        })
+    }
+}
+
 const onProfileStatsChanged = 'profileStatsChanged'
 const InitProfileStatsMutationObserver = () => {
     const target = document.querySelector('.pr-stats')
@@ -259,27 +284,28 @@ const InitProfileStatsMutationObserver = () => {
         childList: true
     }
 
-    const profileStatsObserver = new MutationObserver(mutationsList => {
+    const observer = new MutationObserver(mutationsList => {
         if (mutationsList.find(x => x.addedNodes.length && x.addedNodes[0].classList.contains('pr-stats__section'))) {
-            const event = new Event(onProfileStatsChanged, { bubbles: true });
-            mutationsList[0].target.dispatchEvent(event);
+            const event = new Event(onProfileStatsChanged, { bubbles: true })
+            mutationsList[0].target.dispatchEvent(event)
         }
     });
 
-    profileStatsObserver.observe(target, config);
+    observer.observe(target, config);
 }
 
 const InitObservers = () => {
+    InitPointStatsMutationObserver()
     InitProfileStatsMutationObserver()
 }
 
 window.addEventListener(onLoad, async function () {
 
     await Informer()
+    InitObservers()
     await BeautifyCloseButtons()
     HideDrawButton()
     AddStyles()
-    InitObservers()
     RemoveBadges()
 
     const profilePopup = document.querySelector('.profile.popup')
@@ -288,6 +314,8 @@ window.addEventListener(onLoad, async function () {
             AddBadges()
         })
     }
+
+
 
 }, false)
 
