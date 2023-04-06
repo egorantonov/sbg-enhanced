@@ -113,7 +113,7 @@ const styleString = `
     top: 0;
     left: 0;
     height: 100%;
-    background-color: var(--progress);
+    background-color: var(--accent);
     filter: opacity(.3);
 }
 
