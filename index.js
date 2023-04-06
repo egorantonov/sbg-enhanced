@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.1.1
+// @version      1.1.2
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -26,7 +26,7 @@ const onLoad = 'load'
 
 // informer
 const Informer = async () => {
-    console.log('SBG Enhanced UI, version 1.1.1')
+    console.log('SBG Enhanced UI, version 1.1.2')
     const sbgCurrentVersion = await fetch('/api/').then(response => {        
         return response.headers.get(sbgVersionHeader)
     })
@@ -45,13 +45,13 @@ const Informer = async () => {
 }
 
 // makes close buttons look better
-const BeautifyCloseButtons = () => {
+const BeautifyCloseButtons = async () => {
+    await new Promise(r => setTimeout(r, 100)) // wait for SBG CUI modify inventory close button from 'X' to '[x]'
     const buttons = Array.from(document.querySelectorAll('button'))
     for (let i = 0; i < buttons.length; i++) {
         if (buttons[i].innerText === defaultCloseButtonText) {
             buttons[i].innerText = enhancedCloseButtonText
-            buttons[i].style.border = '2px solid transparent'
-            buttons[i].style.borderRadius = '50%'
+            buttons[i].dataset.round = true
         }
     }
 }
@@ -67,7 +67,14 @@ const HideDrawButton = () => {
 
 const styleString = `       
 .ol-layer__lines {
-    filter: opacity(.5);
+    filter: opacity(.55);
+    animation: blink 3s linear infinite;
+}
+
+@keyframes blink {
+    50% {
+      filter: opacity(.45);
+    }  
 }
 
 .ol-layer__markers {
@@ -77,6 +84,7 @@ const styleString = `
 .popup {
     backdrop-filter: blur(5px);
     background-color: var(--background-transp);
+    border-radius: 5px;
 }
 
 .game-menu > button, button#ops, .ol-control > button {
@@ -85,6 +93,40 @@ const styleString = `
     text-transform: uppercase;
 }
 
+.popup-close[data-round=true], #inventory__close[data-round=true] {
+    border: 2px solid buttonborder;
+    border-radius: 100px;
+    height: 2em;
+    width: 2em;
+    line-height: 2em;
+}
+
+#i-image {
+    border-radius: 5px;
+}
+
+.i-buttons {
+    order: 1;
+}
+
+.i-buttons>button {
+    padding: 6px;
+    width: calc(25% - 0.25em);
+}
+
+.i-stat__core {
+    border-style: dashed;
+    border-radius: 100px;
+    width: 1.7em;
+    height: 1.7em;
+    line-height: 1.7em;
+}
+
+.i-stat__core.selected {
+    border-style: solid
+}
+
+/* SBG CUI Enhancements*/
 .sbgcui_xpProgressBar {
     background-color: var(--background-transp);
     backdrop-filter: blur(5px);
@@ -159,8 +201,8 @@ badgeMap.set('Longest Point Ownership', { images: [
     {tier: 3, value: `${asset64Prefix}guardian1.png` },
 ]})
 
-// adds badges
 const badgeImageClass = 'badge-image'
+// removes badges on close button click
 const RemoveBadges = () => {
     const profilePopup = document.querySelector('.profile.popup')
     const closeButton = profilePopup.querySelector('button.popup-close')
@@ -174,6 +216,7 @@ const RemoveBadges = () => {
     }
 }
 
+// adds badges
 const AddBadges = () => {
 
     const previousBadges = document.querySelectorAll(`.${badgeImageClass}`)
@@ -233,7 +276,7 @@ const InitObservers = () => {
 window.addEventListener(onLoad, async function () {
 
     await Informer()
-    BeautifyCloseButtons()
+    await BeautifyCloseButtons()
     HideDrawButton()
     AddStyles()
     InitObservers()
