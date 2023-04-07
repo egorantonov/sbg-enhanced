@@ -55,7 +55,19 @@ const BeautifyCloseButtons = async () => {
     }
 }
 
-const styleString = `  
+const INGRESS = {
+    backgroundColor: '112025',
+    buttonColor: '97FBFB',
+    buttonBackgroundColor: '20474C',
+    buttonGlowColor: '007B85',
+    buttonBorderColor: '38E8E6',
+    buttonDisabledColor: '7E888A',
+    buttonDisabledBackgroundColor: '112325',
+    buttonDisabledAccentColor: '4E3B35',
+}
+
+const styleString = `
+@import url('https://fonts.googleapis.com/css2?family=Coda&family=Oswald:wght@500&display=swap');
 
 /* LINES AND POINTS LAYERS */
 @keyframes blink {
@@ -83,6 +95,21 @@ const styleString = `
 
 /* BUTTONS */
 
+.i-buttons>button, button#attack-slider-fire, .draw-slider-buttons>button {
+    color: #${INGRESS.buttonColor};
+    background: linear-gradient(to top, #${INGRESS.buttonGlowColor} 0%, #${INGRESS.buttonBackgroundColor} 30%, #${INGRESS.buttonBackgroundColor} 70%, #${INGRESS.buttonGlowColor} 100%);
+    border-color: #${INGRESS.buttonBorderColor};
+    border-style: solid;
+    text-transform: uppercase;
+    font-family: 'Coda', 'Oswald';
+}
+
+.i-buttons>button[disabled], button#attack-slider-fire[disabled], .draw-slider-buttons>button[disabled] {
+    color: #${INGRESS.buttonDisabledColor};
+    background: #${INGRESS.buttonDisabledBackgroundColor};
+    border-color: #${INGRESS.buttonDisabledAccentColor};
+}
+
 .game-menu > button, button#ops, .ol-control > button {
     background-color: var(--background-transp);
     backdrop-filter: blur(5px);
@@ -90,7 +117,7 @@ const styleString = `
 }
 
 .popup-close[data-round=true], #inventory__close[data-round=true] {
-    border: 2px solid buttonborder;
+    border: 2px solid #777;
     border-radius: 100px;
     height: 2em;
     width: 2em;
@@ -99,7 +126,7 @@ const styleString = `
 .splide__arrow {
     height: 3em;
     width: 3em;
-    border: 1px solid buttonborder;
+    border: 1px solid #777;
     border-radius: 100px;
     background: buttonface;
 }
@@ -113,8 +140,8 @@ const styleString = `
     top: 0;
     left: 0;
     height: 100%;
-    background-color: var(--accent);
-    filter: opacity(.3);
+    background-color: #${INGRESS.buttonDisabledAccentColor};
+    filter: opacity(.75);
 }
 
 /* ATTACK SLIDER */
@@ -148,7 +175,7 @@ const styleString = `
 }
 
 .draw-slider-wrp .splide__slide.is-active .refs-list__image>div {
-    box-shadow: 0px -5px 0px var(--level-9) inset;
+    box-shadow: 0px -5px 0px #${INGRESS.buttonBorderColor} inset;
 }
 
 .draw-slider-wrp .draw-slider-buttons {
@@ -173,16 +200,6 @@ const styleString = `
 }
 
 .i-buttons>button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border-radius: 2px;
-    border-width: 1px;
-    border-style: solid;
-    border-image: initial;
-    border-color: buttonborder;
-    background-color: buttonface;
-    color: buttontext;
     padding: 6px;
     min-width: fit-content;
     width: calc(25% - 0.25em);
@@ -190,7 +207,6 @@ const styleString = `
 
 .i-buttons>button[disabled] {
     filter: opacity(.75);
-    color: var(--text-disabled);
 }
 
 #discover[data-time]:after {
