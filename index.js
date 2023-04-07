@@ -173,9 +173,28 @@ const styleString = `
 }
 
 .i-buttons>button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 2px;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: buttonborder;
+    background-color: buttonface;
+    color: buttontext;
     padding: 6px;
     min-width: fit-content;
     width: calc(25% - 0.25em);
+}
+
+.i-buttons>button[disabled] {
+    filter: opacity(.75);
+    color: var(--text-disabled);
+}
+
+#discover[data-time]:after {
+    color: var(--text);
 }
 
 .i-stat__cores {
