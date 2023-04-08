@@ -121,7 +121,7 @@ const ingressVibes = `
     box-shadow: inset 2px 2px 0 0px #${INGRESS.buttonGlowColor};
 }
 
-#attack-slider-fire, #draw-slider-confirm, {
+#attack-slider-fire, #draw-slider-confirm {
     color: #${INGRESS.buttonHighlightColor};
     background: linear-gradient(to top, #${INGRESS.buttonHighlightGlowColor} 0%, #${INGRESS.buttonHighlightBackgroundColor} 30%, #${INGRESS.buttonHighlightBackgroundColor} 70%, #${INGRESS.buttonHighlightGlowColor} 100%);
     border-color: #${INGRESS.buttonHighlightBorderColor};
