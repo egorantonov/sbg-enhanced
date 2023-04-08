@@ -1,7 +1,8 @@
 // ==UserScript==
+// @id           sbg-enhanced@egorantonov
 // @name         SBG Enhanced UI
-// @namespace    https://3d.sytes.net/
-// @version      1.2.1
+// @namespace    https://github.com/egorantonov/sbg-enhanced
+// @version      1.2.3.beta
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -19,13 +20,14 @@ const defaultCloseButtonText = '[x]'
 const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
-const sbgCompatibleVersion = '0.2.7'
+const sbgCompatibleVersion = '0.2.8'
 const onClick = 'click'
+const onChange = 'change'
 const onLoad = 'load'
 
 // informer
 const Informer = async () => {
-    console.log('SBG Enhanced UI, version 1.2.1')
+    console.log('SBG Enhanced UI, version 1.2.3.beta')
     const sbgCurrentVersion = await fetch('/api/').then(response => {        
         return response.headers.get(sbgVersionHeader)
     })
@@ -34,7 +36,7 @@ const Informer = async () => {
         const alertShown = localStorage.getItem(euiIncompatibility)
 
         if (alertShown != 'true') {
-            alert(`⚠️ Enhanced UI may be incompatible with current version of SBG ${sbgCurrentVersion}. Check for updates.`)
+            alert(`⚠️ Enhanced UI may be incompatible with current version of SBG (${sbgCurrentVersion}). Check for updates.`)
             localStorage.setItem(euiIncompatibility, true)
         }
     }
@@ -81,9 +83,16 @@ const ingressVibes = `
 
 /* BUTTONS */
 
+:root[data-theme="ingress"] {}
+
+.game-menu>button, .bottomleft-container>button, #layers {
+    font-family: 'Coda';
+}
+
+
 .i-buttons>button, 
-.profile.popup>#logout,
-#attack-slider-fire, 
+.settings.popup button:not(.popup-close),
+.attack-slider-buttons>button, 
 .draw-slider-buttons>button, 
 .inventory.popup button,
 .layers-config__buttons>button,
@@ -95,7 +104,7 @@ input:not(.sbgcui_settings-amount_input), select {
 }
 
 .i-buttons>button::before, 
-#attack-slider-fire::before, 
+.attack-slider-buttons>button::before, 
 .draw-slider-buttons>button::before {
     content: '';
     position: absolute;
@@ -110,8 +119,9 @@ input:not(.sbgcui_settings-amount_input), select {
 }
 
 .i-buttons>button, 
-.profile.popup>#logout,
-#draw-slider-close, 
+.settings.popup button:not(.popup-close),
+#draw-slider-close,
+#attack-slider-close,
 .inventory.popup button,
 .layers-config__buttons>button,
 input:not(.sbgcui_settings-amount_input), select {
@@ -130,7 +140,8 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 .i-buttons>button::before, 
-#draw-slider-close::before {
+#draw-slider-close::before,
+#attack-slider-close::before {
     background-color: #${INGRESS.buttonBorderColor};
     border-color: #${INGRESS.buttonBorderColor};
     box-shadow: inset 2px 2px 0 0px #${INGRESS.buttonGlowColor};
@@ -205,6 +216,7 @@ option:checked { /* WTF? checked is non-documented??? */
 .info.popup,
 .leaderboard.popup,
 .score.popup,
+.settings.popup,
 .layers-config.popup,
 .inventory.popup,
 .inventory__manage-amount,
@@ -230,7 +242,7 @@ option:checked { /* WTF? checked is non-documented??? */
     background: none;
 }
 
-.layers-config__header, .leaderboard.popup>.popup-header {
+.layers-config__header, .leaderboard.popup>.popup-header, .settings.popup>h3 {
     text-transform: uppercase;
     font-family: 'Coda', 'Oswald';
 }
@@ -245,12 +257,43 @@ option:checked { /* WTF? checked is non-documented??? */
 
 `
 
+const ingress = 'ingress'
+const ingressStyleId = 'eui-ingress-vibes'
 const AddIngressVibes = () => {
     const style = document.createElement('style')
-    style.dataset.id = 'eui-ingress-vibes'
-    document.head.appendChild(style)
-
+    style.dataset.id = ingressStyleId
     style.innerHTML = ingressVibes
+
+    const themeSelect = document.querySelector('select[data-setting="theme"]')
+    if (!!themeSelect) {
+        const ingressThemeOption = document.createElement('option')
+        ingressThemeOption.setAttribute('id', 'ingressTheme')
+        ingressThemeOption.setAttribute('value', ingress)
+        ingressThemeOption.innerText = ingress
+        themeSelect.appendChild(ingressThemeOption)
+    }
+
+    const settings = localStorage.getItem('settings')
+    if (!!settings) {
+        const theme = JSON.parse(settings)?.theme ?? 'auto'
+
+        if (theme === ingress) {
+            document.head.appendChild(style)
+        }
+    }
+
+    // TODO: добавить тему INGRESS принудительно первый раз (исп. localStorage)
+    themeSelect.addEventListener(onChange, (event) => {
+        const ingressStyleExists = document.querySelector(`style[data-id="${ingressStyleId}"]`)
+        if (event.target.value === ingress && !ingressStyleExists) {
+            document.head.appendChild(style)
+        }
+        else {
+            if (!!ingressStyleExists) {
+                ingressStyleExists.remove()
+            }
+        }
+    })
 }
 
 const styleString = `
@@ -264,8 +307,8 @@ const styleString = `
 }
 
 .ol-layer__lines {
-    filter: opacity(.55);
-    animation: blink 3s linear infinite;
+    /*filter: opacity(.55);
+    animation: blink 3s linear infinite;*/
 }
 
 .ol-layer__markers {
@@ -522,6 +565,7 @@ const AddBadges = () => {
             badgeImage.title = tier
             badgeImage.width = 40
             badgeImage.height = 40
+            badgeImage.classList.add('ingress-theme')
 
             container.prepend(badgeImage)
         }
