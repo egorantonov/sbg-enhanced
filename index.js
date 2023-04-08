@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.2.0
+// @version      1.2.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -25,7 +25,7 @@ const onLoad = 'load'
 
 // informer
 const Informer = async () => {
-    console.log('SBG Enhanced UI, version 1.2.0')
+    console.log('SBG Enhanced UI, version 1.2.1')
     const sbgCurrentVersion = await fetch('/api/').then(response => {        
         return response.headers.get(sbgVersionHeader)
     })
@@ -82,9 +82,12 @@ const ingressVibes = `
 /* BUTTONS */
 
 .i-buttons>button, 
+.profile.popup>#logout,
 #attack-slider-fire, 
 .draw-slider-buttons>button, 
-.inventory.popup button {
+.inventory.popup button,
+.layers-config__buttons>button,
+input:not(.sbgcui_settings-amount_input), select {
     position: relative;
     border-style: solid;
     text-transform: uppercase;
@@ -97,8 +100,8 @@ const ingressVibes = `
     content: '';
     position: absolute;
     z-index: 1;
-    bottom: -1.6px;
-    right: -1.6px;
+    bottom: -1px;
+    right: -1px;
     height: 4px;
     width: 12px;
     border-radius: 100px 0 0 0;
@@ -107,21 +110,36 @@ const ingressVibes = `
 }
 
 .i-buttons>button, 
+.profile.popup>#logout,
 #draw-slider-close, 
-.inventory.popup button {
+.inventory.popup button,
+.layers-config__buttons>button,
+input:not(.sbgcui_settings-amount_input), select {
     color: #${INGRESS.buttonColor};
     background: linear-gradient(to top, #${INGRESS.buttonGlowColor} 0%, #${INGRESS.buttonBackgroundColor} 30%, #${INGRESS.buttonBackgroundColor} 70%, #${INGRESS.buttonGlowColor} 100%);
     border-color: #${INGRESS.buttonBorderColor};
 }
 
+option {
+    background-color: #${INGRESS.buttonBackgroundColor};
+}
+
+option:checked { /* WTF? checked is non-documented??? */
+    color: #${INGRESS.buttonHighlightColor};
+    background-color: #${INGRESS.buttonHighlightBackgroundColor};
+}
+
 .i-buttons>button::before, 
-#draw-slider-close::before, {
+#draw-slider-close::before {
     background-color: #${INGRESS.buttonBorderColor};
     border-color: #${INGRESS.buttonBorderColor};
     box-shadow: inset 2px 2px 0 0px #${INGRESS.buttonGlowColor};
 }
 
-#attack-slider-fire, #draw-slider-confirm {
+#attack-slider-fire, 
+#draw-slider-confirm, 
+#inventory__ma-delete,
+#layers-config__save {
     color: #${INGRESS.buttonHighlightColor};
     background: linear-gradient(to top, #${INGRESS.buttonHighlightGlowColor} 0%, #${INGRESS.buttonHighlightBackgroundColor} 30%, #${INGRESS.buttonHighlightBackgroundColor} 70%, #${INGRESS.buttonHighlightGlowColor} 100%);
     border-color: #${INGRESS.buttonHighlightBorderColor};
@@ -157,6 +175,18 @@ const ingressVibes = `
     box-shadow: inset 2px 2px 0 0px #${INGRESS.buttonDisabledBackgroundColor};
 }
 
+.popup-close[data-round=true], #inventory__close, .splide__arrow {
+    color: #${INGRESS.buttonHighlightColor};
+    background: #${INGRESS.buttonHighlightBackgroundColor};
+    box-shadow: inset 0px 0px 6px 3px #${INGRESS.buttonHighlightGlowColor};
+    border-color: #${INGRESS.buttonHighlightBorderColor} !important; 
+}
+
+.splide__arrow svg {
+    fill: #${INGRESS.buttonHighlightColor};
+}
+
+/* SLIDER ITEMS */
 .draw-slider-wrp .splide__slide.is-active .refs-list__image>div {
     box-shadow: inset -8px 0px 0px -5px  #${INGRESS.selectionColor},
         inset -10px 0px 8px -6px  #${INGRESS.selectionBackgroundColor}77,
@@ -164,20 +194,49 @@ const ingressVibes = `
         inset 10px 0px 8px -6px  #${INGRESS.selectionBackgroundColor}77;
 }
 
-.popup-close[data-round=true], #inventory__close[data-round=true] {
-    color: #${INGRESS.buttonHighlightColor};
-    background: radial-gradient(#${INGRESS.buttonHighlightGlowColor}, #${INGRESS.buttonHighlightBackgroundColor});
-    border-color: #${INGRESS.buttonHighlightBorderColor}; 
+/* INVENTORY */
+.inventory__content, .inventory__tab.active {
+    border-color: var(--selection);
 }
 
+/* POPUPS */
 
-/* POPUP */
-
-.info.popup, .inventory.popup, .inventory__manage-amount {
+.profile.popup,
+.info.popup,
+.leaderboard.popup,
+.score.popup,
+.layers-config.popup,
+.inventory.popup,
+.inventory__manage-amount,
+#draw-slider,
+#attack-slider,
+.attack-slider-highlevel {
     color: #${INGRESS.color};
-    background-color: #${INGRESS.backgroundColor};
+    background-color: #${INGRESS.backgroundColor}CC;
+    backdrop-filter: blur(5px);
     border-radius: 0px;
     border-color: #${INGRESS.buttonBorderColor} !important;
+}
+
+.pr-stat:not(:last-child) {
+    border-bottom: 1px #D1D1D144 solid;
+}
+
+.pr-xp-progress {
+    border: none;
+}
+
+.pr-xp-check {
+    background: none;
+}
+
+.layers-config__header, .leaderboard.popup>.popup-header {
+    text-transform: uppercase;
+    font-family: 'Coda', 'Oswald';
+}
+
+#discover[data-time]:after {
+    color: #${INGRESS.color};
 }
 
 .deploy-slider-error {
@@ -223,13 +282,12 @@ const styleString = `
 
 /* BUTTONS */
 
-.game-menu > button, button#ops, .ol-control > button {
-    background-color: var(--background-transp);
-    backdrop-filter: blur(5px);
+.game-menu > button, button#ops, .ol-control > button, #attack-menu, #layers {
     text-transform: uppercase;
 }
 
 .popup-close[data-round=true], #inventory__close[data-round=true] {
+    font-weight: 600;
     border: 2px solid #777;
     border-radius: 100px;
     height: 2em;
@@ -309,6 +367,7 @@ const styleString = `
 }
 
 .i-buttons>button {
+    font-size: 0.9em;
     padding: 6px;
     min-width: fit-content;
     width: calc(25% - 0.25em);
