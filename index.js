@@ -56,14 +56,142 @@ const BeautifyCloseButtons = async () => {
 }
 
 const INGRESS = {
+    color: 'F9FAFC',
     backgroundColor: '112025',
+
+    selectionColor: 'FF7C2B',
+    selectionBackgroundColor: '49230E',
+
     buttonColor: '97FBFB',
     buttonBackgroundColor: '20474C',
     buttonGlowColor: '007B85',
     buttonBorderColor: '38E8E6',
+
+    buttonHighlightColor: 'FCD959',
+    buttonHighlightBackgroundColor: '563F20',
+    buttonHighlightGlowColor: 'A07F14',
+    buttonHighlightBorderColor: 'DAC546',
+
     buttonDisabledColor: '7E888A',
     buttonDisabledBackgroundColor: '112325',
-    buttonDisabledAccentColor: '4E3B35',
+    buttonDisabledAccentColor: 'CB3C36',
+}
+
+const ingressVibes = `
+
+/* BUTTONS */
+
+.i-buttons>button, 
+#attack-slider-fire, 
+.draw-slider-buttons>button, 
+.inventory.popup button {
+    position: relative;
+    border-style: solid;
+    text-transform: uppercase;
+    font-family: 'Coda', 'Oswald';
+}
+
+.i-buttons>button::before, 
+#attack-slider-fire::before, 
+.draw-slider-buttons>button::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    bottom: -1.6px;
+    right: -1.6px;
+    height: 4px;
+    width: 12px;
+    border-radius: 100px 0 0 0;
+    border-left: 2px solid;
+    border-top: 2px solid;
+}
+
+.i-buttons>button, 
+#draw-slider-close, 
+.inventory.popup button {
+    color: #${INGRESS.buttonColor};
+    background: linear-gradient(to top, #${INGRESS.buttonGlowColor} 0%, #${INGRESS.buttonBackgroundColor} 30%, #${INGRESS.buttonBackgroundColor} 70%, #${INGRESS.buttonGlowColor} 100%);
+    border-color: #${INGRESS.buttonBorderColor};
+}
+
+.i-buttons>button::before, 
+#draw-slider-close::before, {
+    background-color: #${INGRESS.buttonBorderColor};
+    border-color: #${INGRESS.buttonBorderColor};
+    box-shadow: inset 2px 2px 0 0px #${INGRESS.buttonGlowColor};
+}
+
+#attack-slider-fire, #draw-slider-confirm, {
+    color: #${INGRESS.buttonHighlightColor};
+    background: linear-gradient(to top, #${INGRESS.buttonHighlightGlowColor} 0%, #${INGRESS.buttonHighlightBackgroundColor} 30%, #${INGRESS.buttonHighlightBackgroundColor} 70%, #${INGRESS.buttonHighlightGlowColor} 100%);
+    border-color: #${INGRESS.buttonHighlightBorderColor};
+}
+
+.inventory__item-controls::after {
+    border-radius: 0px !important;
+    box-shadow: inset 0px 0px 0px 2px #${INGRESS.buttonHighlightBorderColor};
+    color: #${INGRESS.buttonHighlightColor} !important;
+    background: linear-gradient(to top, #${INGRESS.buttonHighlightGlowColor} 0%, #${INGRESS.buttonHighlightBackgroundColor} 30%, #${INGRESS.buttonHighlightBackgroundColor} 70%, #${INGRESS.buttonHighlightGlowColor} 100%) !important;
+}
+
+#attack-slider-fire::before, #draw-slider-confirm::before {
+    background-color: #${INGRESS.buttonHighlightBorderColor};
+    border-color: #${INGRESS.buttonHighlightBorderColor};
+    box-shadow: inset 2px 2px 0 0px #${INGRESS.buttonHighlightGlowColor};
+}
+
+#attack-slider-fire[disabled], #draw-slider-confirm[disabled] {
+    filter: opacity(0.75);
+    backdrop-filter: blur(5px);
+}
+
+.i-buttons>button[disabled], .draw-slider-buttons>button[disabled] {
+    color: #${INGRESS.buttonDisabledColor};
+    background: #${INGRESS.buttonDisabledBackgroundColor};
+    border-color: #${INGRESS.buttonDisabledAccentColor};
+}
+
+.i-buttons>button[disabled]::before, .draw-slider-buttons>button[disabled]::before {
+    background-color: #${INGRESS.buttonDisabledAccentColor};
+    border-color: #${INGRESS.buttonDisabledAccentColor};    
+    box-shadow: inset 2px 2px 0 0px #${INGRESS.buttonDisabledBackgroundColor};
+}
+
+.draw-slider-wrp .splide__slide.is-active .refs-list__image>div {
+    box-shadow: inset -8px 0px 0px -5px  #${INGRESS.selectionColor},
+        inset -10px 0px 8px -6px  #${INGRESS.selectionBackgroundColor}77,
+        inset 8px 0px 0px -5px  #${INGRESS.selectionColor},
+        inset 10px 0px 8px -6px  #${INGRESS.selectionBackgroundColor}77;
+}
+
+.popup-close[data-round=true], #inventory__close[data-round=true] {
+    color: #${INGRESS.buttonHighlightColor};
+    background: radial-gradient(#${INGRESS.buttonHighlightGlowColor}, #${INGRESS.buttonHighlightBackgroundColor});
+    border-color: #${INGRESS.buttonHighlightBorderColor}; 
+}
+
+
+/* POPUP */
+
+.info.popup, .inventory.popup, .inventory__manage-amount {
+    color: #${INGRESS.color};
+    background-color: #${INGRESS.backgroundColor};
+    border-radius: 0px;
+    border-color: #${INGRESS.buttonBorderColor} !important;
+}
+
+.deploy-slider-error {
+    background-color: #${INGRESS.backgroundColor}AA;
+}
+
+`
+
+const AddIngressVibes = () => {
+    const style = document.createElement('style')
+    style.dataset.id = 'eui-ingress-vibes'
+    document.head.appendChild(style)
+
+    style.innerHTML = ingressVibes
 }
 
 const styleString = `
@@ -94,21 +222,6 @@ const styleString = `
 }
 
 /* BUTTONS */
-
-.i-buttons>button, button#attack-slider-fire, .draw-slider-buttons>button {
-    color: #${INGRESS.buttonColor};
-    background: linear-gradient(to top, #${INGRESS.buttonGlowColor} 0%, #${INGRESS.buttonBackgroundColor} 30%, #${INGRESS.buttonBackgroundColor} 70%, #${INGRESS.buttonGlowColor} 100%);
-    border-color: #${INGRESS.buttonBorderColor};
-    border-style: solid;
-    text-transform: uppercase;
-    font-family: 'Coda', 'Oswald';
-}
-
-.i-buttons>button[disabled], button#attack-slider-fire[disabled], .draw-slider-buttons>button[disabled] {
-    color: #${INGRESS.buttonDisabledColor};
-    background: #${INGRESS.buttonDisabledBackgroundColor};
-    border-color: #${INGRESS.buttonDisabledAccentColor};
-}
 
 .game-menu > button, button#ops, .ol-control > button {
     background-color: var(--background-transp);
@@ -172,10 +285,6 @@ const styleString = `
 
 .draw-slider-wrp .splide__slide.is-active {
     transition: all 0.2s ease-in-out;
-}
-
-.draw-slider-wrp .splide__slide.is-active .refs-list__image>div {
-    box-shadow: 0px -5px 0px #${INGRESS.buttonBorderColor} inset;
 }
 
 .draw-slider-wrp .draw-slider-buttons {
@@ -245,6 +354,7 @@ const styleString = `
 // adds filter styles to the canvas wrapper layers
 const AddStyles = () => {
     const style = document.createElement('style')
+    style.dataset.id = 'eui-common-styles'
     document.head.appendChild(style)
 
     style.innerHTML = styleString
@@ -483,6 +593,7 @@ window.addEventListener(onLoad, async function () {
 
     await Informer()
     AddStyles()
+    AddIngressVibes()
     InitObservers()
     await BeautifyCloseButtons()
     DisableDrawButton()
