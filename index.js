@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.2.4
+// @version      1.3.0
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -20,7 +20,7 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.8'
-const euiVersion = '1.2.4'
+const euiVersion = '1.3.0'
 const euiLinksOpacity = 'eui-links-opacity'
 const discoverProgressClassName = 'discover-progress'
 const onClick = 'click'
