@@ -21,6 +21,8 @@ const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.8'
 const euiVersion = '1.2.4'
+const euiLinksOpacity = 'eui-links-opacity'
+const discoverProgressClassName = 'discover-progress'
 const onClick = 'click'
 const onChange = 'change'
 const onLoad = 'load'
@@ -76,11 +78,11 @@ const BeautifyCloseButtons = async () => {
         let creditsPopupClose = document.querySelector('.credits.popup .popup-close')
 
         if (!creditsPopupClose) {
-            await new Promise(r => setTimeout(r, 10)) // wait for SBG render CREDITS POPUP
+            await new Promise(r => setTimeout(r, 100)) // wait for SBG render CREDITS POPUP
             creditsPopupClose = document.querySelector('.credits.popup .popup-close')
         }
 
-        if (creditsPopupClose.dataset?.round != true) {
+        if (creditsPopupClose?.dataset?.round != true) {
             creditsPopupClose.innerText = enhancedCloseButtonText
             creditsPopupClose.dataset.round = true
         }
@@ -111,18 +113,18 @@ const INGRESS = {
 
 const ingressVibes = `
 
+/* BADGES */
+
 img.ingress-theme {
     display: inline;
 }
 
-/* BUTTONS */
 
-:root[data-theme="ingress"] {}
+/* BUTTONS */
 
 .game-menu>button, .bottomleft-container>button, #layers {
     font-family: 'Coda', 'Manrope', sans-serif;
 }
-
 
 .i-buttons>button, 
 .settings.popup button:not(.popup-close),
@@ -235,7 +237,9 @@ option:checked { /* WTF? checked is non-documented??? */
     fill: #${INGRESS.buttonHighlightColor};
 }
 
+
 /* SLIDER ITEMS */
+
 .draw-slider-wrp .splide__slide.is-active .refs-list__image>div {
     box-shadow: inset -8px 0px 0px -5px  #${INGRESS.selectionColor},
         inset -10px 0px 8px -6px  #${INGRESS.selectionBackgroundColor}77,
@@ -243,10 +247,13 @@ option:checked { /* WTF? checked is non-documented??? */
         inset 10px 0px 8px -6px  #${INGRESS.selectionBackgroundColor}77;
 }
 
+
 /* INVENTORY */
+
 .inventory__content, .inventory__tab.active {
     border-color: var(--selection);
 }
+
 
 /* POPUPS */
 
@@ -293,8 +300,34 @@ option:checked { /* WTF? checked is non-documented??? */
     color: #${INGRESS.color};
 }
 
+.${discoverProgressClassName} {
+    border-radius: 0px !important;
+    background-color: #${INGRESS.buttonDisabledAccentColor};
+}
+
 .deploy-slider-error {
     background-color: #${INGRESS.backgroundColor}AA;
+}
+
+
+/* SETTINGS */
+
+input#${euiLinksOpacity} {
+    background: #${INGRESS.buttonBackgroundColor} !important;
+    border-radius: 0px !important;
+    border: 2px solid #${INGRESS.buttonBorderColor} !important;
+}
+
+input#${euiLinksOpacity}::-webkit-slider-thumb {
+    border-radius: 0px;
+    background: #${INGRESS.buttonBorderColor};
+    box-shadow: -250px 0 0 250px #${INGRESS.buttonBorderColor};
+}
+
+input#${euiLinksOpacity}::-moz-range-thumb {   
+    border-radius: 0px;
+    background: #${INGRESS.buttonBorderColor};
+    box-shadow: -250px 0 0 250px #${INGRESS.buttonBorderColor};
 }
 
 `
@@ -303,6 +336,7 @@ const ingress = 'ingress'
 const ingressTheme = 'ingressTheme'
 const ingressStyleId = 'eui-ingress-vibes'
 const sbgSettings = 'settings'
+
 const AddIngressVibes = () => {
 
     // ADDS THEME TO SELECT
@@ -350,11 +384,15 @@ const AddIngressVibes = () => {
 const styleString = `
 @import url('https://fonts.googleapis.com/css2?family=Coda&display=swap');
 
+/* BADGES */
+
 img.ingress-theme {
     display: none;
 }
 
+
 /* LINES AND POINTS LAYERS */
+
 @keyframes blink {
     50% {
       filter: opacity(.85);
@@ -370,6 +408,7 @@ img.ingress-theme {
     filter: saturate(1.5) brightness(1.5) contrast(1.2);    
 }
 
+
 /* POPUPS */
 
 .popup {
@@ -377,6 +416,7 @@ img.ingress-theme {
     background-color: var(--background-transp);
     border-radius: 5px;
 }
+
 
 /* BUTTONS */
 
@@ -404,14 +444,16 @@ img.ingress-theme {
     fill: var(--text);
 }
 
-.discover-progress {
+.${discoverProgressClassName} {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
-    background-color: #${INGRESS.buttonDisabledAccentColor};
+    border-radius: 2px;
+    background-color: #7777;
     filter: opacity(.75);
 }
+
 
 /* ATTACK SLIDER */
 
@@ -420,12 +462,14 @@ img.ingress-theme {
     width: 100px !important;
 }
 
+
 /* DEPLOY SLIDER */
 
 #cores-list > .splide__slide {
     min-width: max-content !important;
     width: 80px !important;
 }
+
 
 /* DRAW LINE SLIDER */
 
@@ -499,6 +543,43 @@ img.ingress-theme {
     border-radius: 5px;
 }
 
+
+/* SETTINGS */
+
+input#${euiLinksOpacity} {
+    -webkit-appearance: none;
+    appearance: none;
+    overflow: hidden;
+    padding: 0;
+    max-width: 100px;
+    background: #7777;
+    border-radius: 3px;
+    border: none !important;
+}
+
+input#${euiLinksOpacity}::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 0px solid transparent;
+    height: 16px;
+    width: 16px;
+    border-radius: 3px;
+    background: var(--selection);
+    box-shadow: -250px 0 0 250px var(--selection);
+    cursor: pointer;
+}
+
+input#${euiLinksOpacity}::-moz-range-thumb {
+    
+    border: 0px solid transparent;
+    height: 16px;
+    width: 16px;
+    border-radius: 3px;
+    background: #${INGRESS.buttonBorderColor};
+    box-shadow: -250px 0 0 250px #${INGRESS.buttonBorderColor};
+    cursor: pointer;
+}
+
+
 /* SBG CUI Enhancements*/
 
 .sbgcui_xpProgressBar {
@@ -517,23 +598,32 @@ const AddStyles = () => {
 
     const ui = Array.from(document.querySelectorAll('.settings-section')).at(1)
 
-    // TODO: styles
     let item = document.createElement('div')
     item.className = 'settings-section__item'
     ui.appendChild(item)
 
-    // TODO: get value from localStorage
+    let title = document.createElement('span')
+    title.innerText = 'Lines opacity'
+    item.appendChild(title)
+
     let range = document.createElement('input')
+    range.id = euiLinksOpacity
+
     range.setAttribute('type', 'range')
     range.setAttribute('min', '0')
     range.setAttribute('max', '1')
-    range.setAttribute('step', '0.1')    
+    range.setAttribute('step', '0.01')
     item.appendChild(range)
 
+    const value = localStorage.getItem(euiLinksOpacity)
+    range.setAttribute('value', value ?? '0.75')
+
+    let lines = document.querySelector('.ol-layer__lines')
+    lines.style.filter = `opacity(${value ?? '0.75'})`
+
     range.addEventListener('change', (event) => {
-        // TODO: set value to localStorage
-        let lines = document.querySelector('.ol-layer__lines')
         lines.style.filter = `opacity(${event.target.value})`
+        localStorage.setItem(euiLinksOpacity, event.target.value)
     })
 }
 
@@ -715,23 +805,23 @@ const AddDiscoverProgress = () => {
     const discover = document.querySelector('#discover')
     if (!!infoPopup && !!discover) {
         const discoverProgress = document.createElement('div')    
-        discoverProgress.className = 'discover-progress'
+        discoverProgress.className = discoverProgressClassName
         discover.appendChild(discoverProgress)
 
         infoPopup.addEventListener(onDiscoverChanged, (event) => {
+            let dataTimeString = event.target.dataset?.time
 
-            if (event.target.dataset?.time > 0) {
-                discoverProgress.style.width = `${100*event.target.dataset.time/90}%`
-                discover.setAttribute('disabled', true)
-                discover.classList.add('loading')
+            if (!dataTimeString) {
+                discoverProgress.style.width = 0
+            }
+            else if (dataTimeString.replace('s','') > 0){
+                discoverProgress.style.width = `${100*dataTimeString.replace('s','')/60}%`
+            }
+            else if (dataTimeString.replace('m','') > 0) {
+                discoverProgress.style.width = '100%'
             }
             else {
                 discoverProgress.style.width = 0
-                
-                if (discover.classList.contains('loading')) {
-                    discover.classList.remove('loading')
-                    discover.removeAttribute('disabled')
-                }
             }
 
             
@@ -768,7 +858,7 @@ const InitObservers = () => {
 }
 
 window.addEventListener(onLoad, async function () {
-
+    await new Promise(r => setTimeout(r, 1000)) // sleep for 1sec to make sure everything is loaded
     await Informer()
     AddStyles()
     AddIngressVibes()
