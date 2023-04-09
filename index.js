@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.3.0
+// @version      1.3.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -20,7 +20,7 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.8'
-const euiVersion = '1.3.0'
+const euiVersion = '1.3.1'
 const euiLinksOpacity = 'eui-links-opacity'
 const discoverProgressClassName = 'discover-progress'
 const onClick = 'click'
@@ -590,11 +590,18 @@ input#${euiLinksOpacity}::-moz-range-thumb {
 `
 
 // adds filter styles to the canvas wrapper layers
-const AddStyles = () => {
+const AddStyles = async () => {
     const style = document.createElement('style')
     style.dataset.id = 'eui-common-styles'
     document.head.appendChild(style)
     style.innerHTML = styleString
+    
+    let lines = document.querySelector('.ol-layer__lines')
+
+    if (!lines) { // make sure lines layer exist (or loaded if connection is throttling)
+        await new Promise(r => setTimeout(r, 2000)) 
+        lines = document.querySelector('.ol-layer__lines')
+    }
 
     const ui = Array.from(document.querySelectorAll('.settings-section')).at(1)
 
@@ -618,12 +625,22 @@ const AddStyles = () => {
     const value = localStorage.getItem(euiLinksOpacity)
     range.setAttribute('value', value ?? '0.75')
 
-    let lines = document.querySelector('.ol-layer__lines')
-    lines.style.filter = `opacity(${value ?? '0.75'})`
+    if (!!lines) {
+        lines.style.filter = `opacity(${value ?? '0.75'})`
+    }
 
     range.addEventListener('change', (event) => {
-        lines.style.filter = `opacity(${event.target.value})`
-        localStorage.setItem(euiLinksOpacity, event.target.value)
+        if (!lines) { // make sure lines layer exist when user change slider
+            lines = document.querySelector('.ol-layer__lines')
+        }
+
+        if (!!lines) {
+            lines.style.filter = `opacity(${event.target.value})`
+            localStorage.setItem(euiLinksOpacity, event.target.value)
+        }
+        else {
+            alert('Enable lines layer to edit opacity')
+        }
     })
 }
 
@@ -858,9 +875,9 @@ const InitObservers = () => {
 }
 
 window.addEventListener(onLoad, async function () {
-    await new Promise(r => setTimeout(r, 1000)) // sleep for 1sec to make sure everything is loaded
+    await new Promise(r => setTimeout(r, 2000)) // sleep for 2sec to make sure everything is loaded
     await Informer()
-    AddStyles()
+    await AddStyles()
     AddIngressVibes()
     InitObservers()
     await BeautifyCloseButtons()
