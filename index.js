@@ -1,8 +1,7 @@
 // ==UserScript==
-// @id           sbg-enhanced@egorantonov
 // @name         SBG Enhanced UI
-// @namespace    https://github.com/egorantonov/sbg-enhanced
-// @version      1.2.3.beta
+// @namespace    https://3d.sytes.net/
+// @version      1.2.4
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -21,14 +20,15 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.8'
+const euiVersion = '1.2.4'
 const onClick = 'click'
 const onChange = 'change'
 const onLoad = 'load'
 
 // informer
 const Informer = async () => {
-    console.log('SBG Enhanced UI, version 1.2.3.beta')
-    const sbgCurrentVersion = await fetch('/api/').then(response => {        
+    console.log(`SBG Enhanced UI, version ${euiVersion}`)
+    const sbgCurrentVersion = await fetch('/api/').then(response => {
         return response.headers.get(sbgVersionHeader)
     })
 
@@ -43,6 +43,19 @@ const Informer = async () => {
     else {
         localStorage.setItem(euiIncompatibility, false)
     }
+
+    const about = Array.from(document.querySelectorAll('.settings-section')).at(-1)
+    if (!!about) {
+        const key = document.createElement('span')
+        key.innerText = 'Enhanced UI Version'
+        const value = document.createElement('span')
+        value.innerText = `v${euiVersion}`
+        const item = document.createElement('div')
+        item.classList.add('settings-section__item')
+        item.appendChild(key)
+        item.appendChild(value)
+        about.appendChild(item)
+    }
 }
 
 // makes close buttons look better
@@ -55,6 +68,23 @@ const BeautifyCloseButtons = async () => {
             buttons[i].dataset.round = true
         }
     }
+
+    /* CREDITS POPUP RENDERS VIA JS */
+    var creditsViewButton = document.querySelector('#settings-credits')
+    creditsViewButton.addEventListener(onClick, async () => {
+
+        let creditsPopupClose = document.querySelector('.credits.popup .popup-close')
+
+        if (!creditsPopupClose) {
+            await new Promise(r => setTimeout(r, 10)) // wait for SBG render CREDITS POPUP
+            creditsPopupClose = document.querySelector('.credits.popup .popup-close')
+        }
+
+        if (creditsPopupClose.dataset?.round != true) {
+            creditsPopupClose.innerText = enhancedCloseButtonText
+            creditsPopupClose.dataset.round = true
+        }
+    }, { once: true } )
 }
 
 const INGRESS = {
@@ -81,12 +111,16 @@ const INGRESS = {
 
 const ingressVibes = `
 
+img.ingress-theme {
+    display: inline;
+}
+
 /* BUTTONS */
 
 :root[data-theme="ingress"] {}
 
 .game-menu>button, .bottomleft-container>button, #layers {
-    font-family: 'Coda';
+    font-family: 'Coda', 'Manrope', sans-serif;
 }
 
 
@@ -96,11 +130,13 @@ const ingressVibes = `
 .draw-slider-buttons>button, 
 .inventory.popup button,
 .layers-config__buttons>button,
+.pr-buttons>button,
+.sbgcui_compare_stats>button,
 input:not(.sbgcui_settings-amount_input), select {
     position: relative;
     border-style: solid;
     text-transform: uppercase;
-    font-family: 'Coda', 'Oswald';
+    font-family: 'Coda', 'Manrope', sans-serif;
 }
 
 .i-buttons>button::before, 
@@ -124,6 +160,8 @@ input:not(.sbgcui_settings-amount_input), select {
 #attack-slider-close,
 .inventory.popup button,
 .layers-config__buttons>button,
+.pr-buttons>button,
+.sbgcui_compare_stats>button,
 input:not(.sbgcui_settings-amount_input), select {
     color: #${INGRESS.buttonColor};
     background: linear-gradient(to top, #${INGRESS.buttonGlowColor} 0%, #${INGRESS.buttonBackgroundColor} 30%, #${INGRESS.buttonBackgroundColor} 70%, #${INGRESS.buttonGlowColor} 100%);
@@ -219,6 +257,7 @@ option:checked { /* WTF? checked is non-documented??? */
 .settings.popup,
 .layers-config.popup,
 .inventory.popup,
+.credits.popup,
 .inventory__manage-amount,
 #draw-slider,
 #attack-slider,
@@ -242,9 +281,12 @@ option:checked { /* WTF? checked is non-documented??? */
     background: none;
 }
 
-.layers-config__header, .leaderboard.popup>.popup-header, .settings.popup>h3 {
+.layers-config__header,
+.leaderboard.popup>.popup-header,
+.settings.popup>h3,
+.credits.popup h3 {
     text-transform: uppercase;
-    font-family: 'Coda', 'Oswald';
+    font-family: 'Coda', 'Manrope', sans-serif;
 }
 
 #discover[data-time]:after {
@@ -258,31 +300,40 @@ option:checked { /* WTF? checked is non-documented??? */
 `
 
 const ingress = 'ingress'
+const ingressTheme = 'ingressTheme'
 const ingressStyleId = 'eui-ingress-vibes'
+const sbgSettings = 'settings'
 const AddIngressVibes = () => {
+
+    // ADDS THEME TO SELECT
+    const themeSelect = document.querySelector('select[data-setting="theme"]')
+    const settings = JSON.parse(localStorage.getItem(sbgSettings) ?? '{}')
+    if (!!themeSelect) {
+        const ingressThemeOption = document.createElement('option')
+        ingressThemeOption.setAttribute('id', ingressTheme)
+        ingressThemeOption.setAttribute('value', ingress)
+        ingressThemeOption.innerText = ingress.replace('i', 'I')
+        themeSelect.appendChild(ingressThemeOption)
+
+        const isThemeProposed = localStorage.getItem(ingressStyleId) 
+        if (!isThemeProposed) {
+            settings.theme = ingress
+            localStorage.setItem(sbgSettings, JSON.stringify(settings))
+            localStorage.setItem(ingressStyleId, true)
+            document.documentElement.dataset.theme = ingress
+            //themeSelect.selectedIndex = Array.from(themeSelect.children).indexOf(document.querySelector(`#${ingressTheme}`))
+        }
+    }
+
+    // STYLES
     const style = document.createElement('style')
     style.dataset.id = ingressStyleId
     style.innerHTML = ingressVibes
 
-    const themeSelect = document.querySelector('select[data-setting="theme"]')
-    if (!!themeSelect) {
-        const ingressThemeOption = document.createElement('option')
-        ingressThemeOption.setAttribute('id', 'ingressTheme')
-        ingressThemeOption.setAttribute('value', ingress)
-        ingressThemeOption.innerText = ingress
-        themeSelect.appendChild(ingressThemeOption)
+    if (settings?.theme === ingress) {
+         document.head.appendChild(style)
     }
-
-    const settings = localStorage.getItem('settings')
-    if (!!settings) {
-        const theme = JSON.parse(settings)?.theme ?? 'auto'
-
-        if (theme === ingress) {
-            document.head.appendChild(style)
-        }
-    }
-
-    // TODO: добавить тему INGRESS принудительно первый раз (исп. localStorage)
+    
     themeSelect.addEventListener(onChange, (event) => {
         const ingressStyleExists = document.querySelector(`style[data-id="${ingressStyleId}"]`)
         if (event.target.value === ingress && !ingressStyleExists) {
@@ -297,22 +348,26 @@ const AddIngressVibes = () => {
 }
 
 const styleString = `
-@import url('https://fonts.googleapis.com/css2?family=Coda&family=Oswald:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Coda&display=swap');
+
+img.ingress-theme {
+    display: none;
+}
 
 /* LINES AND POINTS LAYERS */
 @keyframes blink {
     50% {
-      filter: opacity(.45);
+      filter: opacity(.85);
     }  
 }
 
 .ol-layer__lines {
-    /*filter: opacity(.55);
-    animation: blink 3s linear infinite;*/
+    /*filter: opacity(.55);*/
+    /*animation: blink 3s linear infinite;*/
 }
 
-.ol-layer__markers {
-    filter: brightness(1.2);
+.ol-layer__points {
+    filter: saturate(1.5) brightness(1.5) contrast(1.2);    
 }
 
 /* POPUPS */
@@ -458,8 +513,28 @@ const AddStyles = () => {
     const style = document.createElement('style')
     style.dataset.id = 'eui-common-styles'
     document.head.appendChild(style)
-
     style.innerHTML = styleString
+
+    const ui = Array.from(document.querySelectorAll('.settings-section')).at(1)
+
+    // TODO: styles
+    let item = document.createElement('div')
+    item.className = 'settings-section__item'
+    ui.appendChild(item)
+
+    // TODO: get value from localStorage
+    let range = document.createElement('input')
+    range.setAttribute('type', 'range')
+    range.setAttribute('min', '0')
+    range.setAttribute('max', '1')
+    range.setAttribute('step', '0.1')    
+    item.appendChild(range)
+
+    range.addEventListener('change', (event) => {
+        // TODO: set value to localStorage
+        let lines = document.querySelector('.ol-layer__lines')
+        lines.style.filter = `opacity(${event.target.value})`
+    })
 }
 
 const asset64Prefix = 'https://raw.githubusercontent.com/egorantonov/sbg-enhanced/master/assets/64/'
