@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.3.2
+// @version      1.3.3
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -24,7 +24,7 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.8'
-const euiVersion = '1.3.1'
+const euiVersion = '1.3.3'
 const euiLinksOpacity = 'eui-links-opacity'
 const discoverProgressClassName = 'discover-progress'
 const onClick = 'click'
@@ -116,6 +116,10 @@ const INGRESS = {
 }
 
 const ingressVibes = `
+
+:root {
+    background-color: #777;
+}
 
 /* BADGES */
 
@@ -392,24 +396,6 @@ const styleString = `
 
 img.ingress-theme {
     display: none;
-}
-
-
-/* LINES AND POINTS LAYERS */
-
-@keyframes blink {
-    50% {
-      filter: opacity(.85);
-    }  
-}
-
-.ol-layer__lines {
-    /*filter: opacity(.55);*/
-    /*animation: blink 3s linear infinite;*/
-}
-
-.ol-layer__points {
-    filter: saturate(1.5) brightness(1.5) contrast(1.2);    
 }
 
 
