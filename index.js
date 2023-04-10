@@ -1,12 +1,16 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.3.1
+// @version      1.3.2
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
 // @author       https://github.com/egorantonov
-// @match        https://3d.sytes.net/
+// @website      https://github.com/egorantonov/sbg-enhanced/releases
+// @match        https://3d.sytes.net
+// @match        https://3d.sytes.net/*
+// @iconUrl      https://raw.githubusercontent.com/egorantonov/sbg-enhanced/master/assets/script/64.png
+// @icon64Url    https://raw.githubusercontent.com/egorantonov/sbg-enhanced/master/assets/script/64.png
 // @grant        none
 // ==/UserScript==
 
@@ -590,12 +594,14 @@ input#${euiLinksOpacity}::-moz-range-thumb {
 `
 
 // adds filter styles to the canvas wrapper layers
-const AddStyles = async () => {
+const AddStyles = () => {
     const style = document.createElement('style')
     style.dataset.id = 'eui-common-styles'
     document.head.appendChild(style)
     style.innerHTML = styleString
-    
+}
+
+const AddCanvasStyles = async () => {
     let lines = document.querySelector('.ol-layer__lines')
 
     if (!lines) { // make sure lines layer exist (or loaded if connection is throttling)
@@ -629,7 +635,7 @@ const AddStyles = async () => {
         lines.style.filter = `opacity(${value ?? '0.75'})`
     }
 
-    range.addEventListener('change', (event) => {
+    range.addEventListener(onChange, (event) => {
         if (!lines) { // make sure lines layer exist when user change slider
             lines = document.querySelector('.ol-layer__lines')
         }
@@ -875,10 +881,11 @@ const InitObservers = () => {
 }
 
 window.addEventListener(onLoad, async function () {
-    await new Promise(r => setTimeout(r, 2000)) // sleep for 2sec to make sure everything is loaded
+    await new Promise(r => setTimeout(r, 2000)) // sleep for for a while to make sure SBG is loaded
     await Informer()
-    await AddStyles()
+    AddStyles()
     AddIngressVibes()
+    await AddCanvasStyles()
     InitObservers()
     await BeautifyCloseButtons()
     DisableDrawButton()
@@ -891,8 +898,6 @@ window.addEventListener(onLoad, async function () {
             AddBadges()
         })
     }
-
-
 
 }, false)
 
