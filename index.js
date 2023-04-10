@@ -75,14 +75,14 @@ const BeautifyCloseButtons = async () => {
         }
     }
 
-    /* CREDITS POPUP RENDERS VIA JS */
+    /* CREDITS POPUP IS BEING FETCHED AS HTML */
     var creditsViewButton = document.querySelector('#settings-credits')
     creditsViewButton.addEventListener(onClick, async () => {
 
         let creditsPopupClose = document.querySelector('.credits.popup .popup-close')
 
-        if (!creditsPopupClose) {
-            await new Promise(r => setTimeout(r, 100)) // wait for SBG render CREDITS POPUP
+        while (!creditsPopupClose) { // wait for SBG fetches CREDITS POPUP
+            await new Promise(r => setTimeout(r, 250))
             creditsPopupClose = document.querySelector('.credits.popup .popup-close')
         }
 
@@ -90,7 +90,7 @@ const BeautifyCloseButtons = async () => {
             creditsPopupClose.innerText = enhancedCloseButtonText
             creditsPopupClose.dataset.round = true
         }
-    }, { once: true } )
+    }, {once: true} )
 }
 
 const INGRESS = {
