@@ -130,7 +130,7 @@ img.ingress-theme {
 
 /* BUTTONS */
 
-.game-menu>button, .bottomleft-container>button, #layers {
+.game-menu>button, .bottomleft-container>button, body>#layers {
     font-family: 'Coda', 'Manrope', sans-serif;
 }
 
@@ -410,7 +410,7 @@ img.ingress-theme {
 
 /* BUTTONS */
 
-.game-menu > button, button#ops, .ol-control > button, #attack-menu, #layers {
+.game-menu > button, button#ops, .ol-control > button, #attack-menu, body>#layers {
     text-transform: uppercase;
 }
 
