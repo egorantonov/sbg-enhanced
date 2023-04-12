@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.3.4
+// @version      1.3.5
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -24,7 +24,7 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.8'
-const euiVersion = '1.3.4'
+const euiVersion = '1.3.5'
 const euiLinksOpacity = 'eui-links-opacity'
 const discoverProgressClassName = 'discover-progress'
 const onClick = 'click'
@@ -340,30 +340,36 @@ input#${euiLinksOpacity}::-moz-range-thumb {
 
 `
 
-const ingress = 'ingress'
-const ingressTheme = 'ingressTheme'
+const ingressTheme = 'eui-ingress-theme'
 const ingressStyleId = 'eui-ingress-vibes'
 const sbgSettings = 'settings'
+const auto = 'auto'
 
 const AddIngressVibes = () => {
-
-    // ADDS THEME TO SELECT
-    const themeSelect = document.querySelector('select[data-setting="theme"]')
-    const settings = JSON.parse(localStorage.getItem(sbgSettings) ?? '{}')
-    if (!!themeSelect) {
-        const ingressThemeOption = document.createElement('option')
-        ingressThemeOption.setAttribute('id', ingressTheme)
-        ingressThemeOption.setAttribute('value', ingress)
-        ingressThemeOption.innerText = ingress.replace('i', 'I')
-        themeSelect.appendChild(ingressThemeOption)
+    const input = document.createElement('input')
+    const settings = Array.from(document.querySelectorAll('.settings-section')).at(0)
+    if (!!settings) {
+        const title = document.createElement('span')
+        title.innerText = 'Ingress style'
+        
+        input.type = 'checkbox'
+        input.dataset.setting = ingressTheme
+        const label = document.createElement('label')
+        label.classList.add('settings-section__item')
+        label.appendChild(title)
+        label.appendChild(input)
+        settings.appendChild(label)
 
         const isThemeProposed = localStorage.getItem(ingressStyleId) 
-        if (!isThemeProposed) {
-            settings.theme = ingress
-            localStorage.setItem(sbgSettings, JSON.stringify(settings))
-            localStorage.setItem(ingressStyleId, true)
-            document.documentElement.dataset.theme = ingress
-            //themeSelect.selectedIndex = Array.from(themeSelect.children).indexOf(document.querySelector(`#${ingressTheme}`))
+        if (isThemeProposed != 1) {
+            localStorage.setItem(ingressStyleId, 1)
+            localStorage.setItem(ingressTheme, 1)
+            input.checked = true
+
+            document.documentElement.dataset.theme = auto
+            let gameSettings = JSON.parse(localStorage.getItem(sbgSettings))
+            gameSettings.theme = auto
+            localStorage.setItem(sbgSettings, JSON.stringify(gameSettings))
         }
     }
 
@@ -372,19 +378,19 @@ const AddIngressVibes = () => {
     style.dataset.id = ingressStyleId
     style.innerHTML = ingressVibes
 
-    if (settings?.theme === ingress) {
-         document.head.appendChild(style)
+    if (localStorage.getItem(ingressTheme) == 1) {
+        document.head.appendChild(style)
+        input.checked = true
     }
     
-    themeSelect.addEventListener(onChange, (event) => {
-        const ingressStyleExists = document.querySelector(`style[data-id="${ingressStyleId}"]`)
-        if (event.target.value === ingress && !ingressStyleExists) {
+    input.addEventListener(onChange, (event) => {        
+        if (event.target.checked) {
             document.head.appendChild(style)
+            localStorage.setItem(ingressTheme, 1)
         }
         else {
-            if (!!ingressStyleExists) {
-                ingressStyleExists.remove()
-            }
+            style.remove()
+            localStorage.setItem(ingressTheme, 0)
         }
     })
 }
