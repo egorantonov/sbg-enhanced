@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.3.5
+// @version      1.3.6
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -24,7 +24,7 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.8'
-const euiVersion = '1.3.5'
+const euiVersion = '1.3.6'
 const euiLinksOpacity = 'eui-links-opacity'
 const discoverProgressClassName = 'discover-progress'
 const onClick = 'click'
@@ -66,7 +66,6 @@ const Informer = async () => {
 
 // makes close buttons look better
 const BeautifyCloseButtons = async () => {
-    await new Promise(r => setTimeout(r, 100)) // wait for SBG CUI modify inventory close button from 'X' to '[x]'
     const buttons = Array.from(document.querySelectorAll('button'))
     for (let i = 0; i < buttons.length; i++) {
         if (buttons[i].innerText === defaultCloseButtonText) {
@@ -90,6 +89,17 @@ const BeautifyCloseButtons = async () => {
             creditsPopupClose.innerText = enhancedCloseButtonText
             creditsPopupClose.dataset.round = true
         }
+    }, {once: true} )
+
+    /* INVENTORY CLOSE BUTTON IS NOT POPUP-CLOSE */
+    var inventoryViewButton = document.querySelector('#ops')
+    inventoryViewButton.addEventListener(onClick, async () => {
+
+        let inventoryPopupClose = document.querySelector('.inventory.popup #inventory__close')
+
+        inventoryPopupClose.innerText === 'X' && await new Promise(r => setTimeout(r, 1000)) // wait for SBG CUI modify inventory close button from 'X' to '[x]'
+        inventoryPopupClose.innerText = enhancedCloseButtonText
+
     }, {once: true} )
 }
 
@@ -582,6 +592,11 @@ input#${euiLinksOpacity}::-moz-range-thumb {
     background-color: var(--background-transp);
     backdrop-filter: blur(5px);
     border-radius: 5px;
+}
+
+#attack-menu, .topleft-container {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none;
 }
 `
 
