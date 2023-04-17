@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.3.7
+// @version      1.3.8
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -23,8 +23,8 @@ const defaultCloseButtonText = '[x]'
 const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
-const sbgCompatibleVersion = '0.2.8'
-const euiVersion = '1.3.7'
+const sbgCompatibleVersion = '0.2.9'
+const euiVersion = '1.3.8'
 const euiLinksOpacity = 'eui-links-opacity'
 const discoverProgressClassName = 'discover-progress'
 const onClick = 'click'
@@ -506,13 +506,13 @@ img.ingress-theme {
 
 .i-buttons {
     order: 1;
-    flex-wrap: nowrap;
+    /* flex-wrap: nowrap; */ /* Incompatible since CUI 1.1.0 */
     margin: 0.5em 0 0.5em;
 }
 
 .i-buttons>button {
     font-size: 0.9em;
-    padding: 6px;
+    padding: 6px 2px;
     min-width: fit-content;
     width: calc(25% - 0.25em);
 }
