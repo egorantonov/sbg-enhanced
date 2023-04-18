@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.3.9
+// @version      1.3.10
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -24,12 +24,50 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.9'
-const euiVersion = '1.3.9'
+const euiVersion = '1.3.10'
 const euiLinksOpacity = 'eui-links-opacity'
+const euiHighContrast = 'eui-high-contrast'
 const discoverProgressClassName = 'discover-progress'
 const onClick = 'click'
 const onChange = 'change'
 const onLoad = 'load'
+
+const ingressTheme = 'eui-ingress-theme'
+const ingressStyleId = 'eui-ingress-vibes'
+const sbgSettings = 'settings'
+const defaultLang = 'en'
+const auto = 'auto'
+
+// localisation
+const locale = JSON.parse(localStorage.getItem(sbgSettings))?.lang ?? defaultLang
+const translations = {
+    incompatibility: {
+        en: 'Enhanced UI may be incompatible with current version of SBG',
+        ru: 'Enhanced UI может быть несовместим с текущей версией игры'
+    },
+    enhancedUIVersion: {
+        en: 'Enhanced UI Version',
+        ru: 'Версия Enhanced UI'
+    },
+    ingressStyle: {
+        en: 'Ingress Style',
+        ru: 'Стиль Ингресс'
+    },
+    highContrast: {
+        en: 'High Contrast',
+        ru: 'Высокий контраст'
+    },
+    linesOpacity: {
+        en: 'Lines opacity',
+        ru: 'Прозрачность линий'
+    },
+    linesOpacityMessage: {
+        en: 'Enable lines layer to edit opacity',
+        ru: 'Включите слой линий для редактирования прозрачности'
+    },
+}
+
+const t = (key) => translations[key][locale]
 
 // informer
 const Informer = async () => {
@@ -42,7 +80,7 @@ const Informer = async () => {
         const alertShown = localStorage.getItem(euiIncompatibility)
 
         if (alertShown != 'true') {
-            alert(`⚠️ Enhanced UI may be incompatible with current version of SBG (${sbgCurrentVersion}). Check for updates.`)
+            alert(`⚠️ ${t('incompatibility')} (${sbgCurrentVersion})`)
             localStorage.setItem(euiIncompatibility, true)
         }
     }
@@ -53,7 +91,7 @@ const Informer = async () => {
     const about = Array.from(document.querySelectorAll('.settings-section')).at(-1)
     if (!!about) {
         const key = document.createElement('span')
-        key.innerText = 'Enhanced UI Version'
+        key.innerText = t('enhancedUIVersion')
         const value = document.createElement('span')
         value.innerText = `v${euiVersion}`
         const item = document.createElement('div')
@@ -346,17 +384,12 @@ input#${euiLinksOpacity}::-moz-range-thumb {
 
 `
 
-const ingressTheme = 'eui-ingress-theme'
-const ingressStyleId = 'eui-ingress-vibes'
-const sbgSettings = 'settings'
-const auto = 'auto'
-
 const AddIngressVibes = () => {
     const input = document.createElement('input')
     const settings = Array.from(document.querySelectorAll('.settings-section')).at(0)
     if (!!settings) {
         const title = document.createElement('span')
-        title.innerText = 'Ingress style'
+        title.innerText = t('ingressStyle')
         
         input.type = 'checkbox'
         input.dataset.setting = ingressTheme
@@ -401,6 +434,86 @@ const AddIngressVibes = () => {
     })
 }
 
+const highContrast = `
+
+/* DARK THEME */
+@media (prefers-color-scheme: dark) {
+    :root[data-theme="auto"] .popup,
+    :root[data-theme="auto"] #draw-slider,
+    :root[data-theme="auto"] #attack-slider,
+    :root[data-theme="auto"] .attack-slider-highlevel {
+        color: #fff;
+        background: #000;
+    }
+}
+
+:root[data-theme="dark"] .popup,
+:root[data-theme="dark"] #draw-slider,
+:root[data-theme="dark"] #attack-slider,
+:root[data-theme="dark"] .attack-slider-highlevel {
+    color: #fff;
+    background: #000;
+}
+
+/* LIGHT THEME */
+@media (prefers-color-scheme: light) {
+    :root[data-theme="auto"] .popup,
+    :root[data-theme="auto"] #draw-slider,
+    :root[data-theme="auto"] #attack-slider,
+    :root[data-theme="auto"] .attack-slider-highlevel {
+        color: #000;
+        background: #fff;
+    }
+}
+
+:root[data-theme="light"] .popup,
+:root[data-theme="light"] #draw-slider,
+:root[data-theme="light"] #attack-slider,
+:root[data-theme="light"] .attack-slider-highlevel {
+    color: #000;
+    background: #fff;
+}
+
+`
+
+const AddHighContrast = () => {
+    const input = document.createElement('input')
+    const uiSettings = Array.from(document.querySelectorAll('.settings-section')).at(1)
+    if (!!uiSettings) {
+        const title = document.createElement('span')
+        title.innerText = t('highContrast')
+        
+        input.type = 'checkbox'
+        input.dataset.setting = ingressTheme
+        const label = document.createElement('label')
+        label.classList.add('settings-section__item')
+        label.appendChild(title)
+        label.appendChild(input)
+        uiSettings.appendChild(label)
+    }
+
+    // STYLES
+    const style = document.createElement('style')
+    style.dataset.id = euiHighContrast
+    style.innerHTML = highContrast
+
+    if (localStorage.getItem(euiHighContrast) == 1) {
+        document.head.appendChild(style)
+        input.checked = true
+    }
+    
+    input.addEventListener(onChange, (event) => {        
+        if (event.target.checked) {
+            document.head.appendChild(style)
+            localStorage.setItem(euiHighContrast, 1)
+        }
+        else {
+            style.remove()
+            localStorage.setItem(euiHighContrast, 0)
+        }
+    })
+}
+
 const styleString = `
 @import url('https://fonts.googleapis.com/css2?family=Coda&display=swap');
 
@@ -414,8 +527,6 @@ img.ingress-theme {
 /* POPUPS */
 
 .popup {
-    backdrop-filter: blur(5px);
-    background-color: var(--background-transp);
     border-radius: 5px;
 }
 
@@ -592,7 +703,6 @@ input#${euiLinksOpacity}::-moz-range-thumb {
 
 .sbgcui_xpProgressBar {
     background-color: var(--background-transp);
-    backdrop-filter: blur(5px);
     border-radius: 5px;
 }
 
@@ -630,7 +740,7 @@ const AddCanvasStyles = async () => {
     ui.appendChild(item)
 
     let title = document.createElement('span')
-    title.innerText = 'Lines opacity'
+    title.innerText = t('linesOpacity')
     item.appendChild(title)
 
     let range = document.createElement('input')
@@ -659,7 +769,7 @@ const AddCanvasStyles = async () => {
             localStorage.setItem(euiLinksOpacity, event.target.value)
         }
         else {
-            alert('Enable lines layer to edit opacity')
+            alert(t('linesOpacityMessage'))
         }
     })
 }
@@ -898,6 +1008,7 @@ window.addEventListener(onLoad, async function () {
     await new Promise(r => setTimeout(r, 2000)) // sleep for for a while to make sure SBG is loaded
     await Informer()
     AddStyles()
+    AddHighContrast()
     AddIngressVibes()
     await AddCanvasStyles()
     InitObservers()
