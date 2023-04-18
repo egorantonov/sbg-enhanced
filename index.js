@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.3.8
+// @version      1.3.9
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -24,7 +24,7 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.9'
-const euiVersion = '1.3.8'
+const euiVersion = '1.3.9'
 const euiLinksOpacity = 'eui-links-opacity'
 const discoverProgressClassName = 'discover-progress'
 const onClick = 'click'
@@ -506,8 +506,11 @@ img.ingress-theme {
 
 .i-buttons {
     order: 1;
-    /* flex-wrap: nowrap; */ /* Incompatible since CUI 1.1.0 */
     margin: 0.5em 0 0.5em;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 0.25em !important;
+    width: 100% !important;
 }
 
 .i-buttons>button {
@@ -582,7 +585,7 @@ input#${euiLinksOpacity}::-moz-range-thumb {
 }
 
 
-/* SBG CUI Enhancements*/
+/* SBG CUI Enhancements and support */
 
 .sbgcui_xpProgressBar {
     background-color: var(--background-transp);
@@ -594,6 +597,11 @@ input#${euiLinksOpacity}::-moz-range-thumb {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none;
 }
+
+.sbgcui_no_loot, .sbgcui_no_refs {
+    display: none !important;
+}
+
 `
 
 // adds filter styles to the canvas wrapper layers
