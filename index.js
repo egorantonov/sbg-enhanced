@@ -518,6 +518,8 @@ img.ingress-theme {
     padding: 6px 2px;
     min-width: fit-content;
     width: calc(25% - 0.25em);
+    flex-basis: unset !important;
+    order: unset !important;
 }
 
 .i-buttons>button[disabled] {
