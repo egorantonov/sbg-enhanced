@@ -511,6 +511,7 @@ img.ingress-theme {
     flex-wrap: nowrap !important;
     gap: 0.25em !important;
     width: 100% !important;
+    direction: unset !important;
 }
 
 .i-buttons>button {
