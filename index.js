@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.3.10
+// @version      1.4.0
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -24,7 +24,7 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.9'
-const euiVersion = '1.3.10'
+const euiVersion = '1.4.0'
 const euiLinksOpacity = 'eui-links-opacity'
 const euiHighContrast = 'eui-high-contrast'
 const discoverProgressClassName = 'discover-progress'
@@ -106,14 +106,14 @@ const Informer = async () => {
 const BeautifyCloseButtons = async () => {
     const buttons = Array.from(document.querySelectorAll('button'))
     for (let i = 0; i < buttons.length; i++) {
-        if (buttons[i].innerText === defaultCloseButtonText) {
+        if (buttons[i].innerText.toLowerCase() === defaultCloseButtonText) {
             buttons[i].innerText = enhancedCloseButtonText
             buttons[i].dataset.round = true
         }
     }
 
     /* CREDITS POPUP IS BEING FETCHED AS HTML */
-    var creditsViewButton = document.querySelector('#settings-credits')
+    const creditsViewButton = document.querySelector('#settings-credits')
     creditsViewButton.addEventListener(onClick, async () => {
 
         let creditsPopupClose = document.querySelector('.credits.popup .popup-close')
@@ -130,12 +130,13 @@ const BeautifyCloseButtons = async () => {
     }, {once: true} )
 
     /* INVENTORY CLOSE BUTTON IS NOT POPUP-CLOSE */
-    var inventoryViewButton = document.querySelector('#ops')
+    const inventoryViewButton = document.querySelector('#ops')
     inventoryViewButton.addEventListener(onClick, async () => {
 
         let inventoryPopupClose = document.querySelector('.inventory.popup #inventory__close')
 
         inventoryPopupClose.innerText === 'X' && await new Promise(r => setTimeout(r, 1000)) // wait for SBG CUI modify inventory close button from 'X' to '[x]'
+        inventoryPopupClose.innerText.toLowerCase() === defaultCloseButtonText && (inventoryPopupClose.dataset.round = true)
         inventoryPopupClose.innerText = enhancedCloseButtonText
 
     }, {once: true} )
@@ -698,6 +699,67 @@ input#${euiLinksOpacity}::-moz-range-thumb {
     cursor: pointer;
 }
 
+/* ANIMATIONS */
+html, body {
+    overflow: hidden;
+}
+
+.info.popup {
+    transition: all ease-in-out 0.25s;
+}
+
+.info.popup.hidden {
+    display: flex !important;
+    filter: opacity(0);
+    transform: translateX(calc(100% + 10px));
+}
+
+@media (max-width: 425px) {
+    .info.popup.hidden {
+        transform: translate(calc(100% + 10px), -50%);
+    }
+}
+
+.inventory.popup {
+    transition: all ease-in-out 0.25s;
+}
+
+.inventory.popup.hidden {
+    display: flex !important;
+    filter: opacity(0);
+    transform: translate(calc(-150% - 10px), -50%);
+}
+
+.leaderboard.popup, .settings.popup {    
+    transition: all ease-in-out 0.25s;
+}
+
+.leaderboard.popup.hidden, .settings.popup.hidden {
+    display: flex !important;
+    filter: opacity(0);
+    transform: translate(-50%, calc(-50vh - 100%));
+}
+
+.attack-slider-wrp {
+    transition: all ease-in-out 0.25s;
+}
+
+.attack-slider-wrp.hidden {
+    display: flex !important;
+    filter: opacity(0);
+    transform: translateY(calc(25vh + 100%));
+}
+
+.layers-config.popup, .score.popup {
+    visibility: visible;
+    transition: visibility 0s, filter ease-in-out 0.25s;
+}
+
+.layers-config.popup.hidden, .score.popup.hidden {
+    display: block !important;
+    filter: opacity(0);
+    visibility: hidden;
+}
 
 /* SBG CUI Enhancements and support */
 
