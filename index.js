@@ -27,6 +27,7 @@ const sbgCompatibleVersion = '0.2.9'
 const euiVersion = '1.4.0'
 const euiLinksOpacity = 'eui-links-opacity'
 const euiHighContrast = 'eui-high-contrast'
+const euiAnimations = 'eui-animations'
 const discoverProgressClassName = 'discover-progress'
 const onClick = 'click'
 const onChange = 'change'
@@ -37,6 +38,8 @@ const ingressStyleId = 'eui-ingress-vibes'
 const sbgSettings = 'settings'
 const defaultLang = 'en'
 const auto = 'auto'
+
+const proposed = '-proposed'
 
 // localisation
 const locale = JSON.parse(localStorage.getItem(sbgSettings))?.lang ?? defaultLang
@@ -65,9 +68,13 @@ const translations = {
         en: 'Enable lines layer to edit opacity',
         ru: 'Включите слой линий для редактирования прозрачности'
     },
+    animations: {
+        en: 'Animations',
+        ru: 'Анимации'
+    }
 }
 
-const t = (key) => translations[key][locale]
+const t = (key) => translations[key][locale] ?? translations[key][defaultLang]
 
 // informer
 const Informer = async () => {
@@ -400,9 +407,10 @@ const AddIngressVibes = () => {
         label.appendChild(input)
         settings.appendChild(label)
 
-        const isThemeProposed = localStorage.getItem(ingressStyleId) 
-        if (isThemeProposed != 1) {
-            localStorage.setItem(ingressStyleId, 1)
+        // PROPOSAL
+        const themeProposed = localStorage.getItem(`${ingressTheme}${proposed}`) 
+        if (themeProposed != 1) {
+            localStorage.setItem(`${ingressTheme}${proposed}`, 1)
             localStorage.setItem(ingressTheme, 1)
             input.checked = true
 
@@ -415,7 +423,7 @@ const AddIngressVibes = () => {
 
     // STYLES
     const style = document.createElement('style')
-    style.dataset.id = ingressStyleId
+    style.dataset.id = ingressTheme
     style.innerHTML = ingressVibes
 
     if (localStorage.getItem(ingressTheme) == 1) {
@@ -485,7 +493,7 @@ const AddHighContrast = () => {
         title.innerText = t('highContrast')
         
         input.type = 'checkbox'
-        input.dataset.setting = ingressTheme
+        input.dataset.setting = euiHighContrast
         const label = document.createElement('label')
         label.classList.add('settings-section__item')
         label.appendChild(title)
@@ -699,6 +707,34 @@ input#${euiLinksOpacity}::-moz-range-thumb {
     cursor: pointer;
 }
 
+/* SBG CUI Enhancements and support */
+
+.sbgcui_xpProgressBar {
+    background-color: var(--background-transp);
+    border-radius: 5px;
+}
+
+#attack-menu, .topleft-container {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none;
+}
+
+.sbgcui_no_loot, .sbgcui_no_refs {
+    display: none !important;
+}
+
+`
+
+// adds filter styles to the canvas wrapper layers
+const AddStyles = () => {
+    const style = document.createElement('style')
+    style.dataset.id = 'eui-common-styles'
+    document.head.appendChild(style)
+    style.innerHTML = styleString
+}
+
+const animationsString = `
+
 /* ANIMATIONS */
 html, body {
     overflow: hidden;
@@ -760,31 +796,52 @@ html, body {
     filter: opacity(0);
     visibility: hidden;
 }
-
-/* SBG CUI Enhancements and support */
-
-.sbgcui_xpProgressBar {
-    background-color: var(--background-transp);
-    border-radius: 5px;
-}
-
-#attack-menu, .topleft-container {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none;
-}
-
-.sbgcui_no_loot, .sbgcui_no_refs {
-    display: none !important;
-}
-
 `
 
-// adds filter styles to the canvas wrapper layers
-const AddStyles = () => {
+const AddAnimations = () => {
+    const input = document.createElement('input')
+    const uiSettings = Array.from(document.querySelectorAll('.settings-section')).at(1)
+    if (!!uiSettings) {
+        const title = document.createElement('span')
+        title.innerText = t('animations')
+        
+        input.type = 'checkbox'
+        input.dataset.setting = euiAnimations
+        const label = document.createElement('label')
+        label.classList.add('settings-section__item')
+        label.appendChild(title)
+        label.appendChild(input)
+        uiSettings.appendChild(label)
+
+        // PROPOSAL
+        const animationsProposed = localStorage.getItem(`${euiAnimations}${proposed}`) 
+        if (animationsProposed != 1) {
+            localStorage.setItem(`${euiAnimations}${proposed}`, 1)
+            localStorage.setItem(euiAnimations, 1)
+            input.checked = true
+        }
+    }
+
+    // STYLES
     const style = document.createElement('style')
-    style.dataset.id = 'eui-common-styles'
-    document.head.appendChild(style)
-    style.innerHTML = styleString
+    style.dataset.id = euiAnimations
+    style.innerHTML = animationsString
+
+    if (localStorage.getItem(euiAnimations) == 1) {
+        document.head.appendChild(style)
+        input.checked = true
+    }
+    
+    input.addEventListener(onChange, (event) => {        
+        if (event.target.checked) {
+            document.head.appendChild(style)
+            localStorage.setItem(euiAnimations, 1)
+        }
+        else {
+            style.remove()
+            localStorage.setItem(euiAnimations, 0)
+        }
+    })
 }
 
 const AddCanvasStyles = async () => {
@@ -1071,6 +1128,7 @@ window.addEventListener(onLoad, async function () {
     await Informer()
     AddStyles()
     AddHighContrast()
+    AddAnimations()
     AddIngressVibes()
     await AddCanvasStyles()
     InitObservers()
