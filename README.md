@@ -10,7 +10,7 @@
   &nbsp;&nbsp;&nbsp;<a href="#как-установить">❓&nbsp;Как&nbsp;установить</a>
 </p>
 
-<!-- <a href="#"><p align="end">Available in English <img src="https://kyber.gg/static/images/flags/gb.svg" width="16px" /></p></a> -->
+<p align="end"><a href="https://github.com/egorantonov/sbg-enhanced/wiki/English">Available in English <img src="https://kyber.gg/static/images/flags/gb.svg" width="16px" /></a></p>
 
 <h2 align="center">Особенности</h2>
 
