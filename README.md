@@ -1,4 +1,4 @@
-<h1 align="center">SBG Enhanced UI</h1>
+<h1 align="center"><img src="https://github.com/egorantonov/sbg-enhanced/raw/master/assets/script/64.png" width="32px" /> SBG Enhanced UI</h1>
 
 <p align="center">Пользовательский скрипт, созданный для улучшения интерфейса игры <a href="https://3d.sytes.net" target="_blank">&nbsp;&nbsp;<img src="https://3d.sytes.net/icons/icon_64.png" width="16px" /> The Simplest Browser Geoloc</a></p>
 
