@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.4.0
+// @version      1.4.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -24,7 +24,7 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.9'
-const euiVersion = '1.4.0'
+const euiVersion = '1.4.1'
 const euiLinksOpacity = 'eui-links-opacity'
 const euiHighContrast = 'eui-high-contrast'
 const euiAnimations = 'eui-animations'
@@ -79,7 +79,7 @@ const t = (key) => translations[key][locale] ?? translations[key][defaultLang]
 // informer
 const Informer = async () => {
     console.log(`SBG Enhanced UI, version ${euiVersion}`)
-    const sbgCurrentVersion = await fetch('/api/').then(response => {
+    const sbgCurrentVersion = await fetch('/api/', {method: 'OPTIONS'}).then(response => {
         return response.headers.get(sbgVersionHeader)
     })
 
@@ -270,7 +270,8 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 #attack-slider-fire[disabled], #draw-slider-confirm[disabled] {
-    filter: opacity(0.75);
+    filter: opacity(0.75);    
+    -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
 }
 
@@ -331,6 +332,7 @@ option:checked { /* WTF? checked is non-documented??? */
 .attack-slider-highlevel {
     color: #${INGRESS.color};
     background-color: #${INGRESS.backgroundColor}CC;
+    -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
     border-radius: 0px;
     border-color: #${INGRESS.buttonBorderColor} !important;
@@ -740,18 +742,18 @@ html, body {
     overflow: hidden;
 }
 
-.info.popup {
+.info.popup, .profile.popup {
     transition: all ease-in-out 0.25s;
 }
 
-.info.popup.hidden {
+.info.popup.hidden, .profile.popup.hidden {
     display: flex !important;
     filter: opacity(0);
     transform: translateX(calc(100% + 10px));
 }
 
 @media (max-width: 425px) {
-    .info.popup.hidden {
+    .info.popup.hidden, .profile.popup.hidden {
         transform: translate(calc(100% + 10px), -50%);
     }
 }
