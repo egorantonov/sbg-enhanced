@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.4.1
+// @version      1.4.2
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -24,7 +24,7 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.9'
-const euiVersion = '1.4.1'
+const euiVersion = '1.4.2'
 const euiLinksOpacity = 'eui-links-opacity'
 const euiHighContrast = 'eui-high-contrast'
 const euiAnimations = 'eui-animations'
@@ -34,12 +34,14 @@ const onChange = 'change'
 const onLoad = 'load'
 
 const ingressTheme = 'eui-ingress-theme'
-const ingressStyleId = 'eui-ingress-vibes'
 const sbgSettings = 'settings'
 const defaultLang = 'en'
 const auto = 'auto'
 
 const proposed = '-proposed'
+
+const settingSections = Array.from(document.querySelectorAll('.settings-section'))
+const Sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // localisation
 const locale = JSON.parse(localStorage.getItem(sbgSettings))?.lang ?? defaultLang
@@ -95,7 +97,7 @@ const Informer = async () => {
         localStorage.setItem(euiIncompatibility, false)
     }
 
-    const about = Array.from(document.querySelectorAll('.settings-section')).at(-1)
+    const about = settingSections.at(-1)
     if (!!about) {
         const key = document.createElement('span')
         key.innerText = t('enhancedUIVersion')
@@ -111,7 +113,7 @@ const Informer = async () => {
 
 // makes close buttons look better
 const BeautifyCloseButtons = async () => {
-    const buttons = Array.from(document.querySelectorAll('button'))
+    const buttons = Array.from(document.body.querySelectorAll('button.popup-close, button#inventory__close'))
     for (let i = 0; i < buttons.length; i++) {
         if (buttons[i].innerText.toLowerCase() === defaultCloseButtonText) {
             buttons[i].innerText = enhancedCloseButtonText
@@ -126,7 +128,7 @@ const BeautifyCloseButtons = async () => {
         let creditsPopupClose = document.querySelector('.credits.popup .popup-close')
 
         while (!creditsPopupClose) { // wait for SBG fetches CREDITS POPUP
-            await new Promise(r => setTimeout(r, 250))
+            await Sleep(250)
             creditsPopupClose = document.querySelector('.credits.popup .popup-close')
         }
 
@@ -142,7 +144,7 @@ const BeautifyCloseButtons = async () => {
 
         let inventoryPopupClose = document.querySelector('.inventory.popup #inventory__close')
 
-        inventoryPopupClose.innerText === 'X' && await new Promise(r => setTimeout(r, 1000)) // wait for SBG CUI modify inventory close button from 'X' to '[x]'
+        inventoryPopupClose.innerText === 'X' && await Sleep(1000) // wait for SBG CUI modify inventory close button from 'X' to '[x]'
         inventoryPopupClose.innerText.toLowerCase() === defaultCloseButtonText && (inventoryPopupClose.dataset.round = true)
         inventoryPopupClose.innerText = enhancedCloseButtonText
 
@@ -172,6 +174,7 @@ const INGRESS = {
 }
 
 const ingressVibes = `
+@import url('https://fonts.googleapis.com/css2?family=Coda&display=swap');
 
 /* BADGES */
 
@@ -396,7 +399,7 @@ input#${euiLinksOpacity}::-moz-range-thumb {
 
 const AddIngressVibes = () => {
     const input = document.createElement('input')
-    const settings = Array.from(document.querySelectorAll('.settings-section')).at(0)
+    const settings = settingSections.at(0)
     if (!!settings) {
         const title = document.createElement('span')
         title.innerText = t('ingressStyle')
@@ -489,7 +492,7 @@ const highContrast = `
 
 const AddHighContrast = () => {
     const input = document.createElement('input')
-    const uiSettings = Array.from(document.querySelectorAll('.settings-section')).at(1)
+    const uiSettings = settingSections.at(1)
     if (!!uiSettings) {
         const title = document.createElement('span')
         title.innerText = t('highContrast')
@@ -526,7 +529,6 @@ const AddHighContrast = () => {
 }
 
 const styleString = `
-@import url('https://fonts.googleapis.com/css2?family=Coda&display=swap');
 
 /* BADGES */
 
@@ -802,7 +804,7 @@ html, body {
 
 const AddAnimations = () => {
     const input = document.createElement('input')
-    const uiSettings = Array.from(document.querySelectorAll('.settings-section')).at(1)
+    const uiSettings = settingSections.at(1)
     if (!!uiSettings) {
         const title = document.createElement('span')
         title.innerText = t('animations')
@@ -847,18 +849,9 @@ const AddAnimations = () => {
 }
 
 const AddCanvasStyles = async () => {
-    let lines = document.querySelector('.ol-layer__lines')
-
-    if (!lines) { // make sure lines layer exist (or loaded if connection is throttling)
-        await new Promise(r => setTimeout(r, 2000)) 
-        lines = document.querySelector('.ol-layer__lines')
-    }
-
-    const ui = Array.from(document.querySelectorAll('.settings-section')).at(1)
 
     let item = document.createElement('div')
     item.className = 'settings-section__item'
-    ui.appendChild(item)
 
     let title = document.createElement('span')
     title.innerText = t('linesOpacity')
@@ -873,11 +866,17 @@ const AddCanvasStyles = async () => {
     range.setAttribute('step', '0.01')
     item.appendChild(range)
 
+    const uiSettings = settingSections.at(1)
+    uiSettings.appendChild(item)
+
     const value = localStorage.getItem(euiLinksOpacity)
     range.setAttribute('value', value ?? '0.75')
 
-    if (!!lines) {
-        lines.style.filter = `opacity(${value ?? '0.75'})`
+    let lines = document.querySelector('.ol-layer__lines')
+
+    if (!lines) { // make sure lines layer exist (or loaded if connection is throttling)
+        await Sleep(2000) 
+        lines = document.querySelector('.ol-layer__lines')
     }
 
     range.addEventListener(onChange, (event) => {
@@ -893,6 +892,10 @@ const AddCanvasStyles = async () => {
             alert(t('linesOpacityMessage'))
         }
     })
+
+    if (!!lines) {
+        lines.style.filter = `opacity(${value ?? '0.75'})`
+    }
 }
 
 const asset64Prefix = 'https://raw.githubusercontent.com/egorantonov/sbg-enhanced/master/assets/64/'
@@ -1002,6 +1005,15 @@ const AddBadges = () => {
 
             container.prepend(badgeImage)
         }
+    }
+}
+
+const RenderBadges = () => {
+    const profilePopup = document.querySelector('.profile.popup')
+    if (!!profilePopup) {
+        profilePopup.addEventListener(onProfileStatsChanged, () => {
+            AddBadges()
+        })
     }
 }
 
@@ -1125,27 +1137,24 @@ const InitObservers = () => {
     InitDiscoverMutationObserver()
 }
 
+window.addEventListener(onLoad, function () {
+    Sleep(2000)
+    .then(() => {
+        AddStyles()
+        AddHighContrast()
+        AddAnimations()
+        AddIngressVibes()
+        InitObservers()
+        DisableDrawButton()
+        RemoveBadges()
+        AddDiscoverProgress()
+        RenderBadges()
+    })
+}, false)
+
 window.addEventListener(onLoad, async function () {
-    await new Promise(r => setTimeout(r, 2000)) // sleep for for a while to make sure SBG is loaded
-    await Informer()
-    AddStyles()
-    AddHighContrast()
-    AddAnimations()
-    AddIngressVibes()
-    await AddCanvasStyles()
-    InitObservers()
-    await BeautifyCloseButtons()
-    DisableDrawButton()
-    RemoveBadges()
-    AddDiscoverProgress()
-
-    const profilePopup = document.querySelector('.profile.popup')
-    if (!!profilePopup) {
-        profilePopup.addEventListener(onProfileStatsChanged, () => {
-            AddBadges()
-        })
-    }
-
+    await Sleep(2000) // sleep for for a while to make sure SBG is loaded
+    await Promise.all([Informer(), AddCanvasStyles(), BeautifyCloseButtons()])
 }, false)
 
 })()
