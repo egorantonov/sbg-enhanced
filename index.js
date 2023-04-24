@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.4.3
+// @version      1.5.0
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -24,7 +24,7 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.9'
-const euiVersion = '1.4.3'
+const euiVersion = '1.5.0'
 const euiLinksOpacity = 'eui-links-opacity'
 const euiHighContrast = 'eui-high-contrast'
 const euiAnimations = 'eui-animations'
@@ -45,6 +45,7 @@ const proposed = '-proposed'
 
 const inventoryViewButton = document.querySelector('#ops')
 const inventoryPopupClose = document.querySelector('.inventory.popup #inventory__close')
+const inventoryContent = document.querySelector('.inventory__content')
 
 const settingSections = Array.from(document.querySelectorAll('.settings-section'))
 const Sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -83,10 +84,28 @@ const translations = {
     searchRefPlaceholder: {
         en: 'Type to search',
         ru: 'Введите для поиска'
+    },
+    sortButtonText: {
+        en: 'Sort',
+        ru: 'Сорт.'
+    },
+    sortDistanceKey: {
+        en: 'Distance: ',
+        ru: 'Расстояние: ' // TODO: update after localization released
+    },
+    meter: {
+        en: 'm',
+        ru: 'м' // TODO: update after localization released
+    },
+    kilo: {
+        en: 'k',
+        ru: 'к' // TODO: update after localization released
     }
 }
 
 const t = (key) => translations[key][locale] ?? translations[key][defaultLang]
+
+const distanceRegex = new RegExp(String.raw`${t('sortDistanceKey')}\d*\.?\d* k?m`, 'gm')
 
 // informer
 const Informer = async () => {
@@ -725,14 +744,7 @@ input#${euiLinksOpacity}::-moz-range-thumb {
 }
 
 input[data-type="${referenceSearch}"] {
-    /*display: block;
-    position: absolute !important;
-    width: calc(100% - 2em);
-    height: 2em;
-    top: 0;
-    left: 0;
-    padding: 0;
-    margin: 1em;*/
+    padding: 0 6px;
     width: 100%;
 }
 
@@ -765,10 +777,10 @@ const AddStyles = () => {
 const AddReferenceSearch = () => {
 
     const tabs = Array.from(document.querySelectorAll('.inventory__tab'))
-    const inventoryContent = document.querySelector('div.inventory__content')
+    let inventoryRefs = []
     let refs = [] /* REFS CONTAINER */
 
-    const getRefs = () => Array.from(document.querySelectorAll('div.inventory__item'))
+    const getRefs = () => Array.from(inventoryContent.querySelectorAll('div.inventory__item'))
     const searchRefs = (input) => {
         refs.forEach(ref => ref.classList.remove('hidden'))
         refs.filter(ref => !ref.innerText
@@ -785,35 +797,126 @@ const AddReferenceSearch = () => {
     search.type = 'search'
     search.dataset.type = referenceSearch
     search.placeholder = t('searchRefPlaceholder')
+
+    // const sort = document.createElement('button')
+    // sort.id = 'sort'
+    // sort.textContent = t('sortButtonText')
+
+    const sort = document.createElement('select')
+    const sorts = ['Name', 'Dist+', 'Dist-']
+    sort.id = 'sort'
+    sorts.forEach(s => {
+        let opt = document.createElement('option')
+        opt.value = s
+        opt.innerText = s
+        sort.appendChild(opt)
+    })
+
     let clearButton = document.querySelector('#inventory-delete-section')
     tabs.forEach(tab => {
         tab.addEventListener(onClick, () => {
             if (['1', '2'].includes(tab.dataset.type)) {
                 search.dataset.active = '0'
                 search.remove()
+                sort.selectedIndex = 0
+                sort.remove()
             }
             else {
                 refs = getRefs()
+                inventoryRefs.length === 0 && (inventoryRefs = getRefs())
                 clearButton.before(search)
+                search.before(sort)
                 search.dataset.active = '1'
                 search.value && searchRefs(search.value)
             }
         })
     })
 
-    inventoryPopupClose.addEventListener(onClick, () => refs = [])
+    inventoryPopupClose.addEventListener(onClick, () => {
+        refs = []
+        sort.selectedIndex = 0
+    })
     inventoryViewButton.addEventListener(onClick, async () => {
-        while (refs.length === 0) {
-            await Sleep(200) // let SBG request inventory
-            refs = getRefs()
+
+        if (search.dataset.active === '1') {
+
+            while (refs.length === 0) {
+                await Sleep(200) // let SBG request inventory
+                refs = getRefs()
+                inventoryRefs = getRefs()
+            }
+
+            search.value && searchRefs(search.value)
         }
 
-        search.dataset.active === '1' && search.value && searchRefs(search.value)
     })
 
     search.addEventListener(onInput, (e) => {
         searchRefs(e.target.value)
-   })
+    })
+
+    sort.addEventListener(onChange, async (e) => {
+
+        sort.disabled = true
+        searchRefs('✖') // dirty af
+        searchRefs('')
+
+        refs = getRefs()
+
+        // REMOVE UNSORTED
+        refs.forEach(ref => ref.remove())
+
+        const sortType = e.target.value
+
+        // RETURN IF DEFAULT SORTED
+        if (sortType === sorts[0]) {
+            inventoryRefs.forEach(ref => inventoryContent.append(ref))
+            search.dataset.active === '1' && search.value && searchRefs(search.value)
+            sort.disabled = false
+            return
+        }
+
+        while (refs.find(ref => ref.innerText.indexOf(t('sortDistanceKey')) === -1)) {
+            await Sleep(200) // let SBG return refs
+        }
+
+        // ADD SORTED
+        let sorted = refs.toSorted((a, b) => ParseMeterDistance(a) - ParseMeterDistance(b))
+        sortType === sorts[2] && sorted.reverse() // REVERSE IF DESC
+        sorted.forEach(ref => {
+            inventoryContent.append(ref)
+
+            // CUI compatibility
+            ref.classList.toggle('loading')
+            ref.classList.toggle('loading')
+        })
+
+        search.dataset.active === '1' && search.value && searchRefs(search.value)
+        sort.disabled = false
+    })
+}
+
+const ParseMeterDistance = (input) => {
+    const match = input.innerText.match(distanceRegex)
+
+    if (!match) {
+        console.log(input.innerText)
+    }
+
+    let dist = ''
+    try {
+        dist = match[0].replace(t('sortDistanceKey'), '').replace(t('meter'),'')
+    }
+    catch (e) {
+        console.log(match)
+        throw(e)
+    }
+
+    if (dist.indexOf(t('kilo')) !== -1) {
+        dist = dist.replace(t('kilo'), '') * 1000
+    }
+
+    return +dist
 }
 
 const animationsString = `
