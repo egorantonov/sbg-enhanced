@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.4.2
+// @version      1.4.3
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -24,7 +24,7 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.9'
-const euiVersion = '1.4.2'
+const euiVersion = '1.4.3'
 const euiLinksOpacity = 'eui-links-opacity'
 const euiHighContrast = 'eui-high-contrast'
 const euiAnimations = 'eui-animations'
@@ -32,13 +32,19 @@ const discoverProgressClassName = 'discover-progress'
 const onClick = 'click'
 const onChange = 'change'
 const onLoad = 'load'
+const onInput = 'input'
 
 const ingressTheme = 'eui-ingress-theme'
 const sbgSettings = 'settings'
 const defaultLang = 'en'
 const auto = 'auto'
 
+const referenceSearch = 'reference-search'
+
 const proposed = '-proposed'
+
+const inventoryViewButton = document.querySelector('#ops')
+const inventoryPopupClose = document.querySelector('.inventory.popup #inventory__close')
 
 const settingSections = Array.from(document.querySelectorAll('.settings-section'))
 const Sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -73,6 +79,10 @@ const translations = {
     animations: {
         en: 'Animations',
         ru: 'Анимации'
+    },
+    searchRefPlaceholder: {
+        en: 'Type to search',
+        ru: 'Введите для поиска'
     }
 }
 
@@ -139,10 +149,7 @@ const BeautifyCloseButtons = async () => {
     }, {once: true} )
 
     /* INVENTORY CLOSE BUTTON IS NOT POPUP-CLOSE */
-    const inventoryViewButton = document.querySelector('#ops')
     inventoryViewButton.addEventListener(onClick, async () => {
-
-        let inventoryPopupClose = document.querySelector('.inventory.popup #inventory__close')
 
         inventoryPopupClose.innerText === 'X' && await Sleep(1000) // wait for SBG CUI modify inventory close button from 'X' to '[x]'
         inventoryPopupClose.innerText.toLowerCase() === defaultCloseButtonText && (inventoryPopupClose.dataset.round = true)
@@ -711,6 +718,24 @@ input#${euiLinksOpacity}::-moz-range-thumb {
     cursor: pointer;
 }
 
+/* INVENTORY */
+
+#inventory-delete-section {
+    margin-right: 0;
+}
+
+input[data-type="${referenceSearch}"] {
+    /*display: block;
+    position: absolute !important;
+    width: calc(100% - 2em);
+    height: 2em;
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 1em;*/
+    width: 100%;
+}
+
 /* SBG CUI Enhancements and support */
 
 .sbgcui_xpProgressBar {
@@ -735,6 +760,60 @@ const AddStyles = () => {
     style.dataset.id = 'eui-common-styles'
     document.head.appendChild(style)
     style.innerHTML = styleString
+}
+
+const AddReferenceSearch = () => {
+
+    const tabs = Array.from(document.querySelectorAll('.inventory__tab'))
+    const inventoryContent = document.querySelector('div.inventory__content')
+    let refs = [] /* REFS CONTAINER */
+
+    const getRefs = () => Array.from(document.querySelectorAll('div.inventory__item'))
+    const searchRefs = (input) => {
+        refs.forEach(ref => ref.classList.remove('hidden'))
+        refs.filter(ref => !ref.innerText
+         .slice(ref.innerText.indexOf(')')+1, ref.innerText.indexOf('\n'))
+         .trim()
+         .toLowerCase()
+         .includes(input.toLowerCase()))
+         .forEach(ref => ref.classList.add('hidden'))
+
+        inventoryContent.dispatchEvent(new Event('scroll'))
+    }
+
+    const search = document.createElement('input')
+    search.type = 'search'
+    search.dataset.type = referenceSearch
+    search.placeholder = t('searchRefPlaceholder')
+    let clearButton = document.querySelector('#inventory-delete-section')
+    tabs.forEach(tab => {
+        tab.addEventListener(onClick, () => {
+            if (['1', '2'].includes(tab.dataset.type)) {
+                search.dataset.active = '0'
+                search.remove()
+            }
+            else {
+                refs = getRefs()
+                clearButton.before(search)
+                search.dataset.active = '1'
+                search.value && searchRefs(search.value)
+            }
+        })
+    })
+
+    inventoryPopupClose.addEventListener(onClick, () => refs = [])
+    inventoryViewButton.addEventListener(onClick, async () => {
+        while (refs.length === 0) {
+            await Sleep(200) // let SBG request inventory
+            refs = getRefs()
+        }
+
+        search.dataset.active === '1' && search.value && searchRefs(search.value)
+    })
+
+    search.addEventListener(onInput, (e) => {
+        searchRefs(e.target.value)
+   })
 }
 
 const animationsString = `
@@ -1149,6 +1228,7 @@ window.addEventListener(onLoad, function () {
         RemoveBadges()
         AddDiscoverProgress()
         RenderBadges()
+        AddReferenceSearch()
     })
 }, false)
 
