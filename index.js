@@ -835,6 +835,7 @@ const AddReferenceSearch = () => {
     inventoryPopupClose.addEventListener(onClick, () => {
         refs = []
         sort.selectedIndex = 0
+        sort.disabled = false
     })
     inventoryViewButton.addEventListener(onClick, async () => {
 
@@ -877,7 +878,7 @@ const AddReferenceSearch = () => {
         }
 
         while (refs.find(ref => ref.innerText.indexOf(t('sortDistanceKey')) === -1)) {
-            await Sleep(200) // let SBG return refs
+            await Sleep(1000) // let SBG return refs
         }
 
         // ADD SORTED
