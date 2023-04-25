@@ -105,7 +105,7 @@ const translations = {
 
 const t = (key) => translations[key][locale] ?? translations[key][defaultLang]
 
-const distanceRegex = new RegExp(String.raw`${t('sortDistanceKey')}\d*\,?\d*\.?\d*`, 'gm')
+const distanceRegex = new RegExp(String.raw`${t('sortDistanceKey')}\d*\,?\d*\.?\d* k?m`, 'gm')
 
 // informer
 const Informer = async () => {
