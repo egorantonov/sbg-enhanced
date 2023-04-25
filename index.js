@@ -215,10 +215,10 @@ img.ingress-theme {
     font-family: 'Coda', 'Manrope', sans-serif;
 }
 
-.i-buttons>button, 
+.i-buttons>button,
 .settings.popup button:not(.popup-close),
-.attack-slider-buttons>button, 
-.draw-slider-buttons>button, 
+.attack-slider-buttons>button,
+.draw-slider-buttons>button,
 .inventory.popup button,
 .layers-config__buttons>button,
 .pr-buttons>button,
@@ -234,8 +234,8 @@ input:not(.sbgcui_settings-amount_input), select {
     opacity: 0.7;
 }
 
-.i-buttons>button::before, 
-.attack-slider-buttons>button::before, 
+.i-buttons>button::before,
+.attack-slider-buttons>button::before,
 .draw-slider-buttons>button::before {
     content: '';
     position: absolute;
@@ -249,7 +249,7 @@ input:not(.sbgcui_settings-amount_input), select {
     border-top: 2px solid;
 }
 
-.i-buttons>button, 
+.i-buttons>button,
 .settings.popup button:not(.popup-close),
 #draw-slider-close,
 #attack-slider-close,
@@ -272,7 +272,7 @@ option:checked { /* WTF? checked is non-documented??? */
     background-color: #${INGRESS.buttonHighlightBackgroundColor};
 }
 
-.i-buttons>button::before, 
+.i-buttons>button::before,
 #draw-slider-close::before,
 #attack-slider-close::before {
     background-color: #${INGRESS.buttonBorderColor};
@@ -280,8 +280,8 @@ option:checked { /* WTF? checked is non-documented??? */
     box-shadow: inset 2px 2px 0 0px #${INGRESS.buttonGlowColor};
 }
 
-#attack-slider-fire, 
-#draw-slider-confirm, 
+#attack-slider-fire,
+#draw-slider-confirm,
 #inventory__ma-delete,
 #layers-config__save {
     color: #${INGRESS.buttonHighlightColor};
@@ -303,7 +303,7 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 #attack-slider-fire[disabled], #draw-slider-confirm[disabled] {
-    filter: opacity(0.75);    
+    filter: opacity(0.75);
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
 }
@@ -316,7 +316,7 @@ option:checked { /* WTF? checked is non-documented??? */
 
 .i-buttons>button[disabled]::before, .draw-slider-buttons>button[disabled]::before {
     background-color: #${INGRESS.buttonDisabledAccentColor};
-    border-color: #${INGRESS.buttonDisabledAccentColor};    
+    border-color: #${INGRESS.buttonDisabledAccentColor};
     box-shadow: inset 2px 2px 0 0px #${INGRESS.buttonDisabledBackgroundColor};
 }
 
@@ -324,7 +324,7 @@ option:checked { /* WTF? checked is non-documented??? */
     color: #${INGRESS.buttonHighlightColor};
     background: #${INGRESS.buttonHighlightBackgroundColor};
     box-shadow: inset 0px 0px 6px 3px #${INGRESS.buttonHighlightGlowColor};
-    border-color: #${INGRESS.buttonHighlightBorderColor} !important; 
+    border-color: #${INGRESS.buttonHighlightBorderColor} !important;
 }
 
 .splide__arrow svg {
@@ -419,7 +419,7 @@ input#${euiLinksOpacity}::-webkit-slider-thumb {
     box-shadow: -250px 0 0 250px #${INGRESS.buttonBorderColor};
 }
 
-input#${euiLinksOpacity}::-moz-range-thumb {   
+input#${euiLinksOpacity}::-moz-range-thumb {
     border-radius: 0px;
     background: #${INGRESS.buttonBorderColor};
     box-shadow: -250px 0 0 250px #${INGRESS.buttonBorderColor};
@@ -433,7 +433,7 @@ const AddIngressVibes = () => {
     if (!!settings) {
         const title = document.createElement('span')
         title.innerText = t('ingressStyle')
-        
+
         input.type = 'checkbox'
         input.dataset.setting = ingressTheme
         const label = document.createElement('label')
@@ -443,7 +443,7 @@ const AddIngressVibes = () => {
         settings.appendChild(label)
 
         // PROPOSAL
-        const themeProposed = localStorage.getItem(`${ingressTheme}${proposed}`) 
+        const themeProposed = localStorage.getItem(`${ingressTheme}${proposed}`)
         if (themeProposed != 1) {
             localStorage.setItem(`${ingressTheme}${proposed}`, 1)
             localStorage.setItem(ingressTheme, 1)
@@ -465,8 +465,8 @@ const AddIngressVibes = () => {
         document.head.appendChild(style)
         input.checked = true
     }
-    
-    input.addEventListener(onChange, (event) => {        
+
+    input.addEventListener(onChange, (event) => {
         if (event.target.checked) {
             document.head.appendChild(style)
             localStorage.setItem(ingressTheme, 1)
@@ -526,7 +526,7 @@ const AddHighContrast = () => {
     if (!!uiSettings) {
         const title = document.createElement('span')
         title.innerText = t('highContrast')
-        
+
         input.type = 'checkbox'
         input.dataset.setting = euiHighContrast
         const label = document.createElement('label')
@@ -545,8 +545,8 @@ const AddHighContrast = () => {
         document.head.appendChild(style)
         input.checked = true
     }
-    
-    input.addEventListener(onChange, (event) => {        
+
+    input.addEventListener(onChange, (event) => {
         if (event.target.checked) {
             document.head.appendChild(style)
             localStorage.setItem(euiHighContrast, 1)
@@ -731,7 +731,7 @@ input#${euiLinksOpacity}::-webkit-slider-thumb {
 }
 
 input#${euiLinksOpacity}::-moz-range-thumb {
-    
+
     border: 0px solid transparent;
     height: 16px;
     width: 16px;
@@ -873,9 +873,6 @@ const AddReferenceSearch = () => {
             refs.forEach(ref => ref.remove())
             refs = []
             inventoryRefs.forEach(ref => inventoryContent.appendChild(ref))
-
-            // console.log(inventoryRefs.map(r => r?.childNodes[0]?.childNodes[1].childNodes[8]?.data ?? r?.childNodes[0]?.childNodes[1].childNodes[6]?.data))
-
             search.dataset.active === '1' && search.value && searchRefs(search.value)
             sort.disabled = false
             return
@@ -884,20 +881,10 @@ const AddReferenceSearch = () => {
         refs = getRefs()
 
         if (refs.filter(ref => !ref.classList.contains('loaded')).length !== 0) {
-            // const shift = 50
+
             let hiddenSet = false
 
             while (refs.find(ref => !ref.classList.contains('loaded'))) {
-
-                // for (let i = 0; i < refs.length; i += shift) {
-                //     let to = i + shift >= refs.length 
-                //         ? refs.length 
-                //         : i + shift
-
-                //     refs.slice(i, to).forEach(ref => {
-                //         !ref.classList.contains('hidden') && ref.classList.add('hidden')
-                //     })
-                // }
 
                 if (!hiddenSet) {
                     refs.forEach(ref => {
@@ -912,7 +899,7 @@ const AddReferenceSearch = () => {
                 console.log("Yet to load: " + refs.filter(ref => !ref.classList.contains('loaded')).length)
                 await Sleep(250)
             }
-    
+
             refs.forEach(ref => {
                 ref.classList.contains('hidden') && ref.classList.remove('hidden')
             })
@@ -990,7 +977,7 @@ html, body {
     transform: translate(calc(-150% - 10px), -50%);
 }
 
-.leaderboard.popup, .settings.popup {    
+.leaderboard.popup, .settings.popup {
     transition: all ease-in-out 0.25s;
 }
 
@@ -1028,7 +1015,7 @@ const AddAnimations = () => {
     if (!!uiSettings) {
         const title = document.createElement('span')
         title.innerText = t('animations')
-        
+
         input.type = 'checkbox'
         input.dataset.setting = euiAnimations
         const label = document.createElement('label')
@@ -1038,7 +1025,7 @@ const AddAnimations = () => {
         uiSettings.appendChild(label)
 
         // PROPOSAL
-        const animationsProposed = localStorage.getItem(`${euiAnimations}${proposed}`) 
+        const animationsProposed = localStorage.getItem(`${euiAnimations}${proposed}`)
         if (animationsProposed != 1) {
             localStorage.setItem(`${euiAnimations}${proposed}`, 1)
             localStorage.setItem(euiAnimations, 1)
@@ -1055,8 +1042,8 @@ const AddAnimations = () => {
         document.head.appendChild(style)
         input.checked = true
     }
-    
-    input.addEventListener(onChange, (event) => {        
+
+    input.addEventListener(onChange, (event) => {
         if (event.target.checked) {
             document.head.appendChild(style)
             localStorage.setItem(euiAnimations, 1)
@@ -1095,7 +1082,7 @@ const AddCanvasStyles = async () => {
     let lines = document.querySelector('.ol-layer__lines')
 
     if (!lines) { // make sure lines layer exist (or loaded if connection is throttling)
-        await Sleep(2000) 
+        await Sleep(2000)
         lines = document.querySelector('.ol-layer__lines')
     }
 
@@ -1207,15 +1194,15 @@ const AddBadges = () => {
         const title = stat.firstChild.innerText
 
         if (badgeMap.has(title)) {
-            const tier = +stat.lastChild.innerText.replace(/,| days| km|/g, '')    
-                
+            const tier = +stat.lastChild.innerText.replace(/,| days| km|/g, '')
+
             const currentTier = badgeMap.get(title).images.find(x => x.tier <= tier)
-            
+
             if (!currentTier) {
                 continue
             }
 
-            const badgeImage = document.createElement('img')    
+            const badgeImage = document.createElement('img')
             badgeImage.className = badgeImageClass
             badgeImage.src = currentTier.value
             badgeImage.title = tier
@@ -1269,7 +1256,6 @@ const DisableDrawButton = () => {
                 draw.classList.add('loading')
             }
             else {
-                
                 if (draw.classList.contains('loading')) {
                      draw.classList.remove('loading')
                      draw.removeAttribute('disabled')
@@ -1304,7 +1290,7 @@ const AddDiscoverProgress = () => {
     const infoPopup = document.querySelector('.info.popup')
     const discover = document.querySelector('#discover')
     if (!!infoPopup && !!discover) {
-        const discoverProgress = document.createElement('div')    
+        const discoverProgress = document.createElement('div')
         discoverProgress.className = discoverProgressClassName
         discover.appendChild(discoverProgress)
 
@@ -1323,8 +1309,6 @@ const AddDiscoverProgress = () => {
             else {
                 discoverProgress.style.width = 0
             }
-
-            
         })
     }
 }
@@ -1358,7 +1342,7 @@ const InitObservers = () => {
 }
 
 window.addEventListener(onLoad, function () {
-    Sleep(1500)
+    Sleep(1900)
     .then(() => {
         AddStyles()
         AddHighContrast()
