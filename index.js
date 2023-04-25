@@ -779,28 +779,26 @@ const AddReferenceSearch = () => {
     const tabs = Array.from(document.querySelectorAll('.inventory__tab'))
     let inventoryRefs = []
     let refs = [] /* REFS CONTAINER */
+    const scroll = () => inventoryContent.dispatchEvent(new Event('scroll'))
 
     const getRefs = () => Array.from(inventoryContent.querySelectorAll('div.inventory__item'))
     const searchRefs = (input) => {
-        refs.forEach(ref => ref.classList.remove('hidden'))
-        refs.filter(ref => !ref.innerText
+        let searchRefs = getRefs()
+        searchRefs.forEach(ref => ref.classList.remove('hidden'))
+        searchRefs.filter(ref => !ref.innerText
          .slice(ref.innerText.indexOf(')')+1, ref.innerText.indexOf('\n'))
          .trim()
          .toLowerCase()
          .includes(input.toLowerCase()))
          .forEach(ref => ref.classList.add('hidden'))
 
-        inventoryContent.dispatchEvent(new Event('scroll'))
+        scroll()
     }
 
     const search = document.createElement('input')
     search.type = 'search'
     search.dataset.type = referenceSearch
     search.placeholder = t('searchRefPlaceholder')
-
-    // const sort = document.createElement('button')
-    // sort.id = 'sort'
-    // sort.textContent = t('sortButtonText')
 
     const sort = document.createElement('select')
     const sorts = ['Name', 'Dist+', 'Dist-']
@@ -816,9 +814,11 @@ const AddReferenceSearch = () => {
     tabs.forEach(tab => {
         tab.addEventListener(onClick, () => {
             if (['1', '2'].includes(tab.dataset.type)) {
+                refs = []
                 search.dataset.active = '0'
                 search.remove()
                 sort.selectedIndex = 0
+                sort.disabled = false
                 sort.remove()
             }
             else {
@@ -834,6 +834,7 @@ const AddReferenceSearch = () => {
 
     inventoryPopupClose.addEventListener(onClick, () => {
         refs = []
+        inventoryRefs = []
         sort.selectedIndex = 0
         sort.disabled = false
     })
@@ -841,6 +842,7 @@ const AddReferenceSearch = () => {
 
         if (search.dataset.active === '1') {
 
+            refs = []
             while (refs.length === 0) {
                 await Sleep(200) // let SBG request inventory
                 refs = getRefs()
@@ -859,33 +861,64 @@ const AddReferenceSearch = () => {
     sort.addEventListener(onChange, async (e) => {
 
         sort.disabled = true
-        searchRefs('✖') // dirty af
-        searchRefs('')
-
-        refs = getRefs()
-
-        // REMOVE UNSORTED
-        refs.forEach(ref => ref.remove())
 
         const sortType = e.target.value
 
         // RETURN IF DEFAULT SORTED
         if (sortType === sorts[0]) {
-            inventoryRefs.forEach(ref => inventoryContent.append(ref))
+            refs.forEach(ref => ref.remove())
+            refs = []
+            inventoryRefs.forEach(ref => inventoryContent.appendChild(ref))
+
+            // console.log(inventoryRefs.map(r => r?.childNodes[0]?.childNodes[1].childNodes[8]?.data ?? r?.childNodes[0]?.childNodes[1].childNodes[6]?.data))
+
             search.dataset.active === '1' && search.value && searchRefs(search.value)
             sort.disabled = false
             return
         }
 
-        while (refs.find(ref => ref.innerText.indexOf(t('sortDistanceKey')) === -1)) {
-            await Sleep(1000) // let SBG return refs
+        refs = getRefs()
+
+        if (refs.filter(ref => !ref.classList.contains('loaded')).length !== 0) {
+            // const shift = 50
+            let hiddenSet = false
+
+            while (refs.find(ref => !ref.classList.contains('loaded'))) {
+
+                // for (let i = 0; i < refs.length; i += shift) {
+                //     let to = i + shift >= refs.length 
+                //         ? refs.length 
+                //         : i + shift
+
+                //     refs.slice(i, to).forEach(ref => {
+                //         !ref.classList.contains('hidden') && ref.classList.add('hidden')
+                //     })
+                // }
+
+                if (!hiddenSet) {
+                    refs.forEach(ref => {
+                        !ref.classList.contains('hidden') && ref.classList.add('hidden')
+                    })
+
+                    hiddenSet = true
+                }
+
+                scroll()
+
+                console.log("Yet to load: " + refs.filter(ref => !ref.classList.contains('loaded')).length)
+                await Sleep(250)
+            }
+    
+            refs.forEach(ref => {
+                ref.classList.contains('hidden') && ref.classList.remove('hidden')
+            })
         }
 
         // ADD SORTED
         let sorted = refs.toSorted((a, b) => ParseMeterDistance(a) - ParseMeterDistance(b))
         sortType === sorts[2] && sorted.reverse() // REVERSE IF DESC
         sorted.forEach(ref => {
-            inventoryContent.append(ref)
+            inventoryContent.appendChild(ref)
 
             // CUI compatibility
             ref.classList.toggle('loading')
@@ -1321,7 +1354,7 @@ const InitObservers = () => {
 }
 
 window.addEventListener(onLoad, function () {
-    Sleep(2000)
+    Sleep(1500)
     .then(() => {
         AddStyles()
         AddHighContrast()
