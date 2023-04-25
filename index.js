@@ -230,6 +230,10 @@ input:not(.sbgcui_settings-amount_input), select {
     font-family: 'Coda', 'Manrope', sans-serif;
 }
 
+#sort:disabled {
+    opacity: 0.7;
+}
+
 .i-buttons>button::before, 
 .attack-slider-buttons>button::before, 
 .draw-slider-buttons>button::before {
@@ -915,7 +919,7 @@ const AddReferenceSearch = () => {
         }
 
         // ADD SORTED
-        let sorted = refs.toSorted((a, b) => ParseMeterDistance(a) - ParseMeterDistance(b))
+        let sorted = refs.sort((a, b) => ParseMeterDistance(a) - ParseMeterDistance(b))
         sortType === sorts[2] && sorted.reverse() // REVERSE IF DESC
         sorted.forEach(ref => {
             inventoryContent.appendChild(ref)
