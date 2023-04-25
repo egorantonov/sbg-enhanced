@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.5.0
+// @version      1.5.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -24,7 +24,7 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.9'
-const euiVersion = '1.5.0'
+const euiVersion = '1.5.1'
 const euiLinksOpacity = 'eui-links-opacity'
 const euiHighContrast = 'eui-high-contrast'
 const euiAnimations = 'eui-animations'
@@ -105,7 +105,7 @@ const translations = {
 
 const t = (key) => translations[key][locale] ?? translations[key][defaultLang]
 
-const distanceRegex = new RegExp(String.raw`${t('sortDistanceKey')}\d*\.?\d* k?m`, 'gm')
+const distanceRegex = new RegExp(String.raw`${t('sortDistanceKey')}\d*\,?\d*\.?\d*`, 'gm')
 
 // informer
 const Informer = async () => {
@@ -930,7 +930,7 @@ const ParseMeterDistance = (input) => {
 
     let dist = ''
     try {
-        dist = match[0].replace(t('sortDistanceKey'), '').replace(t('meter'),'')
+        dist = match[0].replace(t('sortDistanceKey'), '').replace(t('meter'),'').replace(',','')
     }
     catch (e) {
         console.log(match)
