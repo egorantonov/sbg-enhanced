@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.5.1
+// @version      1.5.2
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -24,10 +24,12 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.9'
-const euiVersion = '1.5.1'
+const euiVersion = '1.5.2'
 const euiLinksOpacity = 'eui-links-opacity'
 const euiHighContrast = 'eui-high-contrast'
 const euiAnimations = 'eui-animations'
+const euiSort = 'eui-sort'
+const euiSearch = 'eui-search'
 const discoverProgressClassName = 'discover-progress'
 const onClick = 'click'
 const onChange = 'change'
@@ -38,6 +40,7 @@ const ingressTheme = 'eui-ingress-theme'
 const sbgSettings = 'settings'
 const defaultLang = 'en'
 const auto = 'auto'
+const hidden = 'hidden'
 
 const referenceSearch = 'reference-search'
 
@@ -82,20 +85,8 @@ const translations = {
         ru: 'Анимации'
     },
     searchRefPlaceholder: {
-        en: 'Type to search',
-        ru: 'Введите для поиска'
-    },
-    sortButtonText: {
-        en: 'Sort',
-        ru: 'Сорт.'
-    },
-    sortDistanceKey: {
-        en: 'Distance: ',
-        ru: 'Расстояние: ' // TODO: update after localization released
-    },
-    meter: {
-        en: 'm',
-        ru: 'м' // TODO: update after localization released
+        en: 'Search refs',
+        ru: 'Поиск рефов'
     },
     kilo: {
         en: 'k',
@@ -105,7 +96,7 @@ const translations = {
 
 const t = (key) => translations[key][locale] ?? translations[key][defaultLang]
 
-const distanceRegex = new RegExp(String.raw`${t('sortDistanceKey')}\d*\,?\d*\.?\d* k?m`, 'gm')
+const distanceRegex = new RegExp(String.raw`(\d*\.?\d+?)\s(${t('kilo')}?)`, 'i')
 
 // informer
 const Informer = async () => {
@@ -224,13 +215,16 @@ img.ingress-theme {
 .pr-buttons>button,
 .sbgcui_compare_stats>button,
 input:not(.sbgcui_settings-amount_input), select {
-    position: relative;
     border-style: solid;
     text-transform: uppercase;
     font-family: 'Coda', 'Manrope', sans-serif;
 }
 
-#sort:disabled {
+#discover, #deploy, #repair, #draw {
+    position: relative;
+}
+
+#${euiSort}:disabled {
     opacity: 0.7;
 }
 
@@ -747,9 +741,14 @@ input#${euiLinksOpacity}::-moz-range-thumb {
     margin-right: 0;
 }
 
+.inventory__controls select,
+.inventory__controls input {
+    min-width: 50px;
+    width: 100%;
+}
+
 input[data-type="${referenceSearch}"] {
     padding: 0 6px;
-    width: 100%;
 }
 
 /* SBG CUI Enhancements and support */
@@ -766,6 +765,15 @@ input[data-type="${referenceSearch}"] {
 
 .sbgcui_no_loot, .sbgcui_no_refs {
     display: none !important;
+}
+
+.fa-classic, .fa-regular, .fa-solid, .far, .fas {
+    font-family: "Font Awesome 6 Free" !important;
+}
+
+.sbgcui_refs-sort-button {
+    right: 25%;
+    transform: translateX(50%);
 }
 
 `
@@ -788,25 +796,30 @@ const AddReferenceSearch = () => {
     const getRefs = () => Array.from(inventoryContent.querySelectorAll('div.inventory__item'))
     const searchRefs = (input) => {
         let searchRefs = getRefs()
-        searchRefs.forEach(ref => ref.classList.remove('hidden'))
+        searchRefs.forEach(ref => ref.classList.remove(hidden))
         searchRefs.filter(ref => !ref.innerText
          .slice(ref.innerText.indexOf(')')+1, ref.innerText.indexOf('\n'))
          .trim()
          .toLowerCase()
          .includes(input.toLowerCase()))
-         .forEach(ref => ref.classList.add('hidden'))
+         .forEach(ref => ref.classList.add(hidden))
 
         scroll()
     }
 
     const search = document.createElement('input')
     search.type = 'search'
+    search.id = euiSearch
     search.dataset.type = referenceSearch
     search.placeholder = t('searchRefPlaceholder')
 
     const sort = document.createElement('select')
+    sort.id = euiSort
+
+    // CUI compatibility
+    document.querySelector(`.inventory__controls select:not([id="${euiSort}"])`) && (sort.style.display = 'none')
     const sorts = ['Name', 'Dist+', 'Dist-']
-    sort.id = 'sort'
+
     sorts.forEach(s => {
         let opt = document.createElement('option')
         opt.value = s
@@ -828,8 +841,8 @@ const AddReferenceSearch = () => {
             else {
                 refs = getRefs()
                 inventoryRefs.length === 0 && (inventoryRefs = getRefs())
-                clearButton.before(search)
-                search.before(sort)
+                clearButton.after(search)
+                search.after(sort)
                 search.dataset.active = '1'
                 search.value && searchRefs(search.value)
             }
@@ -888,7 +901,7 @@ const AddReferenceSearch = () => {
 
                 if (!hiddenSet) {
                     refs.forEach(ref => {
-                        !ref.classList.contains('hidden') && ref.classList.add('hidden')
+                        !ref.classList.contains(hidden) && ref.classList.add(hidden)
                     })
 
                     hiddenSet = true
@@ -901,7 +914,7 @@ const AddReferenceSearch = () => {
             }
 
             refs.forEach(ref => {
-                ref.classList.contains('hidden') && ref.classList.remove('hidden')
+                ref.classList.contains(hidden) && ref.classList.remove(hidden)
             })
         }
 
@@ -921,27 +934,13 @@ const AddReferenceSearch = () => {
     })
 }
 
-const ParseMeterDistance = (input) => {
-    const match = input.innerText.match(distanceRegex)
+const ParseMeterDistance = (ref) => {
+    const [_, dist, kilo] = ref.querySelector('.inventory__item-descr')
+        .lastChild.textContent
+        .replace(',','')
+        .match(distanceRegex)
 
-    if (!match) {
-        console.log(input.innerText)
-    }
-
-    let dist = ''
-    try {
-        dist = match[0].replace(t('sortDistanceKey'), '').replace(t('meter'),'').replace(',','')
-    }
-    catch (e) {
-        console.log(match)
-        throw(e)
-    }
-
-    if (dist.indexOf(t('kilo')) !== -1) {
-        dist = dist.replace(t('kilo'), '') * 1000
-    }
-
-    return +dist
+    return kilo === t('kilo') ? dist * 1000 : +dist
 }
 
 const animationsString = `
@@ -955,14 +954,14 @@ html, body {
     transition: all ease-in-out 0.25s;
 }
 
-.info.popup.hidden, .profile.popup.hidden {
+.info.popup.${hidden}, .profile.popup.${hidden} {
     display: flex !important;
     filter: opacity(0);
     transform: translateX(calc(100% + 10px));
 }
 
 @media (max-width: 425px) {
-    .info.popup.hidden, .profile.popup.hidden {
+    .info.popup.${hidden}, .profile.popup.${hidden} {
         transform: translate(calc(100% + 10px), -50%);
     }
 }
@@ -971,7 +970,7 @@ html, body {
     transition: all ease-in-out 0.25s;
 }
 
-.inventory.popup.hidden {
+.inventory.popup.${hidden} {
     display: flex !important;
     filter: opacity(0);
     transform: translate(calc(-150% - 10px), -50%);
@@ -981,7 +980,7 @@ html, body {
     transition: all ease-in-out 0.25s;
 }
 
-.leaderboard.popup.hidden, .settings.popup.hidden {
+.leaderboard.popup.${hidden}, .settings.popup.${hidden} {
     display: flex !important;
     filter: opacity(0);
     transform: translate(-50%, calc(-50vh - 100%));
@@ -991,7 +990,7 @@ html, body {
     transition: all ease-in-out 0.25s;
 }
 
-.attack-slider-wrp.hidden {
+.attack-slider-wrp.${hidden} {
     display: flex !important;
     filter: opacity(0);
     transform: translateY(calc(25vh + 100%));
@@ -1002,7 +1001,7 @@ html, body {
     transition: visibility 0s, filter ease-in-out 0.25s;
 }
 
-.layers-config.popup.hidden, .score.popup.hidden {
+.layers-config.popup.${hidden}, .score.popup.${hidden} {
     display: block !important;
     filter: opacity(0);
     visibility: hidden;
