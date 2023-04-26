@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.5.2
+// @version      1.5.3
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -24,7 +24,7 @@ const enhancedCloseButtonText = ' ✕ '
 const euiIncompatibility = 'eui-incompatibility'
 const sbgVersionHeader = 'sbg-version'
 const sbgCompatibleVersion = '0.2.9'
-const euiVersion = '1.5.2'
+const euiVersion = '1.5.3'
 const euiLinksOpacity = 'eui-links-opacity'
 const euiHighContrast = 'eui-high-contrast'
 const euiAnimations = 'eui-animations'
@@ -253,6 +253,7 @@ input:not(.sbgcui_settings-amount_input), select {
 .sbgcui_compare_stats>button,
 input:not(.sbgcui_settings-amount_input), select {
     color: #${INGRESS.buttonColor};
+    background: #${INGRESS.buttonBackgroundColor};
     background: linear-gradient(to top, #${INGRESS.buttonGlowColor} 0%, #${INGRESS.buttonBackgroundColor} 30%, #${INGRESS.buttonBackgroundColor} 70%, #${INGRESS.buttonGlowColor} 100%);
     border-color: #${INGRESS.buttonBorderColor};
 }
@@ -317,7 +318,7 @@ option:checked { /* WTF? checked is non-documented??? */
 .popup-close[data-round=true], #inventory__close, .splide__arrow {
     color: #${INGRESS.buttonHighlightColor};
     background: #${INGRESS.buttonHighlightBackgroundColor};
-    box-shadow: inset 0px 0px 6px 3px #${INGRESS.buttonHighlightGlowColor};
+    box-shadow: inset 0px 0px 6px 3px #${INGRESS.buttonHighlightGlowColor} !important;
     border-color: #${INGRESS.buttonHighlightBorderColor} !important;
 }
 
@@ -340,6 +341,11 @@ option:checked { /* WTF? checked is non-documented??? */
 
 .inventory__content, .inventory__tab.active {
     border-color: var(--selection);
+}
+
+.inventory__controls select,
+.inventory__controls input {
+    border-width: 1.6px;
 }
 
 
@@ -417,6 +423,12 @@ input#${euiLinksOpacity}::-moz-range-thumb {
     border-radius: 0px;
     background: #${INGRESS.buttonBorderColor};
     box-shadow: -250px 0 0 250px #${INGRESS.buttonBorderColor};
+}
+
+/* CUI */
+.sbgcui_refs-sort-button {
+    border-width: revert;
+    border-radius: 0;
 }
 
 `
@@ -575,6 +587,7 @@ img.ingress-theme {
 }
 
 .popup-close[data-round=true], #inventory__close[data-round=true] {
+    box-shadow: 0 0 5px var(--shadow);
     font-weight: 600;
     border: 2px solid #777;
     border-radius: 100px;
@@ -772,8 +785,16 @@ input[data-type="${referenceSearch}"] {
 }
 
 .sbgcui_refs-sort-button {
-    right: 25%;
-    transform: translateX(50%);
+    position: static;
+    height: revert;
+    width: revert;
+    color: revert;
+    background-color: revert;
+    border: 1px solid #777;
+    border-radius: 2px;
+    box-shadow: revert;
+    min-width: 30px;
+    font-size: 1em;
 }
 
 `
@@ -817,7 +838,9 @@ const AddReferenceSearch = () => {
     sort.id = euiSort
 
     // CUI compatibility
-    document.querySelector(`.inventory__controls select:not([id="${euiSort}"])`) && (sort.style.display = 'none')
+    const cuiSort = document.querySelector('.sbgcui_refs-sort-button')
+    cuiSort && (sort.style.display = 'none')
+
     const sorts = ['Name', 'Dist+', 'Dist-']
 
     sorts.forEach(s => {
@@ -843,11 +866,14 @@ const AddReferenceSearch = () => {
                 inventoryRefs.length === 0 && (inventoryRefs = getRefs())
                 clearButton.after(search)
                 search.after(sort)
+                cuiSort && search.after(cuiSort) // CUI compatibility
                 search.dataset.active = '1'
                 search.value && searchRefs(search.value)
             }
         })
     })
+
+
 
     inventoryPopupClose.addEventListener(onClick, () => {
         refs = []
@@ -1341,7 +1367,7 @@ const InitObservers = () => {
 }
 
 window.addEventListener(onLoad, function () {
-    Sleep(1900)
+    Sleep(1500)
     .then(() => {
         AddStyles()
         AddHighContrast()
@@ -1357,7 +1383,7 @@ window.addEventListener(onLoad, function () {
 }, false)
 
 window.addEventListener(onLoad, async function () {
-    await Sleep(2000) // sleep for for a while to make sure SBG is loaded
+    await Sleep(1600) // sleep for for a while to make sure SBG is loaded
     await Promise.all([Informer(), AddCanvasStyles(), BeautifyCloseButtons()])
 }, false)
 
