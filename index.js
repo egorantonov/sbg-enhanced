@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG Enhanced UI
 // @namespace    https://3d.sytes.net/
-// @version      1.5.3
+// @version      1.5.4
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js
 // @description  Enhanced UI for SBG
@@ -18,44 +18,68 @@
 
 'use strict'
 
-const outboundLinksLimit = 20
-const defaultCloseButtonText = '[x]'
-const enhancedCloseButtonText = ' ✕ '
-const euiIncompatibility = 'eui-incompatibility'
-const sbgVersionHeader = 'sbg-version'
-const sbgCompatibleVersion = '0.2.9'
-const euiVersion = '1.5.3'
-const euiLinksOpacity = 'eui-links-opacity'
-const euiHighContrast = 'eui-high-contrast'
-const euiAnimations = 'eui-animations'
-const euiSort = 'eui-sort'
-const euiSearch = 'eui-search'
-const discoverProgressClassName = 'discover-progress'
+// SBG Constants
+const OutboundLinksLimit = 20
+const DefaultCloseButtonText = '[x]'
+const SbgVersionHeader = 'sbg-version'
+const SbgCompatibleVersion = '0.2.9'
+const SbgSettings = 'settings'
+const DefaultLang = 'en'
+
+// EUI Constants
+const EuiCloseButtonText = ' ✕ '
+const EuiIncompatibility = 'eui-incompatibility'
+const EuiVersion = '1.5.4'
+const EuiLinksOpacity = 'eui-links-opacity'
+const EuiHighContrast = 'eui-high-contrast'
+const EuiAnimations = 'eui-animations'
+const EuiSort = 'eui-sort'
+const EuiSearch = 'eui-search'
+const EuiIngressTheme = 'eui-ingress-theme'
+
+// Events
 const onClick = 'click'
 const onChange = 'change'
 const onLoad = 'load'
 const onInput = 'input'
 
-const ingressTheme = 'eui-ingress-theme'
-const sbgSettings = 'settings'
-const defaultLang = 'en'
-const auto = 'auto'
-const hidden = 'hidden'
+// Classes and attributes
+const Auto = 'auto'
+const Hidden = 'hidden'
+const Disabled = 'disabled'
+const Loading = 'loading'
+const Loaded = 'loaded'
+const ReferenceSearch = 'reference-search'
+const DiscoverProgressClassName = 'discover-progress'
+const SettingsSectionItemClassName = 'settings-section__item'
 
-const referenceSearch = 'reference-search'
+const Elements = {
+    Input: 'input',
+    Span: 'span',
+    Div: 'div',
+    Label: 'label',
+    Style: 'style',
+    CheckBox: 'checkbox'
+}
 
-const proposed = '-proposed'
+const Proposed = '-proposed'
 
-const inventoryViewButton = document.querySelector('#ops')
-const inventoryPopupClose = document.querySelector('.inventory.popup #inventory__close')
-const inventoryContent = document.querySelector('.inventory__content')
+const InfoPopup = document.querySelector('.info.popup')
+const Discover = document.getElementById('discover')
 
-const settingSections = Array.from(document.querySelectorAll('.settings-section'))
+const ProfilePopup = document.querySelector('.profile.popup')
+const ProfileStats = ProfilePopup?.querySelector('.pr-stats')
+
+const Ops = document.getElementById('ops')
+const InventoryPopupClose = document.getElementById('inventory__close')
+const InventoryContent = document.querySelector('.inventory__content')
+
+const SettingSections = Array.from(document.querySelectorAll('.settings-section'))
 const Sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // localisation
-const locale = JSON.parse(localStorage.getItem(sbgSettings))?.lang ?? defaultLang
-const translations = {
+const Locale = JSON.parse(localStorage.getItem(SbgSettings))?.lang ?? DefaultLang
+const Translations = {
     incompatibility: {
         en: 'Enhanced UI may be incompatible with current version of SBG',
         ru: 'Enhanced UI может быть несовместим с текущей версией игры'
@@ -94,37 +118,34 @@ const translations = {
     }
 }
 
-const t = (key) => translations[key][locale] ?? translations[key][defaultLang]
-
-const distanceRegex = new RegExp(String.raw`(\d*\.?\d+?)\s(${t('kilo')}?)`, 'i')
+const t = (key) => Translations[key][Locale] ?? Translations[key][DefaultLang]
 
 // informer
 const Informer = async () => {
-    console.log(`SBG Enhanced UI, version ${euiVersion}`)
-    const sbgCurrentVersion = await fetch('/api/', {method: 'OPTIONS'}).then(response => {
-        return response.headers.get(sbgVersionHeader)
-    })
+    console.log(`SBG Enhanced UI, version ${EuiVersion}`)
+    const sbgCurrentVersion = await fetch('/api/', {method: 'OPTIONS'})
+        .then(response => response.headers.get(SbgVersionHeader))
 
-    if (sbgCurrentVersion != sbgCompatibleVersion) {
-        const alertShown = localStorage.getItem(euiIncompatibility)
+    if (sbgCurrentVersion != SbgCompatibleVersion) {
+        const alertShown = localStorage.getItem(EuiIncompatibility)
 
         if (alertShown != 'true') {
             alert(`⚠️ ${t('incompatibility')} (${sbgCurrentVersion})`)
-            localStorage.setItem(euiIncompatibility, true)
+            localStorage.setItem(EuiIncompatibility, true)
         }
     }
     else {
-        localStorage.setItem(euiIncompatibility, false)
+        localStorage.setItem(EuiIncompatibility, false)
     }
 
-    const about = settingSections.at(-1)
+    const about = SettingSections.at(-1)
     if (!!about) {
-        const key = document.createElement('span')
+        const key = document.createElement(Elements.Span)
         key.innerText = t('enhancedUIVersion')
-        const value = document.createElement('span')
-        value.innerText = `v${euiVersion}`
-        const item = document.createElement('div')
-        item.classList.add('settings-section__item')
+        const value = document.createElement(Elements.Span)
+        value.innerText = `v${EuiVersion}`
+        const item = document.createElement(Elements.Div)
+        item.classList.add(SettingsSectionItemClassName)
         item.appendChild(key)
         item.appendChild(value)
         about.appendChild(item)
@@ -133,17 +154,18 @@ const Informer = async () => {
 
 // makes close buttons look better
 const BeautifyCloseButtons = async () => {
-    const buttons = Array.from(document.body.querySelectorAll('button.popup-close, button#inventory__close'))
-    for (let i = 0; i < buttons.length; i++) {
-        if (buttons[i].innerText.toLowerCase() === defaultCloseButtonText) {
-            buttons[i].innerText = enhancedCloseButtonText
-            buttons[i].dataset.round = true
-        }
+    const beautifyButton = (button) => {
+        button.innerText = EuiCloseButtonText
+        button.dataset.round = true
     }
 
+    Array.from(document.body.querySelectorAll('button.popup-close, button#inventory__close')).forEach(button => {
+        button.innerText.toLowerCase() === DefaultCloseButtonText && beautifyButton(button)
+    })
+
     /* CREDITS POPUP IS BEING FETCHED AS HTML */
-    const creditsViewButton = document.querySelector('#settings-credits')
-    creditsViewButton.addEventListener(onClick, async () => {
+    const creditsViewButton = document.getElementById('settings-credits')
+    creditsViewButton?.addEventListener(onClick, async () => {
 
         let creditsPopupClose = document.querySelector('.credits.popup .popup-close')
 
@@ -152,18 +174,15 @@ const BeautifyCloseButtons = async () => {
             creditsPopupClose = document.querySelector('.credits.popup .popup-close')
         }
 
-        if (creditsPopupClose?.dataset?.round != true) {
-            creditsPopupClose.innerText = enhancedCloseButtonText
-            creditsPopupClose.dataset.round = true
-        }
+        creditsPopupClose?.dataset?.round != true && beautifyButton(creditsPopupClose)
     }, {once: true} )
 
     /* INVENTORY CLOSE BUTTON IS NOT POPUP-CLOSE */
-    inventoryViewButton.addEventListener(onClick, async () => {
+    Ops?.addEventListener(onClick, async () => {
 
-        inventoryPopupClose.innerText === 'X' && await Sleep(1000) // wait for SBG CUI modify inventory close button from 'X' to '[x]'
-        inventoryPopupClose.innerText.toLowerCase() === defaultCloseButtonText && (inventoryPopupClose.dataset.round = true)
-        inventoryPopupClose.innerText = enhancedCloseButtonText
+        InventoryPopupClose.innerText === 'X' && await Sleep(1000) // wait for SBG CUI modify inventory close button from 'X' to '[x]'
+        InventoryPopupClose.innerText.toLowerCase() === DefaultCloseButtonText && (InventoryPopupClose.dataset.round = true)
+        InventoryPopupClose.innerText = EuiCloseButtonText
 
     }, {once: true} )
 }
@@ -195,7 +214,7 @@ const ingressVibes = `
 
 /* BADGES */
 
-img.ingress-theme {
+img.${EuiIngressTheme} {
     display: inline;
 }
 
@@ -213,8 +232,11 @@ img.ingress-theme {
 .inventory.popup button,
 .layers-config__buttons>button,
 .pr-buttons>button,
+#classic-login,
+#form__buttons-login,
 .sbgcui_compare_stats>button,
-input:not(.sbgcui_settings-amount_input), select {
+input:not(.sbgcui_settings-amount_input), 
+select {
     border-style: solid;
     text-transform: uppercase;
     font-family: 'Coda', 'Manrope', sans-serif;
@@ -224,7 +246,7 @@ input:not(.sbgcui_settings-amount_input), select {
     position: relative;
 }
 
-#${euiSort}:disabled {
+#${EuiSort}:${Disabled} {
     opacity: 0.7;
 }
 
@@ -278,7 +300,9 @@ option:checked { /* WTF? checked is non-documented??? */
 #attack-slider-fire,
 #draw-slider-confirm,
 #inventory__ma-delete,
-#layers-config__save {
+#layers-config__save,
+#classic-login,
+#form__buttons-login {
     color: #${INGRESS.buttonHighlightColor};
     background: linear-gradient(to top, #${INGRESS.buttonHighlightGlowColor} 0%, #${INGRESS.buttonHighlightBackgroundColor} 30%, #${INGRESS.buttonHighlightBackgroundColor} 70%, #${INGRESS.buttonHighlightGlowColor} 100%);
     border-color: #${INGRESS.buttonHighlightBorderColor};
@@ -297,19 +321,19 @@ option:checked { /* WTF? checked is non-documented??? */
     box-shadow: inset 2px 2px 0 0px #${INGRESS.buttonHighlightGlowColor};
 }
 
-#attack-slider-fire[disabled], #draw-slider-confirm[disabled] {
+#attack-slider-fire[${Disabled}], #draw-slider-confirm[${Disabled}] {
     filter: opacity(0.75);
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
 }
 
-.i-buttons>button[disabled], .draw-slider-buttons>button[disabled] {
+.i-buttons>button[${Disabled}], .draw-slider-buttons>button[${Disabled}] {
     color: #${INGRESS.buttonDisabledColor};
     background: #${INGRESS.buttonDisabledBackgroundColor};
     border-color: #${INGRESS.buttonDisabledAccentColor};
 }
 
-.i-buttons>button[disabled]::before, .draw-slider-buttons>button[disabled]::before {
+.i-buttons>button[${Disabled}]::before, .draw-slider-buttons>button[${Disabled}]::before {
     background-color: #${INGRESS.buttonDisabledAccentColor};
     border-color: #${INGRESS.buttonDisabledAccentColor};
     box-shadow: inset 2px 2px 0 0px #${INGRESS.buttonDisabledBackgroundColor};
@@ -395,7 +419,7 @@ option:checked { /* WTF? checked is non-documented??? */
     color: #${INGRESS.color};
 }
 
-.${discoverProgressClassName} {
+.${DiscoverProgressClassName} {
     border-radius: 0px !important;
     background-color: #${INGRESS.buttonDisabledAccentColor};
 }
@@ -407,19 +431,19 @@ option:checked { /* WTF? checked is non-documented??? */
 
 /* SETTINGS */
 
-input#${euiLinksOpacity} {
+input#${EuiLinksOpacity} {
     background: #${INGRESS.buttonBackgroundColor} !important;
     border-radius: 0px !important;
     border: 2px solid #${INGRESS.buttonBorderColor} !important;
 }
 
-input#${euiLinksOpacity}::-webkit-slider-thumb {
+input#${EuiLinksOpacity}::-webkit-slider-thumb {
     border-radius: 0px;
     background: #${INGRESS.buttonBorderColor};
     box-shadow: -250px 0 0 250px #${INGRESS.buttonBorderColor};
 }
 
-input#${euiLinksOpacity}::-moz-range-thumb {
+input#${EuiLinksOpacity}::-moz-range-thumb {
     border-radius: 0px;
     background: #${INGRESS.buttonBorderColor};
     box-shadow: -250px 0 0 250px #${INGRESS.buttonBorderColor};
@@ -434,40 +458,42 @@ input#${euiLinksOpacity}::-moz-range-thumb {
 `
 
 const AddIngressVibes = () => {
-    const input = document.createElement('input')
-    const settings = settingSections.at(0)
+    const input = document.createElement(Elements.Input)
+    const settings = SettingSections.at(0)
     if (!!settings) {
-        const title = document.createElement('span')
+        const title = document.createElement(Elements.Span)
         title.innerText = t('ingressStyle')
 
-        input.type = 'checkbox'
-        input.dataset.setting = ingressTheme
-        const label = document.createElement('label')
-        label.classList.add('settings-section__item')
+        input.type = Elements.CheckBox
+        input.dataset.setting = EuiIngressTheme
+        const label = document.createElement(Elements.Label)
+        label.classList.add(SettingsSectionItemClassName)
         label.appendChild(title)
         label.appendChild(input)
         settings.appendChild(label)
+    }
 
-        // PROPOSAL
-        const themeProposed = localStorage.getItem(`${ingressTheme}${proposed}`)
-        if (themeProposed != 1) {
-            localStorage.setItem(`${ingressTheme}${proposed}`, 1)
-            localStorage.setItem(ingressTheme, 1)
-            input.checked = true
+    // PROPOSAL
+    const themeProposed = localStorage.getItem(`${EuiIngressTheme}${Proposed}`)
+    if (themeProposed != 1) {
+        localStorage.setItem(`${EuiIngressTheme}${Proposed}`, 1)
+        localStorage.setItem(EuiIngressTheme, 1)
+        input.checked = true
+        document.documentElement.dataset.theme = Auto
+        let gameSettings = JSON.parse(localStorage.getItem(SbgSettings))
 
-            document.documentElement.dataset.theme = auto
-            let gameSettings = JSON.parse(localStorage.getItem(sbgSettings))
-            gameSettings.theme = auto
-            localStorage.setItem(sbgSettings, JSON.stringify(gameSettings))
+        if (gameSettings) {
+            gameSettings.theme = Auto
+            localStorage.setItem(SbgSettings, JSON.stringify(gameSettings))
         }
     }
 
     // STYLES
-    const style = document.createElement('style')
-    style.dataset.id = ingressTheme
+    const style = document.createElement(Elements.Style)
+    style.dataset.id = EuiIngressTheme
     style.innerHTML = ingressVibes
 
-    if (localStorage.getItem(ingressTheme) == 1) {
+    if (localStorage.getItem(EuiIngressTheme) == 1) {
         document.head.appendChild(style)
         input.checked = true
     }
@@ -475,11 +501,11 @@ const AddIngressVibes = () => {
     input.addEventListener(onChange, (event) => {
         if (event.target.checked) {
             document.head.appendChild(style)
-            localStorage.setItem(ingressTheme, 1)
+            localStorage.setItem(EuiIngressTheme, 1)
         }
         else {
             style.remove()
-            localStorage.setItem(ingressTheme, 0)
+            localStorage.setItem(EuiIngressTheme, 0)
         }
     })
 }
@@ -527,27 +553,27 @@ const highContrast = `
 `
 
 const AddHighContrast = () => {
-    const input = document.createElement('input')
-    const uiSettings = settingSections.at(1)
+    const input = document.createElement(Elements.Input)
+    const uiSettings = SettingSections.at(1)
     if (!!uiSettings) {
-        const title = document.createElement('span')
+        const title = document.createElement(Elements.Span)
         title.innerText = t('highContrast')
 
-        input.type = 'checkbox'
-        input.dataset.setting = euiHighContrast
-        const label = document.createElement('label')
-        label.classList.add('settings-section__item')
+        input.type = Elements.CheckBox
+        input.dataset.setting = EuiHighContrast
+        const label = document.createElement(Elements.Label)
+        label.classList.add(SettingsSectionItemClassName)
         label.appendChild(title)
         label.appendChild(input)
         uiSettings.appendChild(label)
     }
 
     // STYLES
-    const style = document.createElement('style')
-    style.dataset.id = euiHighContrast
+    const style = document.createElement(Elements.Style)
+    style.dataset.id = EuiHighContrast
     style.innerHTML = highContrast
 
-    if (localStorage.getItem(euiHighContrast) == 1) {
+    if (localStorage.getItem(EuiHighContrast) == 1) {
         document.head.appendChild(style)
         input.checked = true
     }
@@ -555,11 +581,11 @@ const AddHighContrast = () => {
     input.addEventListener(onChange, (event) => {
         if (event.target.checked) {
             document.head.appendChild(style)
-            localStorage.setItem(euiHighContrast, 1)
+            localStorage.setItem(EuiHighContrast, 1)
         }
         else {
             style.remove()
-            localStorage.setItem(euiHighContrast, 0)
+            localStorage.setItem(EuiHighContrast, 0)
         }
     })
 }
@@ -568,7 +594,7 @@ const styleString = `
 
 /* BADGES */
 
-img.ingress-theme {
+img.${EuiIngressTheme} {
     display: none;
 }
 
@@ -607,7 +633,12 @@ img.ingress-theme {
     fill: var(--text);
 }
 
-.${discoverProgressClassName} {
+#discover:not([data-time]) .${DiscoverProgressClassName},
+.info.popup.hidden .${DiscoverProgressClassName} {
+    display: none;
+}
+
+.${DiscoverProgressClassName} {
     position: absolute;
     top: 0;
     left: 0;
@@ -615,6 +646,7 @@ img.ingress-theme {
     border-radius: 2px;
     background-color: #7777;
     filter: opacity(.75);
+    transition: width 1s linear;
 }
 
 
@@ -684,7 +716,7 @@ img.ingress-theme {
     order: unset !important;
 }
 
-.i-buttons>button[disabled] {
+.i-buttons>button[${Disabled}] {
     filter: opacity(.75);
 }
 
@@ -715,7 +747,7 @@ img.ingress-theme {
 
 /* SETTINGS */
 
-input#${euiLinksOpacity} {
+input#${EuiLinksOpacity} {
     -webkit-appearance: none;
     appearance: none;
     overflow: hidden;
@@ -726,7 +758,7 @@ input#${euiLinksOpacity} {
     border: none !important;
 }
 
-input#${euiLinksOpacity}::-webkit-slider-thumb {
+input#${EuiLinksOpacity}::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: 0px solid transparent;
     height: 16px;
@@ -737,7 +769,7 @@ input#${euiLinksOpacity}::-webkit-slider-thumb {
     cursor: pointer;
 }
 
-input#${euiLinksOpacity}::-moz-range-thumb {
+input#${EuiLinksOpacity}::-moz-range-thumb {
 
     border: 0px solid transparent;
     height: 16px;
@@ -760,7 +792,7 @@ input#${euiLinksOpacity}::-moz-range-thumb {
     width: 100%;
 }
 
-input[data-type="${referenceSearch}"] {
+input[data-type="${ReferenceSearch}"] {
     padding: 0 6px;
 }
 
@@ -801,7 +833,7 @@ input[data-type="${referenceSearch}"] {
 
 // adds filter styles to the canvas wrapper layers
 const AddStyles = () => {
-    const style = document.createElement('style')
+    const style = document.createElement(Elements.Style)
     style.dataset.id = 'eui-common-styles'
     document.head.appendChild(style)
     style.innerHTML = styleString
@@ -812,30 +844,30 @@ const AddReferenceSearch = () => {
     const tabs = Array.from(document.querySelectorAll('.inventory__tab'))
     let inventoryRefs = []
     let refs = [] /* REFS CONTAINER */
-    const scroll = () => inventoryContent.dispatchEvent(new Event('scroll'))
+    const scroll = () => InventoryContent.dispatchEvent(new Event('scroll'))
 
-    const getRefs = () => Array.from(inventoryContent.querySelectorAll('div.inventory__item'))
+    const getRefs = () => Array.from(InventoryContent.querySelectorAll('div.inventory__item'))
     const searchRefs = (input) => {
         let searchRefs = getRefs()
-        searchRefs.forEach(ref => ref.classList.remove(hidden))
+        searchRefs.forEach(ref => ref.classList.remove(Hidden))
         searchRefs.filter(ref => !ref.innerText
          .slice(ref.innerText.indexOf(')')+1, ref.innerText.indexOf('\n'))
          .trim()
          .toLowerCase()
          .includes(input.toLowerCase()))
-         .forEach(ref => ref.classList.add(hidden))
+         .forEach(ref => ref.classList.add(Hidden))
 
         scroll()
     }
 
-    const search = document.createElement('input')
+    const search = document.createElement(Elements.Input)
     search.type = 'search'
-    search.id = euiSearch
-    search.dataset.type = referenceSearch
+    search.id = EuiSearch
+    search.dataset.type = ReferenceSearch
     search.placeholder = t('searchRefPlaceholder')
 
     const sort = document.createElement('select')
-    sort.id = euiSort
+    sort.id = EuiSort
 
     // CUI compatibility
     const cuiSort = document.querySelector('.sbgcui_refs-sort-button')
@@ -850,7 +882,7 @@ const AddReferenceSearch = () => {
         sort.appendChild(opt)
     })
 
-    let clearButton = document.querySelector('#inventory-delete-section')
+    let clearButton = document.getElementById('inventory-delete-section')
     tabs.forEach(tab => {
         tab.addEventListener(onClick, () => {
             if (['1', '2'].includes(tab.dataset.type)) {
@@ -875,13 +907,13 @@ const AddReferenceSearch = () => {
 
 
 
-    inventoryPopupClose.addEventListener(onClick, () => {
+    InventoryPopupClose?.addEventListener(onClick, () => {
         refs = []
         inventoryRefs = []
         sort.selectedIndex = 0
         sort.disabled = false
     })
-    inventoryViewButton.addEventListener(onClick, async () => {
+    Ops?.addEventListener(onClick, async () => {
 
         if (search.dataset.active === '1') {
 
@@ -911,7 +943,7 @@ const AddReferenceSearch = () => {
         if (sortType === sorts[0]) {
             refs.forEach(ref => ref.remove())
             refs = []
-            inventoryRefs.forEach(ref => inventoryContent.appendChild(ref))
+            inventoryRefs.forEach(ref => InventoryContent.appendChild(ref))
             search.dataset.active === '1' && search.value && searchRefs(search.value)
             sort.disabled = false
             return
@@ -919,15 +951,15 @@ const AddReferenceSearch = () => {
 
         refs = getRefs()
 
-        if (refs.filter(ref => !ref.classList.contains('loaded')).length !== 0) {
+        if (refs.filter(ref => !ref.classList.contains(Loaded)).length !== 0) {
 
             let hiddenSet = false
 
-            while (refs.find(ref => !ref.classList.contains('loaded'))) {
+            while (refs.find(ref => !ref.classList.contains(Loaded))) {
 
                 if (!hiddenSet) {
                     refs.forEach(ref => {
-                        !ref.classList.contains(hidden) && ref.classList.add(hidden)
+                        !ref.classList.contains(Hidden) && ref.classList.add(Hidden)
                     })
 
                     hiddenSet = true
@@ -935,12 +967,12 @@ const AddReferenceSearch = () => {
 
                 scroll()
 
-                console.log("Yet to load: " + refs.filter(ref => !ref.classList.contains('loaded')).length)
+                console.log("Yet to load: " + refs.filter(ref => !ref.classList.contains(Loaded)).length)
                 await Sleep(250)
             }
 
             refs.forEach(ref => {
-                ref.classList.contains(hidden) && ref.classList.remove(hidden)
+                ref.classList.contains(Hidden) && ref.classList.remove(Hidden)
             })
         }
 
@@ -948,11 +980,11 @@ const AddReferenceSearch = () => {
         let sorted = refs.sort((a, b) => ParseMeterDistance(a) - ParseMeterDistance(b))
         sortType === sorts[2] && sorted.reverse() // REVERSE IF DESC
         sorted.forEach(ref => {
-            inventoryContent.appendChild(ref)
+            InventoryContent.appendChild(ref)
 
             // CUI compatibility
-            ref.classList.toggle('loading')
-            ref.classList.toggle('loading')
+            ref.classList.toggle(Loading)
+            ref.classList.toggle(Loading)
         })
 
         search.dataset.active === '1' && search.value && searchRefs(search.value)
@@ -960,11 +992,12 @@ const AddReferenceSearch = () => {
     })
 }
 
+const DistanceRegex = new RegExp(String.raw`(\d*\.?\d+?)\s(${t('kilo')}?)`, 'i')
 const ParseMeterDistance = (ref) => {
     const [_, dist, kilo] = ref.querySelector('.inventory__item-descr')
         .lastChild.textContent
         .replace(',','')
-        .match(distanceRegex)
+        .match(DistanceRegex)
 
     return kilo === t('kilo') ? dist * 1000 : +dist
 }
@@ -980,14 +1013,14 @@ html, body {
     transition: all ease-in-out 0.25s;
 }
 
-.info.popup.${hidden}, .profile.popup.${hidden} {
+.info.popup.${Hidden}, .profile.popup.${Hidden} {
     display: flex !important;
     filter: opacity(0);
     transform: translateX(calc(100% + 10px));
 }
 
 @media (max-width: 425px) {
-    .info.popup.${hidden}, .profile.popup.${hidden} {
+    .info.popup.${Hidden}, .profile.popup.${Hidden} {
         transform: translate(calc(100% + 10px), -50%);
     }
 }
@@ -996,7 +1029,7 @@ html, body {
     transition: all ease-in-out 0.25s;
 }
 
-.inventory.popup.${hidden} {
+.inventory.popup.${Hidden} {
     display: flex !important;
     filter: opacity(0);
     transform: translate(calc(-150% - 10px), -50%);
@@ -1006,7 +1039,7 @@ html, body {
     transition: all ease-in-out 0.25s;
 }
 
-.leaderboard.popup.${hidden}, .settings.popup.${hidden} {
+.leaderboard.popup.${Hidden}, .settings.popup.${Hidden} {
     display: flex !important;
     filter: opacity(0);
     transform: translate(-50%, calc(-50vh - 100%));
@@ -1016,7 +1049,7 @@ html, body {
     transition: all ease-in-out 0.25s;
 }
 
-.attack-slider-wrp.${hidden} {
+.attack-slider-wrp.${Hidden} {
     display: flex !important;
     filter: opacity(0);
     transform: translateY(calc(25vh + 100%));
@@ -1027,7 +1060,7 @@ html, body {
     transition: visibility 0s, filter ease-in-out 0.25s;
 }
 
-.layers-config.popup.${hidden}, .score.popup.${hidden} {
+.layers-config.popup.${Hidden}, .score.popup.${Hidden} {
     display: block !important;
     filter: opacity(0);
     visibility: hidden;
@@ -1035,35 +1068,35 @@ html, body {
 `
 
 const AddAnimations = () => {
-    const input = document.createElement('input')
-    const uiSettings = settingSections.at(1)
+    const input = document.createElement(Elements.Input)
+    const uiSettings = SettingSections.at(1)
     if (!!uiSettings) {
-        const title = document.createElement('span')
+        const title = document.createElement(Elements.Span)
         title.innerText = t('animations')
 
-        input.type = 'checkbox'
-        input.dataset.setting = euiAnimations
-        const label = document.createElement('label')
-        label.classList.add('settings-section__item')
+        input.type = Elements.CheckBox
+        input.dataset.setting = EuiAnimations
+        const label = document.createElement(Elements.Label)
+        label.classList.add(SettingsSectionItemClassName)
         label.appendChild(title)
         label.appendChild(input)
         uiSettings.appendChild(label)
 
         // PROPOSAL
-        const animationsProposed = localStorage.getItem(`${euiAnimations}${proposed}`)
+        const animationsProposed = localStorage.getItem(`${EuiAnimations}${Proposed}`)
         if (animationsProposed != 1) {
-            localStorage.setItem(`${euiAnimations}${proposed}`, 1)
-            localStorage.setItem(euiAnimations, 1)
+            localStorage.setItem(`${EuiAnimations}${Proposed}`, 1)
+            localStorage.setItem(EuiAnimations, 1)
             input.checked = true
         }
     }
 
     // STYLES
-    const style = document.createElement('style')
-    style.dataset.id = euiAnimations
+    const style = document.createElement(Elements.Style)
+    style.dataset.id = EuiAnimations
     style.innerHTML = animationsString
 
-    if (localStorage.getItem(euiAnimations) == 1) {
+    if (localStorage.getItem(EuiAnimations) == 1) {
         document.head.appendChild(style)
         input.checked = true
     }
@@ -1071,26 +1104,28 @@ const AddAnimations = () => {
     input.addEventListener(onChange, (event) => {
         if (event.target.checked) {
             document.head.appendChild(style)
-            localStorage.setItem(euiAnimations, 1)
+            localStorage.setItem(EuiAnimations, 1)
         }
         else {
             style.remove()
-            localStorage.setItem(euiAnimations, 0)
+            localStorage.setItem(EuiAnimations, 0)
         }
     })
 }
 
 const AddCanvasStyles = async () => {
+    const getLines = () => document.querySelector('.ol-layer__lines')
+    const DefaultOpacityLevel = '0.75'
 
-    let item = document.createElement('div')
-    item.className = 'settings-section__item'
+    let item = document.createElement(Elements.Div)
+    item.className = SettingsSectionItemClassName
 
-    let title = document.createElement('span')
+    let title = document.createElement(Elements.Span)
     title.innerText = t('linesOpacity')
     item.appendChild(title)
 
-    let range = document.createElement('input')
-    range.id = euiLinksOpacity
+    let range = document.createElement(Elements.Input)
+    range.id = EuiLinksOpacity
 
     range.setAttribute('type', 'range')
     range.setAttribute('min', '0')
@@ -1098,27 +1133,27 @@ const AddCanvasStyles = async () => {
     range.setAttribute('step', '0.01')
     item.appendChild(range)
 
-    const uiSettings = settingSections.at(1)
-    uiSettings.appendChild(item)
+    const uiSettings = SettingSections.at(1)
+    uiSettings?.appendChild(item)
 
-    const value = localStorage.getItem(euiLinksOpacity)
-    range.setAttribute('value', value ?? '0.75')
+    const value = localStorage.getItem(EuiLinksOpacity)
+    range.setAttribute('value', value ?? DefaultOpacityLevel)
 
-    let lines = document.querySelector('.ol-layer__lines')
+    let lines = getLines()
 
     if (!lines) { // make sure lines layer exist (or loaded if connection is throttling)
         await Sleep(2000)
-        lines = document.querySelector('.ol-layer__lines')
+        lines = getLines()
     }
 
     range.addEventListener(onChange, (event) => {
         if (!lines) { // make sure lines layer exist when user change slider
-            lines = document.querySelector('.ol-layer__lines')
+            lines = getLines()
         }
 
         if (!!lines) {
             lines.style.filter = `opacity(${event.target.value})`
-            localStorage.setItem(euiLinksOpacity, event.target.value)
+            localStorage.setItem(EuiLinksOpacity, event.target.value)
         }
         else {
             alert(t('linesOpacityMessage'))
@@ -1126,82 +1161,40 @@ const AddCanvasStyles = async () => {
     })
 
     if (!!lines) {
-        lines.style.filter = `opacity(${value ?? '0.75'})`
+        lines.style.filter = `opacity(${value ?? DefaultOpacityLevel})`
     }
 }
 
 const asset64Prefix = 'https://raw.githubusercontent.com/egorantonov/sbg-enhanced/master/assets/64/'
 const badgeMap = new Map()
-badgeMap.set('Points Captured', { images: [
-    {tier: 40000, value: `${asset64Prefix}liberator5-1.png` },
-    {tier: 15000, value: `${asset64Prefix}liberator4-1.png` },
-    {tier: 5000, value: `${asset64Prefix}liberator3.png` },
-    {tier: 1000, value: `${asset64Prefix}liberator2.png` },
-    {tier: 100, value: `${asset64Prefix}liberator1.png` },
-]})
-badgeMap.set('Lines Drawn', { images: [
-    {tier: 100000, value: `${asset64Prefix}connector5-1.png` },
-    {tier: 25000, value: `${asset64Prefix}connector4-1.png` },
-    {tier: 5000, value: `${asset64Prefix}connector3.png` },
-    {tier: 1000, value: `${asset64Prefix}connector2.png` },
-    {tier: 50, value: `${asset64Prefix}connector1.png` },
-]})
-badgeMap.set('Unique Points Visited', { images: [
-    {tier: 30000, value: `${asset64Prefix}explorer5-1.png` },
-    {tier: 10000, value: `${asset64Prefix}explorer4-1.png` },
-    {tier: 2000, value: `${asset64Prefix}explorer3.png` },
-    {tier: 1000, value: `${asset64Prefix}explorer2.png` },
-    {tier: 100, value: `${asset64Prefix}explorer1.png` },
-]})
-badgeMap.set('Discoveries Done', { images: [
-    {tier: 200000, value: `${asset64Prefix}hacker5-1.png` },
-    {tier: 100000, value: `${asset64Prefix}hacker4-1.png` },
-    {tier: 30000, value: `${asset64Prefix}hacker3.png` },
-    {tier: 10000, value: `${asset64Prefix}hacker2.png` },
-    {tier: 2000, value: `${asset64Prefix}hacker1.png` },
-]})
-badgeMap.set('Points Captured', { images: [
-    {tier: 20000, value: `${asset64Prefix}pioneer5-1.png` },
-    {tier: 5000, value: `${asset64Prefix}pioneer4-1.png` },
-    {tier: 1000, value: `${asset64Prefix}pioneer3.png` },
-    {tier: 200, value: `${asset64Prefix}pioneer2.png` },
-    {tier: 20, value: `${asset64Prefix}pioneer1.png` },
-]})
-badgeMap.set('Cores Destroyed', { images: [
-    {tier: 225000, value: `${asset64Prefix}purifier5-1.png` },
-    {tier: 75000, value: `${asset64Prefix}purifier4-1.png` },
-    {tier: 22500, value: `${asset64Prefix}purifier3.png` },
-    {tier: 7500, value: `${asset64Prefix}purifier2.png` },
-    {tier: 1500, value: `${asset64Prefix}purifier1.png` },
-]})
-badgeMap.set('Cores Deployed', { images: [
-    {tier: 150000, value: `${asset64Prefix}builder5-1.png` },
-    {tier: 75000, value: `${asset64Prefix}builder4-1.png` },
-    {tier: 22500, value: `${asset64Prefix}builder3.png` },
-    {tier: 7500, value: `${asset64Prefix}builder2.png` },
-    {tier: 1500, value: `${asset64Prefix}builder1.png` },
-]})
-badgeMap.set('Longest Point Ownership', { images: [
-    {tier: 150, value: `${asset64Prefix}guardian5-1.png` },
-    {tier: 90, value: `${asset64Prefix}guardian4-1.png` },
-    {tier: 20, value: `${asset64Prefix}guardian3.png` },
-    {tier: 10, value: `${asset64Prefix}guardian2.png` },
-    {tier: 3, value: `${asset64Prefix}guardian1.png` },
-]})
+
+const createImages = (tiers, badge) => {
+    let images = []
+    for (let i = tiers.length; i > 0; i--) {
+        images.push({tier: tiers[tiers.length-i], value: `${asset64Prefix}${badge}${i}.png` })
+    }
+    return images
+}
+
+badgeMap.set('Points Captured', { images: createImages([40000,15000,5000,1000,100], 'liberator') })
+badgeMap.set('Lines Drawn', { images: createImages([100000,25000,5000,1000,50], 'connector') })
+badgeMap.set('Unique Points Visited', { images: createImages([30000,10000,2000,1000,100], 'explorer') })
+badgeMap.set('Discoveries Done', { images: createImages([200000,100000,30000,10000,2000], 'hacker') })
+badgeMap.set('Points Captured', { images: createImages([20000,5000,1000,200,20], 'pioneer') })
+badgeMap.set('Cores Destroyed', { images: createImages([225000,75000,22500,7500,1500], 'purifier') })
+badgeMap.set('Cores Deployed', { images: createImages([150000,75000,22500,7500,1500], 'builder') })
+badgeMap.set('Longest Point Ownership', { images: createImages([150,90,20,10,3], 'guardian') })
 
 const badgeImageClass = 'badge-image'
 // removes badges on close button click
 const RemoveBadges = () => {
-    const profilePopup = document.querySelector('.profile.popup')
-    const closeButton = profilePopup.querySelector('button.popup-close')
-    if (!!closeButton) {
-        closeButton.addEventListener(onClick, () => {
-            let previousBadges = profilePopup.querySelectorAll(`.${badgeImageClass}`)
-            for (let i = 0; i < previousBadges.length; i++) {
-                previousBadges[i].remove()
-            }
-        })
-    }
+    const closeButton = ProfilePopup?.querySelector('button.popup-close')
+    closeButton?.addEventListener(onClick, () => {
+        let previousBadges = ProfilePopup.querySelectorAll(`.${badgeImageClass}`)
+        for (let i = 0; i < previousBadges.length; i++) {
+            previousBadges[i].remove()
+        }
+    })
 }
 
 // adds badges
@@ -1212,7 +1205,6 @@ const AddBadges = () => {
         previousBadges[i].remove()
     }
 
-    const container = document.querySelector('.pr-stats')
     const stats = Array.from(document.querySelectorAll('.pr-stat'))
     for (let i = 0; i < stats.length; i++) {
         const stat = stats[i]
@@ -1233,57 +1225,39 @@ const AddBadges = () => {
             badgeImage.title = tier
             badgeImage.width = 40
             badgeImage.height = 40
-            badgeImage.classList.add('ingress-theme')
+            badgeImage.classList.add(EuiIngressTheme)
 
-            container.prepend(badgeImage)
+            ProfileStats?.prepend(badgeImage)
         }
     }
 }
 
-const RenderBadges = () => {
-    const profilePopup = document.querySelector('.profile.popup')
-    if (!!profilePopup) {
-        profilePopup.addEventListener(onProfileStatsChanged, () => {
-            AddBadges()
-        })
-    }
-}
+const InitObserver = ({target, config, callback}) => target && config && callback && new MutationObserver(callback).observe(target, config)
 
 const onPointStatsChanged = 'pointStatsChanged'
-const InitPointStatsMutationObserver = () => {
-    const target = document.querySelector('#i-stat__line-out')
-
-    if (!target) {
-        return
-    }
-
-    const config = {
-        childList: true
-    }
-
-    const observer = new MutationObserver(mutationsList => {
+const PointStatsChanged = {
+    target: document.getElementById('i-stat__line-out'),
+    config: { childList: true },
+    callback: (mutationsList) => {
         const event = new Event(onPointStatsChanged, { bubbles: true })
         mutationsList[0].target.dispatchEvent(event)
-    })
-
-    observer.observe(target, config)
+    }
 }
 
 // disables draw button when outbound limit is reached
 const DisableDrawButton = () => {
 
-    const infoPopup = document.querySelector('.info.popup')
-    const draw = document.querySelector('#draw')
-    if (!!infoPopup && !!draw) {
-        infoPopup.addEventListener(onPointStatsChanged, (event) => {
-            if (event.target.innerText >= outboundLinksLimit) {
-                draw.setAttribute('disabled', true)
-                draw.classList.add('loading')
+    const draw = document.getElementById('draw')
+    if (!!InfoPopup && !!draw) {
+        InfoPopup.addEventListener(onPointStatsChanged, (event) => {
+            if (event.target.innerText >= OutboundLinksLimit) {
+                draw.setAttribute(Disabled, true)
+                draw.classList.add(Loading)
             }
             else {
-                if (draw.classList.contains('loading')) {
-                     draw.classList.remove('loading')
-                     draw.removeAttribute('disabled')
+                if (draw.classList.contains(Loading)) {
+                    draw.classList.remove(Loading)
+                    draw.removeAttribute(Disabled)
                 }
             }
         })
@@ -1291,44 +1265,35 @@ const DisableDrawButton = () => {
 }
 
 const onDiscoverChanged = 'discoverChanged'
-const InitDiscoverMutationObserver = () => {
-    const target = document.querySelector('#discover')
-
-    if (!target) {
-        return
-    }
-
-    const config = {
+const DiscoverChanged = {
+    target: Discover,
+    config: {
         attributes: true,
         attributeFilter: ['data-time']
-    }
-
-    const observer = new MutationObserver(mutationsList => {
+    },
+    callback: (mutationsList) => {
         const event = new Event(onDiscoverChanged, { bubbles: true })
         mutationsList[0].target.dispatchEvent(event)
-    })
-
-    observer.observe(target, config)
+    }
 }
 
 const AddDiscoverProgress = () => {
-    const infoPopup = document.querySelector('.info.popup')
-    const discover = document.querySelector('#discover')
-    if (!!infoPopup && !!discover) {
-        const discoverProgress = document.createElement('div')
-        discoverProgress.className = discoverProgressClassName
-        discover.appendChild(discoverProgress)
 
-        infoPopup.addEventListener(onDiscoverChanged, (event) => {
+    if (!!InfoPopup && !!Discover) {
+        const discoverProgress = document.createElement(Elements.Div)
+        discoverProgress.className = DiscoverProgressClassName
+        Discover.appendChild(discoverProgress)
+
+        InfoPopup.addEventListener(onDiscoverChanged, (event) => {
             let dataTimeString = event.target.dataset?.time
 
             if (!dataTimeString) {
                 discoverProgress.style.width = 0
             }
-            else if (dataTimeString.replace('s','') > 0){
-                discoverProgress.style.width = `${100*dataTimeString.replace('s','')/60}%`
+            else if (dataTimeString.replace('s','') > 0) { // TODO: localization issue
+                discoverProgress.style.width = `${100 * dataTimeString.replace('s','') / 60}%` // TODO: localization issue
             }
-            else if (dataTimeString.replace('m','') > 0) {
+            else if (dataTimeString.replace('m','') > 0) { // TODO: localization issue
                 discoverProgress.style.width = '100%'
             }
             else {
@@ -1339,32 +1304,24 @@ const AddDiscoverProgress = () => {
 }
 
 const onProfileStatsChanged = 'profileStatsChanged'
-const InitProfileStatsMutationObserver = () => {
-    const target = document.querySelector('.pr-stats')
-
-    if (!target) {
-        return
-    }
-
-    const config = {
-        childList: true
-    }
-
-    const observer = new MutationObserver(mutationsList => {
+const ProfileStatsChanged = {
+    target: ProfileStats,
+    config: { childList: true },
+    callback: (mutationsList) => {
         if (mutationsList.find(x => x.addedNodes.length && x.addedNodes[0].classList.contains('pr-stats__section'))) {
             const event = new Event(onProfileStatsChanged, { bubbles: true })
             mutationsList[0].target.dispatchEvent(event)
         }
-    });
-
-    observer.observe(target, config)
+    }
 }
 
-const InitObservers = () => {
-    InitPointStatsMutationObserver()
-    InitProfileStatsMutationObserver()
-    InitDiscoverMutationObserver()
+const RenderBadges = () => {
+    ProfilePopup?.addEventListener(onProfileStatsChanged, () => {
+        AddBadges()
+    })
 }
+
+const InitObservers = () => [PointStatsChanged, ProfileStatsChanged, DiscoverChanged].forEach(o => InitObserver(o))
 
 window.addEventListener(onLoad, function () {
     Sleep(1500)
