@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npx terser -c -m --comments "/(==.+)|(@.+)/" -o index.js -- src/script.js
+npm run min

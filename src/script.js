@@ -29,7 +29,7 @@ const DefaultLang = 'en'
 // EUI Constants
 const EuiCloseButtonText = ' ✕ '
 const EuiIncompatibility = 'eui-incompatibility'
-const EuiVersion = '1.5.4'
+const EuiVersion = '1.6.0'
 const EuiLinksOpacity = 'eui-links-opacity'
 const EuiHighContrast = 'eui-high-contrast'
 const EuiAnimations = 'eui-animations'
