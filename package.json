@@ -1,11 +1,12 @@
 {
   "name": "sbg-enhanced",
-  "version": "1.5.4",
+  "version": "1.6.0",
   "description": "<h1 align=\"center\"><img src=\"https://github.com/egorantonov/sbg-enhanced/raw/master/assets/script/64.png\" width=\"32px\" /> SBG Enhanced UI</h1>",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "min": "npx terser -c -m --comments \"/(==.+)|(@.+)/\" -o index.js -- src/script.js"
+    "min": "npx terser -c -m --comments \"/(==.+)|(@.+)/\" -o index.js -- src/script.js",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,8 @@
   "homepage": "https://github.com/egorantonov/sbg-enhanced#readme",
   "dependencies": {
     "terser": "^5.17.1"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3"
   }
 }
