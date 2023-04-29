@@ -2,10 +2,11 @@
   "name": "sbg-enhanced",
   "version": "1.6.0",
   "description": "<h1 align=\"center\"><img src=\"https://github.com/egorantonov/sbg-enhanced/raw/master/assets/script/64.png\" width=\"32px\" /> SBG Enhanced UI</h1>",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "min": "npx terser -c -m --comments \"/(==.+)|(@.+)/\" -o index.js -- src/script.js",
+    "build": "del /a \".\\dist\\*.js\" && webpack --mode=production && rename \".\\dist\\index.user.js\" \"index.js\"",
+    "dev": "del /a \".\\dist\\*.js\" && webpack --mode=development && rename \".\\dist\\index.user.js\" \"index.js\"",
+    "clean": "del /a \".\\dist\\*.*\" /q",
     "prepare": "husky install"
   },
   "repository": {
@@ -20,9 +21,15 @@
   },
   "homepage": "https://github.com/egorantonov/sbg-enhanced#readme",
   "dependencies": {
-    "terser": "^5.17.1"
+    "eslint": "^8.39.0"
   },
   "devDependencies": {
-    "husky": "^8.0.3"
+    "css-loader": "^6.7.3",
+    "husky": "^8.0.3",
+    "style-loader": "^3.3.2",
+    "to-string-loader": "^1.2.0",
+    "webpack": "^5.81.0",
+    "webpack-cli": "^5.0.2",
+    "webpack-userscript": "^3.2.2"
   }
 }

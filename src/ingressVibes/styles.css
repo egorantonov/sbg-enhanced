@@ -1,0 +1,274 @@
+@import url('https://fonts.googleapis.com/css2?family=Coda&display=swap');
+
+:root {
+  --ingress-color: #F9FAFC;
+  --ingress-bg-color: #112025;
+  --ingress-bg-color-cc: #112025CC;
+  --ingress-bg-color-aa: #112025AA;
+
+  --ingress-selection-color: #FF7C2B;
+  --ingress-selection-bg-color: #49230E77;
+
+  --ingress-btn-color: #97FBFB;
+  --ingress-btn-bg-color: #20474C;
+  --ingress-btn-glow-color: #007B85;
+  --ingress-btn-border-color: #38E8E6;
+
+  --ingress-btn-hl-color: #FCD959;
+  --ingress-btn-hl-bg-color: #563F20;
+  --ingress-btn-hl-glow-color: #A07F14;
+  --ingress-btn-hl-border-color: #DAC546;
+
+  --ingress-btn-disabled-color: #7E888A;
+  --ingress-btn-disabled-bg-color: #112325;
+  --ingress-btn-disabled-accent-color: #CB3C36;
+}
+
+/* BADGES */
+
+img.eui-ingress-theme {
+  display: inline;
+}
+
+
+/* BUTTONS */
+
+.game-menu>button, .bottomleft-container>button, body>#layers {
+  font-family: 'Coda', 'Manrope', sans-serif;
+}
+
+.i-buttons>button,
+.settings.popup button:not(.popup-close),
+.attack-slider-buttons>button,
+.draw-slider-buttons>button,
+.inventory.popup button,
+.layers-config__buttons>button,
+.pr-buttons>button,
+#classic-login,
+#form__buttons-login,
+.sbgcui_compare_stats>button,
+input:not(.sbgcui_settings-amount_input), 
+select {
+  border-style: solid;
+  text-transform: uppercase;
+  font-family: 'Coda', 'Manrope', sans-serif;
+}
+
+#discover, #deploy, #repair, #draw {
+  position: relative;
+}
+
+#eui-sort:disabled {
+  opacity: 0.7;
+}
+
+.i-buttons>button,
+.attack-slider-buttons>button,
+.draw-slider-buttons>button {
+  position: relative;
+}
+
+.i-buttons>button::before,
+.attack-slider-buttons>button::before,
+.draw-slider-buttons>button::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  bottom: -1px;
+  right: -1px;
+  height: 4px;
+  width: 12px;
+  border-radius: 100px 0 0 0;
+  border-left: 2px solid;
+  border-top: 2px solid;
+}
+
+.i-buttons>button,
+.settings.popup button:not(.popup-close),
+#draw-slider-close,
+#attack-slider-close,
+.inventory.popup button,
+.layers-config__buttons>button,
+.pr-buttons>button,
+.sbgcui_compare_stats>button,
+input:not(.sbgcui_settings-amount_input), select {
+  color: var(--ingress-btn-color);
+  background: var(--ingress-btn-bg-color);
+  background: linear-gradient(to top, var(--ingress-btn-glow-color) 0%, var(--ingress-btn-bg-color) 30%, var(--ingress-btn-bg-color) 70%, var(--ingress-btn-glow-color) 100%);
+  border-color: var(--ingress-btn-border-color);
+}
+
+option {
+  background-color: var(--ingress-btn-bg-color);
+}
+
+option:checked { /* WTF? checked is non-documented??? */
+  color: var(--ingress-btn-hl-color);
+  background-color: var(--ingress-btn-hl-bg-color);
+}
+
+.i-buttons>button::before,
+#draw-slider-close::before,
+#attack-slider-close::before {
+  background-color: var(--ingress-btn-border-color);
+  border-color: var(--ingress-btn-border-color);
+  box-shadow: inset 2px 2px 0 0px var(--ingress-btn-glow-color);
+}
+
+#attack-slider-fire,
+#draw-slider-confirm,
+#inventory__ma-delete,
+#layers-config__save,
+#classic-login,
+#form__buttons-login {
+  color: var(--ingress-btn-hl-color);
+  background: linear-gradient(to top, var(--ingress-btn-hl-glow-color) 0%, var(--ingress-btn-hl-bg-color) 30%, var(--ingress-btn-hl-bg-color) 70%, var(--ingress-btn-hl-glow-color) 100%);
+  border-color: var(--ingress-btn-hl-border-color);
+}
+
+.inventory__item-controls::after {
+  border-radius: 0px !important;
+  box-shadow: inset 0px 0px 0px 2px var(--ingress-btn-hl-border-color);
+  color: var(--ingress-btn-hl-color) !important;
+  background: linear-gradient(to top, var(--ingress-btn-hl-glow-color) 0%, var(--ingress-btn-hl-bg-color) 30%, var(--ingress-btn-hl-bg-color) 70%, var(--ingress-btn-hl-glow-color) 100%) !important;
+}
+
+#attack-slider-fire::before, #draw-slider-confirm::before {
+  background-color: var(--ingress-btn-hl-border-color);
+  border-color: var(--ingress-btn-hl-border-color);
+  box-shadow: inset 2px 2px 0 0px var(--ingress-btn-hl-glow-color);
+}
+
+#attack-slider-fire[disabled], #draw-slider-confirm[disabled] {
+  filter: opacity(0.75);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+.i-buttons>button[disabled], .draw-slider-buttons>button[disabled] {
+  color: var(--ingress-btn-disabled-color);
+  background: var(--ingress-btn-disabled-bg-color);
+  border-color: var(--ingress-btn-disabled-accent-color);
+}
+
+.i-buttons>button[disabled]::before, .draw-slider-buttons>button[disabled]::before {
+  background-color: var(--ingress-btn-disabled-accent-color);
+  border-color: var(--ingress-btn-disabled-accent-color);
+  box-shadow: inset 2px 2px 0 0px var(--ingress-btn-disabled-bg-color);
+}
+
+.popup-close[data-round=true], #inventory__close, .splide__arrow {
+  color: var(--ingress-btn-hl-color);
+  background: var(--ingress-btn-hl-bg-color);
+  box-shadow: inset 0px 0px 6px 3px var(--ingress-btn-hl-glow-color) !important;
+  border-color: var(--ingress-btn-hl-border-color) !important;
+}
+
+.splide__arrow svg {
+  fill: var(--ingress-btn-hl-color);
+}
+
+
+/* SLIDER ITEMS */
+
+.draw-slider-wrp .splide__slide.is-active .refs-list__image>div {
+  box-shadow: inset -8px 0px 0px -5px  var(--ingress-selection-color),
+      inset -10px 0px 8px -6px  var(--ingress-selection-bg-color),
+      inset 8px 0px 0px -5px  var(--ingress-selection-color),
+      inset 10px 0px 8px -6px  var(--ingress-selection-bg-color);
+}
+
+
+/* INVENTORY */
+
+.inventory__content, .inventory__tab.active {
+  border-color: var(--selection);
+}
+
+.inventory__controls select,
+.inventory__controls input {
+  border-width: 1.6px;
+}
+
+
+/* POPUPS */
+
+.profile.popup,
+.info.popup,
+.leaderboard.popup,
+.score.popup,
+.settings.popup,
+.layers-config.popup,
+.inventory.popup,
+.credits.popup,
+.inventory__manage-amount,
+#draw-slider,
+#attack-slider,
+.attack-slider-highlevel {
+  color: var(--ingress-color);
+  background-color: var(--ingress-bg-color-cc);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  border-radius: 0px;
+  border-color: var(--ingress-btn-border-color) !important;
+}
+
+.pr-stat:not(:last-child) {
+  border-bottom: 1px #D1D1D144 solid;
+}
+
+.pr-xp-progress {
+  border: none;
+}
+
+.pr-xp-check {
+  background: none;
+}
+
+.layers-config__header,
+.leaderboard.popup>.popup-header,
+.settings.popup>h3,
+.credits.popup h3 {
+  text-transform: uppercase;
+  font-family: 'Coda', 'Manrope', sans-serif;
+}
+
+#discover[data-time]:after {
+  color: var(--ingress-color);
+}
+
+.discover-progress {
+  border-radius: 0px !important;
+  background-color: var(--ingress-btn-disabled-accent-color);
+}
+
+.deploy-slider-error {
+  background-color: var(--ingress-bg-color-aa);
+}
+
+
+/* SETTINGS */
+
+input#eui-links-opacity {
+  background: var(--ingress-btn-bg-color) !important;
+  border-radius: 0px !important;
+  border: 2px solid var(--ingress-btn-border-color) !important;
+}
+
+input#eui-links-opacity::-webkit-slider-thumb {
+  border-radius: 0px;
+  background: var(--ingress-btn-border-color);
+  box-shadow: -250px 0 0 250px var(--ingress-btn-border-color);
+}
+
+input#eui-links-opacity::-moz-range-thumb {
+  border-radius: 0px;
+  background: var(--ingress-btn-border-color);
+  box-shadow: -250px 0 0 250px var(--ingress-btn-border-color);
+}
+
+/* CUI */
+.sbgcui_refs-sort-button {
+  border-width: revert;
+  border-radius: 0;
+}

@@ -1,0 +1,37 @@
+/* DARK THEME */
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] .popup,
+  :root[data-theme="auto"] #draw-slider,
+  :root[data-theme="auto"] #attack-slider,
+  :root[data-theme="auto"] .attack-slider-highlevel {
+      color: #fff;
+      background: #000;
+  }
+}
+
+:root[data-theme="dark"] .popup,
+:root[data-theme="dark"] #draw-slider,
+:root[data-theme="dark"] #attack-slider,
+:root[data-theme="dark"] .attack-slider-highlevel {
+  color: #fff;
+  background: #000;
+}
+
+/* LIGHT THEME */
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] .popup,
+  :root[data-theme="auto"] #draw-slider,
+  :root[data-theme="auto"] #attack-slider,
+  :root[data-theme="auto"] .attack-slider-highlevel {
+      color: #000;
+      background: #fff;
+  }
+}
+
+:root[data-theme="light"] .popup,
+:root[data-theme="light"] #draw-slider,
+:root[data-theme="light"] #attack-slider,
+:root[data-theme="light"] .attack-slider-highlevel {
+  color: #000;
+  background: #fff;
+}

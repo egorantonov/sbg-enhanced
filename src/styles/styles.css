@@ -1,0 +1,237 @@
+
+/* BADGES */
+
+img.eui-ingress-theme {
+  display: none;
+}
+
+
+/* POPUPS */
+
+.popup {
+  border-radius: 5px;
+}
+
+
+/* BUTTONS */
+
+.game-menu > button, button#ops, .ol-control > button, #attack-menu, body>#layers {
+  text-transform: uppercase;
+}
+
+.popup-close[data-round=true], #inventory__close[data-round=true] {
+  box-shadow: 0 0 5px var(--shadow);
+  font-weight: 600;
+  border: 2px solid #777;
+  border-radius: 100px;
+  height: 2em;
+  width: 2em;
+}
+
+.splide__arrow {
+  height: 3em;
+  width: 3em;
+  border: 1px solid #777;
+  border-radius: 100px;
+  background: buttonface;
+}
+
+.splide__arrow svg {
+  fill: var(--text);
+}
+
+#discover:not([data-time]) .discover-progress,
+.info.popup.hidden .discover-progress {
+  display: none;
+}
+
+.discover-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 2px;
+  background-color: #7777;
+  filter: opacity(.75);
+  transition: width 1s linear;
+}
+
+
+/* ATTACK SLIDER */
+
+#catalysers-list > .splide__slide {
+  min-width: max-content !important;
+  width: 100px !important;
+}
+
+
+/* DEPLOY SLIDER */
+
+#cores-list > .splide__slide {
+  min-width: max-content !important;
+  width: 80px !important;
+}
+
+
+/* DRAW LINE SLIDER */
+
+.refs-list__image>div {
+  border-radius: 5px;
+}
+
+.draw-slider-wrp .splide__slide {
+  width: calc(((75% + 1em) / 2) - 1em) !important;
+  max-width: 200px;
+  transition: all 0.2s ease-in-out;
+}
+
+.draw-slider-wrp .splide__slide.is-active {
+  transition: all 0.2s ease-in-out;
+}
+
+.draw-slider-wrp .draw-slider-buttons {
+  justify-content: center;
+}
+
+.draw-slider-wrp .draw-slider-buttons button {
+  padding: 6px;
+  text-transform: uppercase;
+}
+
+/* POINT INFO */
+
+#i-image {
+  border-radius: 5px;
+}
+
+.i-buttons {
+  order: 1;
+  margin: 0.5em 0 0.5em;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 0.25em !important;
+  width: 100% !important;
+  direction: unset !important;
+}
+
+.i-buttons>button {
+  font-size: 0.9em;
+  padding: 6px 2px;
+  min-width: fit-content;
+  width: calc(25% - 0.25em);
+  flex-basis: unset !important;
+  order: unset !important;
+}
+
+.i-buttons>button[disabled] {
+  filter: opacity(.75);
+}
+
+#discover[data-time]:after {
+  color: var(--text);
+}
+
+.i-stat__cores {
+  margin-top: 0.5em;
+}
+
+.i-stat__core {
+  border-width: 1px;
+  border-radius: 100px;
+  width: 1.7em;
+  height: 1.7em;
+  line-height: 1.7em;
+}
+
+.i-stat__core.selected {
+  border-width: 2px;
+}
+
+.deploy-slider-error {
+  border-radius: 5px;
+}
+
+
+/* SETTINGS */
+
+input#eui-links-opacity {
+  -webkit-appearance: none;
+  appearance: none;
+  overflow: hidden;
+  padding: 0;
+  max-width: 100px;
+  background: #7777;
+  border-radius: 3px;
+  border: none !important;
+}
+
+input#eui-links-opacity::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 0px solid transparent;
+  height: 16px;
+  width: 16px;
+  border-radius: 3px;
+  background: var(--selection);
+  box-shadow: -250px 0 0 250px var(--selection);
+  cursor: pointer;
+}
+
+input#eui-links-opacity::-moz-range-thumb {
+
+  border: 0px solid transparent;
+  height: 16px;
+  width: 16px;
+  border-radius: 3px;
+  background: var(--selection);
+  box-shadow: -250px 0 0 250px var(--selection);
+  cursor: pointer;
+}
+
+/* INVENTORY */
+
+#inventory-delete-section {
+  margin-right: 0;
+}
+
+.inventory__controls select,
+.inventory__controls input {
+  min-width: 50px;
+  width: 100%;
+}
+
+input[data-type="reference-search"] {
+  padding: 0 6px;
+}
+
+/* SBG CUI Enhancements and support */
+
+.sbgcui_xpProgressBar {
+  background-color: var(--background-transp);
+  border-radius: 5px;
+}
+
+#attack-menu, .topleft-container {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none;
+}
+
+.sbgcui_no_loot, .sbgcui_no_refs {
+  display: none !important;
+}
+
+.fa-classic, .fa-regular, .fa-solid, .far, .fas {
+  font-family: "Font Awesome 6 Free" !important;
+}
+
+.sbgcui_refs-sort-button {
+  position: static;
+  height: revert;
+  width: revert;
+  color: revert;
+  background-color: revert;
+  border: 1px solid #777;
+  border-radius: 2px;
+  box-shadow: revert;
+  min-width: 30px;
+  font-size: 1em;
+}

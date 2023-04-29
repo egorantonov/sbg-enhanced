@@ -33,4 +33,4 @@
         script.type = 'text/javascript'
         document.head.appendChild(script)
     })
-})();
+})()
