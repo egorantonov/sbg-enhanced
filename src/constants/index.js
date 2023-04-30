@@ -1,3 +1,5 @@
+import { version } from '../../package.json'
+
 export const SBG = {
   OutboundLinksLimit: 20,
   DefaultCloseButtonText: '[x]',
@@ -10,7 +12,7 @@ export const SBG = {
 export const EUI = {
   CloseButtonText: ' ✕ ',
   Incompatibility: 'eui-incompatibility',
-  Version: '1.6.0',
+  Version: version,
   LinksOpacity: 'eui-links-opacity',
   HighContrast: 'eui-high-contrast',
   Animations: 'eui-animations',

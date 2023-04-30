@@ -17,8 +17,8 @@ export default async function Informer() {
       localStorage.setItem(EUI.Incompatibility, false)
   }
 
-  const about = Nodes.SettingSections.at(-1)
-  if (!!about) {
+  const about = Nodes.SettingSections.at(3)
+  if (about) {
       const key = document.createElement(Elements.Span)
       key.innerText = t('enhancedUIVersion')
       const value = document.createElement(Elements.Span)
