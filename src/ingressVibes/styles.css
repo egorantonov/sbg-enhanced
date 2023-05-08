@@ -93,8 +93,7 @@ select {
 .sbgcui_compare_stats>button,
 input:not(.sbgcui_settings-amount_input), select {
   color: var(--ingress-btn-color);
-  background: var(--ingress-btn-bg-color);
-  background: linear-gradient(to top, var(--ingress-btn-glow-color) 0%, var(--ingress-btn-bg-color) 30%, var(--ingress-btn-bg-color) 70%, var(--ingress-btn-glow-color) 100%);
+  background: linear-gradient(to top, var(--ingress-btn-glow-color) 0%, var(--ingress-btn-bg-color) 30%, var(--ingress-btn-bg-color) 70%, var(--ingress-btn-glow-color) 100%), var(--ingress-btn-bg-color);
   border-color: var(--ingress-btn-border-color);
 }
 
@@ -122,7 +121,7 @@ option:checked { /* WTF? checked is non-documented??? */
 #classic-login,
 #form__buttons-login {
   color: var(--ingress-btn-hl-color);
-  background: linear-gradient(to top, var(--ingress-btn-hl-glow-color) 0%, var(--ingress-btn-hl-bg-color) 30%, var(--ingress-btn-hl-bg-color) 70%, var(--ingress-btn-hl-glow-color) 100%);
+  background: linear-gradient(to top, var(--ingress-btn-hl-glow-color) 0%, var(--ingress-btn-hl-bg-color) 30%, var(--ingress-btn-hl-bg-color) 70%, var(--ingress-btn-hl-glow-color) 100%), var(--ingress-btn-hl-bg-color);
   border-color: var(--ingress-btn-hl-border-color);
 }
 

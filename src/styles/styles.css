@@ -20,7 +20,6 @@ img.eui-ingress-theme {
 }
 
 .popup-close[data-round=true], #inventory__close[data-round=true] {
-  box-shadow: 0 0 5px var(--shadow);
   font-weight: 600;
   border: 2px solid #777;
   border-radius: 100px;
@@ -33,7 +32,7 @@ img.eui-ingress-theme {
   width: 3em;
   border: 1px solid #777;
   border-radius: 100px;
-  background: buttonface;
+  background: revert;
 }
 
 .splide__arrow svg {
@@ -108,27 +107,31 @@ img.eui-ingress-theme {
   order: 1;
   margin: 0.5em 0 0.5em;
   display: flex !important;
-  flex-wrap: nowrap !important;
   gap: 0.25em !important;
   width: 100% !important;
-  direction: unset !important;
 }
 
 .i-buttons>button {
-  font-size: 0.9em;
   padding: 6px 2px;
   min-width: fit-content;
-  width: calc(25% - 0.25em);
+  width: 30%;
   flex-basis: unset !important;
-  order: unset !important;
 }
 
 .i-buttons>button[disabled] {
   filter: opacity(.75);
 }
 
+#discover {
+  width: calc(90% + 0.5em);
+  order: 1 !important;
+}
+
 #discover[data-time]:after {
   color: var(--text);
+  width: 30%;
+  left: revert;
+  direction: ltr;
 }
 
 .i-stat__cores {
@@ -215,9 +218,9 @@ input[data-type="reference-search"] {
   -webkit-backdrop-filter: none;
 }
 
-.sbgcui_no_loot, .sbgcui_no_refs {
+/* .sbgcui_no_loot, .sbgcui_no_refs {
   display: none !important;
-}
+} */
 
 .fa-classic, .fa-regular, .fa-solid, .far, .fas {
   font-family: "Font Awesome 6 Free" !important;

@@ -105,6 +105,14 @@ const Translations = {
     en: 'k',
     ru: 'к', // TODO: update after localization released
   },
+  m: {
+    en: 'm',
+    ru: 'м', // TODO: update after localization released
+  },
+  s: {
+    en: 's',
+    ru: 'с', // TODO: update after localization released
+  }
 }
 
 export const t = (key) => Translations[key][Locale] ?? Translations[key][SBG.DefaultLang]

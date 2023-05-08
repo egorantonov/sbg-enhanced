@@ -35,3 +35,7 @@
   color: #000;
   background: #fff;
 }
+
+#discover[data-time]:after {
+  color: var(--text);
+}

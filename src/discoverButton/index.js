@@ -1,4 +1,4 @@
-import { Elements, Modifiers, Nodes } from '../constants'
+import { Elements, Modifiers, Nodes, t } from '../constants'
 
 
 const onDiscoverChanged = 'discoverChanged'
@@ -27,10 +27,10 @@ export const AddDiscoverProgress = () => {
             if (!dataTimeString) {
                 discoverProgress.style.width = 0
             }
-            else if (dataTimeString.replace('s','') > 0) { // TODO: localization issue
-                discoverProgress.style.width = `${100 * dataTimeString.replace('s','') / 60}%` // TODO: localization issue
+            else if (dataTimeString.replace(t('s'),'') > 0) {
+                discoverProgress.style.width = `${100 * dataTimeString.replace(t('s'),'') / 60}%`
             }
-            else if (dataTimeString.replace('m','') > 0) { // TODO: localization issue
+            else if (dataTimeString.replace(t('m'),'') > 0) {
                 discoverProgress.style.width = '100%'
             }
             else {
