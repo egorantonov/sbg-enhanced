@@ -130,7 +130,8 @@ img.eui-ingress-theme {
 #discover[data-time]:after {
   color: var(--text);
   width: 30%;
-  left: revert;
+  left: 0;
+  transform: translate(0%, 110%);
   direction: ltr;
 }
 
