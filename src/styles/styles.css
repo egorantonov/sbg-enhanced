@@ -15,8 +15,10 @@ img.eui-ingress-theme {
 
 /* BUTTONS */
 
-.game-menu > button, button#ops, .ol-control > button, #attack-menu, body>#layers {
+.game-menu > button, button#ops, #attack-menu, body>#layers {
   text-transform: uppercase;
+  min-width: 3em;
+  min-height: 2em;
 }
 
 .popup-close[data-round=true], #inventory__close[data-round=true] {
@@ -219,10 +221,6 @@ input[data-type="reference-search"] {
   -webkit-backdrop-filter: none;
 }
 
-/* .sbgcui_no_loot, .sbgcui_no_refs {
-  display: none !important;
-} */
-
 .fa-classic, .fa-regular, .fa-solid, .far, .fas {
   font-family: "Font Awesome 6 Free" !important;
 }
@@ -238,4 +236,17 @@ input[data-type="reference-search"] {
   box-shadow: revert;
   min-width: 30px;
   font-size: 1em;
+}
+
+.inventory__content[data-type="3"] .inventory__item.loaded .inventory__item-left::before {
+  background: linear-gradient(90deg, #fff0 0%, var(--sbgcui-player-team) 100%);
+}
+
+:root {
+  --sbgcui-display-r-button: none;
+}
+
+.inventory__content[data-type="3"] .inventory__item-controls::after {
+  content: '⚡' !important;
+  display: var(--sbgcui-display-r-button);
 }

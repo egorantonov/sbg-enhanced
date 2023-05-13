@@ -9,6 +9,7 @@ import AddIngressVibes from './ingressVibes'
 import AddReferenceSearch from './referenceSearch'
 import AddStyles from './styles'
 import BeautifyCloseButtons from './closeButtons'
+import ButtonIcons from './buttonIcons'
 import Informer from './informer'
 
 const InitObserver = ({target, config, callback}) =>
@@ -23,6 +24,7 @@ window.addEventListener(Events.onLoad, function () {
       AddStyles()
       AddHighContrast()
       AddAnimations()
+      ButtonIcons()
       AddIngressVibes()
       InitObservers()
       DisableDrawButton()

@@ -67,7 +67,8 @@ export const Nodes = {
 
 export const Sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-const Locale = JSON.parse(localStorage.getItem(SBG.Settings))?.lang ?? SBG.DefaultLang
+export const Locale = JSON.parse(localStorage.getItem(SBG.Settings))?.lang ?? SBG.DefaultLang
+const NumberFormat = Intl.NumberFormat(Locale).formatToParts(1111.1)
 const Translations = {
   incompatibility: {
     en: 'Enhanced UI may be incompatible with current version of SBG',
@@ -103,15 +104,21 @@ const Translations = {
   },
   kilo: {
     en: 'k',
-    ru: 'к', // TODO: update after localization released
+    ru: 'к',
   },
   m: {
     en: 'm',
-    ru: 'м', // TODO: update after localization released
+    ru: 'м',
   },
   s: {
     en: 's',
-    ru: 'с', // TODO: update after localization released
+    ru: 'с',
+  },
+  decimalSeparator: {
+    [Locale]: NumberFormat.find(x => x.type==='decimal').value ?? '.'
+  },
+  groupSeparator: {
+    [Locale]: NumberFormat.find(x => x.type==='group').value ?? ','
   }
 }
 

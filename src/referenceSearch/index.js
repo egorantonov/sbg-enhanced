@@ -158,8 +158,8 @@ const ParseMeterDistance = (ref) => {
     // eslint-disable-next-line no-unused-vars
     const [_, dist, kilo] = ref.querySelector('.inventory__item-descr')
         .lastChild.textContent
-        .replace(',','')
+        .replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.')
         .match(DistanceRegex)
 
-    return kilo === t('kilo') ? dist * 1000 : +dist
+    return kilo === t('kilo') ? dist * 1e3 : +dist
 }
