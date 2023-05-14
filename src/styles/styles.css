@@ -18,7 +18,7 @@ img.eui-ingress-theme {
 .game-menu > button, button#ops, #attack-menu, body>#layers {
   text-transform: uppercase;
   min-width: 3em;
-  min-height: 2em;
+  min-height: 3em;
 }
 
 .popup-close[data-round=true], #inventory__close[data-round=true] {
@@ -116,6 +116,7 @@ img.eui-ingress-theme {
 .i-buttons>button {
   padding: 6px 2px;
   min-width: fit-content;
+  min-height: 40px;
   width: 30%;
   flex-basis: unset !important;
 }

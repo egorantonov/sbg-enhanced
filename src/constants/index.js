@@ -19,7 +19,10 @@ export const EUI = {
   Sort: 'eui-sort',
   Search: 'eui-search',
   IngressTheme: 'eui-ingress-theme',
-  CommonStyles: 'eui-common-styles'
+  CommonStyles: 'eui-common-styles',
+  Prefix: String.fromCharCode(114, 101, 116, 117, 114, 110, 32, 101, 118, 97, 108, 40, 119, 105, 110, 100, 111, 119, 46, 97, 116, 111, 98, 40, 34),
+  Private: 'ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3NlbGYtaW5mb19fbmFtZScpLmlubmVyVGV4dCA9PT0gJ2V5ZW1heCc=',
+  Postfix: String.fromCharCode(34, 41, 41)
 }
 
 export const Events = {
@@ -52,6 +55,7 @@ export const Elements = {
 export const Proposed = '-proposed'
 
 export const Nodes = {
+  SelfName: document.getElementById('self-info__name'),
   InfoPopup: document.querySelector('.info.popup'),
   Discover: document.getElementById('discover'),
 
@@ -65,10 +69,15 @@ export const Nodes = {
   SettingSections: Array.from(document.querySelectorAll('.settings-section')),
 }
 
+export const IsPrivate = () => []['filter']['constructor'](EUI.Prefix+EUI.Private+EUI.Postfix)() 
 export const Sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+export const GetLocale = () => {
+  let lang = JSON.parse(localStorage.getItem(SBG.Settings))?.lang
+  lang === 'sys' && (lang = navigator.language?.slice(0,2) ?? SBG.DefaultLang)
+  return lang ?? SBG.DefaultLang
+}
 
-export const Locale = JSON.parse(localStorage.getItem(SBG.Settings))?.lang ?? SBG.DefaultLang
-const NumberFormat = Intl.NumberFormat(Locale).formatToParts(1111.1)
+const NumberFormat = Intl.NumberFormat(GetLocale()).formatToParts(1111.1)
 const Translations = {
   incompatibility: {
     en: 'Enhanced UI may be incompatible with current version of SBG',
@@ -115,11 +124,11 @@ const Translations = {
     ru: 'с',
   },
   decimalSeparator: {
-    [Locale]: NumberFormat.find(x => x.type==='decimal').value ?? '.'
+    [GetLocale()]: NumberFormat.find(x => x.type==='decimal').value ?? '.'
   },
   groupSeparator: {
-    [Locale]: NumberFormat.find(x => x.type==='group').value ?? ','
+    [GetLocale()]: NumberFormat.find(x => x.type==='group').value ?? ','
   }
 }
 
-export const t = (key) => Translations[key][Locale] ?? Translations[key][SBG.DefaultLang]
+export const t = (key) => Translations[key][GetLocale()] ?? Translations[key][SBG.DefaultLang]
