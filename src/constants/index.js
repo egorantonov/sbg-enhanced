@@ -128,6 +128,22 @@ const Translations = {
   },
   groupSeparator: {
     [GetLocale()]: NumberFormat.find(x => x.type==='group').value ?? ','
+  },
+  deploy: {
+    en: 'Deploy',
+    ru: 'Установить'
+  },
+  discover: {
+    en: 'Hack',
+    ru: 'Взломать'
+  },
+  draw: {
+    en: 'Link',
+    ru: 'Связать',
+  },
+  repair: {
+    en: 'Recharge',
+    ru: 'Зарядить'
   }
 }
 

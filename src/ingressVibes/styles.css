@@ -214,6 +214,11 @@ option:checked { /* WTF? checked is non-documented??? */
   border-color: var(--ingress-btn-border-color) !important;
 }
 
+.i-stat__core.selected {
+  border-color: var(--ingress-btn-border-color) !important;
+  box-shadow: 0px 0px 2px 2px var(--ingress-btn-border-color);
+}
+
 .pr-stat:not(:last-child) {
   border-bottom: 1px #D1D1D144 solid;
 }

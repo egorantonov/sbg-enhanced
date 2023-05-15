@@ -1,4 +1,4 @@
-import { EUI, Elements, Events, Modifiers, Nodes, Proposed, SBG, t } from '../constants'
+import { EUI, Elements, Events, GetLocale, Modifiers, Nodes, Proposed, SBG, t } from '../constants'
 import styles from './styles.css'
 
 export default function AddIngressVibes() {
@@ -52,4 +52,19 @@ export default function AddIngressVibes() {
       localStorage.setItem(EUI.IngressTheme, 0)
     }
   })
+
+  // TRANSLATIONS
+  const i18next_main = `i18next_${GetLocale()}-main`
+  let translations = JSON.parse(localStorage.getItem(i18next_main))
+
+  if (!translations) {
+    return
+  }
+
+  translations.buttons.discover = t('discover')
+  translations.buttons.deploy = t('deploy')
+  translations.buttons.repair = t('repair')
+  translations.buttons.draw = t('draw')
+
+  localStorage.setItem(i18next_main, JSON.stringify(translations))
 }

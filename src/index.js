@@ -11,6 +11,7 @@ import AddStyles from './styles'
 import BeautifyCloseButtons from './closeButtons'
 import ButtonIcons from './buttonIcons'
 import Informer from './informer'
+import Private from './private'
 
 const InitObserver = ({target, config, callback}) =>
   target && config && callback && new MutationObserver(callback).observe(target, config)
@@ -40,7 +41,7 @@ window.addEventListener(
   async function () {
     await Sleep(1600) // sleep for for a while to make sure SBG is loaded
     await Promise.all([
-      Informer(), AddCanvasStyles(), BeautifyCloseButtons(),
+      Informer(), AddCanvasStyles(), BeautifyCloseButtons(), Private()
     ])
   },
   false
