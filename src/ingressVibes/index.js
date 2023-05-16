@@ -1,7 +1,23 @@
 import { EUI, Elements, Events, GetLocale, Modifiers, Nodes, Proposed, SBG, t } from '../constants'
 import styles from './styles.css'
 
+const applyTranslations = (target) => {
+  let translations = JSON.parse(localStorage.getItem(target))
+
+  if (!translations) {
+    return
+  }
+
+  translations.buttons.discover = t('discover')
+  translations.buttons.deploy = t('deploy')
+  translations.buttons.repair = t('repair')
+  translations.buttons.draw = t('draw')
+
+  localStorage.setItem(target, JSON.stringify(translations))
+}
+
 export default function AddIngressVibes() {
+  const i18next_main = `i18next_${GetLocale()}-main`
   const input = document.createElement(Elements.Input)
   const settings = Nodes.SettingSections.at(0)
   if (settings) {
@@ -40,31 +56,23 @@ export default function AddIngressVibes() {
   if (localStorage.getItem(EUI.IngressTheme) == 1) {
     document.head.appendChild(style)
     input.checked = true
+    applyTranslations(i18next_main)
   }
 
   input.addEventListener(Events.onChange, (event) => {
     if (event.target.checked) {
       document.head.appendChild(style)
       localStorage.setItem(EUI.IngressTheme, 1)
+      applyTranslations(i18next_main)
+      location.reload()
     }
     else {
       style.remove()
       localStorage.setItem(EUI.IngressTheme, 0)
+      localStorage.removeItem(i18next_main)
+      location.reload()
     }
   })
 
-  // TRANSLATIONS
-  const i18next_main = `i18next_${GetLocale()}-main`
-  let translations = JSON.parse(localStorage.getItem(i18next_main))
 
-  if (!translations) {
-    return
-  }
-
-  translations.buttons.discover = t('discover')
-  translations.buttons.deploy = t('deploy')
-  translations.buttons.repair = t('repair')
-  translations.buttons.draw = t('draw')
-
-  localStorage.setItem(i18next_main, JSON.stringify(translations))
 }
