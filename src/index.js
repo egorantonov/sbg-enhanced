@@ -10,6 +10,7 @@ import AddReferenceSearch from './referenceSearch'
 import AddStyles from './styles'
 import BeautifyCloseButtons from './closeButtons'
 import ButtonIcons from './buttonIcons'
+import ImportExport from './importExport'
 import Informer from './informer'
 import Private from './private'
 
@@ -41,7 +42,7 @@ window.addEventListener(
   async function () {
     await Sleep(1600) // sleep for for a while to make sure SBG is loaded
     await Promise.all([
-      Informer(), AddCanvasStyles(), BeautifyCloseButtons(), Private()
+      Informer(), AddCanvasStyles(), BeautifyCloseButtons(), ImportExport(), Private(),
     ])
   },
   false

@@ -50,6 +50,7 @@ export const Elements = {
   Label: 'label',
   Style: 'style',
   CheckBox: 'checkbox',
+  Button: 'button'
 }
 
 export const Proposed = '-proposed'
@@ -144,6 +145,10 @@ const Translations = {
   repair: {
     en: 'Recharge',
     ru: 'Зарядить'
+  },
+  importExport: {
+    en: 'Import/export settings',
+    ru: 'Импорт/экспорт настроек'
   }
 }
 

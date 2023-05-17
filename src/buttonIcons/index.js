@@ -1,4 +1,4 @@
-import { Events, GetLocale, IsPrivate, Nodes } from '../constants'
+import { Elements, Events, GetLocale, IsPrivate, Nodes } from '../constants'
 
 export default function ButtonIcons() {
   const i18next_main = `i18next_${GetLocale()}-main`
@@ -42,7 +42,7 @@ export default function ButtonIcons() {
   // CUI compatibility
   const cuiFavButton = document.querySelector('div.ol-control>button.sbgcui_button_reset.sbgcui_favs_star')
   if (cuiFavButton) {
-    const cuiSettings = document.createElement('button')
+    const cuiSettings = document.createElement(Elements.Button)
     cuiSettings.innerText = '⚙'
     cuiSettings.style.fontWeight = 'bold'
     cuiFavButton.before(cuiSettings)
