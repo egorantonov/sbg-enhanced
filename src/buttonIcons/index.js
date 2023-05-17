@@ -1,4 +1,4 @@
-import { GetLocale, IsPrivate, Nodes } from '../constants'
+import { Events, GetLocale, IsPrivate, Nodes } from '../constants'
 
 export default function ButtonIcons() {
   const i18next_main = `i18next_${GetLocale()}-main`
@@ -21,6 +21,8 @@ export default function ButtonIcons() {
     score.innerText = '📊'
     translations.menu.settings = '🔧'
     settings.innerText = '🔧'
+    settings.style.marginBottom = '10px'
+    settings.style.marginTop = '10px'
     translations.menu.layers = '☰'
     translations.menu.follow = '💠'
 
@@ -36,4 +38,22 @@ export default function ButtonIcons() {
   }
 
   localStorage.setItem(i18next_main, JSON.stringify(translations))
+
+  // CUI compatibility
+  const cuiFavButton = document.querySelector('div.ol-control>button.sbgcui_button_reset.sbgcui_favs_star')
+  if (cuiFavButton) {
+    const cuiSettings = document.createElement('button')
+    cuiSettings.innerText = '⚙'
+    cuiSettings.style.fontWeight = 'bold'
+    cuiFavButton.before(cuiSettings)
+
+    cuiSettings.addEventListener(Events.onClick, (e) => {
+      e.stopPropagation()
+      const cuiSettingsMenu = document.querySelector('form.sbgcui_settings')
+
+      if (cuiSettingsMenu) {
+        cuiSettingsMenu.classList.toggle('sbgcui_hidden')
+      }
+    })
+  }
 }
