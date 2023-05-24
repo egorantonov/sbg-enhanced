@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Exo&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2&display=swap');
 
 body, input, button {
-  font-family: 'Exo', 'Manrope', sans-serif;
+  font-family: 'Exo 2', 'Manrope', sans-serif;
 }
 
 :root {
@@ -28,10 +28,6 @@ img.eui-ingress-theme {
 
 
 /* BUTTONS */
-
-.game-menu>button, .bottomleft-container>button, body>#layers {
-  font-family: 'Exo', 'Manrope', sans-serif;
-}
 
 .i-buttons>button,
 .settings.popup button:not(.popup-close),
@@ -173,7 +169,6 @@ option:checked { /* WTF? checked is non-documented??? */
 .settings.popup>h3,
 .credits.popup h3 {
   text-transform: uppercase;
-  font-family: 'Exo', 'Manrope', sans-serif;
 }
 
 #discover[data-time]:after {
