@@ -154,6 +154,10 @@ const Translations = {
     en: 'Recharge',
     ru: 'Зарядить'
   },
+  lines: {
+    en: 'Links',
+    ru: 'Связи'
+  },
   importExport: {
     en: 'Import/export settings',
     ru: 'Импорт/экспорт настроек'

@@ -1,5 +1,6 @@
 import { EUI, Elements, Events, GetLocale, Modifiers, Nodes, Proposed, SBG, Themes, t } from '../constants'
-import ingressStyles from './styles.css'
+import ingressStyles from './ingressStyles.css'
+import primeStyles from './primeStyles.css'
 
 const applyTranslations = (target) => {
   let translations = JSON.parse(localStorage.getItem(target))
@@ -12,6 +13,8 @@ const applyTranslations = (target) => {
   translations.buttons.deploy = t('deploy')
   translations.buttons.repair = t('repair')
   translations.buttons.draw = t('draw')
+  translations.info.refs = '🔑 {{count}}/100'
+  translations.info.lines = t('lines')
 
   localStorage.setItem(target, JSON.stringify(translations))
 }
@@ -30,8 +33,13 @@ export default function AddIngressVibes() {
       title: Themes.Ingress,
       code: 1,
       innerHTML: ingressStyles
-    }, 
-    /*Themes.Prime*/]
+    },
+    {
+      title: Themes.Prime,
+      code: 2,
+      innerHTML: primeStyles
+    }
+  ]
   const settings = Nodes.SettingSections.at(0)
   if (settings) {
     const title = document.createElement(Elements.Span)
@@ -54,7 +62,7 @@ export default function AddIngressVibes() {
   const themeProposed = localStorage.getItem(`${EUI.IngressTheme}${Proposed}`)
   if (themeProposed != 1) {
     localStorage.setItem(`${EUI.IngressTheme}${Proposed}`, 1)
-    localStorage.setItem(EUI.IngressTheme, themes.find(t=>t.title===Themes.Ingress).code)
+    localStorage.setItem(EUI.IngressTheme, themes.find(t=>t.title===Themes.Prime).code)
 
     document.documentElement.dataset.theme = Modifiers.Auto
     let gameSettings = JSON.parse(localStorage.getItem(SBG.Settings))

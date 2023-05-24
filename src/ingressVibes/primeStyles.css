@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo&display=swap');
+
+body, input, button {
+  font-family: 'Exo', 'Manrope', sans-serif;
+}
+
+:root {
+  --ingress-color: #F9FAFC;
+  --ingress-bg-color: #141220;
+  --ingress-bg-color-cc: #141220CC;
+  --ingress-bg-color-aa: #141220AA;
+
+  --ingress-selection-color: #F5BF5B;
+  --ingress-selection-bg-color: #49230E77;
+
+  --ingress-btn-color: #fff;
+  --ingress-btn-bg-left-color: #353D6E;
+  --ingress-btn-bg-right-color: #523271;
+  --ingress-btn-border-left-color: #2872B1;
+  --ingress-btn-border-right-color: #6E599E;
+}
+
+/* BADGES */
+
+img.eui-ingress-theme {
+  display: inline;
+}
+
+
+/* BUTTONS */
+
+.game-menu>button, .bottomleft-container>button, body>#layers {
+  font-family: 'Exo', 'Manrope', sans-serif;
+}
+
+.i-buttons>button,
+.settings.popup button:not(.popup-close),
+.attack-slider-buttons>button,
+.draw-slider-buttons>button,
+.inventory.popup button,
+.layers-config__buttons>button,
+.pr-buttons>button,
+#classic-login,
+#form__buttons-login,
+.sbgcui_compare_stats>button,
+.inventory__manage-amount button,
+input:not(.sbgcui_settings-amount_input), 
+select {
+  border-color: var(--ingress-btn-border-left-color);
+  border-right-color: var(--ingress-btn-border-right-color);
+  border-bottom-color: var(--ingress-btn-border-right-color);
+  border-style: solid;
+  border-radius: 5px;
+  color: var(--ingress-btn-color);
+  background: linear-gradient(135deg, var(--ingress-btn-bg-left-color), var(--ingress-btn-bg-right-color)), var(--ingress-btn-bg-right-color);
+}
+
+#attack-menu {
+  border-style: double;
+  border-top-style: solid;
+}
+
+#discover, #deploy, #repair, #draw {
+  position: relative;
+}
+
+.i-buttons>button[disabled] {
+  filter: opacity(.5);
+}
+
+#eui-sort:disabled {
+  filter: opacity(.5);
+}
+
+.i-buttons>button,
+.attack-slider-buttons>button,
+.draw-slider-buttons>button {
+  position: relative;
+}
+
+option {
+  background-color: var(--ingress-btn-bg-right-color);
+}
+
+option:checked { /* WTF? checked is non-documented??? */
+  color: var(--ingress-btn-color);
+  background-color: var(--ingress-btn-bg-right-color);
+}
+
+.inventory__item-controls::after {
+  color: var(--ingress-btn-color) !important;
+  background: linear-gradient(135deg, var(--ingress-btn-bg-left-color), var(--ingress-btn-bg-right-color)), var(--ingress-btn-bg-right-color) !important;
+}
+
+#attack-slider-fire[disabled], #draw-slider-confirm[disabled] {
+  filter: opacity(0.5);
+}
+
+.popup-close[data-round=true], #inventory__close, .splide__arrow {
+  color: var(--ingress-color);
+  background: var(--ingress-bg-color-aa);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  border-color: var(--ingress--color) !important;
+}
+
+.splide__arrow svg {
+  fill: var(--ingress-color);
+}
+
+/* SLIDER ITEMS */
+
+.draw-slider-wrp .splide__slide.is-active .refs-list__image>div {
+  box-shadow: inset -8px 0px 0px -5px  var(--ingress-selection-color),
+      inset -10px 0px 8px -6px  var(--ingress-selection-bg-color),
+      inset 8px 0px 0px -5px  var(--ingress-selection-color),
+      inset 10px 0px 8px -6px  var(--ingress-selection-bg-color);
+}
+
+
+/* INVENTORY */
+
+.inventory__content, .inventory__tab.active {
+  border-color: var(--selection);
+}
+
+.inventory__controls select,
+.inventory__controls input {
+  border-width: 1.6px;
+}
+
+
+/* POPUPS */
+
+.profile.popup,
+.info.popup,
+.leaderboard.popup,
+.score.popup,
+.settings.popup,
+.layers-config.popup,
+.inventory.popup,
+.credits.popup,
+.inventory__manage-amount,
+#draw-slider,
+#attack-slider,
+.attack-slider-highlevel {
+  color: var(--ingress-color);
+  background-color: var(--ingress-bg-color-cc);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  border-color: var(--ingress-btn-border-left-color) !important;
+}
+
+.i-stat__core.selected {
+  border-color: var(--ingress-btn-border-left-color) !important;
+  box-shadow: 0px 0px 2px 2px var(--ingress-btn-border-left-color);
+}
+
+.pr-stat:not(:last-child) {
+  border-bottom: 1px #D1D1D144 solid;
+}
+
+.pr-xp-progress {
+  border: none;
+}
+
+.pr-xp-check {
+  background: none;
+}
+
+.layers-config__header,
+.leaderboard.popup>.popup-header,
+.settings.popup>h3,
+.credits.popup h3 {
+  text-transform: uppercase;
+  font-family: 'Exo', 'Manrope', sans-serif;
+}
+
+#discover[data-time]:after {
+  color: var(--ingress-color);
+}
+
+.discover-progress {
+  background-color: var(--ingress-btn-border-left-color);
+}
+
+.deploy-slider-error {
+  background-color: #201A3E;
+}
+
+
+/* SETTINGS */
+
+input#eui-links-opacity {
+  background: linear-gradient(135deg, var(--ingress-btn-bg-left-color), var(--ingress-btn-bg-right-color)), var(--ingress-btn-bg-right-color) !important;
+  border: 2px solid var(--ingress-btn-border-left-color) !important;
+}
+
+input#eui-links-opacity::-webkit-slider-thumb {
+  background: var(--ingress-btn-border-left-color);
+  box-shadow: -250px 0 0 250px var(--ingress-btn-border-left-color);
+}
+
+input#eui-links-opacity::-moz-range-thumb {
+  background: var(--ingress-btn-border-left-color);
+  box-shadow: -250px 0 0 250px var(--ingress-btn-border-left-color);
+}
+
+/* CUI */
+.sbgcui_refs-sort-button {
+  border-width: revert;
+}

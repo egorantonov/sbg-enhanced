@@ -21,8 +21,6 @@ export default function ButtonIcons() {
     score.innerText = '📊'
     translations.menu.settings = '🔧'
     settings.innerText = '🔧'
-    settings.style.marginBottom = '10px'
-    settings.style.marginTop = '10px'
     translations.menu.layers = '☰'
     translations.menu.follow = '💠'
 
