@@ -45,6 +45,8 @@ export const Modifiers = {
 
 export const Elements = {
   Input: 'input',
+  Select: 'select',
+  Option: 'option',
   Span: 'span',
   Div: 'div',
   Label: 'label',
@@ -54,6 +56,12 @@ export const Elements = {
 }
 
 export const Proposed = '-proposed'
+
+export const Themes = {
+  Default: 'Auto',
+  Ingress: 'Ingress',
+  Prime: 'Prime'
+}
 
 export const Nodes = {
   SelfName: document.getElementById('self-info__name'),
@@ -89,8 +97,8 @@ const Translations = {
     ru: 'Версия Enhanced UI',
   },
   ingressStyle: {
-    en: 'Ingress Style',
-    ru: 'Стиль Ингресс',
+    en: 'Custom theme',
+    ru: 'Дополнительная тема',
   },
   highContrast: {
     en: 'High Contrast',

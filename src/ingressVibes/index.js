@@ -1,5 +1,5 @@
-import { EUI, Elements, Events, GetLocale, Modifiers, Nodes, Proposed, SBG, t } from '../constants'
-import styles from './styles.css'
+import { EUI, Elements, Events, GetLocale, Modifiers, Nodes, Proposed, SBG, Themes, t } from '../constants'
+import ingressStyles from './styles.css'
 
 const applyTranslations = (target) => {
   let translations = JSON.parse(localStorage.getItem(target))
@@ -18,13 +18,30 @@ const applyTranslations = (target) => {
 
 export default function AddIngressVibes() {
   const i18next_main = `i18next_${GetLocale()}-main`
-  const input = document.createElement(Elements.Input)
+  // const input = document.createElement(Elements.Input)
+  const input = document.createElement(Elements.Select)
+  const themes = [
+    {
+      title: Themes.Default,
+      code: 0,
+      innerHTML: ''
+    }, 
+    {
+      title: Themes.Ingress,
+      code: 1,
+      innerHTML: ingressStyles
+    }, 
+    /*Themes.Prime*/]
   const settings = Nodes.SettingSections.at(0)
   if (settings) {
     const title = document.createElement(Elements.Span)
     title.innerText = t('ingressStyle')
-
-    input.type = Elements.CheckBox
+    themes.forEach(t => {
+      let o = document.createElement(Elements.Option)
+      o.value = t.code
+      o.innerText = t.title
+      input.appendChild(o)
+    })
     input.dataset.setting = EUI.IngressTheme
     const label = document.createElement(Elements.Label)
     label.classList.add(Modifiers.SettingsSectionItemClassName)
@@ -37,8 +54,8 @@ export default function AddIngressVibes() {
   const themeProposed = localStorage.getItem(`${EUI.IngressTheme}${Proposed}`)
   if (themeProposed != 1) {
     localStorage.setItem(`${EUI.IngressTheme}${Proposed}`, 1)
-    localStorage.setItem(EUI.IngressTheme, 1)
-    input.checked = true
+    localStorage.setItem(EUI.IngressTheme, themes.find(t=>t.title===Themes.Ingress).code)
+
     document.documentElement.dataset.theme = Modifiers.Auto
     let gameSettings = JSON.parse(localStorage.getItem(SBG.Settings))
 
@@ -51,28 +68,22 @@ export default function AddIngressVibes() {
   // STYLES
   const style = document.createElement(Elements.Style)
   style.dataset.id = EUI.IngressTheme
-  style.innerHTML = styles
+  document.head.appendChild(style)
 
-  if (localStorage.getItem(EUI.IngressTheme) == 1) {
-    document.head.appendChild(style)
-    input.checked = true
+  const currentTheme = localStorage.getItem(EUI.IngressTheme)
+  if (currentTheme > 0) {
+    style.innerHTML = themes[+currentTheme].innerHTML
+    input.selectedIndex = +currentTheme
     applyTranslations(i18next_main)
   }
 
   input.addEventListener(Events.onChange, (event) => {
-    if (event.target.checked) {
-      document.head.appendChild(style)
-      localStorage.setItem(EUI.IngressTheme, 1)
-      applyTranslations(i18next_main)
-      location.reload()
-    }
-    else {
-      style.remove()
-      localStorage.setItem(EUI.IngressTheme, 0)
-      localStorage.removeItem(i18next_main)
-      location.reload()
-    }
+    const theme = event.target.value
+    theme > 0 
+      ? applyTranslations(i18next_main)
+      : localStorage.removeItem(i18next_main)
+    localStorage.setItem(EUI.IngressTheme, theme)
+    style.innerHTML = themes[+theme].innerHTML
+    location.reload()
   })
-
-
 }

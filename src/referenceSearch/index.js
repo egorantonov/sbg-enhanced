@@ -27,7 +27,7 @@ export default function AddReferenceSearch() {
   search.dataset.type = Modifiers.ReferenceSearch
   search.placeholder = t('searchRefPlaceholder')
 
-  const sort = document.createElement('select')
+  const sort = document.createElement(Elements.Select)
   sort.id = EUI.Sort
 
   // CUI compatibility
@@ -37,7 +37,7 @@ export default function AddReferenceSearch() {
   const sorts = ['Name', 'Dist+', 'Dist-']
 
   sorts.forEach(s => {
-      let opt = document.createElement('option')
+      let opt = document.createElement(Elements.Option)
       opt.value = s
       opt.innerText = s
       sort.appendChild(opt)
