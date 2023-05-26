@@ -57,12 +57,6 @@ export const Elements = {
 
 export const Proposed = '-proposed'
 
-export const Themes = {
-  Default: 'Auto',
-  Ingress: 'Ingress',
-  Prime: 'Prime'
-}
-
 export const Nodes = {
   SelfName: document.getElementById('self-info__name'),
   InfoPopup: document.querySelector('.info.popup'),
@@ -96,9 +90,9 @@ const Translations = {
     en: 'Enhanced UI Version',
     ru: 'Версия Enhanced UI',
   },
-  ingressStyle: {
-    en: 'Custom theme',
-    ru: 'Дополнительная тема',
+  colorScheme: {
+    en: 'Color Scheme',
+    ru: 'Цветовая схема',
   },
   highContrast: {
     en: 'High Contrast',
@@ -161,7 +155,30 @@ const Translations = {
   importExport: {
     en: 'Import/export settings',
     ru: 'Импорт/экспорт настроек'
+  },
+  themeDefault: {
+    en: 'Default',
+    ru: 'По умолчанию'
+  },
+  themeIngress: {
+    en: 'Ingress',
+    ru: 'Ингресс'
+  },
+  themePrime: {
+    en: 'Prime',
+    ru: 'Прайм'
+  },
+  themeBW: {
+    en: 'B/W',
+    ru: 'Ч/Б'
   }
 }
 
 export const t = (key) => Translations[key][GetLocale()] ?? Translations[key][SBG.DefaultLang]
+
+export const Themes = {
+  Default: t('themeDefault'),
+  Ingress: t('themeIngress'),
+  Prime: t('themePrime'),
+  BW: t('themeBW')
+}

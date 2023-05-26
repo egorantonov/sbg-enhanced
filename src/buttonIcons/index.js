@@ -19,7 +19,6 @@ export default function ButtonIcons() {
     leaderboard.innerText = '🏅'
     translations.menu.score = '📊'
     score.innerText = '📊'
-    translations.menu.settings = '🔧'
     settings.innerText = '🔧'
     translations.menu.layers = '☰'
     translations.menu.follow = '💠'

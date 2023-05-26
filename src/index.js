@@ -4,8 +4,8 @@ import { Events, Sleep } from './constants'
 import { ProfileStatsChanged, RemoveBadges, RenderBadges } from './badges'
 import AddAnimations from './animations'
 import AddCanvasStyles from './canvasStyles'
+import AddColorScheme from './colorScheme'
 import AddHighContrast from './highContrast'
-import AddIngressVibes from './ingressVibes'
 import AddReferenceSearch from './referenceSearch'
 import AddStyles from './styles'
 import BeautifyCloseButtons from './closeButtons'
@@ -27,7 +27,7 @@ window.addEventListener(Events.onLoad, function () {
       AddHighContrast()
       AddAnimations()
       ButtonIcons()
-      AddIngressVibes()
+      AddColorScheme()
       InitObservers()
       DisableDrawButton()
       RemoveBadges()

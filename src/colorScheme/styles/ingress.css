@@ -179,6 +179,16 @@ option:checked { /* WTF? checked is non-documented??? */
       inset 10px 0px 8px -6px  var(--ingress-selection-bg-color);
 }
 
+#catalysers-list>.splide__slide.is-active, #cores-list>.splide__slide.is-active{
+  box-shadow: inset -8px 0px 0px -5px var(--ingress-selection-color),
+      inset -10px 0px 8px -6px var(--ingress-selection-bg-color),
+      inset 8px 0px 0px -5px var(--ingress-selection-color),
+      inset 10px 0px 8px -6px var(--ingress-selection-bg-color);
+  border-radius: 5px;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
 
 /* INVENTORY */
 

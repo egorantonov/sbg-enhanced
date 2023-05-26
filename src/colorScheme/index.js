@@ -1,6 +1,7 @@
 import { EUI, Elements, Events, GetLocale, Modifiers, Nodes, Proposed, SBG, Themes, t } from '../constants'
-import ingressStyles from './ingressStyles.css'
-import primeStyles from './primeStyles.css'
+import bwStyles from './styles/bw.css'
+import ingressStyles from './styles/ingress.css'
+import primeStyles from './styles/prime.css'
 
 const applyTranslations = (target) => {
   let translations = JSON.parse(localStorage.getItem(target))
@@ -19,7 +20,7 @@ const applyTranslations = (target) => {
   localStorage.setItem(target, JSON.stringify(translations))
 }
 
-export default function AddIngressVibes() {
+export default function AddColorScheme() {
   const i18next_main = `i18next_${GetLocale()}-main`
   // const input = document.createElement(Elements.Input)
   const input = document.createElement(Elements.Select)
@@ -38,12 +39,17 @@ export default function AddIngressVibes() {
       title: Themes.Prime,
       code: 2,
       innerHTML: primeStyles
+    },
+    {
+      title: Themes.BW,
+      code: 3,
+      innerHTML: bwStyles
     }
   ]
   const settings = Nodes.SettingSections.at(0)
   if (settings) {
     const title = document.createElement(Elements.Span)
-    title.innerText = t('ingressStyle')
+    title.innerText = t('colorScheme')
     themes.forEach(t => {
       let o = document.createElement(Elements.Option)
       o.value = t.code
@@ -82,12 +88,14 @@ export default function AddIngressVibes() {
   if (currentTheme > 0) {
     style.innerHTML = themes[+currentTheme].innerHTML
     input.selectedIndex = +currentTheme
-    applyTranslations(i18next_main)
+    if (currentTheme == 1 || currentTheme == 2) {
+      applyTranslations(i18next_main)
+    }
   }
 
   input.addEventListener(Events.onChange, (event) => {
     const theme = event.target.value
-    theme > 0 
+    theme == 1 || theme == 2 
       ? applyTranslations(i18next_main)
       : localStorage.removeItem(i18next_main)
     localStorage.setItem(EUI.IngressTheme, theme)
