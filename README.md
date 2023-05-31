@@ -1,5 +1,15 @@
 <h1 align="center"><img src="https://github.com/egorantonov/sbg-enhanced/raw/master/assets/script/64.png" width="32px" /> SBG Enhanced UI</h1>
 
+<p align="center">
+  <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/package-json/v/egorantonov/sbg-enhanced?color=20bb20&style=flat-square" /></a>
+  <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/v/release/egorantonov/sbg-enhanced?color=%2310dd10&include_prereleases&style=flat-square" /></a>
+  <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/release-date/egorantonov/sbg-enhanced?style=flat-square" /></a>
+  <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/downloads/egorantonov/sbg-enhanced/total?style=flat-square" /></a>
+  <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/downloads/egorantonov/sbg-enhanced/latest/total?style=flat-square" /></a>
+  <img src="https://img.shields.io/github/languages/top/egorantonov/sbg-enhanced?color=%23200bb20&style=flat-square" />  
+  <a href="https://3d.sytes.net"><img src="https://img.shields.io/website?label=3d.sytes.net&style=flat-square&url=https%3A%2F%2F3d.sytes.net" /></a>
+</p>
+
 <p align="center">Пользовательский скрипт, созданный для улучшения интерфейса игры <a href="https://3d.sytes.net" target="_blank">&nbsp;&nbsp;<img src="https://3d.sytes.net/icons/icon_64.png" width="16px" /> The Simplest Browser Geoloc</a></p>
 
 <p align="center"> 
@@ -14,9 +24,9 @@
 
 <h2 align="center">Особенности</h2>
 
-* Сортировка рефов по названию и расстоянию
-* Поиск рефов
-* Тема Ingress: стили, кнопки, медальки
+* Поиск рефов и сортировка по названию и расстоянию
+* Пользовательские темы: Ingress [REDACTED], Ingress Prime, Чёрно-белая
+* Экспорт/импорт настроек игры и пользовательских скриптов
 * Интерактивные анимации
 * Высокий контраст: для яркого солнечного дня и экономии аккумулятора устройств с *OLED экраном
 * Настраиваемая прозрачность линий
@@ -31,13 +41,26 @@
 
 <h2 align="center">Что нового</h2>
 
+<a href="https://github.com/egorantonov/sbg-enhanced/releases">
+  <img src="https://img.shields.io/github/v/release/egorantonov/sbg-enhanced?color=%2320bb20&include_prereleases&style=for-the-badge" />
+  <img src="https://img.shields.io/github/release-date/egorantonov/sbg-enhanced?color=%2320bb20&style=for-the-badge" />
+</a>
+
 [Список обновлений](https://github.com/egorantonov/sbg-enhanced/releases)
 
 <h2 align="center">Скриншоты</h2>
 
-* Тема Ingress
+* Тема Ingress [REDACTED]
 
 <img src="https://user-images.githubusercontent.com/16327320/230785245-8f01807d-c2ba-4e9c-9efb-c966cf694b12.png" width="240px" alt="Draw"/><img src="https://user-images.githubusercontent.com/16327320/230785249-a0123723-036b-44e4-9d77-7f53b698f3e7.png" width="240px" alt="Point"/><img src="https://user-images.githubusercontent.com/16327320/230785243-51f2a6e3-1c38-4f40-bdcd-d87bb6c917ee.png" width="240px" alt="Attack"/><img src="https://user-images.githubusercontent.com/16327320/230785241-d32f977d-f2fd-43fd-a45d-b09dc0e870da.png" width="240px" alt="Inventory"/>
+
+* Тема Ingress Prime
+
+<img src="https://github.com/egorantonov/sbg-enhanced/assets/16327320/2817468d-3aa6-41ff-86f7-969a00037ba3" width="240px" /><img src="https://github.com/egorantonov/sbg-enhanced/assets/16327320/c736d736-5fc9-4a07-aa93-87d1577977c7" width="240px" />
+
+* Чёрно-белая тема:
+
+<img src="https://github.com/egorantonov/sbg-enhanced/assets/16327320/53f8c772-d34a-40f0-956b-a1f42f3730ae" width="240px" /><img src="https://github.com/egorantonov/sbg-enhanced/assets/16327320/4485d5f3-c61c-4d1f-b149-d4bf50fddc31" width="240px" />
 
 * Высокий контраст
 
@@ -49,7 +72,7 @@ https://www.youtube.com/embed/zrz7pwRhkXY
 
 * Настройки: высокий контраст, прозрачность линий, анимации, тема Ingress
 
-<img src="https://user-images.githubusercontent.com/16327320/233618862-a48d3076-7e4e-4cc6-af55-796a38210c29.png" width="240px" alt="Settings"/>
+<img src="https://user-images.githubusercontent.com/16327320/233618862-a48d3076-7e4e-4cc6-af55-796a38210c29.png" width="240px" alt="Settings"/><img src="https://github.com/egorantonov/sbg-enhanced/assets/16327320/ad4ce453-5a9d-4525-abdc-0cd7ffeb6ba8" width="240px" alt="Settings"/>
 
 <h2 align="center">Как установить</h2>
 
