@@ -2,6 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/package-json/v/egorantonov/sbg-enhanced?color=20bb20&style=flat-square" /></a>
+  <a href="https://github.com/egorantonov/sbg-enhanced/actions"><img src="https://img.shields.io/github/actions/workflow/status/egorantonov/sbg-enhanced/webpack.yml?style=flat-square" /></a>
   <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/v/release/egorantonov/sbg-enhanced?color=%2310dd10&include_prereleases&style=flat-square" /></a>
   <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/release-date/egorantonov/sbg-enhanced?style=flat-square" /></a>
   <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/downloads/egorantonov/sbg-enhanced/total?style=flat-square" /></a>
