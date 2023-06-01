@@ -27,12 +27,13 @@ export default function AddReferenceSearch() {
   search.dataset.type = Modifiers.ReferenceSearch
   search.placeholder = t('searchRefPlaceholder')
 
+  const sortInfo = document.createElement(Elements.Span)
   const sort = document.createElement(Elements.Select)
   sort.id = EUI.Sort
 
   // CUI compatibility
   const cuiSort = document.querySelector('.sbgcui_refs-sort-button')
-  cuiSort && (sort.style.display = 'none')
+  cuiSort && (sort.style.display = 'none') && (sortInfo.style.display = 'none')
 
   const sorts = ['Name', 'Dist+', 'Dist-']
 
@@ -53,20 +54,20 @@ export default function AddReferenceSearch() {
               sort.selectedIndex = 0
               sort.disabled = false
               sort.remove()
+              sortInfo.remove()
           }
           else {
               refs = getRefs()
               inventoryRefs.length === 0 && (inventoryRefs = getRefs())
               clearButton.after(search)
               search.after(sort)
+              search.after(sortInfo)
               cuiSort && search.after(cuiSort) // CUI compatibility
               search.dataset.active = '1'
               search.value && searchRefs(search.value)
           }
       })
   })
-
-
 
   Nodes.InventoryPopupClose?.addEventListener(Events.onClick, () => {
       refs = []
@@ -94,9 +95,16 @@ export default function AddReferenceSearch() {
       searchRefs(e.target.value)
   })
 
+  sortInfo.addEventListener(Events.onClick, () => {
+    localStorage.removeItem('refs-cache')
+    sortInfo.innerText = ''
+  })
+
   sort.addEventListener(Events.onChange, async (e) => {
 
       sort.disabled = true
+
+      performance.mark('start')
 
       const sortType = e.target.value
 
@@ -149,6 +157,12 @@ export default function AddReferenceSearch() {
       })
 
       search.dataset.active === '1' && search.value && searchRefs(search.value)
+
+      performance.mark('end')
+      const duration = performance.measure('time','start','end').duration
+      const rs = `${refs.length}\u{a0}x\u{a0}${+(duration/1000).toFixed(1)}s`
+      console.log(rs)
+      sortInfo.innerText = rs
       sort.disabled = false
   })
 }
