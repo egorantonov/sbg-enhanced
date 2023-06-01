@@ -257,7 +257,7 @@ input[data-type="reference-search"] {
 }
 
 .inventory__content[data-type="3"] .inventory__item.loaded .inventory__item-left::before {
-  background: linear-gradient(90deg, #fff0 0%, var(--sbgcui-player-team) 100%);
+  background: linear-gradient(90deg, #fff0 0%, var(--sbgcui-branding-color) 100%);
 }
 
 :root {
