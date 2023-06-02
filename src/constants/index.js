@@ -48,11 +48,13 @@ export const Elements = {
   Select: 'select',
   Option: 'option',
   Span: 'span',
+  Paragraph: 'p',
   Div: 'div',
   Label: 'label',
   Style: 'style',
   CheckBox: 'checkbox',
-  Button: 'button'
+  Button: 'button',
+  Image: 'img'
 }
 
 export const Proposed = '-proposed'
@@ -171,7 +173,55 @@ const Translations = {
   themeBW: {
     en: 'B/W',
     ru: 'Ч/Б'
-  }
+  },
+  sortName: {
+    en: 'By name',
+    ru: 'По названию'
+  },
+  sortDist: {
+    en: 'By distance',
+    ru: 'По расстоянию'
+  },
+  sortEnergy: {
+    en: 'By energy',
+    ru: 'По заряду',
+  },
+  sortAmount: {
+    en: 'By amount',
+    ru: 'По количеству'
+  },
+  hacker: {
+    en: 'Discoveries Done',
+    ru: 'Проведено изучений'
+  },
+  liberator: {
+    en: 'Points Captured',
+    ru: 'Захвачено точек'
+  },
+  pioneer: {
+    en: 'Unique Points Captured',
+    ru: 'Уникальные захваты'
+  },
+  explorer: {
+    en: 'Unique Points Visited',
+    ru: 'Уникальные посещения'
+  },
+  connector: {
+    en: 'Lines Drawn',
+    ru: 'Нарисовано линий'
+  },
+  builder: {
+    en: 'Cores Deployed',
+    ru: 'Проставлено ядер'
+  },
+  purifier: {
+    en: 'Cores Destroyed',
+    ru: 'Уничтожено ядер'
+  },
+  guardian: {
+    en: 'Longest Point Ownership',
+    ru: 'Самое долгое владение точкой'
+  },
 }
 
 export const t = (key) => Translations[key][GetLocale()] ?? Translations[key][SBG.DefaultLang]

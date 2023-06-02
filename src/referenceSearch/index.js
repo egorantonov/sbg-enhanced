@@ -28,14 +28,26 @@ export default function AddReferenceSearch() {
   search.placeholder = t('searchRefPlaceholder')
 
   const sortInfo = document.createElement(Elements.Span)
+  sortInfo.style.margin = 'auto'
   const sort = document.createElement(Elements.Select)
   sort.id = EUI.Sort
 
-  // CUI compatibility
-  const cuiSort = document.querySelector('.sbgcui_refs-sort-button')
-  cuiSort && (sort.style.display = 'none') && (sortInfo.style.display = 'none')
+  // CUI compatibility // TODO: removed CUI sort until it has the same sort speed
+  const cuiSortButton = document.querySelector('.sbgcui_refs-sort-button')
+  const cuiSortSelect = document.querySelector('.sbgcui_refs-sort-select')
+  // TODO: // cuiSortButton && (sort.style.display = 'none') && (sortInfo.style.display = 'none')
+  cuiSortButton && (cuiSortButton.style.display = 'none')
+  cuiSortSelect && (cuiSortSelect.style.display = 'none')
 
-  const sorts = ['Name', 'Dist+', 'Dist-']
+  const sorts = [
+    t('sortName'),
+    `${t('sortDist')} +`,
+    `${t('sortDist')} -`,
+    `${t('sortEnergy')} +`,
+    `${t('sortEnergy')} -`,
+    `${t('sortAmount')} +`,
+    `${t('sortAmount')} -`
+  ]
 
   sorts.forEach(s => {
       let opt = document.createElement(Elements.Option)
@@ -62,7 +74,7 @@ export default function AddReferenceSearch() {
               clearButton.after(search)
               search.after(sort)
               search.after(sortInfo)
-              cuiSort && search.after(cuiSort) // CUI compatibility
+              cuiSortButton && search.after(cuiSortButton) // CUI compatibility
               search.dataset.active = '1'
               search.value && searchRefs(search.value)
           }
@@ -120,7 +132,7 @@ export default function AddReferenceSearch() {
 
       refs = getRefs()
 
-      if (refs.filter(ref => !ref.classList.contains(Modifiers.Loaded)).length !== 0) {
+      if (sortType !== sorts[5] && sortType !== sorts[6] && refs.filter(ref => !ref.classList.contains(Modifiers.Loaded)).length !== 0) {
 
           let hiddenSet = false
 
@@ -146,8 +158,26 @@ export default function AddReferenceSearch() {
       }
 
       // ADD SORTED
-      let sorted = refs.sort((a, b) => ParseMeterDistance(a) - ParseMeterDistance(b))
-      sortType === sorts[2] && sorted.reverse() // REVERSE IF DESC
+      let sorted = []
+      if (sortType === sorts[1]) {
+        sorted = refs.sort((a, b) => ParseMeterDistance(a) - ParseMeterDistance(b))
+      }
+      else if (sortType === sorts[2]) {
+        sorted = refs.sort((a, b) => ParseMeterDistance(b) - ParseMeterDistance(a))
+      }
+      else if (sortType === sorts[3]) {
+        sorted = refs.sort((a, b) => ParseEnergy(a) - ParseEnergy(b))
+      }
+      else if (sortType === sorts[4]) {
+        sorted = refs.sort((a, b) => ParseEnergy(b) - ParseEnergy(a))
+      }
+      else if (sortType === sorts[5]) {
+        sorted = refs.sort((a, b) => ParseAmount(a) - ParseAmount(b))
+      }
+      else /*if (sortType === sorts[6])*/ {
+        sorted = refs.sort((a, b) => ParseAmount(b) - ParseAmount(a))
+      }
+
       sorted.forEach(ref => {
           Nodes.InventoryContent?.appendChild(ref)
 
@@ -160,7 +190,7 @@ export default function AddReferenceSearch() {
 
       performance.mark('end')
       const duration = performance.measure('time','start','end').duration
-      const rs = `${refs.length}\u{a0}x\u{a0}${+(duration/1000).toFixed(1)}s`
+      const rs = duration < 50 ? refs.length : `${refs.length}\u{a0}x\u{a0}${+(duration/1000).toFixed(1)}s`
       console.log(rs)
       sortInfo.innerText = rs
       sort.disabled = false
@@ -176,4 +206,14 @@ const ParseMeterDistance = (ref) => {
         .match(DistanceRegex)
 
     return kilo === t('kilo') ? dist * 1e3 : +dist
+}
+
+const ParseEnergy = (ref) => +ref.querySelector('.inventory__item-descr')
+        .childNodes[4]?.textContent
+        .replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.')
+
+
+const ParseAmount = (ref) => {
+    const text = ref.querySelector('.inventory__item-title').innerText
+    return +text.slice(text.indexOf('(x')+2, text.indexOf(')'))
 }
