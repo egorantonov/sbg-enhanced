@@ -22,8 +22,8 @@ body, input, button {
 
 /* BADGES */
 
-img.eui-ingress-theme {
-  display: block;
+.eui-badge-container {
+  display: flex;
 }
 
 /* BUTTONS */

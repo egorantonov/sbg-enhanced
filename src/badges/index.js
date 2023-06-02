@@ -42,7 +42,6 @@ export const AddBadges = () => {
     const stats = Array.from(document.querySelectorAll('.pr-stat'))
     const badgesContainer = document.createElement(Elements.Div)
     badgesContainer.className = badgesContainerClass
-    badgesContainer.style.display = 'flex'
     badgesContainer.style.justifyContent = 'center'
     badgesContainer.style.borderBottom = '1px var(--border-transp) solid'
 
