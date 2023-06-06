@@ -13,6 +13,7 @@ import ButtonIcons from './buttonIcons'
 import ImportExport from './importExport'
 import Informer from './informer'
 import { Private } from './private'
+import ZenMode from './zenMode'
 
 const InitObserver = ({target, config, callback}) =>
   target && config && callback && new MutationObserver(callback).observe(target, config)
@@ -34,6 +35,7 @@ window.addEventListener(Events.onLoad, function () {
       AddDiscoverProgress()
       RenderBadges()
       AddReferenceSearch()
+      ZenMode()
   })
 }, false)
 

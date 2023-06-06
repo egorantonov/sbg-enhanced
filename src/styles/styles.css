@@ -242,6 +242,10 @@ input[data-type="reference-search"] {
   padding: 0 6px;
 }
 
+.zen {
+  filter: opacity(.75)
+}
+
 /* SBG CUI Enhancements and support */
 
 .sbgcui_xpProgressBar {
