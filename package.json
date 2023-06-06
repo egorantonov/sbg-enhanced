@@ -1,11 +1,12 @@
 {
   "name": "sbg-enhanced",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "description": "<h1 align=\"center\"><img src=\"https://github.com/egorantonov/sbg-enhanced/raw/master/assets/script/64.png\" width=\"32px\" /> SBG Enhanced UI</h1>",
   "private": true,
   "scripts": {
-    "build": "del /a \".\\dist\\*.js\" && webpack --mode=production && rename \".\\dist\\index.user.js\" \"index.js\"",
-    "dev": "del /a \".\\dist\\*.js\" && webpack --mode=development && rename \".\\dist\\index.user.js\" \"index.js\"",
+    "build": "copy /y nul .\\src\\private\\index.js && del /a \".\\dist\\*.js\" && webpack --mode=production && rename \".\\dist\\index.user.js\" \"index.js\"",
+    "private": "copy /y .\\src\\private\\private.js .\\src\\private\\index.js && del /a \".\\dist\\*.js\" && webpack --config=private.config.js --mode=production && cd ./dist && del *.zip && tar --exclude *.zip  -cvf private.zip *.* && cd ..",
+    "dev": "copy /y .\\src\\private\\private.js .\\src\\private\\index.js && del /a \".\\dist\\*.js\" && webpack --mode=development && rename \".\\dist\\index.user.js\" \"index.js\"",
     "clean": "del /a \".\\dist\\*.*\" /q",
     "prepare": "husky install"
   },

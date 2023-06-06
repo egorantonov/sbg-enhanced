@@ -9,7 +9,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "ignorePatterns": ["/dist/index.js", "/index.js", "/webpack.config.js"],
+  "ignorePatterns": ["/dist/index.js", "/index.js", "/webpack.config.js", "/private.config.js"],
   "rules": {
     "quotes": ["error", "single"],
     "semi": ["error", "never"],

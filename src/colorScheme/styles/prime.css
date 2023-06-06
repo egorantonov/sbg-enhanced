@@ -50,11 +50,6 @@ select {
   background: linear-gradient(135deg, var(--ingress-btn-bg-left-color), var(--ingress-btn-bg-right-color)), var(--ingress-btn-bg-right-color);
 }
 
-#attack-menu {
-  border-style: double;
-  border-top-style: solid;
-}
-
 #discover, #deploy, #repair, #draw {
   position: relative;
 }
@@ -199,7 +194,6 @@ option:checked { /* WTF? checked is non-documented??? */
 
 input#eui-links-opacity {
   background: linear-gradient(135deg, var(--ingress-btn-bg-left-color), var(--ingress-btn-bg-right-color)), var(--ingress-btn-bg-right-color) !important;
-  border: 2px solid var(--ingress-btn-border-left-color) !important;
 }
 
 input#eui-links-opacity::-webkit-slider-thumb {

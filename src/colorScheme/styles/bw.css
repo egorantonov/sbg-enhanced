@@ -77,11 +77,6 @@ select {
   backdrop-filter: blur(5px);
 }
 
-#attack-menu {
-  border-style: double;
-  border-top-style: solid;
-}
-
 #discover, #deploy, #repair, #draw {
   border-radius: 0;
   position: relative;
@@ -252,11 +247,6 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 /* SETTINGS */
-
-input#eui-links-opacity {
-  background: var(--ingress-btn-bg-color) !important;
-  border: 2px solid var(--ingress-btn-border-color) !important;
-}
 
 input#eui-links-opacity::-webkit-slider-thumb {
   background: var(--ingress-btn-border-color);

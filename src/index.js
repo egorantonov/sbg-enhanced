@@ -12,7 +12,7 @@ import BeautifyCloseButtons from './closeButtons'
 import ButtonIcons from './buttonIcons'
 import ImportExport from './importExport'
 import Informer from './informer'
-import Private from './private'
+import { Private } from './private'
 
 const InitObserver = ({target, config, callback}) =>
   target && config && callback && new MutationObserver(callback).observe(target, config)
@@ -26,8 +26,8 @@ window.addEventListener(Events.onLoad, function () {
       AddStyles()
       AddHighContrast()
       AddAnimations()
-      ButtonIcons()
       AddColorScheme()
+      ButtonIcons()
       InitObservers()
       DisableDrawButton()
       RemoveBadges()
@@ -42,7 +42,7 @@ window.addEventListener(
   async function () {
     await Sleep(1600) // sleep for for a while to make sure SBG is loaded
     await Promise.all([
-      Informer(), AddCanvasStyles(), BeautifyCloseButtons(), ImportExport(), Private(),
+      Informer(), AddCanvasStyles(), BeautifyCloseButtons(), ImportExport(), Private && (Private()),
     ])
   },
   false

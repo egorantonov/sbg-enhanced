@@ -16,6 +16,7 @@ export const EUI = {
   LinksOpacity: 'eui-links-opacity',
   HighContrast: 'eui-high-contrast',
   Animations: 'eui-animations',
+  CompactView: 'eui-compact-view',
   Sort: 'eui-sort',
   Search: 'eui-search',
   IngressTheme: 'eui-ingress-theme',
@@ -111,6 +112,10 @@ const Translations = {
   animations: {
     en: 'Animations',
     ru: 'Анимации',
+  },
+  compactView: {
+    en: 'Compact View',
+    ru: 'Компактный режим'
   },
   searchRefPlaceholder: {
     en: 'Search refs',
