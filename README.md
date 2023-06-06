@@ -77,16 +77,6 @@ https://www.youtube.com/embed/zrz7pwRhkXY
 
 <h2 align="center">Как установить</h2>
 
-### Android приложение (APK)
-
-Скачайте и установите приложение Android от [@Elektroplayer](https://github.com/Elektroplayer):
-
-[app-release.apk](https://github.com/Elektroplayer/sbg-apk/releases/latest/download/app-release.apk)
-
-В состав приложения также входит пользовательский скрипт [Custom UI](https://github.com/nicko-v/sbg-cui) от [@nicko-v](https://github.com/nicko-v)
-
-***
-
 ### Android
 
 1. Установите один из браузеров: 
@@ -106,6 +96,18 @@ https://www.youtube.com/embed/zrz7pwRhkXY
 1. Обновить страницу с игрой. Скрипт должен запуститься и внести изменения.
 
 Обновление скрипта осуществляется нажатием на `Last updated` (`Обновлён`) в строке скрипта на вкладке `Installed Userscripts` (`Установленные скрипты`) либо выбором скрипта (чекбокс слева) и запуска команды `Trigger Update` (`Обновить выбранное`).
+
+***
+
+### Android приложение (APK)
+
+_Не рекомендуется к использованию на данный момент из-за нестабильности работы со скриптами_
+
+Скачайте и установите приложение Android от [@Elektroplayer](https://github.com/Elektroplayer):
+
+[app-release.apk](https://github.com/Elektroplayer/sbg-apk/releases/latest/download/app-release.apk)
+
+<strike>В состав приложения также входит пользовательский скрипт [Custom UI](https://github.com/nicko-v/sbg-cui) от [@nicko-v](https://github.com/nicko-v)</strike>
 
 ***
 
