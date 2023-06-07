@@ -18,18 +18,18 @@ export default async function ImportExport() {
       reader.onload = function() {
         console.log(reader.result)
         ApplyImportedSettings(JSON.parse(reader.result))
+        location.reload()
       }
 
       reader.onerror = function() {
         console.log(reader.error)
+        alert('FileReader error')
       }
     }
     catch (e) {
-      console.error('Unknown error occured')
+      alert('Unknown error occurred')
       console.error(e)
     }
-
-    location.reload()
   }
 
   const Export = () => {

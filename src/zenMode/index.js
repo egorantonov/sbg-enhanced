@@ -2,7 +2,7 @@ import { Modifiers, Nodes } from '../constants'
 
 export default function ZenMode() {
   const attackButton = document.getElementById('attack-menu')
-  attackButton.addEventListener('touchstart', () => {
+  attackButton && attackButton.addEventListener('touchstart', () => {
     let touchStart = Date.now()
 
     let timeoutID = setTimeout(() => {
@@ -14,9 +14,7 @@ export default function ZenMode() {
     }, 1500)
 
     attackButton.addEventListener('touchend', () => {
-      let touchDuration = Date.now() - touchStart
-      console.log(touchDuration)
-      if (touchDuration < 1000) {
+      if (Date.now() - touchStart < 1000) {
         clearTimeout(timeoutID)
       } else {
         return

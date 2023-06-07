@@ -13,7 +13,7 @@
 
   --selection: #fff !important;
 
-  --sbgcui-player-team: #fff;
+  --sbgcui-branding-color: #fff;
 }
 
 :root[data-theme="light"] {
@@ -31,7 +31,7 @@
 
   --selection: #000 !important;
 
-  --sbgcui-player-team: #000;
+  --sbgcui-branding-color: #000;
 }
 
 @media (prefers-color-scheme: light) {
@@ -50,7 +50,7 @@
   
     --selection: #000 !important;
 
-    --sbgcui-player-team: #000;
+    --sbgcui-branding-color: #000;
   }
 }
 

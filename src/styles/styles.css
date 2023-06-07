@@ -153,6 +153,7 @@
 
 .i-stat__entry:not(.i-stat__cores) {
   margin: 0 5px;
+  min-width: 45%;
 }
 
 .i-stat__cores {
