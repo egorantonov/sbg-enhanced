@@ -22,14 +22,14 @@
   },
   "homepage": "https://github.com/egorantonov/sbg-enhanced#readme",
   "dependencies": {
-    "eslint": "^8.41.0"
+    "eslint": "^8.42.0"
   },
   "devDependencies": {
     "css-loader": "^6.8.1",
     "husky": "^8.0.3",
     "style-loader": "^3.3.3",
     "to-string-loader": "^1.2.0",
-    "webpack": "^5.85.0",
+    "webpack": "^5.85.1",
     "webpack-cli": "^5.1.1",
     "webpack-userscript": "^3.2.2"
   }
