@@ -18,14 +18,13 @@
   margin-top: 10px;
 }
 
-.bottomleft-container > button {
+.bottomleft-container > button, body > #layers {
   min-width: 40px;
+  min-height: 40px;
 }
 
 .game-menu > button, button#ops, #attack-menu, body>#layers {
   text-transform: uppercase;
-  min-width: 3em;
-  min-height: 3em;
 }
 
 .popup-close[data-round=true], #inventory__close[data-round=true] {

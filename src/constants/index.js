@@ -229,6 +229,10 @@ const Translations = {
     en: 'Longest Point Ownership',
     ru: 'Самое долгое владение точкой'
   },
+  updateFound: {
+    en: 'Online update found, consider update the user script to version ',
+    ru: 'Найдено обновление, обновите скрипт до версии '
+  }
 }
 
 export const t = (key) => Translations[key][GetLocale()] ?? Translations[key][SBG.DefaultLang]
