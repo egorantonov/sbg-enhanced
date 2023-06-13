@@ -1,6 +1,6 @@
 import { AddDiscoverProgress, DiscoverChanged } from '../discoverButton'
 import { DisableDrawButton, PointStatsChanged } from '../drawButton'
-import { EUI, Sleep, t } from '../constants'
+import { EUI, Nodes, Sleep, t } from '../constants'
 import { ProfileStatsChanged, RemoveBadges, RenderBadges } from '../badges'
 import AddAnimations from '../animations'
 import AddCanvasStyles from '../canvasStyles'
@@ -16,6 +16,18 @@ import { Private } from '../private'
 import ZenMode from '../zenMode'
 
 async function ExecuteScript () {
+  let delaySyncMs = 1500
+  let delayAsyncMs = 2000
+
+  const connection = navigator.connection
+
+  if (connection) {
+    delaySyncMs += connection.rtt
+    delayAsyncMs += connection.rtt
+
+    const value = `➕${connection.rtt}ms 🔽${connection.downlink} 📶${connection.effectiveType}${connection.type ? ` ${connection.type}` : ''}`
+    localStorage.setItem(EUI.Connection, value)
+  }
 
   const InitObserver = ({ target, config, callback }) =>
     target && config && callback && new MutationObserver(callback).observe(target, config)
@@ -23,25 +35,29 @@ async function ExecuteScript () {
   const InitObservers = () => [PointStatsChanged, ProfileStatsChanged, DiscoverChanged]
     .forEach(o => InitObserver(o))
 
-    Sleep(1400)
+    await Sleep(delaySyncMs)
       .then(() => {
         AddStyles()
         AddHighContrast()
         AddAnimations()
         AddColorScheme()
-        ButtonIcons()
         InitObservers()
         DisableDrawButton()
         RemoveBadges()
-        AddDiscoverProgress()
         RenderBadges()
-        AddReferenceSearch()
         ZenMode()
       })
 
-    await Sleep(1500) // sleep for a while to make sure SBG is loaded
+    await Sleep(delayAsyncMs) // sleep for a while to make sure SBG is loaded
     await Promise.all([
-      Informer(), AddCanvasStyles(), BeautifyCloseButtons(), ImportExport(), Private && (Private()),
+      Informer(),
+      AddCanvasStyles(),
+      BeautifyCloseButtons(),
+      ImportExport(),
+      ButtonIcons(),
+      AddReferenceSearch(),
+      AddDiscoverProgress(),
+      Private && (Private())
     ])
 }
 
@@ -88,7 +104,7 @@ export async function RunWithOnlineUpdate() {
   }
 
   const releaseUrl = 'https://api.github.com/repos/egorantonov/sbg-enhanced/releases/latest'
-  let onlineInUse = document.getElementById(EUI.Id)
+  let onlineInUse = Nodes.GetId(EUI.Id)
 
   if (!onlineInUse) {
     await fetch(releaseUrl)

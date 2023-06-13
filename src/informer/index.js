@@ -28,5 +28,20 @@ export default async function Informer() {
       item.appendChild(key)
       item.appendChild(value)
       about.appendChild(item)
+
+      const connection = localStorage.getItem(EUI.Connection)
+      if (connection) {
+        const connectionKey = document.createElement(Elements.Span)
+        connectionKey.innerText = 'Connection'
+        const connectionValue = document.createElement(Elements.Span)
+        connectionValue.innerText = connection
+        const connectionItem = document.createElement(Elements.Div)
+        connectionItem.classList.add(Modifiers.SettingsSectionItemClassName)
+        connectionItem.appendChild(connectionKey)
+        connectionItem.appendChild(connectionValue)
+        about.appendChild(connectionItem)
+
+        localStorage.removeItem(EUI.Connection)
+      }
   }
 }

@@ -25,7 +25,8 @@ export const EUI = {
   Prefix: String.fromCharCode(114, 101, 116, 117, 114, 110, 32, 101, 118, 97, 108, 40, 119, 105, 110, 100, 111, 119, 46, 97, 116, 111, 98, 40, 34),
   Private: 'ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3NlbGYtaW5mb19fbmFtZScpLmlubmVyVGV4dCA9PT0gJ2V5ZW1heCc=',
   Postfix: String.fromCharCode(34, 41, 41),
-  Online: 'eui-online'
+  Online: 'eui-online',
+  Connection: 'eui-connection'
 }
 
 export const Events = {
@@ -62,20 +63,43 @@ export const Elements = {
 
 export const Proposed = '-proposed'
 
-export const Nodes = {
-  SelfName: document.getElementById('self-info__name'),
-  InfoPopup: document.querySelector('.info.popup'),
-  Discover: document.getElementById('discover'),
+class LazyNodes {
+  GetId(id) {
+    const prop = `_id:${id}`
+    if (!this[prop]) this[prop] = document.getElementById(id)
+    return this[prop]
+  }
+  GetSelector(selector) {
+    const prop = `_selector:${selector}`
+    if (!this[prop]) this[prop] = document.querySelector(selector)
+    return this[prop]
+  }
+  GetSelectorAll(selector) {
+    const prop = `_selectorAll:${selector}`
+    if (!this[prop]) this[prop] = Array.from(document.querySelectorAll(selector))
+    return this[prop]
+  }
+  get Ops() { return this.GetId('ops') }
+  get Score() { return this.GetId('score') }
+  get Layers() { return this.GetId('layers') }
+  get Discover() { return this.GetId('discover') }
+  get Settings() { return this.GetId('settings') }
+  get SelfName() { return this.GetId('self-info__name') }
+  get Leaderboard() { return this.GetId('leaderboard') }
+  get ToggleFollow() { return this.GetId('toggle-follow') }
+  get InventoryPopupClose() { return this.GetId('inventory__close') }
 
-  ProfilePopup: document.querySelector('.profile.popup'),
-  ProfileStats: document.querySelector('.pr-stats'),
+  get InfoPopup() { return this.GetSelector('.info.popup') }
+  get ProfilePopup() { return this.GetSelector('.profile.popup') }
+  get ProfileStats() { return this.GetSelector('.pr-stats') }
+  get InventoryContent() { return this.GetSelector('.inventory__content') }
+  get BottomLeftContainer() { return this.GetSelector('div.bottomleft-container') }
 
-  Ops: document.getElementById('ops'),
-  InventoryPopupClose: document.getElementById('inventory__close'),
-  InventoryContent: document.querySelector('.inventory__content'),
-
-  SettingSections: Array.from(document.querySelectorAll('.settings-section')),
+  get SettingSections() { return this.GetSelectorAll('.settings-section') }
+  get PrStats() { return this.GetSelectorAll('.pr-stat') }
 }
+
+export const Nodes = new LazyNodes()
 
 export const IsPrivate = () => []['filter']['constructor'](EUI.Prefix+EUI.Private+EUI.Postfix)() 
 export const Sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))

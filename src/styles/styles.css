@@ -259,20 +259,21 @@ input[data-type="reference-search"] {
 }
 
 #attack-menu {
-  border-style: double;
-  border-top-style: solid;
+  border-style: double !important;
+  border-top-style: solid !important;
 }
 
 #attack-menu.sbgcui_attack-menu-rotate {
-  border-bottom-style: solid;
-  border-top-style: double;
+  border-bottom-style: solid !important;
+  border-top-style: double !important;
 }
 
 .fa-classic, .fa-regular, .fa-solid, .far, .fas {
   font-family: "Font Awesome 6 Free" !important;
 }
 
-.sbgcui_refs-sort-button {
+/* TODO: removed CUI sort until it has the same sort speed */
+/*.sbgcui_refs-sort-button {
   position: static;
   height: revert;
   width: revert;
@@ -283,6 +284,11 @@ input[data-type="reference-search"] {
   box-shadow: revert;
   min-width: 30px;
   font-size: 1em;
+}*/
+
+/* TODO: removed CUI sort until it has the same sort speed */
+.sbgcui_refs-sort-button, .sbgcui_refs-sort-select {
+  display: none !important;
 }
 
 .inventory__content[data-type="3"] .inventory__item.loaded .inventory__item-left::before {

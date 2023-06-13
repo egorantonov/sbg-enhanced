@@ -1,8 +1,8 @@
 import { EUI, Elements, Events, Modifiers, Nodes, Sleep, t } from '../constants'
 
-export default function AddReferenceSearch() {
+export default async function AddReferenceSearch() {
 
-  const tabs = Array.from(document.querySelectorAll('.inventory__tab'))
+  const tabs = Nodes.GetSelectorAll('.inventory__tab')
   let inventoryRefs = []
   let refs = [] /* REFS CONTAINER */
   const scroll = () => Nodes.InventoryContent.dispatchEvent(new Event('scroll'))
@@ -50,10 +50,10 @@ export default function AddReferenceSearch() {
   ]
 
   sorts.forEach(s => {
-      let opt = document.createElement(Elements.Option)
-      opt.value = s
-      opt.innerText = s
-      sort.appendChild(opt)
+    let opt = document.createElement(Elements.Option)
+    opt.value = s
+    opt.innerText = s
+    sort.appendChild(opt)
   })
 
   let clearButton = document.getElementById('inventory-delete-section')

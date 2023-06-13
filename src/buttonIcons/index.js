@@ -1,6 +1,6 @@
-import { EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, t } from '../constants'
+import { EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Sleep, t } from '../constants'
 
-export default function ButtonIcons() {
+export default async function ButtonIcons() {
   if (IsPrivate() && !localStorage.getItem(EUI.CompactView)) {
     localStorage.setItem(EUI.CompactView, 1)
   }
@@ -32,26 +32,24 @@ export default function ButtonIcons() {
   }
 
   if (checked) {
-    const settings = document.getElementById('settings')
-    const leaderboard = document.getElementById('leaderboard')
-    const score = document.getElementById('score')
-    const layers = document.getElementById('layers')
-    const toggleFollow = document.getElementById('toggle-follow')
+    while (Nodes.Settings.innerText.includes('.')) {
+      await Sleep(250)
+    }
 
-    leaderboard.innerText = '🏅'
-    score.innerText = '📊'
-    settings.innerText = '🔧'
-    layers.innerText && (layers.innerText = '☰')
-    layers.innerText && (toggleFollow.innerText = '💠')
+    Nodes.Leaderboard.innerText = '🏅'
+    Nodes.Score.innerText = '📊'
+    Nodes.Settings.innerText = '🔧'
+    Nodes.Layers.innerText && (Nodes.Layers.innerText = '☰')
+    Nodes.Layers.innerText && (Nodes.ToggleFollow.innerText = '💠')
 
     // Move all buttons after 'toggle-follow' button
-    toggleFollow.after(settings)
-    toggleFollow.after(leaderboard)
-    toggleFollow.after(score)
+    Nodes.ToggleFollow.after(Nodes.Settings)
+    Nodes.ToggleFollow.after(Nodes.Leaderboard)
+    Nodes.ToggleFollow.after(Nodes.Score)
 
     // Move 'ops' button into 'bottomleft-container'
-    const bottomLeftContainer = document.querySelector('div.bottomleft-container')
-    bottomLeftContainer.appendChild(Nodes.Ops)
+    const bottomLeftContainer = Nodes.GetSelector('div.bottomleft-container')
+    bottomLeftContainer && bottomLeftContainer.appendChild(Nodes.Ops)
   }
 
   localStorage.setItem(i18next_main, JSON.stringify(translations))
@@ -62,17 +60,16 @@ export default function ButtonIcons() {
   })
 
   // CUI compatibility (Add shortcut to CUI settings)
-  const cuiFavButton = document.querySelector('div.ol-control>button.sbgcui_button_reset.sbgcui_favs_star')
+  const cuiFavButton = Nodes.GetSelector('div.ol-control>button.sbgcui_button_reset.sbgcui_favs_star')
   if (cuiFavButton) {
-    const cuiSettings = document.createElement(Elements.Button)
-    cuiSettings.innerText = '⚙'
-    cuiSettings.style.fontWeight = 'bold'
-    cuiFavButton.before(cuiSettings)
+    const cuiShortcut = document.createElement(Elements.Button)
+    cuiShortcut.innerText = '⚙'
+    cuiShortcut.style.fontWeight = 'bold'
+    cuiFavButton.before(cuiShortcut)
 
-    cuiSettings.addEventListener(Events.onClick, (e) => {
+    cuiShortcut.addEventListener(Events.onClick, (e) => {
       e.stopPropagation()
-      const cuiSettingsMenu = document.querySelector('form.sbgcui_settings')
-
+      const cuiSettingsMenu = Nodes.GetSelector('form.sbgcui_settings')
       if (cuiSettingsMenu) {
         cuiSettingsMenu.classList.toggle('sbgcui_hidden')
       }

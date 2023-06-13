@@ -39,7 +39,6 @@ export const AddBadges = () => {
 
     RemoveBadgesContainer()
 
-    const stats = Array.from(document.querySelectorAll('.pr-stat'))
     const badgesContainer = document.createElement(Elements.Div)
     badgesContainer.className = badgesContainerClass
     badgesContainer.style.justifyContent = 'center'
@@ -47,8 +46,8 @@ export const AddBadges = () => {
 
     Nodes.ProfileStats?.prepend(badgesContainer)
 
-    for (let i = 0; i < stats.length; i++) {
-        const stat = stats[i]
+    for (let i = 0; i < Nodes.PrStats.length; i++) {
+        const stat = Nodes.PrStats[i]
         const title = stat.firstChild.innerText
 
         if (badgeMap.has(title)) {

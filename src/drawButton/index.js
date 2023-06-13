@@ -2,7 +2,7 @@ import { Modifiers, Nodes, SBG } from '../constants'
 
 const onPointStatsChanged = 'pointStatsChanged'
 export const PointStatsChanged = {
-    target: document.getElementById('i-stat__line-out'),
+    target: Nodes.GetId('i-stat__line-out'),
     config: { childList: true },
     callback: (mutationsList) => {
         const event = new Event(onPointStatsChanged, { bubbles: true })
@@ -13,7 +13,7 @@ export const PointStatsChanged = {
 // disables draw button when outbound limit is reached
 export const DisableDrawButton = () => {
 
-    const draw = document.getElementById('draw')
+    const draw = Nodes.GetId('draw')
     if (Nodes.InfoPopup && !!draw) {
       Nodes.InfoPopup.addEventListener(onPointStatsChanged, (event) => {
             if (event.target.innerText >= SBG.OutboundLinksLimit) {

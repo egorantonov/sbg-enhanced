@@ -6,30 +6,22 @@ export default async function BeautifyCloseButtons() {
     button.dataset.round = true
   }
 
-  Array.from(
-    document.body.querySelectorAll(
-      'button.popup-close, button#inventory__close'
-    )
-  ).forEach((button) => {
-    button.innerText.toLowerCase() === SBG.DefaultCloseButtonText &&
-      beautifyButton(button)
-  })
+  Nodes.GetSelectorAll('button.popup-close, button#inventory__close')
+    .forEach((button) => {
+      button.innerText.toLowerCase() === SBG.DefaultCloseButtonText && beautifyButton(button)
+    })
 
   /* CREDITS POPUP IS BEING FETCHED AS HTML */
-  const creditsViewButton = document.getElementById('settings-credits')
+  const creditsViewButton = Nodes.GetId('settings-credits')
   creditsViewButton?.addEventListener(
     Events.onClick,
     async () => {
-      let creditsPopupClose = document.querySelector(
-        '.credits.popup .popup-close'
-      )
+      let creditsPopupClose = Nodes.GetSelector('.credits.popup .popup-close')
 
       while (!creditsPopupClose) {
         // wait for SBG fetches CREDITS POPUP
         await Sleep(250)
-        creditsPopupClose = document.querySelector(
-          '.credits.popup .popup-close'
-        )
+        creditsPopupClose = Nodes.GetSelector('.credits.popup .popup-close')
       }
 
       creditsPopupClose?.dataset?.round != true &&

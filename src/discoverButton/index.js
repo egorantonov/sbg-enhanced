@@ -1,6 +1,5 @@
 import { Elements, Modifiers, Nodes, t } from '../constants'
 
-
 const onDiscoverChanged = 'discoverChanged'
 export const DiscoverChanged = {
     target: Nodes.Discover,
@@ -14,7 +13,7 @@ export const DiscoverChanged = {
     }
 }
 
-export const AddDiscoverProgress = () => {
+export const AddDiscoverProgress = async () => {
 
     if (Nodes.InfoPopup && Nodes.Discover) {
         const discoverProgress = document.createElement(Elements.Div)
