@@ -24,9 +24,6 @@ async function ExecuteScript () {
   if (connection) {
     delaySyncMs += connection.rtt
     delayAsyncMs += connection.rtt
-
-    const value = `➕${connection.rtt}ms 🔽${connection.downlink} 📶${connection.effectiveType}${connection.type ? ` ${connection.type}` : ''}`
-    localStorage.setItem(EUI.Connection, value)
   }
 
   const InitObserver = ({ target, config, callback }) =>

@@ -1,4 +1,4 @@
-import {EUI, Elements, Modifiers, Nodes, SBG, t} from '../constants'
+import {EUI, Elements, Events, Modifiers, Nodes, SBG, t} from '../constants'
 
 export default async function Informer() {
   console.log(`SBG Enhanced UI, version ${EUI.Version}`)
@@ -29,16 +29,30 @@ export default async function Informer() {
       item.appendChild(value)
       about.appendChild(item)
 
-      const connection = localStorage.getItem(EUI.Connection)
+      const connection = navigator.connection
       if (connection) {
         const connectionKey = document.createElement(Elements.Span)
-        connectionKey.innerText = 'Connection'
-        const connectionValue = document.createElement(Elements.Span)
-        connectionValue.innerText = connection
+        connectionKey.innerText = t('connection')
+        const connectionShow = document.createElement(Elements.Button)
+        connectionShow.innerText = t('showConnection')
+        connectionShow.addEventListener(Events.onClick, () => {
+            const connectionValue = `
+                ${t('connectionPing')}:\u{a0}${connection.rtt}${t('m')}${t('s')} 
+                ${t('connectionLink')}:\u{a0}~${connection.downlink}mb/s 
+                ${t('connectionGrade')}:\u{a0}${connection.effectiveType.toUpperCase()}
+                ${
+                    (connection.type && connection.type !== 'unknown')
+                        ? ` ${t('connectionType')}:\u{a0}${connection.type.toUpperCase()}` 
+                        : ''
+                }
+            `
+            alert(connectionValue)
+            localStorage.setItem(EUI.Connection, connectionValue)
+        })
         const connectionItem = document.createElement(Elements.Div)
         connectionItem.classList.add(Modifiers.SettingsSectionItemClassName)
         connectionItem.appendChild(connectionKey)
-        connectionItem.appendChild(connectionValue)
+        connectionItem.appendChild(connectionShow)
         about.appendChild(connectionItem)
 
         localStorage.removeItem(EUI.Connection)

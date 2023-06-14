@@ -1,4 +1,5 @@
 import { EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Sleep, t } from '../constants'
+import { LongTouchEventListener } from '../helpers'
 
 export default async function ButtonIcons() {
   if (IsPrivate() && !localStorage.getItem(EUI.CompactView)) {
@@ -59,7 +60,8 @@ export default async function ButtonIcons() {
     location.reload()
   })
 
-  // CUI compatibility (Add shortcut to CUI settings)
+  /* CUI compatibility */
+  // Add shortcut to CUI settings
   const cuiFavButton = Nodes.GetSelector('div.ol-control>button.sbgcui_button_reset.sbgcui_favs_star')
   if (cuiFavButton) {
     const cuiShortcut = document.createElement(Elements.Button)
@@ -75,4 +77,10 @@ export default async function ButtonIcons() {
       }
     })
   }
+
+  // Add long-tap shortcut to clear inventory
+  const cuiInvClearButton = Nodes.GetSelector('button.sbgcui_settings-forceclear')
+  cuiInvClearButton && LongTouchEventListener(Nodes.Ops, () => {
+    cuiInvClearButton.click()
+  })
 }

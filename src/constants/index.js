@@ -34,6 +34,8 @@ export const Events = {
   onChange: 'change',
   onLoad: 'load',
   onInput: 'input',
+  onTouchStart: 'touchstart',
+  onTouchEnd: 'touchend'
 }
 
 export const Modifiers = {
@@ -256,10 +258,45 @@ const Translations = {
   updateFound: {
     en: 'Online update found, consider update the user script to version ',
     ru: 'Найдено обновление, обновите скрипт до версии '
+  },
+  connection: {
+    en: 'Connection',
+    ru: 'Подключение'
+  },
+  showConnection: {
+    en: 'Show',
+    ru: 'Показать'
+  },
+  connectionLink: {
+    en: 'Link',
+    ru: 'Канал'
+  },
+  connectionGrade: {
+    en: 'Grade',
+    ru: 'Качество'
+  },
+  connectionType: {
+    en: 'Type',
+    ru: 'Тип'
+  },
+  connectionPing: {
+    en: 'Ping',
+    ru: 'Пинг'
   }
 }
 
-export const t = (key) => Translations[key][GetLocale()] ?? Translations[key][SBG.DefaultLang]
+export function t(key) {
+  const entry = Translations[key]
+
+  if (!entry) {
+    console.log(`No translations for '${key}' entry`)
+    return key
+  }
+
+  let translation = entry[GetLocale()]
+
+  return translation ?? entry[SBG.DefaultLang] ?? key
+}
 
 export const Themes = {
   Default: t('themeDefault'),
