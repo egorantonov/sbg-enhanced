@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
+    <script>if (!localStorage.getItem('auth')) location.href = '/login/';</script>
+    <script type="text/javascript" id="fetch-intercept">
+        const baseUrl = 'https://3d.sytes.net';
+        const originalFetch = window.fetch;
+        function newFetch(url, options) {
+            if (url.startsWith('/api')) {
+                url = baseUrl + url;
+            }
+            return originalFetch(url, options);
+        }
+        window.fetch = newFetch;
+    </script>
+    <script id="cui" type="text/javascript" src="https://nicko-v.github.io/sbg-cui/index.min.js"></script>
+    <!-- OpenGraph & Favicons -->
+    <title>The Simplest Browser Geoloc</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/icon_64.png" type="image/png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="title" content="The Simplest Browser Geoloc">
+    <meta name="description" content="A browser geolocation game that was created as an experimental replacement of Ingress.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://3d.sytes.net">
+    <meta property="og:title" content="The Simplest Browser Geoloc">
+    <meta property="og:determiner" content="the">
+    <meta property="og:description" content="A browser geolocation game that was created as an experimental replacement of Ingress.">
+    <meta property="og:image" content="https://3d.sytes.net/icons/icon_512.png">
+    <meta name="google-site-verification" content="rx4GHvAbWN2ChT6PY4JhoMfTilEvn_0GvrgZr3x_0II">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
+    <!-- jQuery & OpenLayers -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ol@v7.1.0/dist/ol.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/7.0.0-alpha.0/turf.min.js" integrity="sha512-NHYCsoGNIAX+yAtfEUUqdCAJi5zTsLIP/sO9n5Hj04KVbKkz1aOGfAOBbdonjO16RDxuyE8SKDjoCQppUNd5dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.1.0/ol.css">
+    <!-- i18next -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/22.4.10/i18next.min.js" integrity="sha512-hqu1oKvqYx/BBOipLeaeoeXhUTWhQHKWWLHKD+ewvzxWKD0jk6Z1NAYvvT/pHVvCl8Ccpxdt9Er2v5cj7xJ1Rw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.1/jquery-i18next.min.js"></script>
+    <script src="https://www.unpkg.com/i18next-chained-backend@latest/i18nextChainedBackend.min.js"></script>
+    <script src="https://www.unpkg.com/i18next-localstorage-backend@latest/i18nextLocalStorageBackend.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/i18next-http-backend@latest/i18nextHttpBackend.min.js"></script>
+    <!-- Splide.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+    <!-- Toastify.js -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="popup-touch"></div>
+    <div id="map"></div>
+    <div class="topleft-container">
+        <div class="self-info">
+            <div class="self-info__entry"><span data-i18n="self-info.name">self-info.name</span>: <span id="self-info__name" class="profile-link">?</span> <span id="self-info__explv" data-i18n="self-info.lv" data-i18n-options='{"x":"1"}'>self-info.lv</span></div>
+            <div class="self-info__entry"><span data-i18n="self-info.xp">self-info.xp</span>: <span id="self-info__exp">0</span> <span data-i18n="units.pts-xp"></span> <span class="xp-diff" data-i18n="self-info.xp-diff" data-i18n-options='{"count":0}'>self-info.xp-diff</span></div>
+            <div class="self-info__entry"><span data-i18n="self-info.inventory">self-info.inventory</span>: <span id="self-info__inv">0</span> / 3000</div>
+            <div class="self-info__entry hidden"><span data-i18n="self-info.position">self-info.position</span>: <span id="self-info__coord">0, 0</span></div>
+        </div>
+        <div class="game-menu">
+            <button id="ops" data-i18n="menu.ops">menu.ops</button>
+            <button id="score" data-i18n="menu.score">menu.score</button>
+            <button id="leaderboard" data-i18n="menu.leaderboard">menu.leaderboard</button>
+            <button id="settings" data-i18n="menu.settings">menu.settings</button>
+        </div>
+    </div>
+
+    <div class="bottomleft-container">
+        <button id="toggle-follow" data-i18n="menu.follow">menu.follow</button>
+        <button id="attack-menu" data-i18n="menu.attack">menu.attack</button>
+    </div>
+    <button id="layers" data-i18n="menu.layers">menu.layers</button>
+    <div class="attack-slider-wrp hidden">
+        <div class="splide" id="attack-slider">
+            <div class="splide__track">
+                <ul class="splide__list" id="catalysers-list"></ul>
+            </div>
+        </div>
+        <div class="attack-slider-highlevel" data-i18n="popups.highlevel-catalyser"></div>
+        <div class="attack-slider-buttons">
+            <button id="attack-slider-fire" data-i18n="buttons.fire"></button>
+            <button id="attack-slider-close" data-i18n="buttons.close"></button>
+        </div>
+    </div>
+    <div class="draw-slider-wrp hidden">
+        <div class="splide" id="draw-slider">
+            <div class="splide__track">
+                <ul class="splide__list" id="refs-list"></ul>
+            </div>
+        </div>
+        <div class="draw-slider-buttons">
+            <button id="draw-slider-confirm" data-i18n="buttons.draw"></button>
+            <button id="draw-slider-close" data-i18n="buttons.close"></button>
+        </div>
+    </div>
+
+    <div class="settings popup hidden">
+        <h3 data-i18n="menu.settings"></h3>
+        <div class="settings-content">
+            <div class="settings-section">
+                <h4 class="settings-section__header" data-i18n="settings.global.header"></h4>
+                <label class="settings-section__item"><span data-i18n="settings.global.language"></span><select data-setting="lang"></select></label>
+                <label class="settings-section__item"><span data-i18n="settings.global.lang-cache"></span><button class="settings-section__button" id="lang-cache"></button></label>
+                <label class="settings-section__item"><span data-i18n="settings.global.theme"></span><select data-setting="theme">
+                    <option value="auto" data-i18n="settings.global.theme-auto" selected></option>
+                    <option value="light" data-i18n="settings.global.theme-light"></option>
+                    <option value="dark" data-i18n="settings.global.theme-dark"></option>
+                </select></label>
+            </div>
+            <div class="settings-section">
+                <h4 class="settings-section__header" data-i18n="settings.interface.header"></h4>
+                <label class="settings-section__item"><span data-i18n="settings.interface.imghid"></span><input type="checkbox" data-setting="imghid"></label>
+                <label class="settings-section__item"><span data-i18n="settings.interface.dsvhid"></span><input type="checkbox" data-setting="dsvhid"></label>
+                <label class="settings-section__item"><span data-i18n="settings.interface.arabic"></span><input type="checkbox" data-setting="arabic"></label>
+                <label class="settings-section__item"><span data-i18n="settings.interface.selfpos"></span><input type="checkbox" data-setting="selfpos"></label>
+                <label class="settings-section__item"><span data-i18n="settings.interface.exref"></span><input type="checkbox" data-setting="exref"></label>
+            </div>
+            <div class="settings-section">
+                <h4 class="settings-section__header" data-i18n="settings.account.header"></h4>
+                <div class="settings-section__item"><span data-i18n="settings.account.logout-label"></span><button class="settings-section__button" id="logout" data-i18n="settings.account.logout"></button></div>
+                <div class="settings-section__item"><span data-i18n="settings.account.telegram"></span><span id="settings-telegram"><script async src="https://telegram.org/js/telegram-widget.js?21" data-telegram-login="sbg_game_bot" data-size="medium" data-userpic="false" data-onauth="onTelegramAuth(user)" data-request-access="write" class="telegram-auth-button"></script>
+                </span></div>
+            </div>
+            <div class="settings-section">
+                <h4 class="settings-section__header" data-i18n="settings.about.header"></h4>
+                <div class="settings-section__item"><span data-i18n="settings.about.credits"></span><button class="settings-section__button" id="settings-credits" data-i18n="settings.about.view"></button></div>
+                <div class="settings-section__item"><span data-i18n="settings.about.channel"></span><button class="settings-section__button outer-link" data-href="https://t.me/sbg_game" data-i18n="settings.about.visit"></button></div>
+                <div class="settings-section__item"><span data-i18n="settings.about.forum"></span><button class="settings-section__button outer-link" data-href="https://t.me/sbg_forum" data-i18n="settings.about.visit"></button></div>
+                <div class="settings-section__item"><span data-i18n="settings.about.version"></span><span id="version">—</span></div>
+            </div>
+        </div>
+        <button class="popup-close">[x]</button>
+    </div>
+    <div class="layers-config popup hidden">
+        <h3 class="layers-config__header" data-i18n="layers.header"></h3>
+        <div class="layers-config__list">
+            <h4 class="layers-config__subheader" data-i18n="layers.baselayers.header"></h4>
+            <label class="layers-config__entry"><input type="radio" name="baselayer" value="nil"> <span data-i18n="layers.baselayers.nil"></span></label>
+            <label class="layers-config__entry"><input type="radio" name="baselayer" value="osm"> <span data-i18n="layers.baselayers.osm"></span></label>
+            <label class="layers-config__entry"><input type="radio" name="baselayer" value="cdb"> <span data-i18n="layers.baselayers.cdb"></span></label>
+            <label class="layers-config__entry"><input type="radio" name="baselayer" value="goo"> <span data-i18n="layers.baselayers.goo"></span></label>
+            <h4 class="layers-config__subheader" data-i18n="layers.objects.header"></h4>
+            <label class="layers-config__entry"><input type="checkbox" data-setting="plrhid" data-invert> <span data-i18n="layers.objects.player"></span></label>
+            <label class="layers-config__entry"><input type="checkbox" name="layer" data-layer="0"> <span data-i18n="layers.objects.points"></span></label>
+            <label class="layers-config__entry"><input type="checkbox" name="layer" data-layer="1"> <span data-i18n="layers.objects.lines"></span></label>
+        </div>
+        <div class="layers-config__buttons">
+            <button id="layers-config__save" data-i18n="buttons.save"></button>
+            <button class="popup-close" data-i18n="buttons.cancel"></button>
+        </div>
+    </div>
+    <div class="info popup hidden">
+        <h3 class="i-header popup-header">
+            <span id="i-title">?</span>
+        </h3>
+        <div class="i-image-box">
+            <div id="i-image"></div>
+            <span id="i-level">?</span>
+            <span id="i-ref" data-has="0" data-i18n="info.refs" data-i18n-options='{"count":0}'></span>
+        </div>
+        <div class="i-stat">
+            <div class="i-stat__entry"><span data-i18n="info.distance"></span>: <span id="i-stat__distance">?</span></div>
+            <div class="i-stat__entry"><span data-i18n="info.owner"></span>: <span id="i-stat__owner" class="profile-link" data-i18n="info.na">n/a</span></div>
+            <div class="i-stat__entry"><span data-i18n="info.energy"></span>: <span id="i-stat__energy">0%</span></div>
+            <div class="i-stat__entry"><span data-i18n="info.lines"></span>: <span id="i-stat__line-in">?</span> <span data-i18n="info.lines-in"></span> / <span id="i-stat__line-out">?</span> <span data-i18n="info.lines-out"></span></div>
+            <div class="i-buttons">
+                <button id="discover" data-i18n="buttons.discover" disabled></button>
+                <button id="deploy" data-i18n="buttons.deploy" data-state="deploy" disabled></button>
+                <button id="repair" data-i18n="buttons.repair" disabled></button>
+                <button id="draw" data-i18n="buttons.draw"></button>
+            </div>
+            <div class="i-stat__entry i-stat__cores"></div>
+            <div class="deploy-slider-wrp">
+                <div class="splide" id="deploy-slider">
+                    <div class="splide__track">
+                        <ul class="splide__list" id="cores-list"></ul>
+                    </div>
+                </div>
+                <div class="deploy-slider-error"></div>
+            </div>
+        </div>
+        <button class="popup-close">[x]</button>
+    </div>
+    <div class="score popup hidden">
+        <div class="score__graph">
+            <div class="score__graph-red"></div>
+            <div class="score__graph-green"></div>
+            <div class="score__graph-blue"></div>
+        </div>
+        <span data-i18n="score.description"></span>
+        <ul>
+            <li class="team-r"><strong data-i18n="score.red"></strong> — <span class="score__count">0</span> <span class="score__diff" data-team="r"></span></li>
+            <li class="team-g"><strong data-i18n="score.green"></strong> — <span class="score__count">0</span> <span class="score__diff" data-team="g"></span></li>
+            <li class="team-b"><strong data-i18n="score.blue"></strong> — <span class="score__count">0</span> <span class="score__diff" data-team="b"></span></li>
+        </ul>
+    </div>
+    <div class="leaderboard popup hidden">
+        <h3 class="popup-header" data-i18n="leaderboard.header"></h3>
+        <ol class="leaderboard__list">
+            <li data-i18n="leaderboard.loading"></li>
+        </ol>
+        <div class="leaderboard__term"></div>
+        <div class="leaderboard__place"></div>
+        <button class="popup-close">[x]</button>
+    </div>
+    <div class="inventory popup hidden">
+        <div class="inventory__manage-amount hidden">
+            <div class="inventory__ma-item"></div>
+            <div class="inventory__ma-counter">
+                <button data-type="minus">-</button>
+                <label><input type="number" class="inventory__ma-amount" min="1" value="1" required> / <span class="inventory__ma-max">1</span></label>
+                <button data-type="plus">+</button>
+            </div>
+            <div class="inventory__ma-buttons">
+                <button class="inventory__ma-cancel" data-i18n="buttons.cancel"></button>
+                <button class="inventory__ma-delete" data-i18n="buttons.delete"></button>
+            </div>
+        </div>
+
+        <button id="inventory__close">X</button>
+        <div class="inventory__tabs">
+            <span class="inventory__tab active" data-type="1"><span data-i18n="items.types.cores"></span> (<span class="inventory__tab-counter">0</span>)</span>
+            <span class="inventory__tab" data-type="2"><span data-i18n="items.types.catalysers"></span> (<span class="inventory__tab-counter">0</span>)</span>
+            <span class="inventory__tab" data-type="3"><span data-i18n="items.types.references"></span> (<span class="inventory__tab-counter">0</span>)</span>
+        </div>
+        <div class="inventory__content"></div>
+        <div class="inventory__controls">
+            <button id="inventory-delete-section" data-i18n="buttons.clear"></button>
+            <button id="inventory-delete" data-del="0" data-i18n="buttons.select"></button>
+        </div>
+    </div>
+    <div class="profile popup hidden">
+        <h3 class="pr-header popup-header">
+            <span id="pr-name">?</span>
+        </h3>
+        <div class="pr-xp">
+            <div class="pr-xp-details">
+                <div class="pr-xp-progress">
+                    <div class="pr-xp-check" style="left: 12.5%"></div>
+                    <div class="pr-xp-check" style="left: 25%"></div>
+                    <div class="pr-xp-check" style="left: 37.5%"></div>
+                    <div class="pr-xp-check" style="left: 50%"></div>
+                    <div class="pr-xp-check" style="left: 62.5%"></div>
+                    <div class="pr-xp-check" style="left: 75%"></div>
+                    <div class="pr-xp-check" style="left: 87.5%"></div>
+                    <div class="pr-xp-progress-bar"></div>
+                </div>
+                <span id="pr-xp-current">? / ? pt.</span>
+            </div>
+            <div class="pr-xp-level">
+                <span class="pr-xp-level-title" data-i18n="profile.level"></span>
+                <span id="pr-xp-level-num">?</span>
+            </div>
+        </div>
+        <div class="pr-stats">
+            <div class="pr-stats__section persist">
+                <div class="pr-stat pr-stat__total-xp"><span class="pr-stat-title" data-i18n="profile.stats.total-xp"></span><span class="pr-stat-val">?</span></div>
+                <div class="pr-stat pr-stat__age"><span class="pr-stat-title" data-i18n="profile.stats.playing-since"></span><span class="pr-stat-val">?</span></div>
+            </div>
+        </div>
+        <div class="pr-buttons">
+            <button id="pr-button__copy" data-i18n="buttons.copy-data"></button>
+            <button id="pr-button__share" data-i18n="buttons.share"></button>
+        </div>
+        <button class="popup-close">[x]</button>
+    </div>
+</body>
+<script type="text/javascript" defer async id="eui" src="https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js"></script>
+</html>

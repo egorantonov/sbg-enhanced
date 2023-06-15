@@ -1,0 +1,111 @@
+html, body { height: 100% }
+body, input, button {
+    font-family: 'Manrope', sans-serif;
+}
+body {
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+button {
+    cursor: pointer;
+}
+h1 {
+    margin: 0;
+    text-align: center;
+}
+.subheader {
+    text-align: center;
+    opacity: .8;
+    font-style: italic;
+    font-size: .8em;
+}
+
+.auth-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .25em
+}
+.auth-button iframe {
+    border-radius: 20px;
+}
+.auth-button .form__error {
+    margin-top: .25em
+}
+
+#classic-login {
+    font-size: 1em;
+    padding: .2em .3em;
+}
+
+.no-account {
+    text-align: center;
+    grid-column: 1 / 3;
+    margin: 0;
+}
+.form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1em;
+    place-items: flex-start center;
+}
+.form > form {
+    display: flex;
+    flex-direction: column;
+    gap: .25em
+}
+.form__entry {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.form__entry.prompt label {
+    margin-left: .5em;
+}
+.form__buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form__error {
+    color: #F00;
+    text-align: center;
+}
+/* .form__entry.prompt label {
+    position: absolute;
+    top: 50%; left: .2em;
+    transform: translateY(-50%);
+}*/
+
+.footer-text {
+    opacity: .6;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 480px) {
+    body, input, button {
+        font-size: 80%;
+    }
+    input[type="radio"] {
+        scale: .8;
+    }
+    .radio label {
+        display: flex;
+        justify-content: center;
+    }
+}
+@media (max-width: 320px) {
+    .auth-button iframe {
+        scale: .75;
+    }
+}

@@ -1,0 +1,257 @@
+{
+  "title": "The Simplest Browser Geoloc",
+  "self-info": {
+    "name": "Name",
+    "lv": "(ELv-{{count}})",
+    "xp": "EXP",
+    "inventory": "Inventory",
+    "position": "Position",
+    "xp-diff": "+{{count, number}} $t(units.pts-xp)"
+  },
+  "menu": {
+    "ops": "OPS",
+    "score": "Score",
+    "leaderboard": "Leaderboard",
+    "settings": "Settings",
+    "follow": "FW",
+    "attack": "Attack",
+    "layers": "Layers"
+  },
+  "buttons": {
+    "fire": "Fire!",
+    "close": "Close",
+    "draw": "Draw",
+    "save": "Save",
+    "cancel": "Cancel",
+    "discover": "Discover",
+    "deploy": "Deploy",
+    "upgrade": "Upgrade",
+    "repair": "Repair",
+    "delete": "Delete",
+    "select": "Select",
+    "clear": "Clear",
+    "share": "Share",
+    "copy-data": "Copy Data",
+    "references": {
+      "manage": "M",
+      "view": "V"
+    }
+  },
+  "popups": {
+    "highlevel-catalyser": "Catalyser's level exceeds your own.",
+    "highlevel-core": "Core's level exceeds your own.",
+    "package-fail": "Failed to load the {{name}} package. Please try again later.",
+    "gps": {
+      "denied": "The permission to get geolocation of device was denied. Please grant the permission in browser's settings.",
+      "fail": "Impossible to get geolocation. Please check if GPS on your device is enabled and then refresh the page.",
+      "unavailable": "Geolocation services are not available on your device. We're sorry.",
+      "generic": "Location fetch failed with error code {{code}}"
+    },
+    "lines-none": "No possible lines to draw",
+    "no-catalysers": "You don't have any catalysers.",
+    "no-cores": "You don't have any cores.",
+    "server-generic": "A server failure occurred. Please try again later.",
+    "network-fail": "Network failure",
+    "logout": "Do you really want to logout? This action won't affect other sessions.",
+    "logout-fail": "Failed to logout: {{reason}}",
+    "compass": {
+      "rejected": "Permissions to use AOSensor were rejected",
+      "unavailable": "AOSensor is not available",
+      "request": "Failed to request permissions for AOSensor"
+    },
+    "point": {
+      "enemy": "Point is owned by enemy.",
+      "range": "Point is out of range.",
+      "full-deploy": "Point is fully deployed."
+    },
+    "not-upgrade": "It's not an upgrade.",
+    "cores-limit": "You can deploy only $t(items.n-cores, {\"count\": {{count}} }) of this level in the point.",
+    "no-player": "That player doesn't exist or the server caught an error",
+    "profile": {
+      "copy-data": "Profile data was copied!",
+      "copy-url": "Profile link was copied!",
+      "share-title": "{{name}}'s profile in SBG"
+    },
+    "discovery": {
+      "none": "You've got nothing",
+      "xp": "+{{count, number}} $t(units.xp)",
+      "result": "$t(popups.discovery.xp, {\"count\":{{xp}} })<br>{{loot}}"
+    },
+    "outer": "Do you really want to go to {{- href}}?",
+    "update": "New version {{version}} is available. Please refresh the page to avoid errors"
+  },
+  "inventory": {
+    "clear": {
+      "none": "Nothing to clear in this section",
+      "confirm-1": "This action will delete ALL items in this section. Are you sure?",
+      "confirm-2": "Once again: all items in this section will be lost FOREVER. Do you really want to continue?"
+    },
+    "reference": {
+      "default": "Details unknown",
+      "failed": "Request failed: {{reason}}",
+      "info": "$1$; {{owner}}; Energy: $3$% @ $4$; Distance: $5$",
+      "owner-none": "Not onwed",
+      "owner": "Owner: $2$",
+      "level": "Level {{count}}"
+    }
+  },
+  "settings": {
+    "global": {
+      "header": "Global",
+      "language": "Language",
+      "language-sys": "System",
+      "lang-cache": "Refresh lang cache",
+      "theme": "Theme",
+      "theme-auto": "Auto",
+      "theme-light": "Light",
+      "theme-dark": "Dark"
+    },
+    "interface": {
+      "header": "Interface",
+      "imghid": "Hide image",
+      "dsvhid": "Hide discovery result",
+      "arabic": "Use arabic numbers",
+      "selfpos": "Show self position",
+      "exref": "Exclude single refs from drawing"
+    },
+    "account": {
+      "header": "Account",
+      "logout": "Logout",
+      "logout-label": "Exit from account",
+      "telegram": "Link to Telegram"
+    },
+    "about": {
+      "header": "About",
+      "credits": "Attribution & Credits",
+      "channel": "Telegram Channel",
+      "forum": "Community Forum",
+      "version": "Version",
+      "view": "View",
+      "visit": "Visit"
+    }
+  },
+  "layers": {
+    "header": "Map Config",
+    "baselayers": {
+      "header": "Baselayer",
+      "nil": "Empty",
+      "osm": "OpenStreetMap",
+      "cdb": "Carto",
+      "goo": "Google Satellite"
+    },
+    "objects": {
+      "header": "Objects",
+      "player": "Player",
+      "points": "Points",
+      "lines": "Lines"
+    }
+  },
+  "info": {
+    "level": "Lv-{{count}}",
+    "refs": "REF {{count}}/100",
+    "distance": "Distance",
+    "owner": "Owner",
+    "na": "n/a",
+    "energy": "Energy",
+    "lines": "Lines",
+    "lines-in": "in",
+    "lines-out": "out",
+    "draw": "Draw"
+  },
+  "score": {
+    "description": "Control over the world:",
+    "red": "Red",
+    "green": "Green",
+    "blue": "Blue"
+  },
+  "leaderboard": {
+    "header": "Leaderboard",
+    "loading": "Loading...",
+    "sort-by": "Sort by {{- element}}",
+    "place": "Current place: {{- pos}}; players: {{- active}} active, {{- total}} in total",
+    "sort-terms": {
+      "xp": "experience",
+      "captures": "captured points",
+      "discoveries": "done discoveries",
+      "neutralizes": "neutralized points",
+      "cores_deployed": "deployed cores",
+      "cores_destroyed": "destroyed cores",
+      "owned": "owned points",
+      "unique_visits": "unique visits",
+      "unique_captures": "unique captures",
+      "lines": "drawn lines",
+      "lines_destroyed": "erased lines"
+    },
+    "level": "Level {{count}}"
+  },
+  "profile": {
+    "level": "LEVEL",
+    "sections": [
+      "Points",
+      "Drawing",
+      "Exploration"
+    ],
+    "stats": {
+      "total-xp": "Total EXP",
+      "playing-since": "Playing Since",
+      "captures": "Points Captured",
+      "neutralizes": "Points Neutralized",
+      "cores_deployed": "Cores Deployed",
+      "cores_destroyed": "Cores Destroyed",
+      "owned_points": "Points Currently Owned",
+      "guard_point": "Longest Point Ownership",
+      "lines": "Lines Drawn",
+      "max_line": "Longest Drawn Line",
+      "guard_line": "Longest Line Ownership",
+      "lines_destroyed": "Lines Erased",
+      "discoveries": "Discoveries Done",
+      "unique_visits": "Unique Points Visited",
+      "unique_captures": "Unique Points Captured"
+    }
+  },
+  "telegram": {
+    "label": "Link to Telegram",
+    "failed": "Try again",
+    "done": "Done!",
+    "linked": "Linked!"
+  },
+  "items": {
+    "amount": "x{{count}}",
+    "unknown": "Unknown",
+    "types": {
+      "core": "Core",
+      "cores": "Cores",
+      "catalyser": "Catalyser",
+      "catalysers": "Catalysers",
+      "reference": "Reference",
+      "references": "References"
+    },
+    "core-short": "Cr-{{level}}",
+    "n-cores": "{{count}} $t(items.cores, {\"count\": {{count}} })",
+    "cores_one": "core",
+    "cores_other": "cores",
+    "catalyser-short": "Ca-{{level}}",
+    "n-catalysers": "{{count}} $t(items.catalysers, {\"count\": {{count}} })",
+    "catalysers_one": "catalyser",
+    "catalysers_other": "catalysers"
+  },
+  "units": {
+    "xp": "xp.",
+    "pt-xp": "pt.",
+    "pts-xp": "pts.",
+    "pts": "pts.",
+    "dscv": "dscv.",
+    "crs": "crs.",
+    "lns": "lns.",
+    "deg": "deg",
+    "cm": "{{count, number(maximumFractionDigits: 2)}} cm",
+    "m": "{{count, number(maximumFractionDigits: 2)}} m",
+    "km": "{{count, number(maximumFractionDigits: 2)}} km",
+    "sec": "{{count, number}}s",
+    "min": "{{count, number}}m",
+    "hr": "{{count, number}}h",
+    "n-days": "{{count, number}} $t(units.days, {\"count\": {{count}} })",
+    "days_one": "day",
+    "days_other": "days"
+  }
+}

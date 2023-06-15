@@ -1,0 +1,263 @@
+{
+  "title": "Скромная Браузерная Геолокационка",
+  "self-info": {
+    "name": "Имя",
+    "lv": "(Ур-{{count}})",
+    "xp": "Опыт",
+    "inventory": "Инвентарь",
+    "position": "Позиция",
+    "xp-diff": "+{{count, number}} $t(units.pts-xp)"
+  },
+  "menu": {
+    "ops": "ОПРЦ",
+    "score": "Счёт",
+    "leaderboard": "Лидеры",
+    "settings": "Настройки",
+    "follow": "СЛ",
+    "attack": "Атака",
+    "layers": "Слои"
+  },
+  "buttons": {
+    "fire": "Огонь!",
+    "close": "Закрыть",
+    "draw": "Рисовать",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "discover": "Изучить",
+    "deploy": "Проставить",
+    "upgrade": "Улучшить",
+    "repair": "Починить",
+    "delete": "Удалить",
+    "select": "Выбрать",
+    "clear": "Очистить",
+    "share": "Поделиться",
+    "copy-data": "Копир. данные",
+    "references": {
+      "manage": "У",
+      "view": "П"
+    }
+  },
+  "popups": {
+    "highlevel-catalyser": "Уровень катализатора превышает ваш.",
+    "highlevel-core": "Уровень ядра превышает ваш.",
+    "package-fail": "Не удалось загрузить \"{{name}}\". Попробуйте ещё раз позже.",
+    "gps": {
+      "denied": "Запрос на определение геопозиции был отклонён. Пожалуйста, выдайте разрешение в настройках браузера.",
+      "fail": "Невозможно определить геопозицию. Проверьте, включён ли на устройстве GPS и перезагрузите сраницу.",
+      "unavailable": "Сервис геолокации на вашем устройстве недоступен. Приносим извинения.",
+      "generic": "Определение геопозиции не удалось: код ошибки {{code}}"
+    },
+    "lines-none": "Нет возможных линий для рисования",
+    "no-catalysers": "У вас нет ни одного катализатора.",
+    "no-cores": "У вас нет ни одного ядра.",
+    "server-generic": "Произошла ошибка сервера. Пожалуйста, попробуйте позже",
+    "network-fail": "Ошибка сети",
+    "logout": "Вы точно хотите выйти? Это не повлияет на другие сессии.",
+    "logout-fail": "Не получилось выйти: {{reason}}",
+    "compass": {
+      "rejected": "Запрос на использование AOSensor был отклонён",
+      "unavailable": "AOSensor недоступен",
+      "request": "Не удалось запросить использование AOSensor"
+    },
+    "point": {
+      "enemy": "Точка принадлежит вражеской команде.",
+      "range": "Точка вне радиуса действия.",
+      "full-deploy": "Точка полностью проставлена."
+    },
+    "not-upgrade": "Это не улучшение.",
+    "cores-limit": "Вы можете установить только $t(items.n-cores, {\"count\": {{count}} }) этого уровня.",
+    "no-player": "Этот игрок не существует или на сервере произошла ошибка",
+    "profile": {
+      "copy-data": "Данные профиля скопированы!",
+      "copy-url": "Ссылка на профиль скопирована!",
+      "share-title": "Профиль {{name}} в SBG"
+    },
+    "discovery": {
+      "none": "Вы ничего не получили",
+      "xp": "+{{count, number}} $t(units.xp)",
+      "result": "$t(popups.discovery.xp, {\"count\":{{xp}} })<br>{{loot}}"
+    },
+    "outer": "Вы точно хотите перейти на {{- href}}?",
+    "update": "Появилась новая версия {{version}}. Пожалуйста, обновите страницу, чтобы избежать ошибок"
+  },
+  "inventory": {
+    "clear": {
+      "none": "В этом разделе нечего удалять",
+      "confirm-1": "Это действие удалит ВСЕ предметы в данном разделе. Вы уверены?",
+      "confirm-2": "Ещё раз: все предметы раздела будут потеряны НАВСЕГДА. Вы точно хотите продолжить?"
+    },
+    "reference": {
+      "default": "Подробности неизвестны",
+      "failed": "Ошибка загрузки: {{reason}}",
+      "info": "$1$; {{owner}}; Энергия: $3$% @ $4$; Расстояние: $5$",
+      "owner-none": "Без хозяина",
+      "owner": "Хозяин: $2$",
+      "level": "Уровень {{count}}"
+    }
+  },
+  "settings": {
+    "global": {
+      "header": "Общее",
+      "language": "Язык",
+      "language-sys": "Системный",
+      "lang-cache": "Обновить кэш языка",
+      "theme": "Тема",
+      "theme-auto": "Авто",
+      "theme-light": "Светлая",
+      "theme-dark": "Тёмная"
+    },
+    "interface": {
+      "header": "Интерфейс",
+      "imghid": "Скрыть фото точки",
+      "dsvhid": "Скрыть результат изучения",
+      "arabic": "Арабские цифры",
+      "selfpos": "Своя позиция",
+      "exref": "Исключить одиночные сноски из рисования"
+    },
+    "account": {
+      "header": "Аккаунт",
+      "logout": "Выйти",
+      "logout-label": "Выйти из аккаунта",
+      "telegram": "Подключить Telegram"
+    },
+    "about": {
+      "header": "Информация",
+      "credits": "Атрибуция и авторы",
+      "channel": "Telegram-канал",
+      "forum": "Форум сообщества",
+      "version": "Версия",
+      "view": "Посмотреть",
+      "visit": "Перейти"
+    }
+  },
+  "layers": {
+    "header": "Настройка карты",
+    "baselayers": {
+      "header": "Подложка",
+      "nil": "Пустая",
+      "osm": "OpenStreetMap",
+      "cdb": "Carto",
+      "goo": "Google (спутник)"
+    },
+    "objects": {
+      "header": "Объекты",
+      "player": "Игрок",
+      "points": "Точки",
+      "lines": "Линии"
+    }
+  },
+  "info": {
+    "level": "Ур-{{count}}",
+    "refs": "СНК {{count}}/100",
+    "distance": "Расстояние",
+    "owner": "Хозяин",
+    "na": "н/д",
+    "energy": "Энергия",
+    "lines": "Линии",
+    "lines-in": "вх.",
+    "lines-out": "исх.",
+    "draw": "Рисовать"
+  },
+  "score": {
+    "description": "Контроль над миром:",
+    "red": "Красные",
+    "green": "Зелёные",
+    "blue": "Синие"
+  },
+  "leaderboard": {
+    "header": "Таблица лидеров",
+    "loading": "Загрузка...",
+    "sort-by": "Сортировать по {{- element}}",
+    "place": "Текущее место: {{- pos}}; игроки: {{- active}} активных, {{- total}} всего",
+    "sort-terms": {
+      "xp": "опыту",
+      "captures": "захваченным точкам",
+      "discoveries": "количеству изучений",
+      "neutralizes": "нейтрализованным точкам",
+      "cores_deployed": "проставленным ядрам",
+      "cores_destroyed": "уничтоженным ядрам",
+      "owned": "контролируемым точкам",
+      "unique_visits": "уникальным посещениям",
+      "unique_captures": "уникальным захватам",
+      "lines": "нарисованным линиям",
+      "lines_destroyed": "стёртым линиям"
+    },
+    "level": "{{count}} уровень"
+  },
+  "profile": {
+    "level": "УРОВЕНЬ",
+    "sections": [
+      "Точки",
+      "Рисование",
+      "Путешествия"
+    ],
+    "stats": {
+      "total-xp": "Общий опыт",
+      "playing-since": "Начало игры",
+      "captures": "Захвачено точек",
+      "neutralizes": "Нейтрализовано точек",
+      "cores_deployed": "Проставлено ядер",
+      "cores_destroyed": "Уничтожено ядер",
+      "owned_points": "Точек под контролем",
+      "guard_point": "Самое долгое владение точкой",
+      "lines": "Нарисовано линий",
+      "max_line": "Самая длинная линия",
+      "guard_line": "Самое долгое владение линией",
+      "lines_destroyed": "Стёрто линий",
+      "discoveries": "Проведено изучений",
+      "unique_visits": "Уникальные посещения",
+      "unique_captures": "Уникальные захваты"
+    }
+  },
+  "telegram": {
+    "label": "Подключить Telegram",
+    "failed": "Ошибка",
+    "done": "Готово!",
+    "linked": "Подключено!"
+  },
+  "items": {
+    "amount": "x{{count}}",
+    "unknown": "Unknown",
+    "types": {
+      "core": "Ядро",
+      "cores": "Ядра",
+      "catalyser": "Катализатор",
+      "catalysers": "Катализаторы",
+      "reference": "Сноска",
+      "references": "Сноски"
+    },
+    "core-short": "Яд-{{level}}",
+    "n-cores": "{{count}} $t(items.cores, {\"count\": {{count}} })",
+    "cores_one": "ядро",
+    "cores_few": "ядра",
+    "cores_many": "ядер",
+    "cores_other": "ядра",
+    "catalyser-short": "Кт-{{level}}",
+    "n-catalysers": "{{count}} $t(items.catalysers, {\"count\": {{count}} })",
+    "catalysers_one": "катализатор",
+    "catalysers_few": "катализатора",
+    "catalysers_many": "катализаторов",
+    "catalysers_other": "катализатора"
+  },
+  "units": {
+    "xp": "опт.",
+    "pt-xp": "очк.",
+    "pts-xp": "очк.",
+    "pts": "тчк.",
+    "dscv": "изч.",
+    "crs": "ядр.",
+    "lns": "лн.",
+    "deg": "º",
+    "cm": "{{count, number(maximumFractionDigits: 2)}} см",
+    "m": "{{count, number(maximumFractionDigits: 2)}} м",
+    "km": "{{count, number(maximumFractionDigits: 2)}} км",
+    "sec": "{{count, number}}с",
+    "min": "{{count, number}}м",
+    "hr": "{{count, number}}ч",
+    "n-days": "{{count, number}} $t(units.days, {\"count\": {{count}} })",
+    "days_one": "день",
+    "days_few": "дня",
+    "days_many": "дней",
+    "days_other": "дня"
+  }
+}

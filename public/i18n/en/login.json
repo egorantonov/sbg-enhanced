@@ -1,0 +1,22 @@
+{
+  "page-title": "Welcome | $t(title)",
+  "title": "The Simplest Browser Geoloc",
+  "subtitle": "A browser geolocation game that was created as an experimental replacement of Ingress",
+  "or": "or",
+  "classic-login": "Login with password",
+  "no-account": "This Telegram account was not linked to the SBG. You can use an existing game account or create a new one.",
+  "header-login": "Login",
+  "header-login-alt": "I have an account",
+  "header-register": "Create a new account",
+  "username": "Username",
+  "password": "Password",
+  "password-repeat": "Repeat Password",
+  "password-match": "Passwords are not matching!",
+  "team": "Choose your Team",
+  "red": "Red",
+  "green": "Green",
+  "blue": "Blue",
+  "submit": "Submit",
+  "server-error": "Server error occurred. Please try again later.",
+  "network-fail": "Network failure"
+}
