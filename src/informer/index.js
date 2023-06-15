@@ -2,8 +2,9 @@ import {EUI, Elements, Events, Modifiers, Nodes, SBG, t} from '../constants'
 
 export default async function Informer() {
   console.log(`SBG Enhanced UI, version ${EUI.Version}`)
-  const sbgCurrentVersion = await fetch('/api/', {method: 'OPTIONS'})
-      .then(response => response.headers.get(SBG.VersionHeader))
+  const sbgCurrentVersion = await fetch('/api/')
+    .then(response => response.json())
+    .then(json => json.v)
 
   if (sbgCurrentVersion != SBG.CompatibleVersion) {
       const alertShown = localStorage.getItem(EUI.Incompatibility)
@@ -42,7 +43,7 @@ export default async function Informer() {
                 ${t('connectionGrade')}:\u{a0}${connection.effectiveType.toUpperCase()}
                 ${
                     (connection.type && connection.type !== 'unknown')
-                        ? ` ${t('connectionType')}:\u{a0}${connection.type.toUpperCase()}` 
+                        ? `${t('connectionType')}:\u{a0}${connection.type.toUpperCase()}` 
                         : ''
                 }
             `
