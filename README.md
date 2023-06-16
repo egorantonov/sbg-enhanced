@@ -9,7 +9,6 @@
   <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/downloads/egorantonov/sbg-enhanced/latest/total?style=flat-square" /></a>
   <img src="https://img.shields.io/github/languages/top/egorantonov/sbg-enhanced?color=%23200bb20&style=flat-square" />  
   <a href="https://3d.sytes.net"><img src="https://img.shields.io/website?label=3d.sytes.net&style=flat-square&url=https%3A%2F%2F3d.sytes.net" /></a>
-  <a href="https://sbgx.pages.dev"><img src="https://img.shields.io/website?label=sbgx.pages.dev&style=flat-square&url=https%3A%2F%2Fsbgx.pages.dev/" />
 </p>
 
 <p align="center">Пользовательский скрипт, созданный для улучшения интерфейса игры <a href="https://3d.sytes.net" target="_blank">&nbsp;&nbsp;<img src="https://3d.sytes.net/icons/icon_64.png" width="16px" /> The Simplest Browser Geoloc</a></p>
@@ -82,21 +81,6 @@ https://www.youtube.com/embed/zrz7pwRhkXY
 
 <h2 align="center">Как установить</h2>
 
-### Все мобильные платформы (Android, iOS, iPadOS)
-
-Самый простой способ игры - использовать альтернативный веб-клиент:
-
-**[https://sbgx.pages.dev/](https://sbgx.pages.dev/)**
-
-Этот веб-клиент уже включает в себя 2 скрипта (этот и [Custom UI](https://github.com/nicko-v/sbg-cui/#the-simplest-browser-geoloc-custom-ui)), работает во всех браузерах и может быть установлен как отдельное полноэкранное приложение (например, в Google Chrome: `Меню вкладки` > `Установить приложение`)
-
-Известные проблемы:
-- Залогиниться через Telegram нельзя (используется другой домен)
-- Невозможно получить версию игры (вылезет пару тостов при первом запуске)
-- Нет разрешений для AbsoluteOrientationSensor (указатель игрока не вращается)
-
-***
-
 ### Android
 
 1. Установите один из браузеров: 
@@ -165,11 +149,7 @@ _Также файл можно скачать вручную по [ссылке
 1. После открытия окна с кодом скрипта повторно нажать `Install` (`Установить`). 
 1. Обновить страницу с игрой. Скрипт должен запуститься и внести изменения.
 
-
-
-
 ***
-
 
 > GitHub [@egorantonov](https://github.com/egorantonov) &nbsp;&middot;&nbsp;
 > Discord [EYEMVX#8650](https://discord.com/channels/@me)
