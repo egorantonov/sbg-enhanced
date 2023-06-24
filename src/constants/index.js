@@ -223,6 +223,14 @@ const Translations = {
     en: 'By amount',
     ru: 'По количеству'
   },
+  sortTeam: {
+    en: 'By team',
+    ru: 'По команде'
+  },
+  sortLevel: {
+    en: 'By level',
+    ru: 'По уровню'
+  },
   hacker: {
     en: 'Discoveries Done',
     ru: 'Проведено изучений'

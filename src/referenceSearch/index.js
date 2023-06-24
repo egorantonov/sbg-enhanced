@@ -46,7 +46,11 @@ export default async function AddReferenceSearch() {
     `${t('sortEnergy')} +`,
     `${t('sortEnergy')} -`,
     `${t('sortAmount')} +`,
-    `${t('sortAmount')} -`
+    `${t('sortAmount')} -`,
+    `${t('sortTeam')} +`,
+    `${t('sortTeam')} -`,
+    `${t('sortLevel')} +`,
+    `${t('sortLevel')} -`
   ]
 
   sorts.forEach(s => {
@@ -56,7 +60,7 @@ export default async function AddReferenceSearch() {
     sort.appendChild(opt)
   })
 
-  let clearButton = document.getElementById('inventory-delete-section')
+  const clearButton = document.getElementById('inventory-delete-section')
   tabs.forEach(tab => {
       tab.addEventListener(Events.onClick, () => {
           if (['1', '2'].includes(tab.dataset.type)) {
@@ -174,8 +178,20 @@ export default async function AddReferenceSearch() {
       else if (sortType === sorts[5]) {
         sorted = refs.sort((a, b) => ParseAmount(a) - ParseAmount(b))
       }
-      else /*if (sortType === sorts[6])*/ {
+      else if (sortType === sorts[6]) {
         sorted = refs.sort((a, b) => ParseAmount(b) - ParseAmount(a))
+      }
+      else if (sortType === sorts[7]) {
+        sorted = refs.sort((a, b) => ParseTeam(a) - ParseTeam(b))
+      }
+      else if (sortType === sorts[8]) {
+        sorted = refs.sort((a, b) => ParseTeam(b) - ParseTeam(a))
+      }
+      else if (sortType === sorts[9]) {
+        sorted = refs.sort((a, b) => ParseLevel(a) - ParseLevel(b))
+      }
+      else  {
+        sorted = refs.sort((a, b) => ParseLevel(b) - ParseLevel(a))
       }
 
       sorted.forEach(ref => {
@@ -216,4 +232,13 @@ const ParseEnergy = (ref) => +ref.querySelector('.inventory__item-descr')
 const ParseAmount = (ref) => {
     const text = ref.querySelector('.inventory__item-title').innerText
     return +text.slice(text.indexOf('(x')+2, text.indexOf(')'))
+}
+
+const ParseTeam = (ref) => {
+    const text = ref.querySelector('.inventory__item-title').style.color.slice(11,12)
+    return text === 'n' ? 0 : +text 
+}
+
+const ParseLevel = (ref) => {
+    return +ref.querySelector('.inventory__item-descr').firstChild.style.color.slice(12,-1)
 }
