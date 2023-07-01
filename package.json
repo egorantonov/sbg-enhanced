@@ -29,7 +29,7 @@
     "husky": "^8.0.3",
     "style-loader": "^3.3.3",
     "to-string-loader": "^1.2.0",
-    "webpack": "^5.87.0",
+    "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4",
     "webpack-userscript": "^3.2.2"
   }
