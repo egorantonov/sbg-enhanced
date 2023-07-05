@@ -1,10 +1,7 @@
-import { EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Sleep, t } from '../constants'
-import { LongTouchEventListener } from '../helpers'
+import { EUI, Elements, Events, GetLocale, Modifiers, Nodes, Proposed, Sleep, t } from '../constants'
 
 export default async function ButtonIcons() {
-  if (IsPrivate() && !localStorage.getItem(EUI.CompactView)) {
-    localStorage.setItem(EUI.CompactView, 1)
-  }
+
   const i18next_main = `i18next_${GetLocale()}-main`
   let translations = JSON.parse(localStorage.getItem(i18next_main))
   if (!translations) {
@@ -17,20 +14,29 @@ export default async function ButtonIcons() {
   // CREATE SETTING
   const input = document.createElement(Elements.Input)
   const uiSettings = Nodes.SettingSections.at(0)
-  const checked = localStorage.getItem(EUI.CompactView) == 1
+  
   if (uiSettings) {
       const title = document.createElement(Elements.Span)
       title.innerText = t('compactView')
 
       input.type = Elements.CheckBox
-      input.dataset.setting = EUI.Animations
+      input.dataset.setting = EUI.CompactView
       const label = document.createElement(Elements.Label)
       label.classList.add(Modifiers.SettingsSectionItemClassName)
       label.appendChild(title)
       label.appendChild(input)
       uiSettings.appendChild(label)
-      input.checked = checked
+
+      // PROPOSAL
+      const compactViewProposed = localStorage.getItem(`${EUI.CompactView}${Proposed}`)
+      if (compactViewProposed != 1) {
+          localStorage.setItem(`${EUI.CompactView}${Proposed}`, 1)
+          localStorage.setItem(EUI.CompactView, 1)
+          input.checked = true
+      }
   }
+
+  const checked = localStorage.getItem(EUI.CompactView) == 1
 
   if (checked) {
     while (Nodes.Settings.innerText.includes('.')) {
@@ -51,6 +57,13 @@ export default async function ButtonIcons() {
     // Move 'ops' button into 'bottomleft-container'
     const bottomLeftContainer = Nodes.GetSelector('div.bottomleft-container')
     bottomLeftContainer && bottomLeftContainer.appendChild(Nodes.Ops)
+
+    // Remove level and XP sections
+    const level = Nodes.GetId("self-info__explv")
+    if (level.innerText.includes("10")) { 
+      level.remove() 
+      Nodes.GetId("self-info__exp").parentElement.remove()
+    }
   }
 
   localStorage.setItem(i18next_main, JSON.stringify(translations))
@@ -61,23 +74,6 @@ export default async function ButtonIcons() {
   })
 
   /* CUI compatibility */
-  // Add shortcut to CUI settings
-  const cuiFavButton = Nodes.GetSelector('div.ol-control>button.sbgcui_button_reset.sbgcui_favs_star')
-  if (cuiFavButton) {
-    const cuiShortcut = document.createElement(Elements.Button)
-    cuiShortcut.innerText = '⚙'
-    cuiShortcut.style.fontWeight = 'bold'
-    cuiFavButton.before(cuiShortcut)
-
-    cuiShortcut.addEventListener(Events.onClick, (e) => {
-      e.stopPropagation()
-      const cuiSettingsMenu = Nodes.GetSelector('form.sbgcui_settings')
-      if (cuiSettingsMenu) {
-        cuiSettingsMenu.classList.toggle('sbgcui_hidden')
-      }
-    })
-  }
-
   // Add long-tap shortcut to clear inventory
   const cuiInvClearButton = Nodes.GetSelector('button.sbgcui_settings-forceclear')
   cuiInvClearButton && LongTouchEventListener(Nodes.Ops, () => {
