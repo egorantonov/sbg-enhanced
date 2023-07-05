@@ -40,6 +40,7 @@ export default async function ButtonIcons() {
   const checked = localStorage.getItem(EUI.CompactView) == 1
 
   if (checked) {
+    input.checked = true
     while (Nodes.Settings.innerText.includes('.')) {
       await Sleep(250)
     }
