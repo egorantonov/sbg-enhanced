@@ -93,12 +93,12 @@ class LazyNodes {
 
   get InfoPopup() { return this.GetSelector('.info.popup') }
   get ProfilePopup() { return this.GetSelector('.profile.popup') }
-  get ProfileStats() { return this.GetSelector('.pr-stats') }
+  get ProfileStatsContainer() { return this.GetSelector('.pr-stats') }
   get InventoryContent() { return this.GetSelector('.inventory__content') }
   get BottomLeftContainer() { return this.GetSelector('div.bottomleft-container') }
 
   get SettingSections() { return this.GetSelectorAll('.settings-section') }
-  get PrStats() { return this.GetSelectorAll('.pr-stat') }
+  get ProfileStats() { return Array.from(document.querySelectorAll('.pr-stat')) } // no cache needed
 }
 
 export const Nodes = new LazyNodes()

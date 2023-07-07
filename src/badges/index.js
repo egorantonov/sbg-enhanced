@@ -44,10 +44,10 @@ export const AddBadges = () => {
     badgesContainer.style.justifyContent = 'center'
     badgesContainer.style.borderBottom = '1px var(--border-transp) solid'
 
-    Nodes.ProfileStats?.prepend(badgesContainer)
+    Nodes.ProfileStatsContainer?.prepend(badgesContainer)
 
-    for (let i = 0; i < Nodes.PrStats.length; i++) {
-        const stat = Nodes.PrStats[i]
+    for (let i = 0; i < Nodes.ProfileStats.length; i++) {
+        const stat = Nodes.ProfileStats[i]
         const title = stat.firstChild.innerText
 
         if (badgeMap.has(title)) {
@@ -92,7 +92,7 @@ export const AddBadges = () => {
 
 const onProfileStatsChanged = 'profileStatsChanged'
 export const ProfileStatsChanged = {
-    target: Nodes.ProfileStats,
+    target: Nodes.ProfileStatsContainer,
     config: { childList: true },
     callback: (mutationsList) => {
         if (mutationsList.find(x => x.addedNodes.length && x.addedNodes[0].classList.contains('pr-stats__section'))) {

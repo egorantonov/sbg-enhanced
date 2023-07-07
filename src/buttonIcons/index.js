@@ -63,8 +63,11 @@ export default async function ButtonIcons() {
     // Remove level and XP sections
     const level = Nodes.GetId("self-info__explv")
     if (level.innerText.includes("10")) { 
-      level.remove() 
-      Nodes.GetId("self-info__exp").parentElement.remove()
+      level.remove()
+      const xpContainer = Nodes.GetId("self-info__exp").parentElement
+      xpContainer.classList.contains("self-info__entry")
+        ? xpContainer.remove()
+        : (xpContainer.style.filter = "opacity(0)") /* CUI Compatibility */
     }
   }
 
