@@ -27,20 +27,21 @@ export default async function ImportExport() {
 
   const GetUserId = async () => {
     let userId = localStorage.getItem(EUI.UserId)
-    if (!userId || userId === "undefined") {
-      await fetch(`/api/self`, {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem('auth')}`,
-          'content-type': 'application/json; charset=UTF-8'
-        }
-      })
-        .then(response => response.json())
-        .then(json => {
-          localStorage.setItem(EUI.UserId, json.g)
-          userId = json.g
-        })
+    if (userId && userId.indexOf('.') > 0) {
+      return userId
     }
-    return userId
+    
+    const id = await fetch(`/api/self`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('auth')}`,
+        'content-type': 'application/json; charset=UTF-8'
+      }
+    })
+    .then(response => response.json())
+    .then(json => { return json.g })
+
+    localStorage.setItem(EUI.UserId, id)
+    return id
   }
 
   const GetCloudData = async (userId) => {
