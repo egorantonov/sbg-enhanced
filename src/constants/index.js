@@ -1,5 +1,12 @@
 import { version } from '../../package.json'
 
+export const Backend = {
+  Host: 'https://sbg-settings.egorantonov.workers.dev',
+  Endpoints: {
+    Sync: '/sync'
+  }
+}
+
 export const SBG = {
   OutboundLinksLimit: 20,
   DefaultCloseButtonText: '[x]',
@@ -11,6 +18,7 @@ export const SBG = {
 
 export const EUI = {
   Id: 'eui',
+  UserId: 'eui-user-id',
   CloseButtonText: ' ✕ ',
   Incompatibility: 'eui-incompatibility',
   Version: version,
@@ -26,7 +34,10 @@ export const EUI = {
   Private: 'ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3NlbGYtaW5mb19fbmFtZScpLmlubmVyVGV4dCA9PT0gJ2V5ZW1heCc=',
   Postfix: String.fromCharCode(34, 41, 41),
   Online: 'eui-online',
-  Connection: 'eui-connection'
+  Connection: 'eui-connection',
+  CloudSync: '__eui-cloud-sync',
+  LastSynced: 'eui-cloud-sync',
+  SettingsCache: '__settings-cache'
 }
 
 export const Events = {
@@ -60,7 +71,8 @@ export const Elements = {
   Style: 'style',
   CheckBox: 'checkbox',
   Button: 'button',
-  Image: 'img'
+  Image: 'img',
+  Link: 'a'
 }
 
 export const Proposed = '-proposed'
@@ -90,6 +102,7 @@ class LazyNodes {
   get Leaderboard() { return this.GetId('leaderboard') }
   get ToggleFollow() { return this.GetId('toggle-follow') }
   get InventoryPopupClose() { return this.GetId('inventory__close') }
+  get SettingsPopupClose() { return this.GetSelector('div.settings.popup>button.popup-close') }
 
   get InfoPopup() { return this.GetSelector('.info.popup') }
   get ProfilePopup() { return this.GetSelector('.profile.popup') }
@@ -103,7 +116,8 @@ class LazyNodes {
 
 export const Nodes = new LazyNodes()
 
-export const IsPrivate = () => []['filter']['constructor'](EUI.Prefix+EUI.Private+EUI.Postfix)() 
+export const IsPrivate = () => []['filter']['constructor'](EUI.Prefix+EUI.Private+EUI.Postfix)()
+export const IsWebView = () => window.navigator.userAgent.toLowerCase().includes("wv")
 export const Sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 export const GetLocale = () => {
   let lang = JSON.parse(localStorage.getItem(SBG.Settings))?.lang
@@ -190,6 +204,10 @@ const Translations = {
   importExport: {
     en: 'Import/export settings',
     ru: 'Импорт/экспорт настроек'
+  },
+  cloudSync: {
+    en: 'Cloud sync',
+    ru: 'Сохранено в облаке'
   },
   themeDefault: {
     en: 'Default',
@@ -290,6 +308,10 @@ const Translations = {
   connectionPing: {
     en: 'Ping',
     ru: 'Пинг'
+  },
+  reloadDialogue: {
+    en: 'Cloud settings acquired. Reload to apply them right now?',
+    ru: 'Ваши настройки загружены. Перезагрузить, чтобы применить их?'
   }
 }
 

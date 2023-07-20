@@ -100,6 +100,7 @@ export default function AddColorScheme() {
       : localStorage.removeItem(i18next_main)
     localStorage.setItem(EUI.IngressTheme, theme)
     style.innerHTML = themes[+theme].innerHTML
+    Nodes.SettingsPopupClose.click() // sync settings with cloud
     location.reload()
   })
 }

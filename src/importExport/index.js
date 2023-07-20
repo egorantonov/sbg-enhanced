@@ -1,11 +1,100 @@
-import { Elements, Events, Modifiers, Nodes, Sleep, t } from '../constants'
+import { Backend, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t } from '../constants'
+import { getUserAgentData } from './userAgentData.ts'
+const { Host, Endpoints } = Backend
 
 export default async function ImportExport() {
+  if (!localStorage.getItem('auth')){
+    return
+  }
+
+  const Week = 604800000
+  const ua = getUserAgentData()
+  const userAgent = `${ua.platform} ${ua.browser}${ua.mobile ? ' (Mobile)' : ''}`
   await Sleep(500) // make sure other async functions started earlier, e.g. Informer
 
+  const GetSettingsAsJson = () => {
+    const itemsToExport = Object.entries(localStorage)
+      .reduce((acc, [key, value]) => (key === 'settings' || key.startsWith('eui') || key.startsWith('sbgcui'))
+        ? acc.concat({ key, value }) : acc, [])
+    return JSON.stringify(itemsToExport)
+  }
+
   const ApplyImportedSettings = (entries) => {
-    for (let i = 0; i<entries.length; i++) {
+    for (let i = 0; i < entries.length; i++) {
       localStorage.setItem(entries[i].key, entries[i].value)
+    }
+  }
+
+  const GetUserId = async () => {
+    let userId = localStorage.getItem(EUI.UserId)
+    if (!userId || userId === "undefined") {
+      await fetch(`/api/self`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('auth')}`,
+          'content-type': 'application/json; charset=UTF-8'
+        }
+      })
+        .then(response => response.json())
+        .then(json => {
+          localStorage.setItem(EUI.UserId, json.g)
+          userId = json.g
+        })
+    }
+    return userId
+  }
+
+  const GetCloudData = async (userId) => {
+    return await fetch(`${Host}${Endpoints.Sync}?id=${userId}&userAgent=${userAgent}`)
+      .then(response => response.json())
+      .then(json => { return json.settings })
+  }
+
+  const SetCloudData = async (userId) => {
+    const settings = GetSettingsAsJson()
+    const settingsCache = localStorage.getItem(EUI.SettingsCache)
+    if (!settingsCache || settings !== settingsCache) {
+      await fetch(`${Host}${Endpoints.Sync}`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ 
+          id: userId,
+          userAgent: userAgent,
+          settings: settings })
+      })
+      .then(response => response.json())
+      .then(json => {
+        localStorage.setItem(EUI.CloudSync, json.timestamp)
+        localStorage.setItem(EUI.SettingsCache, settings)
+        document.getElementById(EUI.LastSynced).innerText = (new Date(+json.timestamp)).toLocaleString()
+      })
+    }
+  }
+
+  const CloudSync = async (force = false) => {
+    const userId = await GetUserId()
+    if (force) { // force overwrite (manual)
+      await SetCloudData(userId)
+      return
+    }
+
+    const cloudData = await GetCloudData(userId)
+    if (!cloudData || typeof cloudData !== "string") { // no cloud data, need to sync local settings
+      await SetCloudData(userId)
+      return
+    }
+
+    const syncedAt = localStorage.getItem(EUI.CloudSync)
+    if (syncedAt) {
+      if (Date.now() - (+syncedAt) > Week) { // update stale settings
+        await SetCloudData(userId)
+      }
+      return
+    }
+
+    ApplyImportedSettings(JSON.parse(cloudData))
+    localStorage.setItem(EUI.CloudSync, Date.now())
+    if (confirm(t('reloadDialogue'))) {
+      location.reload()
     }
   }
 
@@ -15,13 +104,14 @@ export default async function ImportExport() {
       const reader = new FileReader()
       reader.readAsText(file)
 
-      reader.onload = function() {
+      reader.onload = async function () {
         console.log(reader.result)
         ApplyImportedSettings(JSON.parse(reader.result))
+        await SetCloudData(true)
         location.reload()
       }
 
-      reader.onerror = function() {
+      reader.onerror = function () {
         console.log(reader.error)
         alert('FileReader error')
       }
@@ -33,20 +123,16 @@ export default async function ImportExport() {
   }
 
   const Export = () => {
-    const itemsToExport = Object.entries(localStorage)
-      .reduce((acc, [key, value]) => (key === 'settings' || key.startsWith('eui') || key.startsWith('sbgcui'))
-        ? acc.concat({ key, value }) : acc, [])
-    const json_string = JSON.stringify(itemsToExport)
-
-    let downloadLink = document.createElement('a')
+    const downloadLink = document.createElement(Elements.Link)
     downloadLink.download = 'sbg.config'
-    let file = new Blob([json_string], {type: 'text/plain'})
+    const json_string = GetSettingsAsJson()
+    let file = new Blob([json_string], { type: 'application/json' })
     downloadLink.href = window.URL.createObjectURL(file)
     downloadLink.click()
   }
 
   const about = Nodes.SettingSections.at(3)
-  if (about) {
+  if (!IsWebView() && about) {
     const key = document.createElement(Elements.Span)
     key.innerText = t('importExport')
     const value = document.createElement(Elements.Div)
@@ -74,4 +160,32 @@ export default async function ImportExport() {
     item.appendChild(value)
     about.appendChild(item)
   }
+
+  if (about) {
+    const key = document.createElement(Elements.Span)
+    key.innerText = t('cloudSync')
+
+    const value = document.createElement(Elements.Span)
+    value.id = EUI.LastSynced
+    value.innerText = (new Date(+localStorage.getItem(EUI.CloudSync))).toLocaleString()
+
+    // const syncButton = document.createElement(Elements.Button)
+    // syncButton.innerText = ' ☁ '
+    // value.appendChild(syncButton)
+    // syncButton.addEventListener(Events.onClick, () => CloudSync(true))
+
+    const item = document.createElement(Elements.Div)
+    item.classList.add(Modifiers.SettingsSectionItemClassName)
+    item.appendChild(key)
+    item.appendChild(value)
+    about.appendChild(item)
+
+    Nodes.SettingsPopupClose.addEventListener(Events.onClick, () => CloudSync(true))
+
+    // CUI Compatibility
+    const cuiSaveSettingsButton = document.querySelector("div.sbgcui_settings-buttons_wrp>button")
+    !!cuiSaveSettingsButton && cuiSaveSettingsButton.addEventListener(Events.onClick, () => CloudSync(true))
+  }
+
+  await CloudSync()
 }

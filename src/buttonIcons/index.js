@@ -75,6 +75,7 @@ export default async function ButtonIcons() {
 
   input.addEventListener(Events.onChange, (event) => {
     localStorage.setItem(EUI.CompactView, event.target.checked ? 1 : 0)
+    Nodes.SettingsPopupClose.click()
     location.reload()
   })
 
