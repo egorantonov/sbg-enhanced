@@ -42,4 +42,7 @@ export default async function BeautifyCloseButtons() {
     },
     { once: true }
   )
+
+  /* REMOVE ATTACK SLIDER CLOSE BUTTON */
+  Nodes.GetId('attack-slider-close')?.remove()
 }

@@ -46,6 +46,7 @@ export const Events = {
   onLoad: 'load',
   onInput: 'input',
   onTouchStart: 'touchstart',
+  onTouchMove: 'touchmove',
   onTouchEnd: 'touchend'
 }
 
@@ -103,9 +104,11 @@ class LazyNodes {
   get ToggleFollow() { return this.GetId('toggle-follow') }
   get InventoryPopupClose() { return this.GetId('inventory__close') }
   get SettingsPopupClose() { return this.GetSelector('div.settings.popup>button.popup-close') }
+  get InfoPopupClose() { return this.GetSelector('div.info.popup>button.popup-close') }
 
   get InfoPopup() { return this.GetSelector('.info.popup') }
   get ProfilePopup() { return this.GetSelector('.profile.popup') }
+  get InventoryPopup() { return this.GetSelector('.inventory.popup')}
   get ProfileStatsContainer() { return this.GetSelector('.pr-stats') }
   get InventoryContent() { return this.GetSelector('.inventory__content') }
   get BottomLeftContainer() { return this.GetSelector('div.bottomleft-container') }

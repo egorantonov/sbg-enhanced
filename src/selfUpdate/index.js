@@ -9,7 +9,7 @@ import AddHighContrast from '../highContrast'
 import AddReferenceSearch from '../referenceSearch'
 import AddStyles from '../styles'
 import BeautifyCloseButtons from '../closeButtons'
-import ButtonIcons from '../buttonIcons'
+import CompactView from '../compactView'
 import ImportExport from '../importExport'
 import Informer from '../informer'
 import { Private } from '../private'
@@ -51,7 +51,7 @@ async function ExecuteScript () {
       AddCanvasStyles(),
       BeautifyCloseButtons(),
       ImportExport(),
-      ButtonIcons(),
+      CompactView(),
       AddReferenceSearch(),
       AddDiscoverProgress(),
       Private && (Private())

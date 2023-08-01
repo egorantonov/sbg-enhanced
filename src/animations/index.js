@@ -2,6 +2,7 @@ import { EUI, Elements, Events, Modifiers, Nodes, Proposed, t } from '../constan
 import styles from './styles.css'
 
 export default function AddAnimations() {
+    const IsAnimated = () => localStorage.getItem(EUI.Animations) == 1
     const input = document.createElement(Elements.Input)
     const uiSettings = Nodes.SettingSections.at(1)
     if (uiSettings) {
@@ -30,7 +31,7 @@ export default function AddAnimations() {
     style.dataset.id = EUI.Animations
     style.innerHTML = styles
 
-    if (localStorage.getItem(EUI.Animations) == 1) {
+    if (IsAnimated()) {
         document.head.appendChild(style)
         input.checked = true
     }
@@ -45,4 +46,90 @@ export default function AddAnimations() {
             localStorage.setItem(EUI.Animations, 0)
         }
     })
+
+    // SWIPE ANIMATIONS - INFO POPUP
+    const SwipeToCloseInfoPopup = () => {
+        let startX
+        let startY
+        let isSwipe = false
+
+        const deploySlider = Nodes.InfoPopup.querySelector('.deploy-slider-wrp')
+        Nodes.InfoPopup.addEventListener(Events.onTouchStart, (e) => {
+            if (!IsAnimated()) return
+            if (e.touches.length !== 1 || e.target.contains(deploySlider) || e.target.closest('.deploy-slider-wrp')) {
+                isSwipe = false
+            }
+            else {
+                const touch = e.touches[0]
+                startX = touch.clientX
+                startY = touch.clientY
+                isSwipe = true
+            }
+        });
+
+        Nodes.InfoPopup.addEventListener(Events.onTouchMove, (e) => {
+            if (!isSwipe || !IsAnimated()) return;
+
+            e.preventDefault(); // Prevent scrolling while swiping
+        });
+
+        Nodes.InfoPopup.addEventListener(Events.onTouchEnd, (e) => {
+            if (!isSwipe || !IsAnimated()) return
+
+            const touch = e.changedTouches[0]
+            const deltaX = touch.clientX - startX
+            const deltaY = touch.clientY - startY
+
+            if (Math.abs(deltaX) < 50 || Math.abs(deltaY) > 70) return
+
+            // Check if the swipe is primarily horizontal and to the right
+            if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX > 0) {
+                Nodes.InfoPopupClose.click()
+            }
+        })
+    }
+
+    // SWIPE ANIMATIONS - INVENTORY
+    const SwipeToCloseInventoryPopup = () => {
+        let startX
+        let startY
+        let isSwipe = false
+
+        Nodes.InventoryPopup.addEventListener(Events.onTouchStart, (e) => {
+            if (!IsAnimated()) return
+            if (e.touches.length !== 1) {
+                isSwipe = false
+            }
+            else {
+                const touch = e.touches[0]
+                startX = touch.clientX
+                startY = touch.clientY
+                isSwipe = true
+            }
+        });
+
+        Nodes.InventoryPopup.addEventListener(Events.onTouchMove, (e) => {
+            if (!isSwipe || !IsAnimated()) return;
+
+            e.preventDefault(); // Prevent scrolling while swiping
+        });
+
+        Nodes.InventoryPopup.addEventListener(Events.onTouchEnd, (e) => {
+            if (!isSwipe || !IsAnimated()) return
+
+            const touch = e.changedTouches[0]
+            const deltaX = touch.clientX - startX
+            const deltaY = touch.clientY - startY
+
+            if (Math.abs(deltaX) < 50 || Math.abs(deltaY) > 70) return
+
+            // Check if the swipe is primarily horizontal and to the left
+            if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < 0) {
+                Nodes.InventoryPopupClose.click()
+            }
+        })
+    };
+
+    SwipeToCloseInfoPopup()
+    SwipeToCloseInventoryPopup()
 }
