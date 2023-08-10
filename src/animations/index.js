@@ -108,10 +108,8 @@ export default function AddAnimations() {
             }
         });
 
-        Nodes.InventoryPopup.addEventListener(Events.onTouchMove, (e) => {
+        Nodes.InventoryPopup.addEventListener(Events.onTouchMove, () => {
             if (!isSwipe || !IsAnimated()) return;
-
-            e.preventDefault(); // Prevent scrolling while swiping
         });
 
         Nodes.InventoryPopup.addEventListener(Events.onTouchEnd, (e) => {
