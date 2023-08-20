@@ -1,4 +1,5 @@
 :root {
+  --highlight-color: #f00;
   --ingress-color: #ddd;
   --ingress-bg-color: #000;
   --ingress-bg-color-cc: #000C;
@@ -17,6 +18,7 @@
 }
 
 :root[data-theme="light"] {
+  --highlight-color: #a00;
   --ingress-color: #222;
   --ingress-bg-color: #fff;
   --ingress-bg-color-cc: #fffC;
@@ -36,6 +38,7 @@
 
 @media (prefers-color-scheme: light) {
   :root[data-theme="auto"] {
+    --highlight-color: #a00;
     --ingress-color: #222;
     --ingress-bg-color: #fff;
     --ingress-bg-color-cc: #fffC;
@@ -68,6 +71,7 @@
 .inventory__manage-amount button,
 input:not(.sbgcui_settings-amount_input):not([type='checkbox']),
 select {
+  text-transform: uppercase;
   border-color: var(--ingress-btn-border-color);
   border-style: solid;
   border-radius: 5px;
@@ -75,6 +79,19 @@ select {
   background: var(--ingress-btn-bg-color);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
+  font-weight: bold;
+}
+
+#inventory-delete-section,
+#inventory-delete[data-del="1"],
+.inventory__ma-delete {
+  color: var(--highlight-color) !important;
+  border-color: var(--highlight-color) !important;
+}
+
+#inventory__close:not([data-round="true"]) {
+  background-color: var(--accent);
+  color: #000;
 }
 
 #discover, #deploy, #repair, #draw {
@@ -119,8 +136,11 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 .inventory__item-controls::after {
+  box-shadow: 0px 0px 0px 1.5px inset;
   color: var(--ingress-btn-color) !important;
   background: var(--ingress-btn-bg-color) !important;
+  border-color: var(--ingress-btn-border-color);
+  border-radius: 5px !important;
 }
 
 #attack-slider-fire[disabled], #draw-slider-confirm[disabled] {

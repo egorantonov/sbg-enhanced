@@ -63,7 +63,7 @@ export default async function AddReferenceSearch() {
   const clearButton = document.getElementById('inventory-delete-section')
   tabs.forEach(tab => {
       tab.addEventListener(Events.onClick, () => {
-          if (['1', '2'].includes(tab.dataset.type)) {
+          if (['1', '2'].includes(tab.dataset.tab)) {
               refs = []
               search.dataset.active = '0'
               search.remove()

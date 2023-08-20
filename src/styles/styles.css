@@ -122,7 +122,7 @@
 .i-buttons>button {
   padding: 6px 2px;
   min-width: fit-content;
-  min-height: 40px;
+  min-height: 45px;
   width: 30%;
   flex-basis: unset !important;
 }
@@ -261,6 +261,7 @@ input[data-type="reference-search"] {
 #attack-menu {
   border-style: double !important;
   border-top-style: solid !important;
+  -moz-transform: rotate(0deg) !important; /* Revert Firefox desktop fix */
 }
 
 #attack-menu.sbgcui_attack-menu-rotate {
@@ -291,15 +292,15 @@ input[data-type="reference-search"] {
   display: none !important;
 }
 
-.inventory__content[data-type="3"] .inventory__item.loaded .inventory__item-left::before {
-  background: linear-gradient(90deg, #fff0 0%, var(--sbgcui-branding-color) 100%);
+.inventory__content[data-tab="3"] .inventory__item.loaded .inventory__item-left::before {
+  background: linear-gradient(90deg, #fff0 0%, var(--sbgcui-branding-color) 100%) !important;
 }
 
 :root {
   --sbgcui-display-r-button: none;
 }
 
-.inventory__content[data-type="3"] .inventory__item-controls::after {
+.inventory__content[data-tab="3"] .inventory__item-controls::after {
   content: '⚡' !important;
   display: var(--sbgcui-display-r-button);
 }

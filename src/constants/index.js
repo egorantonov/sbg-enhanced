@@ -11,7 +11,7 @@ export const SBG = {
   OutboundLinksLimit: 20,
   DefaultCloseButtonText: '[x]',
   VersionHeader: 'sbg-version',
-  CompatibleVersion: '0.3.0',
+  CompatibleVersion: '0.4.0',
   Settings: 'settings',
   DefaultLang: 'en',
 }
@@ -47,7 +47,8 @@ export const Events = {
   onInput: 'input',
   onTouchStart: 'touchstart',
   onTouchMove: 'touchmove',
-  onTouchEnd: 'touchend'
+  onTouchEnd: 'touchend',
+  onBackButton: 'backbutton'
 }
 
 export const Modifiers = {
@@ -102,9 +103,9 @@ class LazyNodes {
   get SelfName() { return this.GetId('self-info__name') }
   get Leaderboard() { return this.GetId('leaderboard') }
   get ToggleFollow() { return this.GetId('toggle-follow') }
+  get InfoPopupClose() { return this.GetSelector('div.info.popup>button.popup-close') }
   get InventoryPopupClose() { return this.GetId('inventory__close') }
   get SettingsPopupClose() { return this.GetSelector('div.settings.popup>button.popup-close') }
-  get InfoPopupClose() { return this.GetSelector('div.info.popup>button.popup-close') }
 
   get InfoPopup() { return this.GetSelector('.info.popup') }
   get ProfilePopup() { return this.GetSelector('.profile.popup') }

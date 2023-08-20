@@ -6,10 +6,10 @@ export default async function BeautifyCloseButtons() {
     button.dataset.round = true
   }
 
-  Nodes.GetSelectorAll('button.popup-close, button#inventory__close')
-    .forEach((button) => {
-      button.innerText.toLowerCase() === SBG.DefaultCloseButtonText && beautifyButton(button)
-    })
+  const closeButtons = Nodes.GetSelectorAll('button.popup-close, button#inventory__close')
+  closeButtons.forEach((button) => {
+    button.innerText.toLowerCase() === SBG.DefaultCloseButtonText && beautifyButton(button)
+  })
 
   /* CREDITS POPUP IS BEING FETCHED AS HTML */
   const creditsViewButton = Nodes.GetId('settings-credits')
@@ -45,4 +45,10 @@ export default async function BeautifyCloseButtons() {
 
   /* REMOVE ATTACK SLIDER CLOSE BUTTON */
   Nodes.GetId('attack-slider-close')?.remove()
+
+  /* BACK BUTTON ON ANDROID CLOSES MENUS */
+  document.addEventListener(Events.onBackButton, (e) => {
+    e.preventDefault()
+    closeButtons.forEach(button => button.click())
+  });
 }
