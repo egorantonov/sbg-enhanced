@@ -8,7 +8,7 @@ export const Backend = {
 }
 
 export const SBG = {
-  OutboundLinksLimit: 20,
+  OutboundLinksLimit: 30,
   DefaultCloseButtonText: '[x]',
   VersionHeader: 'sbg-version',
   CompatibleVersion: '0.4.0',

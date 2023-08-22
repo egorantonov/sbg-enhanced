@@ -10,7 +10,11 @@ export const PointStatsChanged = {
     }
 }
 
-// disables draw button when outbound limit is reached
+/**
+ * Disables draw button when outbound limit is reached
+ * 
+ * @deprecated Superseded by vanilla app
+ */
 export const DisableDrawButton = () => {
 
     const draw = Nodes.GetId('draw')

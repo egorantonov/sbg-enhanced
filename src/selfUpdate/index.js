@@ -1,5 +1,5 @@
 import { AddDiscoverProgress, DiscoverChanged } from '../discoverButton'
-import { DisableDrawButton, PointStatsChanged } from '../drawButton'
+import { PointStatsChanged } from '../drawButton'
 import { EUI, Nodes, Sleep, t } from '../constants'
 import { ProfileStatsChanged, RemoveBadges, RenderBadges } from '../badges'
 import AddAnimations from '../animations'
@@ -39,7 +39,6 @@ async function ExecuteScript () {
         AddAnimations()
         AddColorScheme()
         InitObservers()
-        DisableDrawButton()
         RemoveBadges()
         RenderBadges()
         ZenMode()
