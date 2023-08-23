@@ -11,7 +11,7 @@ export const SBG = {
   OutboundLinksLimit: 30,
   DefaultCloseButtonText: '[x]',
   VersionHeader: 'sbg-version',
-  CompatibleVersion: '0.4.0',
+  CompatibleVersion: '0.4.1',
   Settings: 'settings',
   DefaultLang: 'en',
 }
@@ -98,6 +98,8 @@ class LazyNodes {
   get Ops() { return this.GetId('ops') }
   get Score() { return this.GetId('score') }
   get Layers() { return this.GetId('layers') }
+  get Attack() { return this.GetId('attack-menu') }
+  get Notifs() { return this.GetId('notifs-menu') }
   get Discover() { return this.GetId('discover') }
   get Settings() { return this.GetId('settings') }
   get SelfName() { return this.GetId('self-info__name') }

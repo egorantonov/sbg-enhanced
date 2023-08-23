@@ -69,7 +69,8 @@
 #form__buttons-login,
 .sbgcui_compare_stats>button,
 .inventory__manage-amount button,
-input:not(.sbgcui_settings-amount_input):not([type='checkbox']),
+.notifs__entry-view.icon-button, /* View point [notification list] */
+input:not(.sbgcui_settings-amount_input):not([type='checkbox']), /* CUI Compatibility */
 select {
   text-transform: uppercase;
   border-color: var(--ingress-btn-border-color);
@@ -118,12 +119,6 @@ select {
 
 #eui-sort:disabled {
   filter: opacity(.5);
-}
-
-.i-buttons>button,
-.attack-slider-buttons>button,
-.draw-slider-buttons>button {
-  position: relative;
 }
 
 option {
@@ -201,6 +196,7 @@ option:checked { /* WTF? checked is non-documented??? */
 .layers-config.popup,
 .inventory.popup,
 .credits.popup,
+.notifs.popup,
 .inventory__manage-amount,
 #draw-slider,
 #attack-slider,
@@ -232,7 +228,8 @@ option:checked { /* WTF? checked is non-documented??? */
 .layers-config__header,
 .leaderboard.popup>.popup-header,
 .settings.popup>h3,
-.credits.popup h3 {
+.credits.popup h3,
+.notifs.popup>h3 {
   text-transform: uppercase;
 }
 

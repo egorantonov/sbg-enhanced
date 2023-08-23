@@ -49,16 +49,18 @@ export default async function CompactView() {
     Nodes.Score.innerText = '📊'
     Nodes.Settings.innerText = '🔧'
     Nodes.Layers.innerText && (Nodes.Layers.innerText = '☰')
+    Nodes.Notifs.innerText && (Nodes.Notifs.innerText = '✉')
     Nodes.Layers.innerText && (Nodes.ToggleFollow.innerText = '💠')
 
     // Move all buttons after 'toggle-follow' button
     Nodes.ToggleFollow.after(Nodes.Settings)
     Nodes.ToggleFollow.after(Nodes.Leaderboard)
     Nodes.ToggleFollow.after(Nodes.Score)
+    Nodes.Attack?.after(Nodes.Ops)
 
     // Move 'ops' button into 'bottomleft-container'
-    const bottomLeftContainer = Nodes.GetSelector('div.bottomleft-container')
-    bottomLeftContainer && bottomLeftContainer.appendChild(Nodes.Ops)
+    //const bottomContainer = Nodes.GetSelector('div.bottom-container')
+    //bottomContainer && bottomContainer.appendChild(Nodes.Ops)
 
     // Remove level and XP sections
     const level = Nodes.GetId("self-info__explv")

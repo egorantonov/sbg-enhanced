@@ -62,15 +62,9 @@ select {
   opacity: 0.7;
 }
 
-.i-buttons>button,
-.attack-slider-buttons>button,
-.draw-slider-buttons>button {
-  position: relative;
-}
-
 .i-buttons>button::before,
 .attack-slider-buttons>button::before,
-.draw-slider-buttons>button::before {
+.draw-slider-buttons>button:not(.fa)::before {
   content: '';
   position: absolute;
   z-index: 1;
@@ -92,7 +86,9 @@ select {
 .pr-buttons>button,
 .sbgcui_compare_stats>button,
 .inventory__manage-amount button,
-input:not(.sbgcui_settings-amount_input), select {
+.notifs__entry-view.icon-button, /* View point [notification list] */
+input:not(.sbgcui_settings-amount_input), .sbgcui_drawslider_sort, /* CUI Compatibility */
+select {
   color: var(--ingress-btn-color);
   background: linear-gradient(to top, var(--ingress-btn-glow-color) 0%, var(--ingress-btn-bg-color) 30%, var(--ingress-btn-bg-color) 70%, var(--ingress-btn-glow-color) 100%), var(--ingress-btn-bg-color);
   border-color: var(--ingress-btn-border-color);
@@ -211,6 +207,7 @@ option:checked { /* WTF? checked is non-documented??? */
 .layers-config.popup,
 .inventory.popup,
 .credits.popup,
+.notifs.popup,
 .inventory__manage-amount,
 #draw-slider,
 #attack-slider,
@@ -243,7 +240,8 @@ option:checked { /* WTF? checked is non-documented??? */
 .layers-config__header,
 .leaderboard.popup>.popup-header,
 .settings.popup>h3,
-.credits.popup h3 {
+.credits.popup h3,
+.notifs.popup>h3 {
   text-transform: uppercase;
   font-family: 'Coda', 'Manrope', sans-serif;
 }

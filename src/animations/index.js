@@ -53,10 +53,11 @@ export default function AddAnimations() {
         let startY
         let isSwipe = false
 
-        const deploySlider = Nodes.InfoPopup.querySelector('.deploy-slider-wrp')
-        Nodes.InfoPopup.addEventListener(Events.onTouchStart, (e) => {
+        const deploySliderClassName = '.deploy-slider-wrp'
+        const deploySlider = Nodes.InfoPopup?.querySelector(deploySliderClassName)
+        Nodes.InfoPopup?.addEventListener(Events.onTouchStart, (e) => {
             if (!IsAnimated()) return
-            if (e.touches.length !== 1 || e.target.contains(deploySlider) || e.target.closest('.deploy-slider-wrp')) {
+            if (e.touches.length !== 1 || e.target.contains(deploySlider) || e.target.closest(deploySliderClassName)) {
                 isSwipe = false
             }
             else {
@@ -67,13 +68,13 @@ export default function AddAnimations() {
             }
         });
 
-        Nodes.InfoPopup.addEventListener(Events.onTouchMove, (e) => {
+        Nodes.InfoPopup?.addEventListener(Events.onTouchMove, (e) => {
             if (!isSwipe || !IsAnimated()) return;
 
             e.preventDefault(); // Prevent scrolling while swiping
         });
 
-        Nodes.InfoPopup.addEventListener(Events.onTouchEnd, (e) => {
+        Nodes.InfoPopup?.addEventListener(Events.onTouchEnd, (e) => {
             if (!isSwipe || !IsAnimated()) return
 
             const touch = e.changedTouches[0]
@@ -95,7 +96,7 @@ export default function AddAnimations() {
         let startY
         let isSwipe = false
 
-        Nodes.InventoryPopup.addEventListener(Events.onTouchStart, (e) => {
+        Nodes.InventoryPopup?.addEventListener(Events.onTouchStart, (e) => {
             if (!IsAnimated()) return
             if (e.touches.length !== 1) {
                 isSwipe = false
@@ -108,11 +109,11 @@ export default function AddAnimations() {
             }
         });
 
-        Nodes.InventoryPopup.addEventListener(Events.onTouchMove, () => {
+        Nodes.InventoryPopup?.addEventListener(Events.onTouchMove, () => {
             if (!isSwipe || !IsAnimated()) return;
         });
 
-        Nodes.InventoryPopup.addEventListener(Events.onTouchEnd, (e) => {
+        Nodes.InventoryPopup?.addEventListener(Events.onTouchEnd, (e) => {
             if (!isSwipe || !IsAnimated()) return
 
             const touch = e.changedTouches[0]

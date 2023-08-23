@@ -14,7 +14,8 @@ export default async function ImportExport() {
 
   const GetSettingsAsJson = () => {
     const itemsToExport = Object.entries(localStorage)
-      .reduce((acc, [key, value]) => (key === 'settings' || key.startsWith('eui') || key.startsWith('sbgcui'))
+      .reduce((acc, [key, value]) => (
+        key === 'settings' || key === 'map-config' || key.startsWith('eui') || key.startsWith('sbgcui'))
         ? acc.concat({ key, value }) : acc, [])
     return JSON.stringify(itemsToExport)
   }
@@ -181,7 +182,8 @@ export default async function ImportExport() {
     item.appendChild(value)
     about.appendChild(item)
 
-    Nodes.SettingsPopupClose.addEventListener(Events.onClick, () => CloudSync(true))
+    Nodes.SettingsPopupClose?.addEventListener(Events.onClick, () => CloudSync(true))
+    Nodes.GetId('layers-config__save')?.addEventListener(Events.onClick, () => CloudSync(true))
 
     // CUI Compatibility
     const cuiSaveSettingsButton = document.querySelector("div.sbgcui_settings-buttons_wrp>button")

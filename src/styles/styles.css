@@ -63,6 +63,11 @@
   transition: width 1s linear;
 }
 
+.i-buttons>button,
+.attack-slider-buttons>button,
+.draw-slider-buttons>button:not(.fa) {
+  position: relative;
+}
 
 /* ATTACK SLIDER */
 
@@ -96,11 +101,11 @@
   transition: all 0.2s ease-in-out;
 }
 
-.draw-slider-wrp .draw-slider-buttons {
+.draw-slider-wrp .draw-slider-buttons:not(.fa) {
   justify-content: center;
 }
 
-.draw-slider-wrp .draw-slider-buttons button {
+.draw-slider-wrp .draw-slider-buttons button:not(.fa) {
   padding: 6px;
   text-transform: uppercase;
 }
@@ -246,7 +251,7 @@ input[data-type="reference-search"] {
   filter: opacity(.75)
 }
 
-/* SBG CUI Enhancements and support */
+/* SBG CUI Compatibility: enhancements and support */
 
 .sbgcui_xpProgressBar {
   background-color: var(--background-transp);
@@ -303,4 +308,8 @@ input[data-type="reference-search"] {
 .inventory__content[data-tab="3"] .inventory__item-controls::after {
   content: '⚡' !important;
   display: var(--sbgcui-display-r-button);
+}
+
+.sbgcui_drawslider_sort {
+  max-width: 60px !important;
 }
