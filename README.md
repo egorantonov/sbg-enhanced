@@ -107,7 +107,7 @@ https://www.youtube.com/embed/zrz7pwRhkXY
 
 Скачайте и установите приложение Android от [@Elektroplayer](https://github.com/Elektroplayer):
 
-[app-release.apk](https://github.com/Elektroplayer/sbg-apk/releases/latest/download/app-release.apk)
+[app-release.apk](https://github.com/Elektroplayer/sbg-apk/releases/latest/download/app-release-allscripts.apk)
 
 В состав приложения также входит пользовательский скрипт [Custom UI](https://github.com/nicko-v/sbg-cui) от [@nicko-v](https://github.com/nicko-v)
 
