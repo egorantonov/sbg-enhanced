@@ -251,13 +251,11 @@ input[data-type="reference-search"] {
   filter: opacity(.75)
 }
 
-/* SBG CUI Compatibility: enhancements and support */
+/* 
+ * SBG CUI Compatibility: enhancements and support 
+ */
 
-.sbgcui_xpProgressBar {
-  background-color: var(--background-transp);
-  border-radius: 5px;
-}
-
+/* Attack button enhancements */
 #attack-menu, .topleft-container {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none;
@@ -274,11 +272,11 @@ input[data-type="reference-search"] {
   border-top-style: double !important;
 }
 
-.fa-classic, .fa-regular, .fa-solid, .far, .fas {
-  font-family: "Font Awesome 6 Free" !important;
-}
-
 /* TODO: removed CUI sort until it has the same sort speed */
+
+.sbgcui_refs-sort-button, .sbgcui_refs-sort-select {
+  display: none !important;
+}
 /*.sbgcui_refs-sort-button {
   position: static;
   height: revert;
@@ -292,24 +290,28 @@ input[data-type="reference-search"] {
   font-size: 1em;
 }*/
 
-/* TODO: removed CUI sort until it has the same sort speed */
-.sbgcui_refs-sort-button, .sbgcui_refs-sort-select {
-  display: none !important;
-}
-
+/* Linear gradient for energy amount */
 .inventory__content[data-tab="3"] .inventory__item.loaded .inventory__item-left::before {
   background: linear-gradient(90deg, #fff0 0%, var(--sbgcui-branding-color) 100%) !important;
 }
 
+/* Replace 'R' button symbol with '⚡' emoji symbol */
 :root {
   --sbgcui-display-r-button: none;
 }
-
 .inventory__content[data-tab="3"] .inventory__item-controls::after {
   content: '⚡' !important;
   display: var(--sbgcui-display-r-button);
 }
 
+/* Draw slider sort size restriction */
 .sbgcui_drawslider_sort {
   max-width: 60px !important;
+}
+
+/* Revert "notifs__entry-view icon-button" styles */
+.notifs__entry-view {
+  max-width: 100px !important;
+  max-height: 100px !important;
+  text-align: center;
 }

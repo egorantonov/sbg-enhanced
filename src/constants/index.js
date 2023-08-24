@@ -182,10 +182,14 @@ const Translations = {
     ru: 'с',
   },
   decimalSeparator: {
-    [GetLocale()]: NumberFormat.find(x => x.type==='decimal').value ?? '.'
+    en: ',',
+    ru: '.'
+    // [GetLocale()]: NumberFormat.find(x => x.type==='decimal').value ?? '.' // Formatter changed to RU format
   },
   groupSeparator: {
-    [GetLocale()]: NumberFormat.find(x => x.type==='group').value ?? ','
+    en: ' ',
+    ru: ' '
+    // [GetLocale()]: NumberFormat.find(x => x.type==='group').value ?? ',' // Formatter changed to RU format
   },
   deploy: {
     en: 'Deploy',

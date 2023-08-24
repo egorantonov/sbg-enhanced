@@ -94,6 +94,10 @@ select {
   border-color: var(--ingress-btn-border-color);
 }
 
+input[type="search"] {
+  border-radius: 0px !important;
+}
+
 option {
   background-color: var(--ingress-btn-bg-color);
 }
