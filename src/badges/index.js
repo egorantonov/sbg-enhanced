@@ -91,7 +91,7 @@ export const AddBadges = () => {
 }
 
 const onProfileStatsChanged = 'profileStatsChanged'
-export const ProfileStatsChanged = {
+export const ProfileStatsChanged = () => ({
     target: Nodes.ProfileStatsContainer,
     config: { childList: true },
     callback: (mutationsList) => {
@@ -100,7 +100,7 @@ export const ProfileStatsChanged = {
             mutationsList[0].target.dispatchEvent(event)
         }
     }
-}
+})
 
 export const RenderBadges = () => {
     Nodes.ProfilePopup?.addEventListener(onProfileStatsChanged, () => {

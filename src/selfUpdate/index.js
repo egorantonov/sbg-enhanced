@@ -1,7 +1,6 @@
-import { AddDiscoverProgress, DiscoverChanged } from '../discoverButton'
-import { PointStatsChanged } from '../drawButton'
+import { AddDiscoverProgress } from '../discoverButton'
 import { EUI, Nodes, Sleep, t } from '../constants'
-import { ProfileStatsChanged, RemoveBadges, RenderBadges } from '../badges'
+import { RemoveBadges, RenderBadges } from '../badges'
 import AddAnimations from '../animations'
 import AddCanvasStyles from '../canvasStyles'
 import AddColorScheme from '../colorScheme'
@@ -12,6 +11,7 @@ import BeautifyCloseButtons from '../closeButtons'
 import CompactView from '../compactView'
 import ImportExport from '../importExport'
 import Informer from '../informer'
+import InitObservers from '../observers'
 import { Private } from '../private'
 import ZenMode from '../zenMode'
 
@@ -26,35 +26,29 @@ async function ExecuteScript () {
     delayAsyncMs += connection.rtt
   }
 
-  const InitObserver = ({ target, config, callback }) =>
-    target && config && callback && new MutationObserver(callback).observe(target, config)
+  await Sleep(delaySyncMs)
+    .then(() => {
+      AddStyles()
+      AddHighContrast()
+      AddAnimations()
+      AddColorScheme()
+      InitObservers()
+      RemoveBadges()
+      RenderBadges()
+      ZenMode()
+    })
 
-  const InitObservers = () => [PointStatsChanged, ProfileStatsChanged, DiscoverChanged]
-    .forEach(o => InitObserver(o))
-
-    await Sleep(delaySyncMs)
-      .then(() => {
-        AddStyles()
-        AddHighContrast()
-        AddAnimations()
-        AddColorScheme()
-        InitObservers()
-        RemoveBadges()
-        RenderBadges()
-        ZenMode()
-      })
-
-    await Sleep(delayAsyncMs) // sleep for a while to make sure SBG is loaded
-    await Promise.all([
-      Informer(),
-      AddCanvasStyles(),
-      BeautifyCloseButtons(),
-      ImportExport(),
-      CompactView(),
-      AddReferenceSearch(),
-      AddDiscoverProgress(),
-      Private && (Private())
-    ])
+  await Sleep(delayAsyncMs) // sleep for a while to make sure SBG is loaded
+  await Promise.all([
+    Informer(),
+    AddCanvasStyles(),
+    BeautifyCloseButtons(),
+    ImportExport(),
+    CompactView(),
+    AddReferenceSearch(),
+    AddDiscoverProgress(),
+    Private && (Private())
+  ])
 }
 
 export async function RunWithOnlineUpdate() {

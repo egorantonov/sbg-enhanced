@@ -1,7 +1,7 @@
 import { Elements, Modifiers, Nodes, t } from '../constants'
 
 const onDiscoverChanged = 'discoverChanged'
-export const DiscoverChanged = {
+export const DiscoverChanged = () => ({
     target: Nodes.Discover,
     config: {
         attributes: true,
@@ -10,8 +10,9 @@ export const DiscoverChanged = {
     callback: (mutationsList) => {
         const event = new Event(onDiscoverChanged, { bubbles: true })
         mutationsList[0].target.dispatchEvent(event)
+        console.log(onDiscoverChanged)
     }
-}
+})
 
 export const AddDiscoverProgress = async () => {
 

@@ -1,14 +1,14 @@
 import { Modifiers, Nodes, SBG } from '../constants'
 
 const onPointStatsChanged = 'pointStatsChanged'
-export const PointStatsChanged = {
+export const PointStatsChanged = () => ({
     target: Nodes.GetId('i-stat__line-out'),
     config: { childList: true },
     callback: (mutationsList) => {
         const event = new Event(onPointStatsChanged, { bubbles: true })
         mutationsList[0].target.dispatchEvent(event)
     }
-}
+})
 
 /**
  * Disables draw button when outbound limit is reached
