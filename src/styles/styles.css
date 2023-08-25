@@ -11,6 +11,11 @@
   border-radius: 5px;
 }
 
+.info.popup {
+  padding-bottom: 5px !important;
+  padding-left: 0;
+  padding-right: 0;
+}
 
 /* BUTTONS */
 .ol-control #settings {
@@ -31,6 +36,7 @@
   font-weight: 600;
   border: 2px solid #777;
   border-radius: 100px;
+  font-size: 1.5em !important;
   height: 2em;
   width: 2em;
 }
@@ -112,13 +118,33 @@
 
 /* POINT INFO */
 
-#i-image {
-  border-radius: 5px;
+/* Info popup image fixes */
+.i-header {
+  border-bottom-style: hidden;
+  z-index: 1;
+}
+
+#i-title {
+  display: block;
+  overflow: hidden;
+  /* text-wrap: balance; */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0 5px;
+}
+
+.i-image-box {
+  margin-top: -32px;
+  min-height: 150px !important;
+}
+
+#i-level, .sbgcui_point_star {
+  margin-top: 25px;
 }
 
 .i-buttons {
   order: 1;
-  margin: 0.5em 0 0.5em;
+  margin: 0 0 0.5em;
   display: flex !important;
   gap: 0.25em !important;
   width: 100% !important;
@@ -153,6 +179,14 @@
   flex-direction: row;
   flex-wrap: wrap;
   align-content: space-around;
+
+  grid-template-areas:
+    "distance lines"
+    "owner regions"
+    "energy reward"
+    "cores cores"
+    "slider slider"
+    "buttons buttons" !important;
 }
 
 .i-stat__entry:not(.i-stat__cores) {
@@ -307,4 +341,14 @@ input[data-type="reference-search"] {
 /* Draw slider sort size restriction */
 .sbgcui_drawslider_sort {
   max-width: 60px !important;
+}
+
+/* Estimated lifetime */
+#i-stat__energy>span {
+  font-size: small;
+  font-weight: bold;
+}
+
+.info.popup>.popup-close {
+  position: relative !important;
 }
