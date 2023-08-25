@@ -308,10 +308,3 @@ input[data-type="reference-search"] {
 .sbgcui_drawslider_sort {
   max-width: 60px !important;
 }
-
-/* Revert "notifs__entry-view icon-button" styles */
-.notifs__entry-view {
-  max-width: 100px !important;
-  max-height: 100px !important;
-  text-align: center;
-}
