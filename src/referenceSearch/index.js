@@ -213,7 +213,7 @@ export default async function AddReferenceSearch() {
   })
 }
 
-const DistanceRegex = new RegExp(String.raw`(\d*\.?\d+?)\s(${t('kilo')}?)`, 'i')
+const DistanceRegex = new RegExp(String.raw`(\d*\.?\d+?)\s?(${t('kilo')}?)${t('m')}`, 'i')
 const ParseMeterDistance = (ref) => {
     // eslint-disable-next-line no-unused-vars
     const [_, dist, kilo] = ref.querySelector('.inventory__item-descr')

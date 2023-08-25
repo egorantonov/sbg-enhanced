@@ -183,7 +183,7 @@ const Translations = {
   },
   decimalSeparator: {
     en: ',',
-    ru: '.'
+    ru: ','
     // [GetLocale()]: NumberFormat.find(x => x.type==='decimal').value ?? '.' // Formatter changed to RU format
   },
   groupSeparator: {
