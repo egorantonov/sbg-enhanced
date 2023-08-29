@@ -23,6 +23,7 @@ export const EUI = {
   Incompatibility: 'eui-incompatibility',
   Version: version,
   LinksOpacity: 'eui-links-opacity',
+  RegionsOpacity: 'eui-regions-opacity',
   HighContrast: 'eui-high-contrast',
   Animations: 'eui-animations',
   CompactView: 'eui-compact-view',
@@ -156,6 +157,14 @@ const Translations = {
   linesOpacityMessage: {
     en: 'Enable lines layer to edit opacity',
     ru: 'Включите слой линий для редактирования прозрачности',
+  },
+  regionsOpacity: {
+    en: 'Regions opacity',
+    ru: 'Прозрачность регионов',
+  },
+  regionsOpacityMessage: {
+    en: 'Enable regions layer to edit opacity',
+    ru: 'Включите слой регионов для редактирования прозрачности',
   },
   animations: {
     en: 'Animations',

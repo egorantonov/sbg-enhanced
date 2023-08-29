@@ -232,7 +232,7 @@
 
 /* SETTINGS */
 
-input#eui-links-opacity {
+input#eui-links-opacity, input#eui-regions-opacity  {
   -webkit-appearance: none;
   appearance: none;
   overflow: hidden;
@@ -243,7 +243,7 @@ input#eui-links-opacity {
   border: none !important;
 }
 
-input#eui-links-opacity::-webkit-slider-thumb {
+input#eui-links-opacity::-webkit-slider-thumb, input#eui-regions-opacity::-webkit-slider-thumb {
   -webkit-appearance: none;
   border: 0px solid transparent;
   height: 16px;
@@ -254,7 +254,7 @@ input#eui-links-opacity::-webkit-slider-thumb {
   cursor: pointer;
 }
 
-input#eui-links-opacity::-moz-range-thumb {
+input#eui-links-opacity::-moz-range-thumb, input#eui-regions-opacity::-moz-range-thumb {
 
   border: 0px solid transparent;
   height: 16px;
