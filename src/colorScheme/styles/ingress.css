@@ -266,19 +266,19 @@ option:checked { /* WTF? checked is non-documented??? */
 
 /* SETTINGS */
 
-input#eui-links-opacity {
+input#eui-links-opacity, input#eui-regions-opacity {
   background: var(--ingress-btn-bg-color) !important;
   border-radius: 0px !important;
   border: 2px solid var(--ingress-btn-border-color) !important;
 }
 
-input#eui-links-opacity::-webkit-slider-thumb {
+input#eui-links-opacity::-webkit-slider-thumb, input#eui-regions-opacity::-webkit-slider-thumb {
   border-radius: 0px;
   background: var(--ingress-btn-border-color);
   box-shadow: -250px 0 0 250px var(--ingress-btn-border-color);
 }
 
-input#eui-links-opacity::-moz-range-thumb {
+input#eui-links-opacity::-moz-range-thumb, input#eui-regions-opacity::-moz-range-thumb {
   border-radius: 0px;
   background: var(--ingress-btn-border-color);
   box-shadow: -250px 0 0 250px var(--ingress-btn-border-color);

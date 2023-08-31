@@ -111,6 +111,7 @@ class LazyNodes {
   get SettingsPopupClose() { return this.GetSelector('div.settings.popup>button.popup-close') }
 
   get InfoPopup() { return this.GetSelector('.info.popup') }
+  get ScorePopup() { return this.GetSelector('.score.popup') }
   get ProfilePopup() { return this.GetSelector('.profile.popup') }
   get InventoryPopup() { return this.GetSelector('.inventory.popup')}
   get ProfileStatsContainer() { return this.GetSelector('.pr-stats') }

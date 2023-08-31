@@ -1,4 +1,4 @@
-import { EUI, Events, Nodes, SBG, Sleep } from '../constants'
+import { EUI, Events, Modifiers, Nodes, SBG, Sleep } from '../constants'
 
 export default async function BeautifyCloseButtons() {
   const beautifyButton = (button) => {
@@ -50,5 +50,6 @@ export default async function BeautifyCloseButtons() {
   document.addEventListener(Events.onBackButton, (e) => {
     e.preventDefault()
     closeButtons.forEach(button => button.click())
+    Nodes.ScorePopup?.classList.add(Modifiers.Hidden)
   });
 }

@@ -189,16 +189,16 @@ option:checked { /* WTF? checked is non-documented??? */
 
 /* SETTINGS */
 
-input#eui-links-opacity {
+input#eui-links-opacity, input#eui-regions-opacity {
   background: linear-gradient(135deg, var(--ingress-btn-bg-left-color), var(--ingress-btn-bg-right-color)), var(--ingress-btn-bg-right-color) !important;
 }
 
-input#eui-links-opacity::-webkit-slider-thumb {
+input#eui-links-opacity::-webkit-slider-thumb, input#eui-regions-opacity::-webkit-slider-thumb {
   background: var(--ingress-btn-border-left-color);
   box-shadow: -250px 0 0 250px var(--ingress-btn-border-left-color);
 }
 
-input#eui-links-opacity::-moz-range-thumb {
+input#eui-links-opacity::-moz-range-thumb, input#eui-regions-opacity::-moz-range-thumb {
   background: var(--ingress-btn-border-left-color);
   box-shadow: -250px 0 0 250px var(--ingress-btn-border-left-color);
 }
