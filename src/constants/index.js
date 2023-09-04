@@ -126,7 +126,14 @@ export const Nodes = new LazyNodes()
 
 export const IsPrivate = () => []['filter']['constructor'](EUI.Prefix+EUI.Private+EUI.Postfix)()
 export const IsWebView = () => window.navigator.userAgent.toLowerCase().includes("wv")
+
+/**
+ * 
+ * @param {Number} ms - Sleep time in ms 
+ * @returns 
+ */
 export const Sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
 export const GetLocale = () => {
   let lang = JSON.parse(localStorage.getItem(SBG.Settings))?.lang
   lang === 'sys' && (lang = navigator.language?.slice(0,2) ?? SBG.DefaultLang)

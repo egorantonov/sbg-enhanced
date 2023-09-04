@@ -41,6 +41,10 @@
   width: 2em;
 }
 
+#inventory__close:not([data-round=true]) {
+  min-height: 35px;
+}
+
 .splide__arrow {
   height: 3em;
   width: 3em;
@@ -267,8 +271,18 @@ input#eui-links-opacity::-moz-range-thumb, input#eui-regions-opacity::-moz-range
 
 /* INVENTORY */
 
+.inventory__tab {
+  display: flex;
+  align-items: center;
+  height: 35px;
+}
+
 #inventory-delete-section {
   margin-right: 0;
+}
+
+.inventory__controls {
+  min-height: 40px;
 }
 
 .inventory__controls select,

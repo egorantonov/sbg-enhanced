@@ -16,14 +16,32 @@ import { Private } from '../private'
 import ZenMode from '../zenMode'
 
 async function ExecuteScript () {
-  let delaySyncMs = 1500
-  let delayAsyncMs = 2000
+  let delaySyncMs = 500
+  let delayAsyncMs = 1000
 
   const connection = navigator.connection
 
   if (connection) {
     delaySyncMs += connection.rtt
     delayAsyncMs += connection.rtt
+  }
+
+  // TODO: change to variable change
+  if (window.cuiStatus) {
+    for (let i = 1; i <= 10; i++) {
+      if (window.cuiStatus == 'loaded') {
+        delaySyncMs = 0
+        delayAsyncMs = 100
+        break
+      } 
+      console.log(`Waiting for CUI, try #${i}...`)
+      await Sleep(500)
+    }
+  }
+  else if (window.cuiVersion) {
+    console.log(`Discovered CUI ${window.cuiVersion}, increasing loading time...`)
+    delaySyncMs += 1000
+    delayAsyncMs += 1000
   }
 
   await Sleep(delaySyncMs)
@@ -39,16 +57,16 @@ async function ExecuteScript () {
     })
 
   await Sleep(delayAsyncMs) // sleep for a while to make sure SBG is loaded
-  await Promise.all([
+    .then(async () => await Promise.all([
     Informer(),
     AddCanvasStyles(),
     BeautifyCloseButtons(),
     ImportExport(),
-    CompactView(),
     AddReferenceSearch(),
     AddDiscoverProgress(),
+    CompactView(),
     Private && (Private())
-  ])
+  ]))
 }
 
 export async function RunWithOnlineUpdate() {
@@ -95,10 +113,16 @@ export async function RunWithOnlineUpdate() {
   const releaseUrl = 'https://api.github.com/repos/egorantonov/sbg-enhanced/releases/latest'
   let onlineInUse = Nodes.GetId(EUI.Id)
 
-  if (!onlineInUse) {
-    await fetch(releaseUrl)
+  if (!onlineInUse && window.fetch) {
+    try {
+      await fetch(releaseUrl)
       .then(r => r.json())
       .then(x => processResponse(x))
+    }
+    catch (error) {
+      console.log(error)
+      ExecuteScript() // fallback
+    }
   }
   else {
     ExecuteScript()

@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { EUI, Elements, Events, Modifiers, Nodes, Sleep, t } from '../constants'
+import { createToast } from '../utils'
 
 export default async function AddCanvasStyles() {
     await AddLayerOpacity('.ol-layer__lines', 'linesOpacity', 'linesOpacityMessage', EUI.LinksOpacity)
@@ -48,7 +49,14 @@ async function AddLayerOpacity (layerClassName, innerTextTranslation, errorMessa
             localStorage.setItem(controlId, event.target.value)
         }
         else {
-            alert(t(errorMessageTranslation))
+            let toast = createToast(t(errorMessageTranslation), 'top center')
+            if (toast) {
+                toast.options.className = 'error-toast'
+                toast.showToast()
+            }
+            else {
+                alert(t(errorMessageTranslation))
+            }
         }
     })
 

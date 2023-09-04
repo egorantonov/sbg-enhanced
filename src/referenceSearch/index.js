@@ -1,4 +1,6 @@
 import { EUI, Elements, Events, Modifiers, Nodes, Sleep, t } from '../constants'
+import { LongTouchEventListener } from '../helpers'
+import { createToast } from '../utils'
 
 export default async function AddReferenceSearch() {
 
@@ -27,15 +29,13 @@ export default async function AddReferenceSearch() {
   search.dataset.type = Modifiers.ReferenceSearch
   search.placeholder = t('searchRefPlaceholder')
 
-  const sortInfo = document.createElement(Elements.Span)
-  sortInfo.style.margin = 'auto'
   const sort = document.createElement(Elements.Select)
   sort.id = EUI.Sort
 
   // CUI compatibility // TODO: removed CUI sort until it has the same sort speed
   const cuiSortButton = document.querySelector('.sbgcui_refs-sort-button')
   const cuiSortSelect = document.querySelector('.sbgcui_refs-sort-select')
-  // TODO: // cuiSortButton && (sort.style.display = 'none') && (sortInfo.style.display = 'none')
+  // TODO: // cuiSortButton && (sort.style.display = 'none')
   cuiSortButton && (cuiSortButton.style.display = 'none')
   cuiSortSelect && (cuiSortSelect.style.display = 'none')
 
@@ -70,14 +70,12 @@ export default async function AddReferenceSearch() {
               sort.selectedIndex = 0
               sort.disabled = false
               sort.remove()
-              sortInfo.remove()
           }
           else {
               refs = getRefs()
               inventoryRefs.length === 0 && (inventoryRefs = getRefs())
               clearButton.after(search)
               search.after(sort)
-              search.after(sortInfo)
               cuiSortButton && search.after(cuiSortButton) // CUI compatibility
               search.dataset.active = '1'
               search.value && searchRefs(search.value)
@@ -111,9 +109,9 @@ export default async function AddReferenceSearch() {
       searchRefs(e.target.value)
   })
 
-  sortInfo.addEventListener(Events.onClick, () => {
+  LongTouchEventListener(sort, () => {
     localStorage.removeItem('refs-cache')
-    sortInfo.innerText = ''
+    createToast('♻ Refs cache cleared')?.showToast()
   })
 
   sort.addEventListener(Events.onChange, async (e) => {
@@ -208,7 +206,7 @@ export default async function AddReferenceSearch() {
       const duration = performance.measure('time','start','end').duration
       const rs = duration < 50 ? refs.length : `${refs.length}\u{a0}x\u{a0}${+(duration/1000).toFixed(1)}s`
       console.log(rs)
-      sortInfo.innerText = rs
+      createToast(rs)?.showToast()
       sort.disabled = false
   })
 }

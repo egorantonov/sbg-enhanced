@@ -1,4 +1,5 @@
 import { Backend, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t } from '../constants'
+import { createToast } from '../utils'
 import { getUserAgentData } from './userAgentData.ts'
 const { Host, Endpoints } = Backend
 
@@ -68,6 +69,7 @@ export default async function ImportExport() {
         localStorage.setItem(EUI.CloudSync, json.timestamp)
         localStorage.setItem(EUI.SettingsCache, settings)
         document.getElementById(EUI.LastSynced).innerText = (new Date(+json.timestamp)).toLocaleString()
+        createToast('✅ Settings synced with cloud', 'top left')?.showToast()
       })
     }
   }
