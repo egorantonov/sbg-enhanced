@@ -13,6 +13,7 @@ import ImportExport from '../importExport'
 import Informer from '../informer'
 import InitObservers from '../observers'
 import { Private } from '../private'
+import { RepairButton } from '../repairButton'
 import ZenMode from '../zenMode'
 
 async function ExecuteScript () {
@@ -47,6 +48,7 @@ async function ExecuteScript () {
       InitObservers()
       RemoveBadges()
       RenderBadges()
+      RepairButton()
       ZenMode()
     })
 
