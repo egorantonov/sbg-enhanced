@@ -299,6 +299,13 @@ input[data-type="reference-search"] {
   filter: opacity(.75)
 }
 
+/*
+ * OL
+ */
+.ol-layer__player {
+  filter: drop-shadow(2px 2px 4px var(--shadow));
+}
+
 /* 
  * SBG CUI Compatibility: enhancements and support 
  */

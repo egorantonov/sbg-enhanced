@@ -26,7 +26,6 @@ async function ExecuteScript () {
     delayAsyncMs += connection.rtt
   }
 
-  // TODO: change to variable change
   if (window.cuiStatus) {
     for (let i = 1; i <= 10; i++) {
       if (window.cuiStatus == 'loaded') {
@@ -35,13 +34,8 @@ async function ExecuteScript () {
         break
       } 
       console.log(`Waiting for CUI, try #${i}...`)
-      await Sleep(500)
+      await Sleep(750)
     }
-  }
-  else if (window.cuiVersion) {
-    console.log(`Discovered CUI ${window.cuiVersion}, increasing loading time...`)
-    delaySyncMs += 1000
-    delayAsyncMs += 1000
   }
 
   await Sleep(delaySyncMs)
