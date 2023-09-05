@@ -62,6 +62,16 @@
   display: none;
 }
 
+#eui-repair {
+  filter: inherit;
+  transition: all ease-in-out 50ms;
+}
+
+#eui-repair:active {
+  filter: opacity(.75);
+  transition: all ease-in-out 50ms;
+}
+
 .discover-progress {
   position: absolute;
   top: 0;
