@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/egorantonov/sbg-enhanced#readme",
   "dependencies": {
-    "eslint": "^8.47.0"
+    "eslint": "^8.48.0"
   },
   "devDependencies": {
     "css-loader": "^6.8.1",
