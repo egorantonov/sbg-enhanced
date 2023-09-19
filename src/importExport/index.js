@@ -40,7 +40,7 @@ export default async function ImportExport() {
       }
     })
     .then(response => response.json())
-    .then(json => { return json.g })
+    .then(json => json.g)
 
     localStorage.setItem(EUI.UserId, id)
     return id

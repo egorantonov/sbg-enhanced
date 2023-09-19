@@ -3,8 +3,9 @@ import { EUI, Elements, Events, Modifiers, Nodes, Sleep, t } from '../constants'
 import { createToast } from '../utils'
 
 export default async function AddCanvasStyles() {
+    document.getElementById('regions-opacity__cur')?.parentElement?.parentElement?.remove() // remove native control
     await AddLayerOpacity('.ol-layer__lines', 'linesOpacity', 'linesOpacityMessage', EUI.LinksOpacity)
-    await AddLayerOpacity('.ol-layer__regions', 'regionsOpacity', 'regionsOpacityMessage', EUI.RegionsOpacity, '0.6')
+    await AddLayerOpacity('.ol-layer__regions', 'regionsOpacity', 'regionsOpacityMessage', EUI.RegionsOpacity, '1')
 }
 
 async function AddLayerOpacity (layerClassName, innerTextTranslation, errorMessageTranslation, controlId, defaultValue = 0.75) {
