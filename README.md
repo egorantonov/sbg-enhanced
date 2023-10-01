@@ -4,9 +4,9 @@
   <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/package-json/v/egorantonov/sbg-enhanced?color=20bb20&style=flat-square" /></a>
   <a href="https://github.com/egorantonov/sbg-enhanced/actions"><img src="https://img.shields.io/github/actions/workflow/status/egorantonov/sbg-enhanced/webpack.yml?style=flat-square" /></a>
   <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/v/release/egorantonov/sbg-enhanced?color=%2310dd10&include_prereleases&style=flat-square" /></a>
-  <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/release-date/egorantonov/sbg-enhanced?style=flat-square" /></a>
+  <a href="https://github.com/egorantonov/sbg-enhanced/releases/latest"><img src="https://img.shields.io/github/release-date/egorantonov/sbg-enhanced?style=flat-square" /></a>
   <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/downloads/egorantonov/sbg-enhanced/total?style=flat-square" /></a>
-  <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/downloads/egorantonov/sbg-enhanced/latest/total?style=flat-square" /></a>
+  <a href="https://github.com/egorantonov/sbg-enhanced/releases/latest"><img src="https://img.shields.io/github/downloads/egorantonov/sbg-enhanced/latest/total?style=flat-square" /></a>
   <img src="https://img.shields.io/github/languages/top/egorantonov/sbg-enhanced?color=%23200bb20&style=flat-square" />  
   <a href="https://3d.sytes.net"><img src="https://img.shields.io/website?label=3d.sytes.net&style=flat-square&url=https%3A%2F%2F3d.sytes.net" /></a>
 </p>
@@ -29,14 +29,14 @@
 * Пользовательские темы: <span color="cyan" style="color:cyan">Ingress [REDACTED]</span>, Ingress Prime, Чёрно-белая (`Настройки` > `Цветовая схема`)
 * Компактный режим: `Настройки` > `Компактный режим`
 * Режим Дзен для максимального погружения: удерживайте кнопку атаки (`АТАКА`)
-* Импорт/экспорт настроек игры и пользовательских скриптов: `Настройки` > `Импорт/экспорт настроек`
+* Импорт/экспорт/облачное сохранение настроек игры и пользовательских скриптов: `Настройки` > `Импорт/экспорт настроек`
 * Интерактивные анимации: `Настройки` > `Анимации`
 * Высокий контраст: для яркого солнечного дня и экономии аккумулятора устройств с *OLED экраном (`Настройки` > `Высокий контраст`)
 * Настраиваемая прозрачность линий: `Настройки` > `Прозрачность линий`
 * Компактные слайдеры рисования, деплоя и атаки
 * Кнопка `Исследования` показывает прогресс охлаждения
 * Проверка сетевого подключения: `Настройки` > `Подключение` > `Показать`
-* Очистка инвентаря: удерживайте кнопку `Inventory` (работает только с установленным скриптом [Custom UI](https://github.com/nicko-v/sbg-cui))
+* Быстрая очистка инвентаря: удерживайте кнопку `Inventory` (работает только с установленным скриптом [Custom UI](https://github.com/nicko-v/sbg-cui))
 
 <h2 align="center">Скачать</h2>
 
@@ -105,14 +105,12 @@ https://www.youtube.com/embed/zrz7pwRhkXY
 
 ### Android приложение (APK)
 
-Скачайте и установите приложение Android от [@Elektroplayer](https://github.com/Elektroplayer):
+Скачайте и установите приложение Android :
 
-[app-release.apk](https://github.com/Elektroplayer/sbg-apk/releases/latest/download/app-release-allscripts.apk)
-
-В состав приложения также входит пользовательский скрипт [Custom UI](https://github.com/nicko-v/sbg-cui) от [@nicko-v](https://github.com/nicko-v)
+[Ссылка на скачивание в официальном канале игры в Telegram](https://t.me/sbg_forum/91670/95835)
 
 Известные проблемы:
-- Импорт/экспорт настроек игры и скриптов не работает из-за отсутствующих разрешений у АПК
+- Импорт/экспорт настроек игры и скриптов не работает из-за отсутствующих разрешений у приложения
 
 ***
 
@@ -152,4 +150,4 @@ _Также файл можно скачать вручную по [ссылке
 ***
 
 > GitHub [@egorantonov](https://github.com/egorantonov) &nbsp;&middot;&nbsp;
-> Discord [EYEMVX#8650](https://discord.com/channels/@me)
+> Discord [@EYEMVX](https://discord.com/channels/@me)
