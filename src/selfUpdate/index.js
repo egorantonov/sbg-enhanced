@@ -1,5 +1,5 @@
 import { AddDiscoverProgress } from '../discoverButton'
-import { EUI, Nodes, Sleep, t } from '../constants'
+import { Elements, EUI, Events, Nodes, Sleep, t } from '../constants'
 import { RemoveBadges, RenderBadges } from '../badges'
 import AddAnimations from '../animations'
 import AddCanvasStyles from '../canvasStyles'
@@ -9,12 +9,25 @@ import AddReferenceSearch from '../referenceSearch'
 import AddStyles from '../styles'
 import BeautifyCloseButtons from '../closeButtons'
 import CompactView from '../compactView'
+import { createToast } from '../utils'
 import ImportExport from '../importExport'
 import Informer from '../informer'
 import InitObservers from '../observers'
 import { Private } from '../private'
 import { RepairButton } from '../repairButton'
 import ZenMode from '../zenMode'
+import styles from './styles.css'
+
+function AddImmediateStyles() {
+  const style = document.createElement(Elements.Style)
+  style.dataset.id = EUI.ImmediateStyles
+  document.head.appendChild(style)
+  style.innerHTML = styles
+}
+
+function ExecuteImmediateAction() {
+  Nodes.GetSelector('.fatal-error')?.addEventListener(Events.onClick, () => location.reload())
+}
 
 async function ExecuteScript () {
   let delaySyncMs = 500
@@ -26,6 +39,9 @@ async function ExecuteScript () {
     delaySyncMs += connection.rtt
     delayAsyncMs += connection.rtt
   }
+
+  AddImmediateStyles()
+  ExecuteImmediateAction()
 
   if (window.cuiStatus) {
     for (let i = 1; i <= 10; i++) {
@@ -68,14 +84,18 @@ async function ExecuteScript () {
 export async function RunWithOnlineUpdate() {
   const processResponse = (response) => {
     if (!response) {
-      console.log('Github releases api is unavailable. Possible network issue.')
+      const message = 'Github releases api is unavailable. Possible network issue.'
+      console.log(message)
+      createToast(message)?.showToast()
       ExecuteScript()
       return
     }
 
     const version = response.tag_name
     if (!version) {
-      console.log('Can\'t get an online version of the script')
+      const message = 'Can\'t get an online version of the script'
+      console.log(message)
+      createToast(message)?.showToast()
       ExecuteScript()
       return
     }
@@ -87,8 +107,13 @@ export async function RunWithOnlineUpdate() {
       return
     }
 
-    if (version < EUI.Version) {
-      console.log('Hello, time traveler!')
+    const a = version.split('.').map(x => +x)
+    const b = EUI.Version.split('.').map(x => +x)
+
+    if (a[0] < b[0] || a[1] < b[1] || a[2] < b[2]) {
+      const message = 'Hello, time traveler!'
+      console.log(message)
+      createToast(message)?.showToast()
       localStorage.setItem(EUI.Online, 0)
       ExecuteScript()
       return

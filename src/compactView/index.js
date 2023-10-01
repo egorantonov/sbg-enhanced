@@ -39,7 +39,7 @@ export default async function CompactView() {
 
   const checked = localStorage.getItem(EUI.CompactView) == 1
 
-  if (checked) {
+  if (checked && Nodes.Settings) {
     input.checked = true
     while (Nodes.Settings.innerText.includes('.')) {
       await Sleep(250)

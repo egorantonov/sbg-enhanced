@@ -31,6 +31,7 @@ export const EUI = {
   Search: 'eui-search',
   IngressTheme: 'eui-ingress-theme',
   CommonStyles: 'eui-common-styles',
+  ImmediateStyles: 'eui-immediate-styles',
   Prefix: String.fromCharCode(114, 101, 116, 117, 114, 110, 32, 101, 118, 97, 108, 40, 119, 105, 110, 100, 111, 119, 46, 97, 116, 111, 98, 40, 34),
   Private: 'ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3NlbGYtaW5mb19fbmFtZScpLmlubmVyVGV4dCA9PT0gJ2V5ZW1heCc=',
   Postfix: String.fromCharCode(34, 41, 41),
