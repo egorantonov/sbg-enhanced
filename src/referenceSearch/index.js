@@ -60,7 +60,7 @@ export default async function AddReferenceSearch() {
     sort.appendChild(opt)
   })
 
-  const clearButton = document.getElementById('inventory-delete-section')
+  const selectButton = document.getElementById('inventory-delete')
   tabs.forEach(tab => {
       tab.addEventListener(Events.onClick, () => {
           if (['1', '2'].includes(tab.dataset.tab)) {
@@ -74,7 +74,7 @@ export default async function AddReferenceSearch() {
           else {
               refs = getRefs()
               inventoryRefs.length === 0 && (inventoryRefs = getRefs())
-              clearButton.after(search)
+              selectButton?.before(search)
               search.after(sort)
               cuiSortButton && search.after(cuiSortButton) // CUI compatibility
               search.dataset.active = '1'
