@@ -11,7 +11,7 @@
   <a href="https://sbg-game.ru/app"><img src="https://img.shields.io/website?label=sbg-game.ru/app&style=flat-square&url=https%3A%2F%2Fsbg-game.ru/app" /></a>
 </p>
 
-<p align="center">Пользовательский скрипт, созданный для улучшения интерфейса игры <a href="https://sbg-game.ru/app" target="_blank">&nbsp;&nbsp;<img src="https://sbg-game.ru/app/icons/icon_64.png" width="16px" /> The Simplest Browser Geoloc</a></p>
+<p align="center">Пользовательский скрипт, созданный для улучшения интерфейса игры <a href="https://sbg-game.ru/app" target="_blank">&nbsp;&nbsp;<img src="https://sbg-game.ru/assets/icons/64.png" width="16px" /> The Simplest Browser Geoloc</a></p>
 
 <p align="center"> 
   <a href="#особенности">✅&nbsp;Особенности</a> 
