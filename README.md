@@ -8,10 +8,10 @@
   <a href="https://github.com/egorantonov/sbg-enhanced/releases"><img src="https://img.shields.io/github/downloads/egorantonov/sbg-enhanced/total?style=flat-square" /></a>
   <a href="https://github.com/egorantonov/sbg-enhanced/releases/latest"><img src="https://img.shields.io/github/downloads/egorantonov/sbg-enhanced/latest/total?style=flat-square" /></a>
   <img src="https://img.shields.io/github/languages/top/egorantonov/sbg-enhanced?color=%23200bb20&style=flat-square" />  
-  <a href="https://3d.sytes.net"><img src="https://img.shields.io/website?label=3d.sytes.net&style=flat-square&url=https%3A%2F%2F3d.sytes.net" /></a>
+  <a href="https://sbg-game.ru/app"><img src="https://img.shields.io/website?label=sbg-game.ru/app&style=flat-square&url=https%3A%2F%2Fsbg-game.ru/app" /></a>
 </p>
 
-<p align="center">Пользовательский скрипт, созданный для улучшения интерфейса игры <a href="https://3d.sytes.net" target="_blank">&nbsp;&nbsp;<img src="https://3d.sytes.net/icons/icon_64.png" width="16px" /> The Simplest Browser Geoloc</a></p>
+<p align="center">Пользовательский скрипт, созданный для улучшения интерфейса игры <a href="https://sbg-game.ru/app" target="_blank">&nbsp;&nbsp;<img src="https://sbg-game.ru/app/icons/icon_64.png" width="16px" /> The Simplest Browser Geoloc</a></p>
 
 <p align="center"> 
   <a href="#особенности">✅&nbsp;Особенности</a> 
