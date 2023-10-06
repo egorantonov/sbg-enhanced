@@ -47,6 +47,7 @@
 #form__buttons-login,
 .sbgcui_compare_stats>button,
 .inventory__manage-amount button,
+.notifs__entry-view.icon-button, /* View point [notification list] */
 input:not(.sbgcui_settings-amount_input), 
 select {
   border-style: solid;

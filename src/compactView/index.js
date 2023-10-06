@@ -9,8 +9,8 @@ export default async function CompactView() {
     return
   }
 
-  translations.buttons.references.manage = '♻'
-  translations.buttons.references.view = '👁'
+  translations.buttons.references.manage = 'delete'//'♻'
+  translations.buttons.references.view = 'visibility'//'👁'
 
   // CREATE SETTING
   const input = document.createElement(Elements.Input)
@@ -45,12 +45,18 @@ export default async function CompactView() {
       await Sleep(250)
     }
 
-    Nodes.Leaderboard.innerText = '🏅'
-    Nodes.Score.innerText = '📊'
-    Nodes.Settings.innerText = '🔧'
-    Nodes.Layers.innerText && (Nodes.Layers.innerText = '☰')
-    Nodes.Notifs.innerText && (Nodes.Notifs.innerText = '✉')
-    Nodes.Layers.innerText && (Nodes.ToggleFollow.innerText = '💠')
+    Nodes.Leaderboard.innerText = 'workspace_premium' // '🏅'
+    Nodes.Score.innerText = 'bar_chart' // '📊'
+    Nodes.Settings.innerText = 'Settings' // '🔧'
+    Nodes.Layers.innerText && (Nodes.Layers.innerText = 'Layers' /*'☰'*/)
+    Nodes.Notifs.innerText && (Nodes.Notifs.innerText = 'Notifications' /*'✉'*/)
+    Nodes.ToggleFollow.innerText && (Nodes.ToggleFollow.innerText = 'my_location'/*'💠'*/)
+
+    const nodes = [Nodes.Leaderboard, Nodes.Score, Nodes.Settings, Nodes.Layers, Nodes.Notifs, Nodes.ToggleFollow]
+    nodes.forEach(e => {
+      e.classList.add('material-symbols-outlined')
+    });
+    Nodes.Layers.style.fontFamily = 'Material Symbols Outlined'
 
     // Move all buttons after 'toggle-follow' button
     Nodes.ToggleFollow.after(Nodes.Settings)

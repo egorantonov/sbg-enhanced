@@ -291,8 +291,18 @@ input#eui-links-opacity::-moz-range-thumb, input#eui-regions-opacity::-moz-range
   margin-right: 0;
 }
 
-.inventory__controls {
+.inventory__controls, .inventory__ma-buttons>button {
   min-height: 40px;
+}
+
+.inventory__ma-counter>button {
+  min-height: 35px;
+  min-width: 35px;
+}
+
+.inventory__ma-counter input {
+  min-height: 30px;
+  min-width: 35px;
 }
 
 .inventory__controls select,
@@ -301,12 +311,42 @@ input#eui-links-opacity::-moz-range-thumb, input#eui-regions-opacity::-moz-range
   width: 100%;
 }
 
+/* material-symbols-outlined */
+.material-symbols-outlined {
+  line-height: normal !important;
+  font-weight: normal !important;
+}
+
+.inventory__ic-manage, .inventory__ic-view {
+  display: grid;
+  place-items: center;
+  font-family: 'Material Symbols Outlined' !important;
+  font-weight: normal !important;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
 input[data-type="reference-search"] {
   padding: 0 6px;
 }
 
 .zen {
   filter: opacity(.75)
+}
+
+/* Notifs fix */
+#notifs-menu[data-count]::before {
+  font-family: 'Manrope', sans-serif !important;
+  font-size: small;
 }
 
 /*
@@ -364,9 +404,23 @@ input[data-type="reference-search"] {
 :root {
   --sbgcui-display-r-button: none;
 }
+
 .inventory__content[data-tab="3"] .inventory__item-controls::after {
-  content: '⚡' !important;
   display: var(--sbgcui-display-r-button);
+  /* content: '⚡' !important; */
+  content: 'electric_bolt' !important;
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Draw slider sort size restriction */
