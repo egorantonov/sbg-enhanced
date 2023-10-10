@@ -1,5 +1,6 @@
 import { EUI, Elements, Events, GetLocale, Modifiers, Nodes, Proposed, Sleep, t } from '../constants'
 import { LongTouchEventListener } from '../helpers'
+import { getUserAgentData } from '../utils/userAgentData'
 
 export default async function CompactView() {
 
@@ -9,8 +10,10 @@ export default async function CompactView() {
     return
   }
 
-  translations.buttons.references.manage = 'delete'//'♻'
-  translations.buttons.references.view = 'visibility'//'👁'
+  const isNotSafari = getUserAgentData().browser !== 'Safari' // TODO: temp fix for Safari /* CUI Compatibility */
+
+  translations.buttons.references.manage = isNotSafari ? 'delete' : '♻'
+  translations.buttons.references.view = isNotSafari ? 'visibility' : '👁'
 
   // CREATE SETTING
   const input = document.createElement(Elements.Input)
@@ -45,18 +48,20 @@ export default async function CompactView() {
       await Sleep(250)
     }
 
-    Nodes.Leaderboard.innerText = 'workspace_premium' // '🏅'
-    Nodes.Score.innerText = 'bar_chart' // '📊'
-    Nodes.Settings.innerText = 'Settings' // '🔧'
-    Nodes.Layers.innerText && (Nodes.Layers.innerText = 'Layers' /*'☰'*/)
-    Nodes.Notifs.innerText && (Nodes.Notifs.innerText = 'Notifications' /*'✉'*/)
-    Nodes.ToggleFollow.innerText && (Nodes.ToggleFollow.innerText = 'my_location'/*'💠'*/)
+    Nodes.Leaderboard.innerText = isNotSafari ? 'workspace_premium' : '🏅'
+    Nodes.Score.innerText = isNotSafari ? 'bar_chart' : '📊'
+    Nodes.Settings.innerText = isNotSafari ? 'Settings' : '🔧'
+    Nodes.Layers.innerText && (Nodes.Layers.innerText = isNotSafari ? 'Layers' : '☰')
+    Nodes.Notifs.innerText && (Nodes.Notifs.innerText = isNotSafari ? 'Notifications' : '✉')
+    Nodes.ToggleFollow.innerText && (Nodes.ToggleFollow.innerText = isNotSafari ? 'my_location' : '💠')
 
-    const nodes = [Nodes.Leaderboard, Nodes.Score, Nodes.Settings, Nodes.Layers, Nodes.Notifs, Nodes.ToggleFollow]
-    nodes.forEach(e => {
-      e.classList.add('material-symbols-outlined')
-    });
-    Nodes.Layers.style.fontFamily = 'Material Symbols Outlined'
+    if (isNotSafari) { 
+      const nodes = [Nodes.Leaderboard, Nodes.Score, Nodes.Settings, Nodes.Layers, Nodes.Notifs, Nodes.ToggleFollow]
+      nodes.forEach(e => {
+        e.classList.add('material-symbols-outlined')
+      });
+      Nodes.Layers.style.fontFamily = 'Material Symbols Outlined'
+    }
 
     // Move all buttons after 'toggle-follow' button
     Nodes.ToggleFollow.after(Nodes.Settings)
@@ -69,8 +74,8 @@ export default async function CompactView() {
     //bottomContainer && bottomContainer.appendChild(Nodes.Ops)
 
     // Remove level and XP sections
-    const level = Nodes.GetId("self-info__explv")
-    if (level.innerText.includes("10")) {
+    const level = Nodes.GetId('self-info__explv')
+    if (level.innerText.includes('10')) {
       level.remove()
       Nodes.GetSelector('.attack-slider-highlevel')?.remove()
       const xpContainer = Nodes.GetId('self-info__exp').parentElement

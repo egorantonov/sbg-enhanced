@@ -1,6 +1,6 @@
 import { Backend, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t } from '../constants'
 import { createToast } from '../utils'
-import { getUserAgentData } from './userAgentData.ts'
+import { getUserAgentData } from '../utils/userAgentData'
 const { Host, Endpoints } = Backend
 
 export default async function ImportExport() {
