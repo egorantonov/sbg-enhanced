@@ -32,12 +32,8 @@ export default async function AddReferenceSearch() {
   const sort = document.createElement(Elements.Select)
   sort.id = EUI.Sort
 
-  // CUI compatibility // TODO: removed CUI sort until it has the same sort speed
-  const cuiSortButton = document.querySelector('.sbgcui_refs-sort-button')
-  const cuiSortSelect = document.querySelector('.sbgcui_refs-sort-select')
-  // TODO: // cuiSortButton && (sort.style.display = 'none')
-  cuiSortButton && (cuiSortButton.style.display = 'none')
-  cuiSortSelect && (cuiSortSelect.style.display = 'none')
+  document.querySelector('.sbgcui_refs-sort-button')?.remove()
+  document.querySelector('.sbgcui_refs-sort-select')?.remove()
 
   const sorts = [
     t('sortName'),
@@ -76,7 +72,6 @@ export default async function AddReferenceSearch() {
               inventoryRefs.length === 0 && (inventoryRefs = getRefs())
               selectButton?.before(search)
               search.after(sort)
-              cuiSortButton && search.after(cuiSortButton) // CUI compatibility
               search.dataset.active = '1'
               search.value && searchRefs(search.value)
           }

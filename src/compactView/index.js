@@ -1,6 +1,5 @@
 import { EUI, Elements, Events, GetLocale, Modifiers, Nodes, Proposed, Sleep, t } from '../constants'
 import { LongTouchEventListener } from '../helpers'
-import { getUserAgentData } from '../utils/userAgentData'
 
 export default async function CompactView() {
 
@@ -10,10 +9,8 @@ export default async function CompactView() {
     return
   }
 
-  const isNotSafari = getUserAgentData().browser !== 'Safari' // TODO: temp fix for Safari /* CUI Compatibility */
-
-  translations.buttons.references.manage = isNotSafari ? 'delete' : '♻'
-  translations.buttons.references.view = isNotSafari ? 'visibility' : '👁'
+  translations.buttons.references.manage = ''
+  translations.buttons.references.view = ''
 
   // CREATE SETTING
   const input = document.createElement(Elements.Input)
@@ -48,20 +45,10 @@ export default async function CompactView() {
       await Sleep(250)
     }
 
-    Nodes.Leaderboard.innerText = isNotSafari ? 'workspace_premium' : '🏅'
-    Nodes.Score.innerText = isNotSafari ? 'bar_chart' : '📊'
-    Nodes.Settings.innerText = isNotSafari ? 'Settings' : '🔧'
-    Nodes.Layers.innerText && (Nodes.Layers.innerText = isNotSafari ? 'Layers' : '☰')
-    Nodes.Notifs.innerText && (Nodes.Notifs.innerText = isNotSafari ? 'Notifications' : '✉')
-    Nodes.ToggleFollow.innerText && (Nodes.ToggleFollow.innerText = isNotSafari ? 'my_location' : '💠')
-
-    if (isNotSafari) { 
-      const nodes = [Nodes.Leaderboard, Nodes.Score, Nodes.Settings, Nodes.Layers, Nodes.Notifs, Nodes.ToggleFollow]
-      nodes.forEach(e => {
-        e.classList.add('material-symbols-outlined')
-      });
-      Nodes.Layers.style.fontFamily = 'Material Symbols Outlined'
-    }
+    [Nodes.Leaderboard, Nodes.Score, Nodes.Settings, Nodes.Notifs, Nodes.Layers, Nodes.ToggleFollow].forEach(n => {
+      n.innerText = ''
+      n.classList.add('compactview_icon')
+    })
 
     // Move all buttons after 'toggle-follow' button
     Nodes.ToggleFollow.after(Nodes.Settings)
@@ -101,6 +88,9 @@ export default async function CompactView() {
     fire.style.height = 0
     fire.style.border = 0
     fire.style.opacity = 0*/
+  }
+  else {
+    [Nodes.Notifs, Nodes.Layers, Nodes.ToggleFollow].forEach(n => n.innerText === '' && (n.classList.add('compactview_icon')))
   }
 
   localStorage.setItem(i18next_main, JSON.stringify(translations))

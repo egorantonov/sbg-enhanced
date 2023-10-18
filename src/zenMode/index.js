@@ -11,6 +11,6 @@ export default function ZenMode() {
     Nodes.GetSelector('.game-menu')?.classList.toggle(Modifiers.Hidden)
     attackButton.classList.toggle(zenClassName)
     Nodes.Ops.classList.toggle(zenClassName)
-    createToast(`Zen mode ${attackButton.classList.contains(zenClassName) ? 'activated' : 'disabled' }`, 'top center')?.showToast()
+    createToast(`Zen mode ${attackButton.classList.contains(zenClassName) ? 'activated' : 'disabled' }`, 'top center', 4000)?.showToast()
   })
 }
