@@ -2,14 +2,14 @@ import { EUI, Events, Modifiers, Nodes, SBG, Sleep } from '../constants'
 
 export default async function BeautifyCloseButtons() {
   const beautifyButton = (button) => {
+    if (button.dataset.i18n === 'buttons.cancel') return
+    button.classList.remove('fa', 'fa-solid-xmark', 'sbgcui_button_reset') // CUI compatibility
+    button.dataset.round = button.innerText.toLowerCase() !== 'x' 
     button.innerText = EUI.CloseButtonText
-    button.dataset.round = true
   }
 
   const closeButtons = Nodes.GetSelectorAll('button.popup-close, button#inventory__close')
-  closeButtons.forEach((button) => {
-    button.innerText.toLowerCase() === SBG.DefaultCloseButtonText && beautifyButton(button)
-  })
+  closeButtons.forEach((button) => beautifyButton(button))
 
   /* CREDITS POPUP IS BEING FETCHED AS HTML */
   const creditsViewButton = Nodes.GetId('settings-credits')
@@ -26,19 +26,6 @@ export default async function BeautifyCloseButtons() {
 
       creditsPopupClose?.dataset?.round != true &&
         beautifyButton(creditsPopupClose)
-    },
-    { once: true }
-  )
-
-  /* INVENTORY CLOSE BUTTON IS NOT POPUP-CLOSE */
-  Nodes.Ops?.addEventListener(
-    Events.onClick,
-    async () => {
-      Nodes.InventoryPopupClose.innerText === 'X' && (await Sleep(1000)) // wait for SBG CUI modify inventory close button from 'X' to '[x]'
-      Nodes.InventoryPopupClose.innerText.toLowerCase() ===
-        SBG.DefaultCloseButtonText &&
-        (Nodes.InventoryPopupClose.dataset.round = true)
-      Nodes.InventoryPopupClose.innerText = EUI.CloseButtonText
     },
     { once: true }
   )

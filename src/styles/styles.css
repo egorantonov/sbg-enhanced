@@ -33,12 +33,15 @@
 }
 
 .popup-close[data-round=true], #inventory__close[data-round=true] {
-  font-weight: 600;
-  border: 2px solid #777;
-  border-radius: 100px;
+  font-weight: 600 !important;
+  border: 2px solid !important;
+  border-color: #777;
+  border-radius: 100px !important;
   font-size: 1.5em !important;
-  height: 2em;
-  width: 2em;
+  height: 2em !important;
+  width: 2em !important;
+  padding: 0 !important;
+  box-shadow: unset;
 }
 
 #inventory__close:not([data-round=true]) {
@@ -487,24 +490,43 @@ input[data-type="reference-search"] {
 .inventory__content[data-tab="3"] .inventory__item-controls::after {
   display: var(--sbgcui-display-r-button);
   content: '⚡' !important;
-  /*content: 'electric_bolt' !important;
-  font-family: 'Material Symbols Outlined';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;*/
 }
 
 /* Draw slider sort size restriction */
 .sbgcui_drawslider_sort {
   max-width: 60px !important;
+}
+
+.catalysers-list__level, .cores-list__level {
+  border-radius: 10px;
+  padding: 5px;
+}
+
+@keyframes blink-box-shadow-inset {
+  0% {
+    box-shadow: inset 0px 2px 5px 2px;
+  }
+
+  25% {
+    box-shadow: inset -2px 0px 5px 2px;
+  }
+
+  50% {
+    box-shadow: inset 0px -2px 5px 2px;
+  }
+
+  75% {
+    box-shadow: inset 2px 0px 5px 2px;
+  }
+}
+
+#catalysers-list>.splide__slide.is-active>.catalysers-list__level, #cores-list>.splide__slide.is-active>.cores-list__level {
+  box-shadow: inset 0px 2px 5px 2px;
+  animation: 1.5s linear infinite blink-box-shadow-inset;
+}
+/* Cores should be round */
+.cores-list__level {
+  border-radius: 100px;
 }
 
 /* Estimated lifetime */

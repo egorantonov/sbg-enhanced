@@ -11,7 +11,7 @@ export const SBG = {
   OutboundLinksLimit: 30,
   DefaultCloseButtonText: '[x]',
   VersionHeader: 'sbg-version',
-  CompatibleVersion: '0.4.2',
+  CompatibleVersion: '0.4.2-2',
   Settings: 'settings',
   DefaultLang: 'en',
 }

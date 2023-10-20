@@ -159,8 +159,8 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 .popup-close[data-round=true], #inventory__close, .splide__arrow {
-  color: var(--ingress-btn-hl-color);
-  background: var(--ingress-btn-hl-bg-color);
+  color: var(--ingress-btn-hl-color) !important;
+  background: var(--ingress-btn-hl-bg-color) !important;
   box-shadow: inset 0px 0px 6px 3px var(--ingress-btn-hl-glow-color) !important;
   border-color: var(--ingress-btn-hl-border-color) !important;
 }
