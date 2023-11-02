@@ -440,6 +440,10 @@ input[data-type="reference-search"] {
   padding: 6px;
 }
 
+.bottom-container>button#notifs-menu {
+  margin: initial;
+}
+
 .compactview_icon {
   position: relative;
 }

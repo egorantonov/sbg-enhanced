@@ -1,6 +1,6 @@
 {
   "name": "sbg-enhanced",
-  "version": "2.5.1",
+  "version": "3.0.0",
   "description": "<h1 align=\"center\"><img src=\"https://github.com/egorantonov/sbg-enhanced/raw/master/assets/script/64.png\" width=\"32px\" /> SBG Enhanced UI</h1>",
   "private": true,
   "scripts": {
@@ -21,11 +21,11 @@
     "url": "https://github.com/egorantonov/sbg-enhanced/issues"
   },
   "homepage": "https://github.com/egorantonov/sbg-enhanced#readme",
-  "dependencies": {
-    "eslint": "^8.55.0"
-  },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
     "css-loader": "^6.8.1",
+    "eslint": "^8.56.0",
     "husky": "^8.0.3",
     "style-loader": "^3.3.3",
     "to-string-loader": "^1.2.0",

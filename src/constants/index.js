@@ -42,7 +42,10 @@ export const EUI = {
   CloudSync: '__eui-cloud-sync',
   LastSynced: 'eui-cloud-sync',
   SettingsCache: '__settings-cache',
-  PerformanceMode: 'eui-perf-mode'
+  PerformanceMode: 'eui-perf-mode',
+  Actions: 'eui-actions',
+  ActionsCurrent: '__eui-actions-current',
+  ActionsLog: '__eui-actions-log'
 }
 
 export const Events = {
@@ -146,6 +149,7 @@ class LazyNodes {
   get InventoryPopup() { return this.GetSelector('.inventory.popup')}
   get ProfileStatsContainer() { return this.GetSelector('.pr-stats') }
   get InventoryContent() { return this.GetSelector('.inventory__content') }
+  get BottomContainer() { return this.GetSelector('div.bottom-container') }
   get BottomLeftContainer() { return this.GetSelector('div.bottomleft-container') }
 
   get SettingSections() { return this.GetSelectorAll('.settings-section') }
@@ -381,6 +385,30 @@ const Translations = {
   perfModeMessage: {
     en: 'Map filters, animations and blur will be disabled.\r\nUse "Carto" layer for dark theme map.',
     ru: 'Будут принудительно отключены:\r\n• Фильтры карты\r\n• Размытия элементов\r\n• Анимации\r\nДля тёмной темы карты используйте подложку "Carto".'
+  },
+  actions: {
+    en: 'Actions',
+    ru: 'Действия'
+  },
+  actionsCapturedMessage: {
+    en: ' captured by ',
+    ru: ' захвачена '
+  },
+  actionsNeutralizedMessage: {
+    en: ' destroyed or decayed',
+    ru: ' нейтрализована или разряжена'
+  },
+  actionsDiffMessage: {
+    en: 'Some point changed ownership: ',
+    ru: 'Несколько точек сменили владельца: '
+  },
+  actionsNeutralized: {
+    en: 'neutralized',
+    ru: 'нейтрализована'
+  },
+  actionsCapturedReplacer: {
+    en: 'captured',
+    ru: 'захвачена'
   }
 }
 

@@ -29,11 +29,11 @@ html, body {
   transform: translate(calc(-150% - 10px), -50%);
 }
 
-.leaderboard.popup, .settings.popup {
+.leaderboard.popup, .settings.popup, .notifs.popup {
   transition: all ease-in-out 0.25s;
 }
 
-.leaderboard.popup.hidden, .settings.popup.hidden {
+.leaderboard.popup.hidden, .settings.popup.hidden, .notifs.popup.hidden {
   display: flex !important;
   filter: opacity(0);
   transform: translate(-50%, calc(-50vh - 100%));

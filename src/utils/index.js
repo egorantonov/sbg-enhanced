@@ -13,6 +13,11 @@ export function createToast(text = '', layout = 'bottom center', duration = 3000
   return toast
 }
 
+export function showToast(text = '', layout = 'bottom center', duration = 3000, className = 'interaction-toast') {
+  if (!window.Toastify) return
+  createToast(text, layout, duration, className).showToast()
+}
+
 /**
  * Disabled due to CUI compatibility error
  * @returns Browser's native fetch()
