@@ -1,4 +1,5 @@
 import {EUI, Elements, Events, Modifiers, Nodes, SBG, t} from '../constants'
+import { createToast } from '../utils'
 
 export default async function Informer() {
   console.log(`SBG Enhanced UI, version ${EUI.Version}`)
@@ -38,16 +39,16 @@ export default async function Informer() {
         connectionShow.innerText = t('showConnection')
         connectionShow.addEventListener(Events.onClick, () => {
             const connectionValue = `
-                ${t('connectionPing')}:\u{a0}${connection.rtt}${t('m')}${t('s')} 
-                ${t('connectionLink')}:\u{a0}~${connection.downlink}mb/s 
+                ${t('connectionPing')}:\u{a0}${connection.rtt}${t('m')}${t('s')},
+                ${t('connectionLink')}:\u{a0}~${connection.downlink}mb/s,
                 ${t('connectionGrade')}:\u{a0}${connection.effectiveType.toUpperCase()}
                 ${
                     (connection.type && connection.type !== 'unknown')
-                        ? `${t('connectionType')}:\u{a0}${connection.type.toUpperCase()}` 
+                        ? `, ${t('connectionType')}:\u{a0}${connection.type.toUpperCase()}` 
                         : ''
                 }
             `
-            alert(connectionValue)
+            createToast(connectionValue)?.showToast()
             localStorage.setItem(EUI.Connection, connectionValue)
         })
         const connectionItem = document.createElement(Elements.Div)

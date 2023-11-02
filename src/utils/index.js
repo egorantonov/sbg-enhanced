@@ -13,6 +13,10 @@ export function createToast(text = '', layout = 'bottom center', duration = 3000
   return toast
 }
 
+/**
+ * Disabled due to CUI compatibility error
+ * @returns Browser's native fetch()
+ */
 function getNativeFetch() {
   if (!window._nativeFetch) {
     const iframe = document.createElement('iframe');
@@ -26,4 +30,4 @@ function getNativeFetch() {
   return window._nativeFetch;
 }
 
-export const nativeFetch = getNativeFetch()
+/* export const nativeFetch = getNativeFetch() */

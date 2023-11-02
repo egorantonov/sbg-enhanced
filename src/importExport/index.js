@@ -16,7 +16,7 @@ export default async function ImportExport() {
   const GetSettingsAsJson = () => {
     const itemsToExport = Object.entries(localStorage)
       .reduce((acc, [key, value]) => (
-        key === 'settings' || key === 'map-config' || key.startsWith('eui') || key.startsWith('sbgcui'))
+        key === 'settings' || key === 'map-config' || key.startsWith('eui'))
         ? acc.concat({ key, value }) : acc, [])
     return JSON.stringify(itemsToExport)
   }
@@ -32,7 +32,7 @@ export default async function ImportExport() {
     if (userId && userId.indexOf('.') > 0) {
       return userId
     }
-    
+
     const id = await fetch(`/api/self`, {
       headers: {
         authorization: `Bearer ${localStorage.getItem('auth')}`,
@@ -165,31 +165,28 @@ export default async function ImportExport() {
     about.appendChild(item)
   }
 
-  if (about) {
+  function appendLine(parent, keyText, valueText, id) {
     const key = document.createElement(Elements.Span)
-    key.innerText = t('cloudSync')
+    key.innerText = keyText
 
     const value = document.createElement(Elements.Span)
-    value.id = EUI.LastSynced
-    value.innerText = (new Date(+localStorage.getItem(EUI.CloudSync))).toLocaleString()
-
-    // const syncButton = document.createElement(Elements.Button)
-    // syncButton.innerText = ' ☁ '
-    // value.appendChild(syncButton)
-    // syncButton.addEventListener(Events.onClick, () => CloudSync(true))
+    id && (value.id = id)
+    value.innerText = valueText
 
     const item = document.createElement(Elements.Div)
     item.classList.add(Modifiers.SettingsSectionItemClassName)
     item.appendChild(key)
     item.appendChild(value)
-    about.appendChild(item)
+    parent.appendChild(item)
+  }
+
+  if (about) {
+    appendLine(about, t('cloudSync'), (new Date(+localStorage.getItem(EUI.CloudSync))).toLocaleString(), EUI.LastSynced)
+    appendLine(about, 'User ID', `${(await GetUserId()).slice(0,4)}...`, 'eui-userId')
+    appendLine(about, 'Client', userAgent, 'eui-clientId')
 
     Nodes.SettingsPopupClose?.addEventListener(Events.onClick, () => CloudSync(true))
     Nodes.GetId('layers-config__save')?.addEventListener(Events.onClick, () => CloudSync(true))
-
-    // CUI Compatibility
-    const cuiSaveSettingsButton = document.querySelector("div.sbgcui_settings-buttons_wrp>button")
-    !!cuiSaveSettingsButton && cuiSaveSettingsButton.addEventListener(Events.onClick, () => CloudSync(true))
   }
 
   await CloudSync()
