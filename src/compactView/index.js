@@ -65,10 +65,8 @@ export default async function CompactView() {
     if (level.innerText.includes('10')) {
       level.remove()
       Nodes.GetSelector('.attack-slider-highlevel')?.remove()
-      const xpContainer = Nodes.GetId('self-info__exp').parentElement
-      xpContainer.classList.contains('self-info__entry')
-        ? xpContainer.remove()
-        : (xpContainer.style.filter = 'opacity(0)') /* CUI Compatibility */
+      Nodes.GetId('self-info__exp')?.parentElement?.remove()
+      Nodes.GetSelector('div.self-info')?.classList.add('compact')
     }
 
     // CUI Conflict: TODO: CUI interrupts on `attackSliderOpened` event clicking on selected catalyzer

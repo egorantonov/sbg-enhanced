@@ -1,3 +1,22 @@
+/* SELF */
+.self-info.compact {
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.self-info.compact #self-info__name {
+  position: initial;
+  padding-left: 5px;
+}
+
+.self-info__entry:has(#self-info__coord) {
+  width: initial;
+}
+
+#self-info__coord, .sbgcui_speed {
+  font-family: 'Consolas', monospace
+}
+
 /* BADGES */
 
 .eui-badge-container {
@@ -26,6 +45,10 @@
 .bottomleft-container > button, body > #layers {
   min-width: 40px;
   min-height: 40px;
+}
+
+.game-menu > button {
+  z-index: 1;
 }
 
 .game-menu > button, button#ops, #attack-menu, body>#layers {
@@ -442,6 +465,16 @@ input[data-type="reference-search"] {
  * SBG CUI Compatibility: enhancements and support 
  */
 
+/* Speed z-index fix */
+.sbgcui_speed {
+  z-index: 1;
+}
+
+/* When compact mode height == 0  */
+.game-menu > button.fa {
+  min-height: 18px;
+}
+
 /* Attack button enhancements */
 #attack-menu, .topleft-container {
   backdrop-filter: none !important;
@@ -451,16 +484,19 @@ input[data-type="reference-search"] {
 #attack-menu {
   border-style: double !important;
   border-top-style: solid !important;
+  transition: all ease-in-out .25s !important;
   -moz-transform: rotate(0deg) !important; /* Revert Firefox desktop fix */
 }
 
 #attack-menu.sbgcui_attack-menu-rotate {
   border-bottom-style: solid !important;
   border-top-style: double !important;
+  height: 5em !important;
+  width: 5em !important;
+  margin-top: 1em;
 }
 
 /* TODO: removed CUI sort until it has the same sort speed */
-
 .sbgcui_refs-sort-button, .sbgcui_refs-sort-select {
   display: none !important;
 }

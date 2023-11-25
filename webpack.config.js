@@ -6,7 +6,7 @@ module.exports = {
   mode: dev ? 'development' : 'production',
   entry: path.resolve(__dirname, 'src', 'index.js'),
   output: {
-    filename: 'index.js',
+    filename: 'eui.js',
     path: path.resolve(__dirname, 'dist'),
   },
   devtool: false,
@@ -14,8 +14,8 @@ module.exports = {
     headers: {
       name: 'SBG Enhanced UI',
       namespace: 'https://github.com/egorantonov/sbg-enhanced',
-      downloadURL: 'https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js',
-      updateURL: 'https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js',
+      downloadURL: 'https://github.com/egorantonov/sbg-enhanced/releases/latest/download/eui.user.js',
+      updateURL: 'https://github.com/egorantonov/sbg-enhanced/releases/latest/download/eui.user.js',
       description: 'Enhanced UI for SBG',
       author: 'https://github.com/egorantonov',
       match: 'https://sbg-game.ru/app/*',
