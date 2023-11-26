@@ -40,7 +40,7 @@ body, input, button {
 .sbgcui_compare_stats>button,
 .inventory__manage-amount button,
 .notifs__entry-view.icon-button, /* View point [notification list] */
-input:not(.sbgcui_settings-amount_input), /* CUI Compatibility */
+input:not(input[name^="maxAmountInBag"]), /* CUI Compatibility */
 select {
   border-color: var(--ingress-btn-border-left-color);
   border-right-color: var(--ingress-btn-border-right-color);

@@ -48,7 +48,7 @@
 .sbgcui_compare_stats>button,
 .inventory__manage-amount button,
 .notifs__entry-view.icon-button, /* View point [notification list] */
-input:not(.sbgcui_settings-amount_input), 
+input:not(input[name^="maxAmountInBag"]), /* CUI Compatibility */
 select {
   border-style: solid;
   text-transform: uppercase;
@@ -88,7 +88,7 @@ select {
 .sbgcui_compare_stats>button,
 .inventory__manage-amount button,
 .notifs__entry-view.icon-button, /* View point [notification list] */
-input:not(.sbgcui_settings-amount_input), .sbgcui_drawslider_sort, /* CUI Compatibility */
+input:not(input[name^="maxAmountInBag"]), .sbgcui_drawslider_sort, /* CUI Compatibility */
 select {
   color: var(--ingress-btn-color);
   background: linear-gradient(to top, var(--ingress-btn-glow-color) 0%, var(--ingress-btn-bg-color) 30%, var(--ingress-btn-bg-color) 70%, var(--ingress-btn-glow-color) 100%), var(--ingress-btn-bg-color);

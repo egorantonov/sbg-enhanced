@@ -70,7 +70,7 @@
 .sbgcui_compare_stats>button,
 .inventory__manage-amount button,
 .notifs__entry-view.icon-button, /* View point [notification list] */
-input:not(.sbgcui_settings-amount_input):not([type='checkbox']), /* CUI Compatibility */
+input:not(input[name^="maxAmountInBag"]):not([type='checkbox']), /* CUI Compatibility */
 select {
   text-transform: uppercase;
   border-color: var(--ingress-btn-border-color);
