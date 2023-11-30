@@ -101,7 +101,7 @@ export default async function CompactView() {
 
   /* CUI compatibility */
   // Add long-tap shortcut to clear inventory
-  const cuiInvClearButton = Nodes.GetSelector('button.sbgcui_settings-forceclear')
+  const cuiInvClearButton = Nodes.GetId('sbgcui_forceclear')
   cuiInvClearButton && LongTouchEventListener(Nodes.Ops, () => {
     cuiInvClearButton.click()
   })
