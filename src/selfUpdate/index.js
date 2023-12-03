@@ -9,6 +9,7 @@ import AddReferenceSearch from '../referenceSearch'
 import AddStyles from '../styles'
 import BeautifyCloseButtons from '../closeButtons'
 import CompactView from '../compactView'
+import { Compatibility } from '../compatibility'
 import { createToast } from '../utils'
 import ImportExport from '../importExport'
 import Informer from '../informer'
@@ -66,6 +67,7 @@ async function ExecuteScript () {
       RenderBadges()
       RepairButton()
       ZenMode()
+      Compatibility()
     })
 
   await Sleep(delayAsyncMs) // sleep for a while to make sure SBG is loaded

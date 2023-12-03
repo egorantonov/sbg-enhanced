@@ -57,6 +57,11 @@
   }
 }
 
+/* SELF */
+.self-info.compact, #self-info__name {
+  color: var(--text) !important;
+}
+
 /* BUTTONS */
 .i-buttons>button,
 .settings.popup button:not(.popup-close),
@@ -78,8 +83,6 @@ select {
   border-radius: 5px;
   color: var(--ingress-btn-color);
   background: var(--ingress-btn-bg-color);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
   font-weight: bold;
 }
 
@@ -95,7 +98,7 @@ select {
   color: #000;
 }
 
-#discover, #deploy, #repair, #draw {
+#discover, #deploy, #eui-repair, #draw {
   border-radius: 0;
   position: relative;
 }
@@ -114,11 +117,11 @@ select {
 }
 
 .i-buttons>button[disabled] {
-  filter: opacity(.5);
+  filter: opacity(0.5) !important;
 }
 
 #eui-sort:disabled {
-  filter: opacity(.5);
+  filter: opacity(0.5);
 }
 
 option {
@@ -153,6 +156,43 @@ option:checked { /* WTF? checked is non-documented??? */
 .splide__arrow svg {
   fill: var(--ingress-color);
 }
+
+.ol-control {
+  border-radius: var(--ol-control-radius);
+}
+
+.ol-control button {
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 100px !important;
+}
+
+.ol-zoom .ol-zoom-in {
+  border-radius: 100px 100px 0 0 !important;
+}
+
+.ol-zoom .ol-zoom-out {
+  border-radius: 0 0 100px 100px !important;
+}
+
+#attack-menu, #ops {
+  color: var(--text) !important;
+  border-color: var(--text) !important;
+}
+
+#attack-menu::after {
+  background-color: var(--text) !important;
+}
+
+#attack-menu.sbgcui_attack-menu-rotate {
+  border-color: var(--highlight-color) !important;
+}
+
+#attack-menu.sbgcui_attack-menu-rotate::after {
+  background-color: var(--highlight-color) !important;
+}
+
+
 
 /* SLIDER ITEMS */
 
@@ -250,7 +290,7 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 /* GRAYSCALE COLOR ELEMENTS */
-.info.popup::after, #i-image, .ol-control, input[type="checkbox"]  {
+.info.popup::after, #i-image, input[type="checkbox"]  {
   filter: grayscale(1) !important;
 }
 
@@ -264,13 +304,16 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 /* SETTINGS */
+input[type='range']  {
+  background: #7777 !important;
+}
 
-input#eui-links-opacity::-webkit-slider-thumb {
+input[type='range']::-webkit-slider-thumb {
   background: var(--ingress-btn-border-color);
   box-shadow: -250px 0 0 250px var(--ingress-btn-border-color);
 }
 
-input#eui-links-opacity::-moz-range-thumb {
+input[type='range']::-webkit-slider-thumb {
   background: var(--ingress-btn-border-color);
   box-shadow: -250px 0 0 250px var(--ingress-btn-border-color);
 }

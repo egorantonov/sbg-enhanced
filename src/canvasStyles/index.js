@@ -11,6 +11,10 @@ export default async function AddCanvasStyles() {
 async function AddLayerOpacity (layerClassName, innerTextTranslation, errorMessageTranslation, controlId, defaultValue = 0.75) {
     const getLayer = () => document.querySelector(layerClassName)
 
+    let settings = JSON.parse(localStorage.getItem('settings'))
+    delete settings['opacity']
+    localStorage.setItem('settings', JSON.stringify(settings))
+
     let item = document.createElement(Elements.Div)
     item.className = Modifiers.SettingsSectionItemClassName
 

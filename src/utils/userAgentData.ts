@@ -28,7 +28,7 @@ export function getUserAgentData(): UserAgentData {
     const brand = webkitUserAgentData.brands.find(x => !x.brand.includes('Not') && x.brand !== 'Chromium' ) 
     userAgentData.browser = !!brand?.brand ? brand.brand : parseBrowser(navigator.userAgent)
     userAgentData.mobile = webkitUserAgentData.mobile
-    userAgentData.platform = parsePlatform(webkitUserAgentData.platform, navigator.userAgent)
+    userAgentData.platform = parsePlatform(webkitUserAgentData.platform ? webkitUserAgentData.platform : navigator.platform, navigator.userAgent)
 
     return userAgentData
   }
@@ -119,13 +119,13 @@ export const PLATFORM = {
 
 export function parsePlatform(platform: string, userAgent: string): string {
 
-  const lcPlatform = platform.toLowerCase()
+  const lcPlatform = platform?.toLowerCase()
 
-  if (lcPlatform.startsWith('win') || userAgent.includes(PLATFORM.WINDOWS)) {    
+  if (lcPlatform?.startsWith('win') || userAgent.includes(PLATFORM.WINDOWS)) {
     return PLATFORM.WINDOWS
   }
 
-  if (lcPlatform.startsWith(PLATFORM.MAC.toLowerCase())) {
+  if (lcPlatform?.startsWith(PLATFORM.MAC.toLowerCase())) {
     // iPad
     if (userAgent.includes(PLATFORM.IPAD)) {
       return PLATFORM.IPAD
@@ -140,7 +140,7 @@ export function parsePlatform(platform: string, userAgent: string): string {
     return PLATFORM.MAC
   }
 
-  if (lcPlatform.startsWith(PLATFORM.LINUX.toLowerCase())) {
+  if (lcPlatform?.startsWith(PLATFORM.LINUX.toLowerCase())) {
     // Android 
     if (userAgent.includes(PLATFORM.ANDROID)) {
       return PLATFORM.ANDROID

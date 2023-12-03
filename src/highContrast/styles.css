@@ -6,6 +6,8 @@
   :root[data-theme="auto"] .attack-slider-highlevel {
       color: #fff;
       background: #000;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
   }
 }
 
@@ -15,6 +17,8 @@
 :root[data-theme="dark"] .attack-slider-highlevel {
   color: #fff;
   background: #000;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 /* LIGHT THEME */
@@ -25,6 +29,8 @@
   :root[data-theme="auto"] .attack-slider-highlevel {
       color: #000;
       background: #fff;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
   }
 }
 
@@ -34,6 +40,8 @@
 :root[data-theme="light"] .attack-slider-highlevel {
   color: #000;
   background: #fff;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 #discover[data-time]:after {

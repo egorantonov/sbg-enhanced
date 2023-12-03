@@ -56,13 +56,15 @@ select {
 }
 
 .i-buttons>button[disabled] {
-  filter: opacity(.5);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
+  filter: opacity(0.5) !important;
+}
+
+select[data-setting='theme']:disabled {
+  filter: opacity(0.5) !important;
 }
 
 #eui-sort:disabled {
-  filter: opacity(.5);
+  filter: opacity(0.5);
 }
 
 option {
@@ -93,6 +95,34 @@ option:checked { /* WTF? checked is non-documented??? */
 
 .splide__arrow svg {
   fill: var(--ingress-color);
+}
+
+.ol-control {
+  border-radius: 0 !important;
+  backdrop-filter: blur(10px);
+}
+
+.ol-control button {
+  color: var(--ingress-btn-color) !important;
+  background-color: transparent !important;
+}
+
+#ops {
+  color: var(--ingress-btn-color) !important;
+  border-radius: 0;
+  border: none;
+  background-color: var(--ol-subtle-background-color);
+  backdrop-filter: blur(10px);
+}
+
+.ol-zoom .ol-zoom-in {
+  border-radius: 5px 5px 0 0 !important;
+  border-bottom-color: transparent;
+}
+
+.ol-zoom .ol-zoom-out {
+  border-radius: 0 0 5px 5px !important;
+  border-top-color: transparent;
 }
 
 /* SLIDER ITEMS */
@@ -189,16 +219,20 @@ option:checked { /* WTF? checked is non-documented??? */
 
 /* SETTINGS */
 
-input#eui-links-opacity, input#eui-regions-opacity {
+input:checked {
+  filter: drop-shadow(0px 0px 6px var(--ingress-btn-border-right-color));
+}
+
+input[type='range'] {
   background: linear-gradient(135deg, var(--ingress-btn-bg-left-color), var(--ingress-btn-bg-right-color)), var(--ingress-btn-bg-right-color) !important;
 }
 
-input#eui-links-opacity::-webkit-slider-thumb, input#eui-regions-opacity::-webkit-slider-thumb {
+input[type='range']::-webkit-slider-thumb {
   background: var(--ingress-btn-border-left-color);
   box-shadow: -250px 0 0 250px var(--ingress-btn-border-left-color);
 }
 
-input#eui-links-opacity::-moz-range-thumb, input#eui-regions-opacity::-moz-range-thumb {
+input[type='range']::-moz-range-thumb {
   background: var(--ingress-btn-border-left-color);
   box-shadow: -250px 0 0 250px var(--ingress-btn-border-left-color);
 }

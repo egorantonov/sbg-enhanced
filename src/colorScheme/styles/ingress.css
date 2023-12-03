@@ -59,6 +59,8 @@ select {
   position: relative;
 }
 
+
+
 #eui-sort:disabled {
   opacity: 0.7;
 }
@@ -117,6 +119,7 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 #attack-slider-fire,
+#eui-attack-slider-fire,
 #draw-slider-confirm,
 .inventory__ma-delete,
 #layers-config__save,
@@ -134,7 +137,9 @@ option:checked { /* WTF? checked is non-documented??? */
   background: linear-gradient(to top, var(--ingress-btn-hl-glow-color) 0%, var(--ingress-btn-hl-bg-color) 30%, var(--ingress-btn-hl-bg-color) 70%, var(--ingress-btn-hl-glow-color) 100%) !important;
 }
 
-#attack-slider-fire::before, #draw-slider-confirm::before {
+#attack-slider-fire::before, 
+#eui-attack-slider-fire::before, 
+#draw-slider-confirm::before {
   background-color: var(--ingress-btn-hl-border-color);
   border-color: var(--ingress-btn-hl-border-color);
   box-shadow: inset 2px 2px 0 0px var(--ingress-btn-hl-glow-color);
@@ -158,6 +163,10 @@ option:checked { /* WTF? checked is non-documented??? */
   box-shadow: inset 2px 2px 0 0px var(--ingress-btn-disabled-bg-color);
 }
 
+select[data-setting='theme']:disabled {
+  filter: opacity(0.5) !important;
+}
+
 .popup-close[data-round=true], #inventory__close, .splide__arrow {
   color: var(--ingress-btn-hl-color) !important;
   background: var(--ingress-btn-hl-bg-color) !important;
@@ -169,6 +178,29 @@ option:checked { /* WTF? checked is non-documented??? */
   fill: var(--ingress-btn-hl-color);
 }
 
+.ol-control {
+  border-radius: 0 !important;
+}
+
+.ol-control button {
+  border: 1px solid var(--ingress-btn-border-color) !important;
+  color: var(--ingress-btn-color) !important;
+  background-color: var(--ingress-btn-bg-color) !important;
+  border-radius: 0 !important;
+  box-shadow: inset 0px 0px 6px 3px var(--ingress-btn-glow-color) !important;
+}
+
+#ops {
+  border: 1px solid var(--ingress-btn-hl-border-color) !important;
+  color: var(--ingress-btn-hl-color) !important;
+  background-color: var(--ingress-btn-hl-bg-color) !important;
+  border-radius: 0 !important;
+  box-shadow: inset 0px 0px 6px 3px var(--ingress-btn-hl-glow-color) !important;
+}
+
+.ol-zoom .ol-zoom-in {
+  border-radius: 0 !important;
+}
 
 /* SLIDER ITEMS */
 
@@ -267,19 +299,23 @@ option:checked { /* WTF? checked is non-documented??? */
 
 /* SETTINGS */
 
-input#eui-links-opacity, input#eui-regions-opacity {
+input:checked {
+  filter: drop-shadow(0px 0px 6px var(--ingress-btn-border-color));
+}
+
+input[type='range'] {
   background: var(--ingress-btn-bg-color) !important;
   border-radius: 0px !important;
   border: 2px solid var(--ingress-btn-border-color) !important;
 }
 
-input#eui-links-opacity::-webkit-slider-thumb, input#eui-regions-opacity::-webkit-slider-thumb {
+input[type='range']::-webkit-slider-thumb {
   border-radius: 0px;
   background: var(--ingress-btn-border-color);
   box-shadow: -250px 0 0 250px var(--ingress-btn-border-color);
 }
 
-input#eui-links-opacity::-moz-range-thumb, input#eui-regions-opacity::-moz-range-thumb {
+input[type='range']::-moz-range-thumb {
   border-radius: 0px;
   background: var(--ingress-btn-border-color);
   box-shadow: -250px 0 0 250px var(--ingress-btn-border-color);

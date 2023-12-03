@@ -229,6 +229,10 @@ const Translations = {
     en: 'Links',
     ru: 'Связи'
   },
+  fields: {
+    en: 'Fields',
+    ru: 'Поля'
+  },
   importExport: {
     en: 'Import/export settings',
     ru: 'Импорт/экспорт настроек'

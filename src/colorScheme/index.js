@@ -3,25 +3,49 @@ import bwStyles from './styles/bw.css'
 import ingressStyles from './styles/ingress.css'
 import primeStyles from './styles/prime.css'
 
-const applyTranslations = (target) => {
-  let translations = JSON.parse(localStorage.getItem(target))
-
-  if (!translations) {
-    return
+export default function AddColorScheme() {
+  const applyTranslations = (target) => {
+    let tCache = JSON.parse(localStorage.getItem(target))
+  
+    if (!tCache) {
+      return
+    }
+  
+    tCache.buttons.discover = t('discover')
+    tCache.buttons.deploy = t('deploy')
+    tCache.buttons.repair = t('repair')
+    tCache.buttons.draw = t('draw')
+    tCache.buttons.references.manage = ''
+    tCache.buttons.references.view = ''
+    tCache.info.refs = '🔑 {{count}}/100'
+    tCache.info.lines = t('lines')
+    tCache.info.regions = t('fields')
+  
+    localStorage.setItem(target, JSON.stringify(tCache))
+  }
+  
+  const removeControlChars = (target) => {
+    let tCache = JSON.parse(localStorage.getItem(target))
+  
+    if (!tCache) {
+      return
+    }
+  
+    tCache.buttons.references.manage = ''
+    tCache.buttons.references.view = ''
+  
+    localStorage.setItem(target, JSON.stringify(tCache))
   }
 
-  translations.buttons.discover = t('discover')
-  translations.buttons.deploy = t('deploy')
-  translations.buttons.repair = t('repair')
-  translations.buttons.draw = t('draw')
-  translations.info.refs = '🔑 {{count}}/100'
-  translations.info.lines = t('lines')
+  const ensureDarkTheme = () => {
+    const themeSelect = Nodes.GetSelector('.settings select[data-setting="theme"]')
+    themeSelect.value = 'dark'
+    themeSelect.dispatchEvent(new Event('change'))
+    themeSelect.disabled = true
+  }
 
-  localStorage.setItem(target, JSON.stringify(translations))
-}
-
-export default function AddColorScheme() {
   const i18next_main = `i18next_${GetLocale()}-main`
+  removeControlChars(i18next_main)
   // const input = document.createElement(Elements.Input)
   const input = document.createElement(Elements.Select)
   const themes = [
@@ -89,15 +113,20 @@ export default function AddColorScheme() {
     style.innerHTML = themes[+currentTheme].innerHTML
     input.selectedIndex = +currentTheme
     if (currentTheme == 1 || currentTheme == 2) {
+      ensureDarkTheme()
       applyTranslations(i18next_main)
     }
   }
 
   input.addEventListener(Events.onChange, (event) => {
     const theme = event.target.value
-    theme == 1 || theme == 2 
-      ? applyTranslations(i18next_main)
-      : localStorage.removeItem(i18next_main)
+    if (theme == 1 || theme == 2) {
+      ensureDarkTheme()
+      applyTranslations(i18next_main) 
+    }
+    else {
+      localStorage.removeItem(i18next_main)
+    }
     localStorage.setItem(EUI.IngressTheme, theme)
     style.innerHTML = themes[+theme].innerHTML
     Nodes.SettingsPopupClose.click() // sync settings with cloud
