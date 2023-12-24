@@ -22,7 +22,12 @@ import styles from './styles.css'
 function AddImmediateStyles() {
   const style = document.createElement(Elements.Style)
   style.dataset.id = EUI.ImmediateStyles
-  document.head.appendChild(style)
+  try {
+    document.head.appendChild(style)
+  }
+  catch (error) {
+    console.log(error)
+  }
   style.innerHTML = styles
 }
 
@@ -67,7 +72,6 @@ async function ExecuteScript () {
       RenderBadges()
       RepairButton()
       ZenMode()
-      Compatibility()
     })
 
   await Sleep(delayAsyncMs) // sleep for a while to make sure SBG is loaded
@@ -79,7 +83,8 @@ async function ExecuteScript () {
     AddReferenceSearch(),
     AddDiscoverProgress(),
     CompactView(),
-    Private && (Private())
+    Compatibility(),
+    Private && (Private()),
   ]))
 }
 

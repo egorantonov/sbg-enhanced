@@ -1,4 +1,6 @@
 import { version } from '../../package.json'
+import { getUserAgentData } from '../utils/userAgentData'
+import { getGPU } from '../utils/gpu'
 
 export const Backend = {
   Host: 'https://sbg-settings.egorantonov.workers.dev',
@@ -11,7 +13,7 @@ export const SBG = {
   OutboundLinksLimit: 30,
   DefaultCloseButtonText: '[x]',
   VersionHeader: 'sbg-version',
-  CompatibleVersion: '0.4.2-2',
+  CompatibleVersion: '0.4.2-3',
   Settings: 'settings',
   DefaultLang: 'en',
 }
@@ -39,7 +41,8 @@ export const EUI = {
   Connection: 'eui-connection',
   CloudSync: '__eui-cloud-sync',
   LastSynced: 'eui-cloud-sync',
-  SettingsCache: '__settings-cache'
+  SettingsCache: '__settings-cache',
+  PerformanceMode: 'eui-perf-mode'
 }
 
 export const Events = {
@@ -80,6 +83,32 @@ export const Elements = {
 }
 
 export const Proposed = '-proposed'
+
+class LazyClientData {
+  GetProp(id, callback) {
+    const prop = id
+    if (!this[prop]) {
+      let result
+      try {
+        result = callback()
+      }
+      catch (error) {
+        console.log(`Error getting '${id}' client data: ${error.message}`)
+        console.error(error)
+      }
+      this[prop] = result
+    }
+    return this[prop]
+  }
+  get GetUserAgentData() {
+    return this.GetProp(`userAgentData`, getUserAgentData)
+  }
+  get GetGPU() {
+    return this.GetProp(`gpu`, getGPU)
+  }
+}
+
+export const ClientData = new LazyClientData()
 
 class LazyNodes {
   GetId(id) {
@@ -344,6 +373,14 @@ const Translations = {
   reloadDialogue: {
     en: 'Cloud settings acquired. Reload to apply them right now?',
     ru: 'Ваши настройки загружены. Перезагрузить, чтобы применить их?'
+  },
+  perfModeTitle: {
+    en: 'Performance mode',
+    ru: 'Режим производительности'
+  },
+  perfModeMessage: {
+    en: 'Map filters, animations and blur will be disabled.\r\nUse "Carto" layer for dark theme map.',
+    ru: 'Будут принудительно отключены:\r\n• Фильтры карты\r\n• Размытия элементов\r\n• Анимации\r\nДля тёмной темы карты используйте подложку "Carto".'
   }
 }
 

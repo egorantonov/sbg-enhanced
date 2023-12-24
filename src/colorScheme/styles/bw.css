@@ -148,8 +148,8 @@ option:checked { /* WTF? checked is non-documented??? */
 .popup-close[data-round=true], #inventory__close, .splide__arrow {
   color: var(--ingress-color) !important;
   background: var(--ingress-bg-color-aa) !important;
-  -webkit-backdrop-filter: blur(5px) !important;
-  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: var(--blur5);
+  backdrop-filter: var(--blur5);
   border-color: var(--ingress--color) !important;
 }
 
@@ -209,8 +209,8 @@ option:checked { /* WTF? checked is non-documented??? */
       inset 8px 0px 0px -5px var(--ingress-selection-color),
       inset 10px 0px 8px -6px var(--ingress-selection-bg-color);
   border-radius: 5px;
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: var(--blur5);
+  backdrop-filter: var(--blur5);
 }
 
 
@@ -243,8 +243,8 @@ option:checked { /* WTF? checked is non-documented??? */
 .attack-slider-highlevel {
   color: var(--ingress-color);
   background-color: var(--ingress-bg-color-cc);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: var(--blur5);
+  backdrop-filter: var(--blur5);
   border-color: var(--ingress-btn-border-color) !important;
 }
 

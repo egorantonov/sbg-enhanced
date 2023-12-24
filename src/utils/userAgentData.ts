@@ -96,6 +96,9 @@ export function parseBrowser(userAgent: string) {
   else if (userAgent.includes(UA.WEBVIEW)){
     browser = `Webview`
   }
+  else if (userAgent.toLowerCase().includes('webview')){
+    browser = `Webview`
+  }
   else {
     browser = userAgent // other browsers?
   }

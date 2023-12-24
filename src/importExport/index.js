@@ -1,6 +1,5 @@
-import { Backend, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t } from '../constants'
+import { Backend, ClientData, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t } from '../constants'
 import { createToast } from '../utils'
-import { getUserAgentData } from '../utils/userAgentData'
 const { Host, Endpoints } = Backend
 
 export default async function ImportExport() {
@@ -9,7 +8,7 @@ export default async function ImportExport() {
   }
 
   const Week = 604800000
-  const ua = getUserAgentData()
+  const ua = ClientData.GetUserAgentData
   const userAgent = `${ua.platform} ${ua.browser}${ua.mobile ? ' (Mobile)' : ''}`
   await Sleep(500) // make sure other async functions started earlier, e.g. Informer
 
@@ -184,6 +183,7 @@ export default async function ImportExport() {
     appendLine(about, t('cloudSync'), (new Date(+localStorage.getItem(EUI.CloudSync))).toLocaleString(), EUI.LastSynced)
     appendLine(about, 'User ID', `${(await GetUserId()).slice(0,4)}...`, 'eui-userId')
     appendLine(about, 'Client', userAgent, 'eui-clientId')
+    appendLine(about, 'GPU', ClientData.GetGPU, 'eui-gpu')
 
     Nodes.SettingsPopupClose?.addEventListener(Events.onClick, () => CloudSync(true))
     Nodes.GetId('layers-config__save')?.addEventListener(Events.onClick, () => CloudSync(true))

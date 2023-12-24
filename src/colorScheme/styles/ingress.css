@@ -147,8 +147,8 @@ option:checked { /* WTF? checked is non-documented??? */
 
 #attack-slider-fire[disabled], #draw-slider-confirm[disabled] {
   filter: opacity(0.75);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: var(--blur5);
+  backdrop-filter: var(--blur5);
 }
 
 .i-buttons>button[disabled], .draw-slider-buttons>button[disabled] {
@@ -217,8 +217,8 @@ select[data-setting='theme']:disabled {
       inset 8px 0px 0px -5px var(--ingress-selection-color),
       inset 10px 0px 8px -6px var(--ingress-selection-bg-color);
   border-radius: 5px;
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: var(--blur5);
+  backdrop-filter: var(--blur5);
 }
 
 
@@ -251,8 +251,8 @@ select[data-setting='theme']:disabled {
 .attack-slider-highlevel {
   color: var(--ingress-color);
   background-color: var(--ingress-bg-color-cc);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: var(--blur5);
+  backdrop-filter: var(--blur5);
   border-radius: 0px;
   border-color: var(--ingress-btn-border-color) !important;
 }

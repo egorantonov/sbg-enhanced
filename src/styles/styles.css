@@ -1,5 +1,7 @@
 :root {
   --ol-control-radius: 100px;
+  --blur5: blur(5px) !important;
+  --blur10: blur(10px);
 }
 
 /* SELF */
