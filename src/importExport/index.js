@@ -49,6 +49,7 @@ export default async function ImportExport() {
     return await fetch(`${Host}${Endpoints.Sync}?id=${userId}&userAgent=${userAgent}`)
       .then(response => response.json())
       .then(json => { return json.settings })
+      .catch(error => { console.error(`GetCloudSync Error: ${error.message}`) })
   }
 
   const SetCloudData = async (userId) => {
@@ -70,6 +71,7 @@ export default async function ImportExport() {
         document.getElementById(EUI.LastSynced).innerText = (new Date(+json.timestamp)).toLocaleString()
         createToast('✅ Settings synced with cloud', 'top left')?.showToast()
       })
+      .catch(error => { console.error(`SetCloudSync Error: ${error.message}`) })
     }
   }
 

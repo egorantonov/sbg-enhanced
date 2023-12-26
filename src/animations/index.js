@@ -11,6 +11,7 @@ export default function AddAnimations() {
 
         input.type = Elements.CheckBox
         input.dataset.setting = EUI.Animations
+        input.disabled = localStorage.getItem(EUI.PerformanceMode) == 1
         const label = document.createElement(Elements.Label)
         label.classList.add(Modifiers.SettingsSectionItemClassName)
         label.appendChild(title)

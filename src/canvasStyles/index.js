@@ -38,6 +38,7 @@ async function AddLayerOpacity (layerClassName, innerTextTranslation, errorMessa
     range.setAttribute('value', value ?? defaultValue)
 
     let layer = getLayer()
+    range.disabled = localStorage.getItem(EUI.PerformanceMode) == 1
 
     if (!layer) { // make sure lines layer exist (or loaded if connection is throttling)
         await Sleep(2000)

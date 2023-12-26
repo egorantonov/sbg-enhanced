@@ -4,7 +4,9 @@
 }
 
 .ol-layer__base,
-.ol-layer__player {
+.ol-layer__player,
+.ol-layer__lines,
+.ol-layer__regions {
   filter: none !important;
 }
 

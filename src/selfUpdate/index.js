@@ -132,7 +132,7 @@ export async function RunWithOnlineUpdate() {
 
     const script = document.createElement('script')
     script.id = EUI.Id
-    script.src = `https://github.com/egorantonov/sbg-enhanced/releases/download/${version}/index.js`
+    script.src = `https://github.com/egorantonov/sbg-enhanced/releases/download/${version}/eui.user.js`
     script.defer = true
     script.type = 'text/javascript'
     document.head.appendChild(script)

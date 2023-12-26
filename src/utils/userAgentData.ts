@@ -25,8 +25,12 @@ export function getUserAgentData(): UserAgentData {
   const webkitUserAgentData: NavigatorUAData = getWebkitUserAgentData()
 
   if (webkitUserAgentData && webkitUserAgentData.brands?.length > 0) {
-    const brand = webkitUserAgentData.brands.find(x => !x.brand.includes('Not') && x.brand !== 'Chromium' ) 
-    userAgentData.browser = !!brand?.brand ? brand.brand : parseBrowser(navigator.userAgent)
+    const brand = webkitUserAgentData.brands.find(x => !x.brand.includes('Not') && x.brand !== 'Chromium') 
+    userAgentData.browser = !!brand?.brand 
+      ? brand.brand.toLowerCase() == 'android webview'
+        ? 'Webview'
+        : brand.brand
+      : parseBrowser(navigator.userAgent)
     userAgentData.mobile = webkitUserAgentData.mobile
     userAgentData.platform = parsePlatform(webkitUserAgentData.platform ? webkitUserAgentData.platform : navigator.platform, navigator.userAgent)
 
@@ -46,7 +50,8 @@ export const UA = {
   GECKO: 'Gecko/',
   OPERA: 'OPR/',
   OPERA_TOUCH: 'OPT/',
-  EDGE: 'Edg/',
+  EDG: 'Edg/',
+  EDGE: 'Edge/',
   EDGE_ANDROID: 'EdgA/',
   BRAVE: 'Brave/',
   VIVALDI: 'Vivaldi/',
@@ -79,7 +84,7 @@ export function parseBrowser(userAgent: string) {
   else if (userAgent.includes(UA.BRAVE)){
     browser = `Brave`
   }
-  else if (userAgent.includes(UA.EDGE) || userAgent.includes(UA.EDGE_ANDROID)){
+  else if (userAgent.includes(UA.EDG) || userAgent.includes(UA.EDGE) || userAgent.includes(UA.EDGE_ANDROID)){
     browser = `Edge`
   }
   else if (userAgent.includes(UA.CHROME) || userAgent.includes(UA.CHROME_IOS)){

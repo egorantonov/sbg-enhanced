@@ -42,7 +42,7 @@
 
 Скачать, установить и обновить скрипт можно в [разделе релизов](https://github.com/egorantonov/sbg-enhanced/releases/latest) или по прямой ссылке:
 
-[https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js](https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js)
+[https://github.com/egorantonov/sbg-enhanced/releases/latest/download/eui.user.js](https://github.com/egorantonov/sbg-enhanced/releases/latest/download/eui.user.js)
 
 <h2 align="center">Что нового</h2>
 
@@ -94,7 +94,7 @@ https://www.youtube.com/embed/zrz7pwRhkXY
 1. В браузере нажать на иконку плагина Tampermonkey и перейти в `Dashboard` (`Панель управления`)
 1. На открывшейся странице плагина перейти справа во вкладку `Utilities` (`Утилиты`)
 1. Внизу в поле `Import from URL` (`Импорт из URL`) вставить ссылку на скрипт <br/>
-  [`https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js`](https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js) <br/>
+  [`https://github.com/egorantonov/sbg-enhanced/releases/latest/download/eui.user.js`](https://github.com/egorantonov/sbg-enhanced/releases/latest/download/eui.user.js) <br/>
   и нажать `Install` (`Установить`)
 1. После открытия окна с кодом скрипта повторно нажать `Install` (`Установить`). 
 1. Обновить страницу с игрой. Скрипт должен запуститься и внести изменения.
@@ -120,9 +120,9 @@ https://www.youtube.com/embed/zrz7pwRhkXY
 1. Установить приложение [Команды](https://apps.apple.com/app/id1462947752)
 1. В приложении **Файлы** создать папку `Userscripts` внутри `на iPhone`/`на iPad` (если ещё нет)
 1. В приложении **Userscripts** нужно выбрать эту папку (нажать на кнопку `Set Userscripts Directory`)
-1. Установить [команду скачивания скрипта](https://www.icloud.com/shortcuts/d59d07eaa0e04d3fa70aeaa70b61da32)
-1. Запустить скачанную команду `Update SBG EUI`, скачается скрипт и выведется сообщение (_Загружена версия Х.Х.Х_), файл _index.js_ должен появиться в папке Userscripts<br/>
-_Также файл можно скачать вручную по [ссылке](https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js)_
+1. Установить [команду скачивания скрипта](https://www.icloud.com/shortcuts/7a7ea83873f04d8d84fc820dd7baf816)
+1. Запустить скачанную команду `Update SBG EUI`, скачается скрипт и выведется сообщение (_Загружена версия Х.Х.Х_), файл _eui.user.js_ должен появиться в папке Userscripts<br/>
+_Также файл можно скачать вручную по [ссылке](https://github.com/egorantonov/sbg-enhanced/releases/latest/download/eui.user.js)_
 1. Открыть Safari, нажать кнопку `aA` в левой части адресной строки (или кнопку расширений в правой части). 
 Нажать `Управлять расширениями`, включить расширение Userscripts. 
 1. Повторно нажать `aA` в адресной строке, в этом меню появится пункт `Userscripts`. 
@@ -142,7 +142,7 @@ _Также файл можно скачать вручную по [ссылке
 1. В браузере нажать на иконку плагина Tampermonkey и перейти в `Dashboard` (`Панель управления`)
 1. На открывшейся странице плагина перейти справа во вкладку `Utilities` (`Утилиты`)
 1. Внизу в поле `Import from URL` (`Импорт из URL`) вставить ссылку на скрипт <br/>
-  [`https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js`](https://github.com/egorantonov/sbg-enhanced/releases/latest/download/index.js) <br/>
+  [`https://github.com/egorantonov/sbg-enhanced/releases/latest/download/eui.user.js`](https://github.com/egorantonov/sbg-enhanced/releases/latest/download/eui.user.js) <br/>
   и нажать `Install` (`Установить`)
 1. После открытия окна с кодом скрипта повторно нажать `Install` (`Установить`). 
 1. Обновить страницу с игрой. Скрипт должен запуститься и внести изменения.
