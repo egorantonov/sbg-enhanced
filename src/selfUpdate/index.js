@@ -8,6 +8,7 @@ import AddHighContrast from '../highContrast'
 import AddReferenceSearch from '../referenceSearch'
 import AddStyles from '../styles'
 import BeautifyCloseButtons from '../closeButtons'
+import { Actions } from '../actions'
 import CompactView from '../compactView'
 import { Compatibility } from '../compatibility'
 import { createToast } from '../utils'
@@ -84,7 +85,8 @@ async function ExecuteScript () {
     AddDiscoverProgress(),
     CompactView(),
     Compatibility(),
-    Private && (Private()),
+    Actions(),
+    Private && (Private())
   ]))
 }
 

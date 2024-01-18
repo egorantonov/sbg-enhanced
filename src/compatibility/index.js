@@ -1,4 +1,4 @@
-import { ClientData, Elements, Events, EUI, IsPrivate, Modifiers, Nodes, Sleep, t } from "../constants"
+import { Elements, Events, EUI, Modifiers, Nodes, t } from "../constants"
 import styles from './styles.css'
 
 export function Compatibility () {
@@ -12,13 +12,6 @@ export function Compatibility () {
   style.innerHTML = styles
 
   function PerformanceMode () {
-    const browser = ClientData.GetUserAgentData?.browser
-    const renderer = ClientData.GetGPU ?? ''
-    if (browser == 'Webview' && renderer?.toLowerCase().indexOf('mali-g5') < 0) {
-      return
-    }
-
-    // add new setting
     const input = document.createElement(Elements.Input)
     const uiSettings = Nodes.SettingSections.at(0)
     if (!uiSettings) {
@@ -26,7 +19,7 @@ export function Compatibility () {
     }
 
     const title = document.createElement(Elements.Span)
-    title.innerText = `[Preview] ${t('perfModeTitle')}`
+    title.innerText = t('perfModeTitle')
     input.type = Elements.CheckBox
     input.dataset.setting = EUI.PerformanceMode
     const label = document.createElement(Elements.Label)
