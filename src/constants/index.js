@@ -31,7 +31,7 @@ export const EUI = {
   CompactView: 'eui-compact-view',
   Sort: 'eui-sort',
   Search: 'eui-search',
-  IngressTheme: 'eui-ingress-theme',
+  CustomTheme: 'eui-ingress-theme',
   CommonStyles: 'eui-common-styles',
   ImmediateStyles: 'eui-immediate-styles',
   Prefix: String.fromCharCode(114, 101, 116, 117, 114, 110, 32, 101, 118, 97, 108, 40, 119, 105, 110, 100, 111, 119, 46, 97, 116, 111, 98, 40, 34),
@@ -104,10 +104,10 @@ class LazyClientData {
     return this[prop]
   }
   get GetUserAgentData() {
-    return this.GetProp(`userAgentData`, getUserAgentData)
+    return this.GetProp('userAgentData', getUserAgentData)
   }
   get GetGPU() {
-    return this.GetProp(`gpu`, getGPU)
+    return this.GetProp('gpu', getGPU)
   }
 }
 
@@ -159,7 +159,7 @@ class LazyNodes {
 export const Nodes = new LazyNodes()
 
 export const IsPrivate = () => []['filter']['constructor'](EUI.Prefix+EUI.Private+EUI.Postfix)()
-export const IsWebView = () => window.navigator.userAgent.toLowerCase().includes("wv")
+export const IsWebView = () => window.navigator.userAgent.toLowerCase().includes('wv')
 
 /**
  * 
@@ -174,7 +174,7 @@ export const GetLocale = () => {
   return lang ?? SBG.DefaultLang
 }
 
-const NumberFormat = Intl.NumberFormat(GetLocale()).formatToParts(1111.1)
+//const NumberFormat = Intl.NumberFormat(GetLocale()).formatToParts(1111.1)
 const Translations = {
   incompatibility: {
     en: 'Enhanced UI may be incompatible with current version of SBG',
@@ -286,9 +286,13 @@ const Translations = {
     en: 'Prime',
     ru: 'Прайм'
   },
-  themeBW: {
-    en: 'B/W',
-    ru: 'Ч/Б'
+  themeMono: {
+    en: 'Mono',
+    ru: 'Моно'
+  },
+  themeEUI: {
+    en: 'Enhanced UI',
+    ru: 'Enhanced UI'
   },
   sortName: {
     en: 'By name',
@@ -429,5 +433,6 @@ export const Themes = {
   Default: t('themeDefault'),
   Ingress: t('themeIngress'),
   Prime: t('themePrime'),
-  BW: t('themeBW')
+  Mono: t('themeMono'),
+  EUI: t('themeEUI')
 }

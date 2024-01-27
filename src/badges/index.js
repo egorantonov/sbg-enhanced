@@ -66,7 +66,7 @@ export const AddBadges = () => {
             badgeImage.title = title
             badgeImage.width = 40
             badgeImage.height = 40
-            badgeImage.classList.add(EUI.IngressTheme)
+            badgeImage.classList.add(EUI.CustomTheme)
 
             const badgeProgress = document.createElement(Elements.Paragraph)
             badgeProgress.innerText = tier

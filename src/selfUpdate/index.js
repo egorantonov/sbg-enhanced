@@ -24,7 +24,7 @@ function AddImmediateStyles() {
   const style = document.createElement(Elements.Style)
   style.dataset.id = EUI.ImmediateStyles
   try {
-    document.head.appendChild(style)
+    document.head?.appendChild(style)
   }
   catch (error) {
     console.log(error)

@@ -1,5 +1,7 @@
-import { Events, Sleep } from './constants'
+import { Sleep } from './constants'
 import { RunWithOnlineUpdate } from './selfUpdate'
+import { Debug } from './private'
 
-window.addEventListener(Events.onLoad, function () {console.log('window loaded')})
+Debug && (Debug())
+
 await Sleep(1000).then(_ => RunWithOnlineUpdate())

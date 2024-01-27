@@ -1,0 +1,225 @@
+:root {
+  --radius: 10px;
+  --button-height: 70px;
+  --margin: 10px;
+  --mono-selection-color: #fff;
+  --mono-selection-bg-color: #ccc7;
+  --button-filter: saturate(0.5);
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] {
+    --mono-selection-color: #000;
+    --mono-selection-bg-color: #3337;
+    /* --button-filter: none; */
+  }
+}
+
+:root[data-theme="light"] {
+  --mono-selection-color: #000;
+  --mono-selection-bg-color: #3337;
+  /* --button-filter: none; */
+}
+
+.draw-slider-wrp .splide__slide.is-active .refs-list__image>div {
+  box-shadow: inset -8px 0px 0px -5px  var(--mono-selection-color),
+      inset -10px 0px 8px -6px  var(--mono-selection-bg-color),
+      inset 8px 0px 0px -5px  var(--mono-selection-color),
+      inset 10px 0px 8px -6px  var(--mono-selection-bg-color);
+}
+
+#catalysers-list>.splide__slide.is-active, #cores-list>.splide__slide.is-active{
+  box-shadow: inset -8px 0px 0px -5px var(--mono-selection-color),
+      inset -10px 0px 8px -6px var(--mono-selection-bg-color),
+      inset 8px 0px 0px -5px var(--mono-selection-color),
+      inset 10px 0px 8px -6px var(--mono-selection-bg-color);
+  border-radius: var(--radius);
+  -webkit-backdrop-filter: var(--blur5);
+  backdrop-filter: var(--blur5);
+}
+
+.popup {
+  border-radius: 0px !important;
+  border-width: 0px !important;
+  padding: 10px !important;
+  padding-bottom: 0px !important;
+  background-color: var(--background-transp);
+  -webkit-backdrop-filter: var(--blur5);
+  backdrop-filter: var(--blur5);
+}
+
+/* INFO POPUP */
+.info.popup {
+  padding-bottom: 0px !important;
+}
+
+.info.popup .popup-close[data-round=true] {
+  width: 100% !important;
+}
+
+@media (max-width: 425px) {
+  .i-image-box {
+    max-height: unset !important;
+    min-height: unset !important;
+  }
+}
+
+#i-image {
+  border-radius: var(--radius);
+}
+
+.deploy-slider-wrp {
+  margin: 0;
+}
+
+#deploy-slider {
+  border: none !important;
+  border-radius: var(--radius);
+  min-height: var(--button-height) !important;
+  display: grid !important;
+  grid-template-columns: 2fr 1fr;
+  grid-template-areas: "Slider Deploy";
+  margin: 0;
+}
+
+#deploy-slider-track {
+  padding: 5px 0;
+  grid-area: Slider;
+  background-color: #7772;
+  border-top-left-radius: var(--radius);
+  border-bottom-left-radius: var(--radius);
+}
+
+#deploy {
+  grid-area: Deploy;
+  background-color: var(--sbgcui-branding-color, var(--selection));
+  border: none;
+  border-top-right-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  transition: background-color 0.25s linear;
+}
+
+#deploy:disabled {
+  background: linear-gradient(90deg,#7772, #7777);
+}
+
+#discover {
+  background-color: var(--sbgcui-branding-color, var(--selection));
+  min-height: var(--button-height);
+  border: none;
+  border-radius: var(--radius);
+  box-shadow: none;
+  margin-bottom: var(--margin);
+  width: 100%;
+  transition: background-color 0.25s linear;
+}
+
+#discover:disabled {
+  background-color: #7777;
+}
+
+.discover-progress {
+  border-radius: var(--radius) !important;
+  background-color: var(--accent);
+}
+
+#bottom {
+  margin: 0 -10px;
+  width: calc(2 * var(--margin) + 100%);
+  display: flex;
+  justify-content: space-around;
+}
+
+/*#bottom button:first-child {
+  border-top-left-radius: var(--radius)  !important;
+}
+
+#bottom button:last-child {
+  border-top-right-radius: var(--radius)  !important;
+}*/ /* looks interesting with #bottom default margin and width=100% */
+
+#bottom button {
+  width: 100%;
+  border: none !important;
+  border-radius: 0 !important;
+  background-color: var(--sbgcui-branding-color, var(--selection));
+  font-weight: bold;
+  min-height: var(--button-height);
+  min-width: calc(20% - 1px);
+  position: unset;
+  font-size: small;
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#bottom button, 
+#discover:not([disabled]),
+#deploy:not([disabled]) {
+  color: #fff;
+  filter: var(--button-filter);
+}
+
+/* ATTACK */
+#cores-list > .splide__slide, #catalysers-list > .splide__slide  {
+  max-width: 70px !important;
+}
+
+#attack-slider {
+  border-radius: var(--radius) var(--radius) 0 0;
+  backdrop-filter: var(--blur5);
+}
+
+.attack-slider-buttons {
+  width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#eui-attack-slider-fire {
+  height: 60px;
+  max-width: 100%;
+  border: none;
+  border-radius: 0 0 10px 10px;
+  padding: 0;
+  margin: 0;
+  background-color: var(--selection);
+}
+
+/* CUI Compatibility */
+#discover>span::before {
+  width: 50% !important;
+}
+
+.sbgcui_navbutton, .sbgcui_jumpToButton {
+  font-size: unset;
+  position: unset;
+}
+
+#bottom button.fa::before {
+  height: 27%;
+}
+
+#eui-repair::before {
+  display: block;
+  content: "⚡";
+  width: 100%;
+  height: 30%;
+}
+
+#draw::before {
+  display: block;
+  content: "🎨";
+  width: 100%;
+  height: 30%;
+}
+
+#draw:disabled {
+  color:#ccc7;
+}
+
+/* в общие стили? */
+/* .i-stat-core {
+  margin-bottom: 5px;
+} */

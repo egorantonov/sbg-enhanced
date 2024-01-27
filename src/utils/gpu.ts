@@ -16,74 +16,62 @@ const ANGLE = 'ANGLE'
 const DIRECT_VERSION = 'Direct'
 const OPENGL_VERSION = 'Open'
 
-const amd = 'amd'
-const ati = 'ati'
-const radeon = 'radeon'
-const nvidia = 'nvidia'
-const geforce = 'geforce'
-const quadro = 'quadro'
-const intel = 'intel'
-const arc = 'arc'
-const apple = 'apple'
-
-const signatures = [amd, ati, radeon, nvidia, geforce, quadro, intel, arc, apple ]
-
 export function getGPU(): string {  
-  const canvas = document.createElement('canvas')
-  let webgl
+	const canvas = document.createElement('canvas')
+	let webgl
 
-  try {
-    webgl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl') as RenderingContext
-  }
-  catch (e) {
-    console.log(e)
-    return NOT_AVAILABLE
-  }
+	try {
+		webgl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl') as RenderingContext
+	}
+	catch (e) {
+		console.log(e)
+		return NOT_AVAILABLE
+	}
 
-  if (webgl === null || webgl === undefined) {
-    console.error('WebGL is not available in this browser')
-    return NOT_AVAILABLE
-  }
+	if (webgl === null || webgl === undefined) {
+		console.error('WebGL is not available in this browser')
+		return NOT_AVAILABLE
+	}
 
-  const debugInfo = webgl?.getExtension('WEBGL_debug_renderer_info')
+	const debugInfo = webgl?.getExtension('WEBGL_debug_renderer_info')
 
-  if (debugInfo === null || debugInfo === undefined) {
-    console.error('WebGL debug information is not available in this browser')
-    return NOT_AVAILABLE
-  }
+	if (debugInfo === null || debugInfo === undefined) {
+		console.error('WebGL debug information is not available in this browser')
+		return NOT_AVAILABLE
+	}
 
-  // Unsafe for Firefox (deprecated)
-  const renderer = webgl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+	// Unsafe for Firefox (deprecated)
+	const renderer = webgl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
 
-  console.log(renderer)
-  console.log(webgl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL))
+	console.log(renderer)
+	console.log(webgl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL))
 
-  const gpu = parseGpu(renderer)
+	const gpu = parseGpu(renderer)
 
-  return gpu 
+	return gpu 
 }
 
 export function parseGpu(renderer: string): string {
 
-  // unwrap Angle renderer
-  if (renderer.startsWith(ANGLE)) {
-    renderer = renderer.slice(ANGLE.length + 2, renderer.length - 1)
-  }
+	// unwrap Angle renderer
+	if (renderer.startsWith(ANGLE)) {
+		renderer = renderer.slice(ANGLE.length + 2, renderer.length - 1)
+	}
 
-  renderer = removeGfxApi(renderer, DIRECT_VERSION)
-  renderer = removeGfxApi(renderer, OPENGL_VERSION)
+	renderer = removeGfxApi(renderer, DIRECT_VERSION)
+	renderer = removeGfxApi(renderer, OPENGL_VERSION)
 
-  if (renderer[renderer.length - 1] === ',') {
-    renderer = renderer.slice(0, renderer.length - 1)
-  }
+	if (renderer[renderer.length - 1] === ',') {
+		renderer = renderer.slice(0, renderer.length - 1)
+	}
 
-  return renderer
+	return renderer
 }
 
 function removeGfxApi(renderer: string, gfxApi: string): string {
-  if (renderer.includes(gfxApi)) {
-    renderer = renderer.slice(0, renderer.indexOf(gfxApi))
-  }
+	if (renderer.includes(gfxApi)) {
+		renderer = renderer.slice(0, renderer.indexOf(gfxApi))
+	}
 
-  return renderer.trimEnd()
+	return renderer.trimEnd()
 }

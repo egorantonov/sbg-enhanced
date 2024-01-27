@@ -1,6 +1,6 @@
-import { Backend, ClientData, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t } from '../constants'
-import { createToast } from '../utils'
-const { Host, Endpoints } = Backend
+import { /*Backend,*/ ClientData, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t } from '../constants'
+//import { createToast } from '../utils'
+//const { Host, Endpoints } = Backend
 
 export default async function ImportExport() {
   if (!localStorage.getItem('auth')){
@@ -32,7 +32,7 @@ export default async function ImportExport() {
       return userId
     }
 
-    const id = await fetch(`/api/self`, {
+    const id = await fetch('/api/self', {
       headers: {
         authorization: `Bearer ${localStorage.getItem('auth')}`,
         'content-type': 'application/json; charset=UTF-8'
@@ -45,18 +45,24 @@ export default async function ImportExport() {
     return id
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const GetCloudData = async (userId) => {
-    return await fetch(`${Host}${Endpoints.Sync}?id=${userId}&userAgent=${userAgent}`)
+    return JSON.parse(localStorage.getItem('settings')).euiSettings
+    /*return await fetch(`${Host}${Endpoints.Sync}?id=${userId}&userAgent=${userAgent}`)
       .then(response => response.json())
       .then(json => { return json.settings })
-      .catch(error => { console.error(`GetCloudSync Error: ${error.message}`) })
+      .catch(error => { console.error(`GetCloudSync Error: ${error.message}`) })*/
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const SetCloudData = async (userId) => {
     const settings = GetSettingsAsJson()
     const settingsCache = localStorage.getItem(EUI.SettingsCache)
     if (!settingsCache || settings !== settingsCache) {
-      await fetch(`${Host}${Endpoints.Sync}`,
+      let sbgSettings = JSON.parse(localStorage.getItem('settings'))
+      sbgSettings.euiSettings = settings
+      localStorage.setItem('settings', JSON.stringify(sbgSettings))
+      /*await fetch(`${Host}${Endpoints.Sync}`,
       {
         method: 'POST',
         body: JSON.stringify({ 
@@ -71,7 +77,7 @@ export default async function ImportExport() {
         document.getElementById(EUI.LastSynced).innerText = (new Date(+json.timestamp)).toLocaleString()
         createToast('✅ Settings synced with cloud', 'top left')?.showToast()
       })
-      .catch(error => { console.error(`SetCloudSync Error: ${error.message}`) })
+      .catch(error => { console.error(`SetCloudSync Error: ${error.message}`) })*/
     }
   }
 
@@ -83,7 +89,7 @@ export default async function ImportExport() {
     }
 
     const cloudData = await GetCloudData(userId)
-    if (!cloudData || typeof cloudData !== "string") { // no cloud data, need to sync local settings
+    if (!cloudData || typeof cloudData !== 'string') { // no cloud data, need to sync local settings
       await SetCloudData(userId)
       return
     }
