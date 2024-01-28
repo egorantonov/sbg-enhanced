@@ -11,7 +11,7 @@ import BeautifyCloseButtons from '../closeButtons'
 import { Actions } from '../actions'
 import CompactView from '../compactView'
 import { Compatibility } from '../compatibility'
-import { createToast } from '../utils'
+import { showToast } from '../utils'
 import ImportExport from '../importExport'
 import Informer from '../informer'
 import InitObservers from '../observers'
@@ -60,6 +60,9 @@ async function ExecuteScript () {
       console.log(`Waiting for CUI, try #${i}...`)
       await Sleep(750)
     }
+    if (window.cuiStatus == 'loading') {
+      confirm('CUI failed, reload?') && location.reload()
+    }
   }
 
   await Sleep(delaySyncMs)
@@ -95,7 +98,7 @@ export async function RunWithOnlineUpdate() {
     if (!response) {
       const message = 'Github releases api is unavailable. Possible network issue.'
       console.log(message)
-      createToast(message)?.showToast()
+      showToast(message)
       ExecuteScript()
       return
     }
@@ -104,7 +107,7 @@ export async function RunWithOnlineUpdate() {
     if (!version) {
       const message = 'Can\'t get an online version of the script'
       console.log(message)
-      createToast(message)?.showToast()
+      showToast(message)
       ExecuteScript()
       return
     }
@@ -122,7 +125,7 @@ export async function RunWithOnlineUpdate() {
     if (a[0] < b[0] || a[1] < b[1] || a[2] < b[2]) {
       const message = 'Hello, time traveler!'
       console.log(message)
-      createToast(message)?.showToast()
+      showToast(message)
       localStorage.setItem(EUI.Online, 0)
       ExecuteScript()
       return

@@ -4,21 +4,22 @@
   --margin: 10px;
   --mono-selection-color: #fff;
   --mono-selection-bg-color: #ccc7;
-  --button-filter: saturate(0.5);
+  /* --button-filter: saturate(0.5); */
+  --button-filter: none;
+  --on: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-280q-83.333 0-141.667-58.28Q80-396.561 80-479.819q0-83.258 58.333-141.72Q196.667-680 280-680h400q83.333 0 141.667 58.28Q880-563.439 880-480.181q0 83.258-58.333 141.72Q763.333-280 680-280H280Zm0-40h400q66 0 113-47t47-113q0-66-47-113t-113-47H280q-66 0-113 47t-47 113q0 66 47 113t113 47Zm399.909-60q41.63 0 70.86-29.14Q780-438.28 780-479.91q0-41.629-29.14-70.859Q721.719-580 680.091-580q-41.63 0-70.86 29.14Q580-521.719 580-480.09t29.14 70.859Q638.281-380 679.909-380ZM480-480Z"/></svg>');
+  --off: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-280q-83.333 0-141.667-58.28Q80-396.561 80-479.819q0-83.258 58.333-141.72Q196.667-680 280-680h400q83.333 0 141.667 58.28Q880-563.439 880-480.181q0 83.258-58.333 141.72Q763.333-280 680-280H280Zm0-40h400q66 0 113-47t47-113q0-66-47-113t-113-47H280q-66 0-113 47t-47 113q0 66 47 113t113 47Zm-.09-60q41.629 0 70.859-29.14Q380-438.28 380-479.91q0-41.629-29.14-70.859Q321.72-580 280.09-580q-41.629 0-70.859 29.14Q180-521.719 180-480.09t29.14 70.859Q238.28-380 279.91-380ZM480-480Z"/></svg>');
 }
 
 @media (prefers-color-scheme: light) {
   :root[data-theme="auto"] {
     --mono-selection-color: #000;
     --mono-selection-bg-color: #3337;
-    /* --button-filter: none; */
   }
 }
 
 :root[data-theme="light"] {
   --mono-selection-color: #000;
   --mono-selection-bg-color: #3337;
-  /* --button-filter: none; */
 }
 
 .draw-slider-wrp .splide__slide.is-active .refs-list__image>div {
@@ -75,27 +76,26 @@
 #deploy-slider {
   border: none !important;
   border-radius: var(--radius);
+  overflow: hidden;
   min-height: var(--button-height) !important;
   display: grid !important;
   grid-template-columns: 2fr 1fr;
   grid-template-areas: "Slider Deploy";
   margin: 0;
+  direction: var(--sbgcui-point-btns-rtl, 'ltr');
 }
 
 #deploy-slider-track {
   padding: 5px 0;
   grid-area: Slider;
-  background-color: #7772;
-  border-top-left-radius: var(--radius);
-  border-bottom-left-radius: var(--radius);
+  background: linear-gradient(-90deg,#7772, #7772, #7777);
+  direction: ltr;
 }
 
 #deploy {
   grid-area: Deploy;
   background-color: var(--sbgcui-branding-color, var(--selection));
   border: none;
-  border-top-right-radius: var(--radius);
-  border-bottom-right-radius: var(--radius);
   transition: background-color 0.25s linear;
 }
 
@@ -128,15 +128,10 @@
   width: calc(2 * var(--margin) + 100%);
   display: flex;
   justify-content: space-around;
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+  overflow: hidden;
 }
-
-/*#bottom button:first-child {
-  border-top-left-radius: var(--radius)  !important;
-}
-
-#bottom button:last-child {
-  border-top-right-radius: var(--radius)  !important;
-}*/ /* looks interesting with #bottom default margin and width=100% */
 
 #bottom button {
   width: 100%;
@@ -187,6 +182,118 @@
   background-color: var(--selection);
 }
 
+.popup-close[data-round=true], #inventory__close[data-round=true] {
+  color: #fff !important;
+  border-color: var(--sbgcui-branding-color, var(--selection)) !important;
+  background-color: var(--sbgcui-branding-color, var(--selection)) !important;
+}
+
+.settings-section__item select, 
+.settings-section__item button:not(.popup-close) {
+  color: #fff !important;
+  border-radius: 5px;
+  border: none !important;
+  background-color: var(--sbgcui-branding-color, var(--selection));
+  filter: var(--button-filter);
+  padding: 5px;
+  text-transform: uppercase;
+}
+
+input[type="range"] {
+  padding: 0 !important;
+}
+
+.inventory__manage-amount {
+  width: 300px;
+  box-shadow: 3px 4px 7px -2px var(--shadow);
+  border: none !important;
+  border-radius: var(--radius);
+  overflow: hidden;
+  padding: 10px 0 0 0 !important;
+  z-index: 2;
+}
+
+.inventory__ma-counter {
+  padding: 0.5em;
+}
+
+.inventory__ma-counter button {
+  border: none !important;
+  border-radius: 3px;
+  min-height: 40px;
+  min-width: 40px;
+}
+
+.inventory__ma-counter input {
+  border-style: solid;
+  border-color: #7773;
+  background-color: #7773;
+  border-radius: 3px;
+  padding-left: 5px;
+}
+
+.inventory__ma-buttons {
+  gap: 0;
+}
+
+.inventory__ma-buttons button {
+  text-transform: uppercase;
+  font-weight: bolder;
+  min-height: 50px;
+}
+
+.inventory__ma-cancel {
+  border: none !important;
+  width: 100%;
+}
+
+.inventory__ma-delete {
+  border: none !important;
+  width: 100%;
+  background-color: var(--accent);
+}
+
+.inventory__item-controls button {
+  background-color: var(--sbgcui-branding-color, var(--selection));
+  border-style: solid;
+  border-radius: 3px;
+  border-color: var(--sbgcui-branding-color, var(--selection));
+  color: #fff;
+}
+
+.inventory__tab.active {
+  color: var(--sbgcui-branding-color, var(--selection));
+}
+
+.settings-section__item input[type="checkbox"] {
+  width: 0px;
+  height: 0px;
+  filter: none;
+}
+
+.settings-section__item input[type="checkbox"]::before {
+  content: "";
+  -webkit-mask: var(--on);
+  mask: var(--on);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  display: block;
+  height: 2.5em;
+  width: 2.5em;
+  background-color: var(--sbgcui-branding-color, var(--selection));
+  transform: translateX(-1.25em);
+}
+
+.settings-section__item input[type="checkbox"]:not(:checked)::before,
+.settings-section__item input[type="checkbox"]:disabled::before {
+  -webkit-mask: var(--off);
+  mask: var(--off);
+  mask-size: contain; /* wtf with css */
+  background-color: #7777;
+}
+
 /* CUI Compatibility */
 #discover>span::before {
   width: 50% !important;
@@ -200,6 +307,12 @@
 #bottom button.fa::before {
   height: 27%;
 }
+
+.inventory__content[data-tab="3"] .inventory__item-controls::after {
+  background-color: var(--sbgcui-branding-color, var(--selection));
+}
+
+/**/
 
 #eui-repair::before {
   display: block;
@@ -219,7 +332,3 @@
   color:#ccc7;
 }
 
-/* в общие стили? */
-/* .i-stat-core {
-  margin-bottom: 5px;
-} */

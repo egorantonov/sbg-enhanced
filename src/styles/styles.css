@@ -355,8 +355,8 @@ input[type='range']::-webkit-slider-thumb {
   height: 16px;
   width: 16px;
   border-radius: 3px;
-  background: var(--selection);
-  box-shadow: -250px 0 0 250px var(--selection);
+  background: var(--sbgcui-branding-color, var(--selection));
+  box-shadow: -250px 0 0 250px var(--sbgcui-branding-color, var(--selection));
   cursor: pointer;
 }
 
@@ -365,8 +365,8 @@ input[type='range']::-moz-range-thumb {
   height: 16px;
   width: 16px;
   border-radius: 3px;
-  background: var(--selection);
-  box-shadow: -250px 0 0 250px var(--selection);
+  background: var(--sbgcui-branding-color, var(--selection));
+  box-shadow: -250px 0 0 250px var(--sbgcui-branding-color, var(--selection));
   cursor: pointer;
 }
 

@@ -8,7 +8,7 @@ export default async function AddCanvasStyles() {
     await AddLayerOpacity('.ol-layer__regions', 'regionsOpacity', 'regionsOpacityMessage', EUI.RegionsOpacity, '1')
 }
 
-async function AddLayerOpacity (layerClassName, innerTextTranslation, errorMessageTranslation, controlId, defaultValue = 0.75) {
+async function AddLayerOpacity (layerClassName, innerTextTranslation, errorMessageTranslation, controlId, defaultValue = 1) {
     const getLayer = () => document.querySelector(layerClassName)
 
     let settings = JSON.parse(localStorage.getItem('settings'))

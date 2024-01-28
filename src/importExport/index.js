@@ -15,7 +15,7 @@ export default async function ImportExport() {
   const GetSettingsAsJson = () => {
     const itemsToExport = Object.entries(localStorage)
       .reduce((acc, [key, value]) => (
-        key === 'settings' || key === 'map-config' || key.startsWith('eui'))
+        /*key === 'settings' || key === 'map-config' || */key.startsWith('eui'))
         ? acc.concat({ key, value }) : acc, [])
     return JSON.stringify(itemsToExport)
   }
