@@ -413,6 +413,18 @@ const Translations = {
   actionsCapturedReplacer: {
     en: 'captured',
     ru: 'захвачена'
+  },
+  donations: {
+    en: 'Donations',
+    ru: 'Донаты'
+  },
+  donate: {
+    en: 'Donate',
+    ru: 'Задонатить'
+  },
+  donateDialogue: {
+    en: 'Donate amount, ₽',
+    ru: 'Введите сумма доната, ₽'
   }
 }
 

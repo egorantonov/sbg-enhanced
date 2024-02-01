@@ -1,5 +1,5 @@
-import {EUI, Elements, Events, Modifiers, Nodes, SBG, t} from '../constants'
-import { createToast } from '../utils'
+import {Backend, EUI, Elements, Events, Modifiers, Nodes, SBG, t} from '../constants'
+import { showToast } from '../utils'
 
 export default async function Informer() {
   console.log(`SBG Enhanced UI, version ${EUI.Version}`)
@@ -21,15 +21,41 @@ export default async function Informer() {
 
   const about = Nodes.SettingSections.at(3)
   if (about) {
-      const key = document.createElement(Elements.Span)
-      key.innerText = t('enhancedUIVersion')
-      const value = document.createElement(Elements.Span)
-      value.innerText = `v${EUI.Version}`
-      const item = document.createElement(Elements.Div)
-      item.classList.add(Modifiers.SettingsSectionItemClassName)
-      item.appendChild(key)
-      item.appendChild(value)
-      about.appendChild(item)
+      const euiVersionKey = document.createElement(Elements.Span)
+      euiVersionKey.innerText = t('enhancedUIVersion')
+      const euiVersionValue = document.createElement(Elements.Span)
+      euiVersionValue.innerText = `v${EUI.Version}`
+      const euiVersionItem = document.createElement(Elements.Div)
+      euiVersionItem.classList.add(Modifiers.SettingsSectionItemClassName)
+      euiVersionItem.appendChild(euiVersionKey)
+      euiVersionItem.appendChild(euiVersionValue)
+      about.appendChild(euiVersionItem)
+
+      const donateKey = document.createElement(Elements.Span)
+      donateKey.innerText = t('donations')
+      const donateButton = document.createElement(Elements.Button)
+      donateButton.innerText = t('donate')
+      donateButton.addEventListener(Events.onClick, async () => {
+        let amount = +prompt(t('donateDialogue'), 200)
+        if (!amount || amount < 0) {
+            showToast('Введено некорректное значение!')
+        }
+
+        const userName = Nodes.GetId('self-info__name').innerText
+        await fetch(`${Backend.Host}/donate?amount=${amount}&userName=${userName}`)
+            .then(r => r.json())
+            .then(json => {
+                if (json && json.qr && json.qr.includes('https')) {
+                    location.assign(json.qr)
+                }
+            })
+            .catch(err => console.log(err.message))
+      })
+      const donateItem = document.createElement(Elements.Div)
+      donateItem.classList.add(Modifiers.SettingsSectionItemClassName)
+      donateItem.appendChild(donateKey)
+      donateItem.appendChild(donateButton)
+      about.appendChild(donateItem)
 
       const connection = navigator.connection
       if (connection) {
@@ -48,7 +74,7 @@ export default async function Informer() {
                         : ''
                 }
             `
-            createToast(connectionValue)?.showToast()
+            showToast(connectionValue)
             localStorage.setItem(EUI.Connection, connectionValue)
         })
         const connectionItem = document.createElement(Elements.Div)

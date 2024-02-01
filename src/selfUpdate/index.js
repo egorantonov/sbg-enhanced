@@ -11,14 +11,14 @@ import BeautifyCloseButtons from '../closeButtons'
 import { Actions } from '../actions'
 import CompactView from '../compactView'
 import { Compatibility } from '../compatibility'
-import { showToast } from '../utils'
 import ImportExport from '../importExport'
 import Informer from '../informer'
 import InitObservers from '../observers'
 import { Private } from '../private'
 import { RepairButton } from '../repairButton'
-import ZenMode from '../zenMode'
+import { showToast } from '../utils'
 import styles from './styles.css'
+import ZenMode from '../zenMode'
 
 function AddImmediateStyles() {
   const style = document.createElement(Elements.Style)

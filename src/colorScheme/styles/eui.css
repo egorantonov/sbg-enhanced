@@ -2,22 +2,25 @@
   --radius: 10px;
   --button-height: 70px;
   --margin: 10px;
+  --btn-text: #fff;
   --mono-selection-color: #fff;
   --mono-selection-bg-color: #ccc7;
   /* --button-filter: saturate(0.5); */
   --button-filter: none;
-  --on: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-280q-83.333 0-141.667-58.28Q80-396.561 80-479.819q0-83.258 58.333-141.72Q196.667-680 280-680h400q83.333 0 141.667 58.28Q880-563.439 880-480.181q0 83.258-58.333 141.72Q763.333-280 680-280H280Zm0-40h400q66 0 113-47t47-113q0-66-47-113t-113-47H280q-66 0-113 47t-47 113q0 66 47 113t113 47Zm399.909-60q41.63 0 70.86-29.14Q780-438.28 780-479.91q0-41.629-29.14-70.859Q721.719-580 680.091-580q-41.63 0-70.86 29.14Q580-521.719 580-480.09t29.14 70.859Q638.281-380 679.909-380ZM480-480Z"/></svg>');
-  --off: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-280q-83.333 0-141.667-58.28Q80-396.561 80-479.819q0-83.258 58.333-141.72Q196.667-680 280-680h400q83.333 0 141.667 58.28Q880-563.439 880-480.181q0 83.258-58.333 141.72Q763.333-280 680-280H280Zm0-40h400q66 0 113-47t47-113q0-66-47-113t-113-47H280q-66 0-113 47t-47 113q0 66 47 113t113 47Zm-.09-60q41.629 0 70.859-29.14Q380-438.28 380-479.91q0-41.629-29.14-70.859Q321.72-580 280.09-580q-41.629 0-70.859 29.14Q180-521.719 180-480.09t29.14 70.859Q238.28-380 279.91-380ZM480-480Z"/></svg>');
+  --on: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M284-262q-90.833 0-154.417-63.515Q66-389.029 66-479.765q0-90.735 63.583-154.485Q193.167-698 284-698h392q90.833 0 154.417 63.515Q894-570.971 894-480.235q0 90.735-63.583 154.485Q766.833-262 676-262H284Zm392-98q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Z"/></svg>');
+  --off: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M284-262q-90.833 0-154.417-63.515Q66-389.029 66-479.765q0-90.735 63.583-154.485Q193.167-698 284-698h392q90.833 0 154.417 63.515Q894-570.971 894-480.235q0 90.735-63.583 154.485Q766.833-262 676-262H284Zm0-98q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Z"/></svg>');
 }
 
 @media (prefers-color-scheme: light) {
   :root[data-theme="auto"] {
+    --btn-text: #000;
     --mono-selection-color: #000;
     --mono-selection-bg-color: #3337;
   }
 }
 
 :root[data-theme="light"] {
+  --btn-text: #000;
   --mono-selection-color: #000;
   --mono-selection-bg-color: #3337;
 }
@@ -179,6 +182,7 @@
   border-radius: 0 0 10px 10px;
   padding: 0;
   margin: 0;
+  color: #000;
   background-color: var(--selection);
 }
 
@@ -250,6 +254,7 @@ input[type="range"] {
 .inventory__ma-delete {
   border: none !important;
   width: 100%;
+  color: var(--btn-text);
   background-color: var(--accent);
 }
 
@@ -269,13 +274,18 @@ input[type="range"] {
   width: 0px;
   height: 0px;
   filter: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .settings-section__item input[type="checkbox"]::before {
   content: "";
   -webkit-mask: var(--on);
   mask: var(--on);
+  -webkit-mask-size: contain;
   mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
@@ -283,14 +293,23 @@ input[type="range"] {
   height: 2.5em;
   width: 2.5em;
   background-color: var(--sbgcui-branding-color, var(--selection));
-  transform: translateX(-1.25em);
+  transform: translate(-1.25em, -0.25em);
+  transition: background-color 0.15s ease-in-out;
 }
 
 .settings-section__item input[type="checkbox"]:not(:checked)::before,
 .settings-section__item input[type="checkbox"]:disabled::before {
   -webkit-mask: var(--off);
   mask: var(--off);
-  mask-size: contain; /* wtf with css */
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  display: block;
+  height: 2.5em;
+  width: 2.5em;
   background-color: #7777;
 }
 
