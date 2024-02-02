@@ -130,6 +130,7 @@ export default function AddColorScheme() {
 			if (route) {
 				route.innerText = 'Route'
 				draw.before(route)
+				Nodes.Ops.childNodes[0].remove()
 			}
 			else {
 				const share = Nodes.GetId('i-share')
