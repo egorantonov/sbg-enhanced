@@ -324,18 +324,38 @@
 
 /* SETTINGS */
 .settings-section__item {
+  min-height: 2em;
   align-items: center;
   margin: 2px 0;
 }
 
-input:checked {
-  filter: drop-shadow(0px 0px 6px #777);
+.settings-section__item span {
+  justify-self: unset !important;
 }
 
-.settings-section__item input,
 .settings-section__item select,
-.settings-section__item button:not(.popup-close) {
+.settings-section__item>button:not(.popup-close) {
   min-height: 25px;
+  width: 100%;
+  font-weight: bold;
+}
+
+.settings-section select {
+  border-color: var(--sbgcui-branding-color, var(--selection)); 
+  border-radius: 5px;
+  max-height: 2.5em;
+  width: fit-content;
+}
+
+.settings-section select option {
+  display: inline-block;
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.settings-section select option:checked {
+  background-color: var(--sbgcui-branding-color, var(--selection));
 }
 
 input[type='range']  {
@@ -343,6 +363,7 @@ input[type='range']  {
   appearance: none;
   overflow: hidden;
   padding: 0;
+  min-height: 25px;
   max-width: 100px;
   background: #7777;
   border-radius: 3px;
@@ -595,11 +616,6 @@ input[data-type="reference-search"] {
 .inventory__content[data-tab="3"] .inventory__item-controls::after {
   display: var(--sbgcui-display-r-button);
   content: '⚡' !important;
-}
-
-/* Draw slider sort size restriction */
-.sbgcui_drawslider_sort {
-  max-width: 60px !important;
 }
 
 .catalysers-list__level, .cores-list__level {

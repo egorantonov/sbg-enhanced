@@ -1,4 +1,4 @@
-import { EUI, Elements, Events, GetLocale, Modifiers, Nodes, Proposed, SBG, Themes, t } from '../constants'
+import { EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Proposed, SBG, Themes, t } from '../constants'
 import monoStyles from './styles/mono.css'
 import ingressStyles from './styles/ingress.css'
 import primeStyles from './styles/prime.css'
@@ -75,12 +75,26 @@ export default function AddColorScheme() {
 			o.innerText = t.title
 			input.appendChild(o)
 		})
+		input.id = EUI.CustomTheme
+		input.size = 2
 		input.dataset.setting = EUI.CustomTheme
-		const label = document.createElement(Elements.Label)
-		label.classList.add(Modifiers.SettingsSectionItemClassName)
-		label.appendChild(title)
-		label.appendChild(input)
-		settings.appendChild(label)
+		//const label = document.createElement(Elements.Label)
+		//label.classList.add(Modifiers.SettingsSectionItemClassName)
+		//label.appendChild(title)
+		//label.appendChild(input)
+
+		settings.appendChild(title)
+		settings.appendChild(input)
+
+		const lang = document.querySelector('select[data-setting="lang"]')
+		lang.size = 2
+		const langP = document.querySelector('span[data-i18n="settings.global.language"]').parentElement
+		langP.after(lang)
+
+		const th = document.querySelector('select[data-setting="theme"]')
+		th.size = 2
+		const thP = document.querySelector('span[data-i18n="settings.global.theme"]').parentElement
+		thP.after(th)
 	}
 
 	// PROPOSAL
@@ -128,7 +142,7 @@ export default function AddColorScheme() {
 		if (draw) {
 			close.after(repair)
 			if (route) {
-				route.innerText = 'Route'
+				route.innerText = t('cuiRoute')
 				draw.before(route)
 				Nodes.Ops.childNodes[0].remove()
 			}
@@ -138,7 +152,7 @@ export default function AddColorScheme() {
 			}
 
 			if (map) {
-				map.innerText = 'On map'
+				map.innerText = t('cuiOnMap')
 				repair.after(map)
 			}
 			else {
@@ -146,6 +160,8 @@ export default function AddColorScheme() {
 				repair.after(copyPos)
 			}
 		}
+		const invClose = Nodes.InventoryPopupClose
+		if (invClose) invClose.innerText = EUI.CloseButtonText
 	}
 
 	style.innerHTML = themes[+currentTheme].innerHTML
@@ -170,4 +186,13 @@ export default function AddColorScheme() {
 		Nodes.SettingsPopupClose.click() // sync settings with cloud
 		location.reload()
 	})
+
+	/* PRIVATE */
+	if (IsPrivate()) {
+		const cuiRefsOnMap = Nodes.GetSelector('button.sbgcui_show_viewer')
+		if (cuiRefsOnMap){
+			cuiRefsOnMap.innerText = '🌍'
+			cuiRefsOnMap.style.minWidth = '40px'
+		}
+	}
 }

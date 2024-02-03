@@ -379,8 +379,8 @@ const Translations = {
     ru: 'Пинг'
   },
   reloadDialogue: {
-    en: 'Cloud settings acquired. Reload to apply them right now?',
-    ru: 'Ваши настройки загружены. Перезагрузить, чтобы применить их?'
+    en: 'Settings restored. Reload to apply them right now?',
+    ru: 'Настройки восстановлены. Перезагрузить, чтобы применить их?'
   },
   perfModeTitle: {
     en: 'Performance mode',
@@ -425,6 +425,14 @@ const Translations = {
   donateDialogue: {
     en: 'Donate amount, ₽',
     ru: 'Введите сумма доната, ₽'
+  },
+  cuiOnMap: {
+    en: 'On map',
+    ru: 'На карте'
+  },
+  cuiRoute: {
+    en: 'Route',
+    ru: 'Маршрут'
   }
 }
 
