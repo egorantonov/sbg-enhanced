@@ -122,7 +122,7 @@ export async function RunWithOnlineUpdate() {
     const a = version.split('.').map(x => +x)
     const b = EUI.Version.split('.').map(x => +x)
 
-    if (a[0] < b[0] || a[1] < b[1] || a[2] < b[2]) {
+    if (a[0] < b[0] || (a[0] === b[0] && (a[1] < b[1] || (a[1] === b[1] && a[2] < b[2])))) {
       const message = 'Hello, time traveler!'
       console.log(message)
       showToast(message)
