@@ -188,7 +188,7 @@ export default async function ImportExport() {
   }
 
   if (about) {
-    appendLine(about, t('cloudSync'), (new Date(+localStorage.getItem(EUI.CloudSync))).toLocaleString(), EUI.LastSynced)
+    // appendLine(about, t('cloudSync'), (new Date(+localStorage.getItem(EUI.CloudSync))).toLocaleString(), EUI.LastSynced)
     appendLine(about, 'User ID', `${(await GetUserId()).slice(0,4)}...`, 'eui-userId')
     appendLine(about, 'Client', userAgent, 'eui-clientId')
     appendLine(about, 'GPU', ClientData.GetGPU, 'eui-gpu')

@@ -344,18 +344,6 @@
   border-color: var(--sbgcui-branding-color, var(--selection)); 
   border-radius: 5px;
   max-height: 2.5em;
-  width: fit-content;
-}
-
-.settings-section select option {
-  display: inline-block;
-  width: fit-content;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-
-.settings-section select option:checked {
-  background-color: var(--sbgcui-branding-color, var(--selection));
 }
 
 input[type='range']  {
