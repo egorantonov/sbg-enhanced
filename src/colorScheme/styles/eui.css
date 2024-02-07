@@ -272,8 +272,9 @@
   padding: 0 !important;
 }
 
+#attack-slider-fire, 
 #eui-attack-slider-fire {
-  height: 60px;
+  height: 50px;
   max-width: 100%;
   border: none;
   padding: 0;

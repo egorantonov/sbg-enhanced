@@ -340,12 +340,6 @@
   font-weight: bold;
 }
 
-.settings-section select {
-  border-color: var(--sbgcui-branding-color, var(--selection)); 
-  border-radius: 5px;
-  max-height: 2.5em;
-}
-
 input[type='range']  {
   -webkit-appearance: none;
   appearance: none;

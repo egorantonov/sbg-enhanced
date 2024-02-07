@@ -1,4 +1,4 @@
-import {Backend, EUI, Elements, Events, Modifiers, Nodes, SBG, t} from '../constants'
+import {Backend, EUI, Elements, Events, IsWebView, Modifiers, Nodes, SBG, t} from '../constants'
 import { showToast } from '../utils'
 
 export default async function Informer() {
@@ -46,10 +46,33 @@ export default async function Informer() {
             .then(r => r.json())
             .then(json => {
                 if (json && json.qr && json.qr.includes('https')) {
-                    location.assign(json.qr)
+                    if (IsWebView()) {
+                        const share = {
+                            title: 'Ссылка на донат',
+                            url: json.qr,
+                        }
+                        if ('share' in navigator) {
+                            navigator.share(share).then(...args => {
+                                console.log(args)
+                                showToast('Ссылка скопирована!')
+                            })
+                        }
+                        else {
+                            navigator.clipboard.writeText(json.qr)
+                                .then(() => {
+                                    showToast('Ссылка скопирована!')
+                                })
+                        }
+                    }
+                    else {
+                        location.assign(json.qr)
+                    }
                 }
             })
-            .catch(err => console.log(err.message))
+            .catch(err => {
+                console.log(err.message)
+                showToast('Unexpected error, details in the console!')
+            })
       })
       const donateItem = document.createElement(Elements.Div)
       donateItem.classList.add(Modifiers.SettingsSectionItemClassName)
