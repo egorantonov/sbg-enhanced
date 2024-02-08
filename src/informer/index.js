@@ -40,6 +40,7 @@ export default async function Informer() {
         let amount = +prompt(t('donateDialogue'), 200)
         if (!amount || amount < 0) {
             showToast('Введено некорректное значение!')
+            return
         }
 
         const userName = Nodes.GetId('self-info__name').innerText
