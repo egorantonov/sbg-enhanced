@@ -399,7 +399,7 @@ const Translations = {
     ru: ' захвачена '
   },
   actionsNeutralizedMessage: {
-    en: ' destroyed or decayed',
+    en: ' neutralized or decayed',
     ru: ' нейтрализована или разряжена'
   },
   actionsDiffMessage: {

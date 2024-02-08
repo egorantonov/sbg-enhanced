@@ -43,7 +43,7 @@ function setCustomFetch() {
 			let toReplace = secondRow.childNodes[0].textContent
 			secondRow.childNodes[0].textContent = secondRow.childNodes[1].innerText
 				? toReplace.replace(t('actionsNeutralized'), t('actionsCapturedReplacer'))
-				: toReplace.replace('by', '')
+				: toReplace.replace('by', '').replace(t('actionsNeutralized'), t('actionsNeutralizedMessage').trimStart())
 		}
 	}
 	const { fetch: originalFetch } = window
