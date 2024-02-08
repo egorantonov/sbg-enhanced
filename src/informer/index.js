@@ -36,6 +36,7 @@ export default async function Informer() {
       const donateButton = document.createElement(Elements.Button)
       donateButton.innerText = t('donate')
       donateButton.addEventListener(Events.onClick, async () => {
+
         let amount = +prompt(t('donateDialogue'), 200)
         if (!amount || amount < 0) {
             showToast('Введено некорректное значение!')
@@ -47,21 +48,23 @@ export default async function Informer() {
             .then(json => {
                 if (json && json.qr && json.qr.includes('https')) {
                     if (IsWebView()) {
-                        const share = {
-                            title: 'Ссылка на донат',
-                            url: json.qr,
-                        }
-                        if ('share' in navigator) {
-                            navigator.share(share).then(...args => {
-                                console.log(args)
-                                showToast('Ссылка скопирована!')
-                            })
-                        }
-                        else {
-                            navigator.clipboard.writeText(json.qr)
-                                .then(() => {
+                        if (window['__sbg_share']['open'](json.qr) === false) {
+                            const share = {
+                                title: 'Ссылка на донат',
+                                url: json.qr,
+                            }
+                            if ('share' in navigator) {
+                                navigator.share(share).then(...args => {
+                                    console.log(args)
                                     showToast('Ссылка скопирована!')
                                 })
+                            }
+                            else {
+                                navigator.clipboard.writeText(json.qr)
+                                    .then(() => {
+                                        showToast('Ссылка скопирована!')
+                                    })
+                            }
                         }
                     }
                     else {
