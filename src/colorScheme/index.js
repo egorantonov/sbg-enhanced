@@ -149,6 +149,32 @@ export default function AddColorScheme() {
 		}
 		const invClose = Nodes.InventoryPopupClose
 		if (invClose) invClose.innerText = EUI.CloseButtonText
+
+		/* CUI Compatibility */
+		if (window.cuiStatus) { 
+			const pointOwner = Nodes.GetId('i-stat__owner')
+			pointOwner?.addEventListener('pointOwnerChanged', () => {
+				const bottomButtons = document.querySelectorAll('#bottom>button')
+				bottomButtons.forEach(button => {
+					button.style.backgroundColor = pointOwner.style.color === 'var(--team-0)'
+						? 'var(--sbgcui-branding-color)'
+						: pointOwner.style.color
+				})
+			})
+
+			Nodes.ProfilePopup.addEventListener('profilePopupOpened', () => {
+				const player = Nodes.GetId('pr-name')
+				const buttons = document.querySelectorAll('.profile.popup button')
+				buttons.forEach(button => {
+					button.style.backgroundColor = player.style.color
+				})
+
+				const headers = document.querySelectorAll('.profile.popup .pr-stats__section-header')
+				headers.forEach(header => {
+					header.style.color = player.style.color
+				})
+			})
+		}
 	}
 
 	style.innerHTML = themes[+currentTheme].innerHTML

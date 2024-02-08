@@ -336,7 +336,7 @@
 .popup-close[data-round=true], #inventory__close[data-round=true] {
   color: #fff !important;
   border-color: var(--sbgcui-branding-color, var(--selection)) !important;
-  background-color: var(--sbgcui-branding-color, var(--selection)) !important;
+  background-color: var(--sbgcui-branding-color, var(--selection));
 }
 
 .settings-section__item select, 
