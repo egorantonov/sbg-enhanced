@@ -20,6 +20,18 @@
   width: initial;
 }
 
+#self-info__name.debug::before {
+  content: '🟢 ';
+  font-size: xx-small;
+  position: relative;
+  top: -2.5px;
+  left: -2.5px;
+}
+
+#self-info__name.break::before {
+  content: '🔴 ';
+}
+
 #self-info__coord, .sbgcui_speed {
   font-family: 'Consolas', monospace
 }

@@ -152,13 +152,14 @@ export default function AddColorScheme() {
 
 		/* CUI Compatibility */
 		if (window.cuiStatus) { 
-			const pointOwner = Nodes.GetId('i-stat__owner')
-			pointOwner?.addEventListener('pointOwnerChanged', () => {
-				const bottomButtons = document.querySelectorAll('#bottom>button')
-				bottomButtons.forEach(button => {
-					button.style.backgroundColor = pointOwner.style.color === 'var(--team-0)'
+			const owner = Nodes.GetId('i-stat__owner')
+			owner?.addEventListener('pointOwnerChanged', () => {
+				const buttons = Array.from(document.querySelectorAll('#bottom>button'))
+				buttons.push(Nodes.Discover)
+				buttons.forEach(button => {
+					button.style.backgroundColor = owner.style.color === 'var(--team-0)'
 						? 'var(--sbgcui-branding-color)'
-						: pointOwner.style.color
+						: owner.style.color
 				})
 			})
 

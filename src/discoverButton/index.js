@@ -10,7 +10,6 @@ export const DiscoverChanged = () => ({
     callback: (mutationsList) => {
         const event = new Event(onDiscoverChanged, { bubbles: true })
         mutationsList[0].target.dispatchEvent(event)
-        console.log(onDiscoverChanged)
     }
 })
 

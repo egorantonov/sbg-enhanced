@@ -154,12 +154,21 @@
 }
 
 #discover:disabled {
-  background-color: #7777;
+  color: #7777;
+  background-color: #7777 !important;
+  overflow: hidden;
 }
 
 .discover-progress {
-  border-radius: var(--radius) !important;
-  background-color: var(--accent);
+  background-color: var(--selection);
+}
+
+#discover[data-time]:after {
+  color: #fff;
+  text-shadow: 0 0 2px var(--text-shadow), 0 0 2px var(--text-shadow), 0 0 2px var(--text-shadow), 0 0 2px var(--text-shadow);
+  filter: drop-shadow(2px 4px 6px var(--text-shadow));
+  transform: translate(0, -25px);
+  width: 100%;
 }
 
 #bottom {
