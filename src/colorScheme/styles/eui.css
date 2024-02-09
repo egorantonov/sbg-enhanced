@@ -313,6 +313,7 @@
 }
 
 .draw-slider-buttons button {
+  font-weight: bolder;
   border: var(--border-eui);
 }
 
