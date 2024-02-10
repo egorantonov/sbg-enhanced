@@ -159,8 +159,8 @@ class InviewPoint {
 }
 
 async function computeDiff (saved, fresh) {
-	const limit = 5000
-	const logLimit = 200
+	const limit = 2500
+	const logLimit = 100
 	let map = new Map(saved.map(item => [item.g, item]))
 	let diff = []
 
@@ -227,7 +227,7 @@ async function computeDiff (saved, fresh) {
 async function GetInview(lat, lon) {
 	const proj = window.ol.proj
 	const p = 'EPSG:3857'
-	const radius = 2500
+	const radius = 2000
 	const zoom = 15
 	const initialPoint = proj.fromLonLat([lon,lat])
 	const [w,s] = proj.toLonLat(proj.transform([initialPoint[0]-radius,initialPoint[1]-radius],p,p))
