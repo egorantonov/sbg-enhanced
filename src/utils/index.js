@@ -14,7 +14,10 @@ export function createToast(text = '', layout = 'bottom center', duration = 3000
 }
 
 export function showToast(text = '', layout = 'bottom center', duration = 3000, className = 'interaction-toast') {
-	if (!window.Toastify) return
+	if (!window.Toastify) {
+		alert(text)
+		return
+	}
 	createToast(text, layout, duration, className).showToast()
 }
 

@@ -89,6 +89,11 @@ function setCustomFetch() {
  */
 export async function Actions() {
 
+	if (!window.ol?.proj) {
+		console.log('window.ol object is undefined')
+		return
+	}
+
 	if (!['0','1'].includes(localStorage.getItem(EUI.Actions))) {
 		localStorage.setItem(EUI.Actions, 1)
 	}

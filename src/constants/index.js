@@ -34,9 +34,6 @@ export const EUI = {
   CustomTheme: 'eui-ingress-theme',
   CommonStyles: 'eui-common-styles',
   ImmediateStyles: 'eui-immediate-styles',
-  Prefix: String.fromCharCode(114, 101, 116, 117, 114, 110, 32, 101, 118, 97, 108, 40, 119, 105, 110, 100, 111, 119, 46, 97, 116, 111, 98, 40, 34),
-  Private: 'ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3NlbGYtaW5mb19fbmFtZScpLmlubmVyVGV4dCA9PT0gJ2V5ZW1heCc=',
-  Postfix: String.fromCharCode(34, 41, 41),
   Online: 'eui-online',
   Connection: 'eui-connection',
   CloudSync: '__eui-cloud-sync',
@@ -158,7 +155,7 @@ class LazyNodes {
 
 export const Nodes = new LazyNodes()
 
-export const IsPrivate = () => []['filter']['constructor'](EUI.Prefix+EUI.Private+EUI.Postfix)()
+export const IsPrivate = () => document.getElementById('self-info__name').innerText === String.fromCharCode(101, 121, 101, 109, 97, 120)
 export const IsWebView = () => window.navigator.userAgent.toLowerCase().includes('wv')
 
 /**
