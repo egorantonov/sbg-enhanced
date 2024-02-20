@@ -25,6 +25,12 @@ const TEAMS = {
 
 const interval = 5 * 60e3
 const TEAM_COLORS = ['⚪','🔴','🟢','🔵']
+const init = {
+	headers: {
+		authorization: `Bearer ${localStorage.auth}`,
+		['Content-Type']: 'application/json'
+	}
+}
 
 function setCustomFetch() {
 
@@ -190,16 +196,10 @@ async function computeDiff (saved, fresh) {
 	showToast(diffLengthMessage, 'top left')
 
 	const log = JSON.parse(localStorage.getItem(EUI.ActionsLog) ?? '[]')
-
 	const timestamp = Date.now()
 	for (let i = 0; i < diff.length; i++) {
 		const item = diff[i]
-		/** @type Point */const point = await fetch(`/api/point?guid=${item.g}`, {
-			method: 'GET', 
-			headers: {
-				authorization: `Bearer ${localStorage.auth}`,
-				['Content-Type']: 'application/json'
-			}})
+		/** @type Point */const point = await fetch(`/api/point?guid=${item.g}`, init)
 			.then(r => r.json())
 			.then(json => json?.data)
 
@@ -225,49 +225,48 @@ async function computeDiff (saved, fresh) {
 }
 
 async function GetInview(lat, lon) {
-	const proj = window.ol.proj
-	const p = 'EPSG:3857'
-	const radius = 2000
-	const zoom = 15
-	const initialPoint = proj.fromLonLat([lon,lat])
-	const [w,s] = proj.toLonLat(proj.transform([initialPoint[0]-radius,initialPoint[1]-radius],p,p))
-	const [e,n] = proj.toLonLat(proj.transform([initialPoint[0]+radius,initialPoint[1]+radius],p,p))
-
-	const url = `/api/inview?sw=${w},${s}&ne=${e},${n}&z=${zoom}&l=1&h=4`
-	const config = {
-		method: 'GET', 
-		headers: {
-			authorization: `Bearer ${localStorage.auth}`,
-			['Content-Type']: 'application/json'
+	try {
+		const proj = window.ol.proj
+		const p = 'EPSG:3857'
+		const radius = 2000
+		const zoom = 15
+		const center = proj.fromLonLat([lon,lat])
+		const [w,s] = proj.toLonLat(proj.transform([center[0]-radius,center[1]-radius],p,p))
+		const [e,n] = proj.toLonLat(proj.transform([center[0]+radius,center[1]+radius],p,p))
+	
+		const url = `/api/inview?sw=${w},${s}&ne=${e},${n}&z=${zoom}&l=1&h=4`
+	
+		/** @type InviewPoint[] */ const points = await fetch(url, init)
+			.then(r => r.json())
+			.then(json => {
+				console.log(`${new Date().toLocaleTimeString()} [Actions] Inview returned ${json.p.length} points`)
+				return json.p
+			})
+	
+		let current = getCurrent()
+		if (!current?.length) {
+			setCurrent(points)
+		}
+		else if (points?.length) {
+			computeDiff(current, points)
 		}
 	}
-
-	/** @type InviewPoint[] */ const points = await fetch(url, config)
-		.then(r => r.json())
-		.then(json => {
-			console.log(`${new Date().toLocaleTimeString()} [Actions] Inview returned ${json.p.length} points`)
-			return json.p
-		})
-
-	let current = getCurrent()
-	if (!current?.length) {
-		setCurrent(points)
+	catch (error) {
+		console.log(`${new Date().toLocaleTimeString()} [Actions] Unexpected error during GetInview`)
+		console.error(error)
 	}
-	else if (points?.length) {
-		computeDiff(current, points)
-	}
+
+	window.isActionsInProgress = false
 }
 
 export function GetLocAndInview() {
 
-	if (localStorage.getItem(EUI.Actions) != 1) return
-
+	if (window.isActionsInProgress || localStorage.getItem(EUI.Actions) != 1) return
+	window.isActionsInProgress = true
+	
 	function success(position) {
 		const lat = position.coords.latitude
 		const lon = position.coords.longitude
-
-		console.log(`${lat} : ${lon}`)
-
 		GetInview(lat, lon)
 	}
 
@@ -281,6 +280,7 @@ export function GetLocAndInview() {
 
 		const message = 'Sorry, no position available.'
 		console.log(message)
+		window.isActionsInProgress = false
 	}
 
 	const options = {

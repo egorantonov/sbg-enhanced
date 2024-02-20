@@ -36,6 +36,24 @@ function ExecuteImmediateAction() {
   Nodes.GetSelector('.fatal-error')?.addEventListener(Events.onClick, () => location.reload())
 }
 
+function ExecuteSyncFeatures(/** @type any[] */features) {
+  let succeed = 0
+  const total = features.length
+  for (let i = 0; i < total; i++) {
+    const feature = features[i]
+    try {
+      feature()
+      console.log(`executed ${feature.name}`)
+      succeed++
+    }
+    catch (error) {
+      console.error(`error during ${feature.name} exectuion`)
+      console.error(error)
+    }
+  }
+  console.log(`executed ${succeed} of ${total} sync features`)
+}
+
 async function ExecuteScript () {
   let delaySyncMs = 500
   let delayAsyncMs = 1000
@@ -67,15 +85,19 @@ async function ExecuteScript () {
 
   await Sleep(delaySyncMs)
     .then(() => {
-      AddStyles()
-      AddHighContrast()
-      AddAnimations()
-      AddColorScheme()
-      InitObservers()
-      RemoveBadges()
-      RenderBadges()
-      RepairButton()
-      ZenMode()
+      const syncFeatures = [
+        AddStyles,
+        AddHighContrast,
+        AddAnimations,
+        AddColorScheme,
+        InitObservers,
+        RemoveBadges,
+        RenderBadges,
+        RepairButton,
+        ZenMode,
+      ]
+
+      ExecuteSyncFeatures(syncFeatures)
     })
 
   await Sleep(delayAsyncMs) // sleep for a while to make sure SBG is loaded
