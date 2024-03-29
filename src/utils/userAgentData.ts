@@ -25,24 +25,27 @@ export function getUserAgentData(): UserAgentData {
   const webkitUserAgentData: NavigatorUAData = getWebkitUserAgentData()
 
   if (webkitUserAgentData && webkitUserAgentData.brands?.length > 0) {
-    const brand = webkitUserAgentData.brands.find(x => !x.brand.includes('Not') && x.brand !== 'Chromium') 
-    userAgentData.browser = !!brand?.brand 
-      ? brand.brand.toLowerCase() == 'android webview'
-        ? 'Webview'
-        : brand.brand
-      : parseBrowser(navigator.userAgent)
-    userAgentData.mobile = webkitUserAgentData.mobile
+    const brand = webkitUserAgentData.brands.find(x => !x.brand.includes('Not') && x.brand !== 'Chromium' && x.brand !== '') 
     userAgentData.platform = parsePlatform(webkitUserAgentData.platform ? webkitUserAgentData.platform : navigator.platform, navigator.userAgent)
+    userAgentData.browser = !!brand?.brand 
+      ? brand.brand.toLowerCase() == 'android webview' && userAgentData.platform == PLATFORM.ANDROID
+        ? APK
+        : brand.brand
+      : parseBrowser(navigator.userAgent) // todo - add platform (to avoid windows APK)
+    userAgentData.mobile = webkitUserAgentData.mobile
 
     return userAgentData
   }
-
+  
+  userAgentData.platform = parsePlatform(navigator.platform, navigator.userAgent)
   userAgentData.browser = parseBrowser(navigator.userAgent)
   userAgentData.mobile = navigator.userAgent.toLowerCase().includes('mobile')
-  userAgentData.platform = parsePlatform(navigator.platform, navigator.userAgent)
 
   return userAgentData
 }
+
+const APK = 'APK'
+const Webview = 'Webview'
 
 export const UA = {
   SAFARI: 'Safari/',
@@ -59,50 +62,55 @@ export const UA = {
   YABROWSER: 'YaBrowser/',
   CHROME: 'Chrome/',
   CHROME_IOS: 'CriOS/',
-  WEBVIEW: 'wv'
+  WEBVIEW: 'wv',
+  WEBVIEW_FULL: 'webview'
 }
 
 // parse most popular browsers from `userAgent` string
 export function parseBrowser(userAgent: string) {
   let browser = ''
 
-  if (userAgent.includes(UA.OPERA)){
-    browser = `Opera`
+  if (userAgent.includes(PLATFORM.ANDROID)
+    && (userAgent.includes(UA.WEBVIEW) || userAgent.toLowerCase().includes(UA.WEBVIEW_FULL))){
+    browser = APK
+  }
+  else if (userAgent.includes(UA.OPERA)){
+    browser = 'Opera'
   }
   else if (userAgent.includes(UA.OPERA_TOUCH)){
-    browser = `Opera Touch`
+    browser = 'Opera Touch'
   }
   else if (userAgent.includes(UA.FIREFOX) || userAgent.includes(UA.GECKO)){
-    browser = `Firefox`
+    browser = 'Firefox'
   }
   else if (userAgent.includes(UA.YANDEX) || userAgent.includes(UA.YABROWSER)){
-    browser = `Yandex`
+    browser = 'Yandex'
   }
   else if (userAgent.includes(UA.VIVALDI)){
-    browser = `Vivaldi`
+    browser = 'Vivaldi'
   }
   else if (userAgent.includes(UA.BRAVE)){
-    browser = `Brave`
+    browser = 'Brave'
   }
   else if (userAgent.includes(UA.EDG) || userAgent.includes(UA.EDGE) || userAgent.includes(UA.EDGE_ANDROID)){
-    browser = `Edge`
+    browser = 'Edge'
   }
   else if (userAgent.includes(UA.CHROME) || userAgent.includes(UA.CHROME_IOS)){
     if (userAgent.includes(UA.WEBVIEW)) {
-      browser = `Webview`
+      browser = Webview
     }
     else {
-      browser = `Chrome`
+      browser = 'Chrome'
     }
   }
   else if (userAgent.includes(UA.SAFARI)){
-    browser = `Safari`
+    browser = 'Safari'
   }
   else if (userAgent.includes(UA.WEBVIEW)){
-    browser = `Webview`
+    browser = Webview
   }
-  else if (userAgent.toLowerCase().includes('webview')){
-    browser = `Webview`
+  else if (userAgent.toLowerCase().includes(UA.WEBVIEW_FULL)){
+    browser = Webview
   }
   else {
     browser = userAgent // other browsers?
