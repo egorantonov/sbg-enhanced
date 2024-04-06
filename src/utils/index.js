@@ -1,3 +1,11 @@
+export function getSbgSettings() {
+	return JSON.parse(localStorage.getItem('settings'))
+}
+
+export function setSbgSettings(settings) {
+	localStorage.setItem('settings', JSON.stringify(settings))
+}
+
 export function createToast(text = '', layout = 'bottom center', duration = 3000, className = 'interaction-toast') {
 	if (!window.Toastify) return
 	const [gravity, position] = layout.split(/\s+/)

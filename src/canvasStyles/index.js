@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { EUI, Elements, Events, Modifiers, Nodes, Sleep, t } from '../constants'
-import { createToast } from '../utils'
+import { createToast, getSbgSettings, setSbgSettings } from '../utils'
 
 export default async function AddCanvasStyles() {
     document.getElementById('regions-opacity__cur')?.parentElement?.parentElement?.remove() // remove native control
@@ -11,9 +11,9 @@ export default async function AddCanvasStyles() {
 async function AddLayerOpacity (layerClassName, innerTextTranslation, errorMessageTranslation, controlId, defaultValue = 1) {
     const getLayer = () => document.querySelector(layerClassName)
 
-    let settings = JSON.parse(localStorage.getItem('settings'))
+    let settings = getSbgSettings()
     delete settings['opacity']
-    localStorage.setItem('settings', JSON.stringify(settings))
+    setSbgSettings(settings)
 
     let item = document.createElement(Elements.Div)
     item.className = Modifiers.SettingsSectionItemClassName

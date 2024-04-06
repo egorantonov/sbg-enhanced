@@ -1,8 +1,9 @@
-import { EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Proposed, SBG, Themes, t } from '../constants'
+import { CUI, EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Proposed, Themes, t } from '../constants'
 import monoStyles from './styles/mono.css'
 import ingressStyles from './styles/ingress.css'
 import primeStyles from './styles/prime.css'
 import euiStyles from './styles/eui.css'
+import { getSbgSettings, setSbgSettings } from '../utils'
 
 class Theme {
 	constructor(title, code, innerHTML) {
@@ -91,11 +92,11 @@ export default function AddColorScheme() {
 		localStorage.setItem(EUI.CustomTheme, themes.find(t=>t.title===Themes.EUI).code)
 
 		document.documentElement.dataset.theme = Modifiers.Auto
-		let gameSettings = JSON.parse(localStorage.getItem(SBG.Settings))
+		let sbgSettings = getSbgSettings()
 
-		if (gameSettings) {
-			gameSettings.theme = Modifiers.Auto
-			localStorage.setItem(SBG.Settings, JSON.stringify(gameSettings))
+		if (sbgSettings) {
+			sbgSettings.theme = Modifiers.Auto
+			setSbgSettings(sbgSettings)
 		}
 	}
 
@@ -150,7 +151,7 @@ export default function AddColorScheme() {
 		if (invClose) invClose.innerText = EUI.CloseButtonText
 
 		/* CUI Compatibility */
-		if (window.cuiStatus) { 
+		if (CUI.Loaded) { 
 			const owner = Nodes.GetId('i-stat__owner')
 			owner?.addEventListener('pointOwnerChanged', () => {
 				const buttons = Array.from(document.querySelectorAll('#bottom>button'))

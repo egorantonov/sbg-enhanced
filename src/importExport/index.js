@@ -1,5 +1,5 @@
 import { /*Backend,*/ ClientData, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t } from '../constants'
-//import { createToast } from '../utils'
+import { getSbgSettings, setSbgSettings } from '../utils'
 //const { Host, Endpoints } = Backend
 
 export default async function ImportExport() {
@@ -47,7 +47,7 @@ export default async function ImportExport() {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const GetCloudData = async (userId) => {
-    return JSON.parse(localStorage.getItem('settings')).euiSettings
+    return getSbgSettings()?.euiSettings
     /*return await fetch(`${Host}${Endpoints.Sync}?id=${userId}&userAgent=${userAgent}`)
       .then(response => response.json())
       .then(json => { return json.settings })
@@ -59,9 +59,9 @@ export default async function ImportExport() {
     const settings = GetSettingsAsJson()
     const settingsCache = localStorage.getItem(EUI.SettingsCache)
     if (!settingsCache || settings !== settingsCache) {
-      let sbgSettings = JSON.parse(localStorage.getItem('settings'))
+      let sbgSettings = getSbgSettings()
       sbgSettings.euiSettings = settings
-      localStorage.setItem('settings', JSON.stringify(sbgSettings))
+      setSbgSettings(sbgSettings)
       /*await fetch(`${Host}${Endpoints.Sync}`,
       {
         method: 'POST',

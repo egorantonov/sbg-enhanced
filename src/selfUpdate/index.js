@@ -1,5 +1,5 @@
 import { AddDiscoverProgress } from '../discoverButton'
-import { Elements, EUI, Events, Nodes, Sleep, t } from '../constants'
+import { CUI, Elements, EUI, Events, Nodes, Sleep, t } from '../constants'
 import { RemoveBadges, RenderBadges } from '../badges'
 import AddAnimations from '../animations'
 import AddCanvasStyles from '../canvasStyles'
@@ -68,18 +68,22 @@ async function ExecuteScript () {
   AddImmediateStyles()
   ExecuteImmediateAction()
 
-  if (window.cuiStatus) {
-    for (let i = 1; i <= 10; i++) {
-      if (window.cuiStatus == 'loaded') {
+  if (CUI.Detected()) {
+    for (let i = 1; i <= 30; i++) {
+      if (CUI.Loaded()) {
         delaySyncMs = 0
         delayAsyncMs = 100
         break
-      } 
+      }
+      if (i === 30) {
+        alert('CUI seems to be failed! Force reloading...')
+        location.reload()
+      }
+      if (i === 10) {
+        confirm('CUI seems to be failed! \r\nConfirm to reload or cancel to wait if connection is weak.') && location.reload()
+      }
       console.log(`Waiting for CUI, try #${i}...`)
-      await Sleep(750)
-    }
-    if (window.cuiStatus == 'loading') {
-      confirm('CUI failed, reload?') && location.reload()
+      await Sleep(1000)
     }
   }
 
@@ -125,10 +129,11 @@ export async function RunWithOnlineUpdate() {
       return
     }
 
-    const version = response.tag_name
+    const version = response?.tag_name
     if (!version) {
       const message = 'Can\'t get an online version of the script'
       console.log(message)
+      console.error(JSON.stringify(response))
       showToast(message)
       ExecuteScript()
       return

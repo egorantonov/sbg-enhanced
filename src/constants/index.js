@@ -1,6 +1,7 @@
 import { version } from '../../package.json'
 import { getUserAgentData } from '../utils/userAgentData'
 import { getGPU } from '../utils/gpu'
+import { getSbgSettings } from '../utils'
 
 export const Backend = {
   Host: 'https://sbg-settings.egorantonov.workers.dev',
@@ -157,6 +158,12 @@ export const Nodes = new LazyNodes()
 
 export const IsPrivate = () => document.getElementById('self-info__name').innerText === String.fromCharCode(101, 121, 101, 109, 97, 120)
 export const IsWebView = () => window.navigator.userAgent.toLowerCase().includes('wv')
+const cuiElements = () => window.document.querySelectorAll('*[class^="sbgcui"]')
+const lastElement = () => window.document.querySelector('.sbgcui_inventory__ma-shortcuts')
+export const CUI = {
+  Detected: () => window.cuiStatus || window.TeamColors || window.Catalysers || window.attack_slider || window.deploy_slider || window.draw_slider || window.requestEntities || window.cl || window.onerror || cuiElements()?.length, // || getSbgSettings()?.base // нестабильно, тк остаётся в localStorage
+  Loaded: () => window.cuiStatus == 'loaded' || window.TeamColors && window.Catalysers && window.attack_slider && window.deploy_slider && window.draw_slider && window.requestEntities && cuiElements()?.length && lastElement()
+}
 
 /**
  * 
@@ -166,8 +173,8 @@ export const IsWebView = () => window.navigator.userAgent.toLowerCase().includes
 export const Sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const GetLocale = () => {
-  let lang = JSON.parse(localStorage.getItem(SBG.Settings))?.lang
-  lang === 'sys' && (lang = navigator.language?.slice(0,2) ?? SBG.DefaultLang)
+  let lang = getSbgSettings()?.lang
+  !!lang && lang === 'sys' && (lang = navigator.language?.slice(0,2) ?? SBG.DefaultLang)
   return lang ?? SBG.DefaultLang
 }
 
