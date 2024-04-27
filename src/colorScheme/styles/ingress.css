@@ -49,6 +49,7 @@
 .inventory__manage-amount button,
 .notifs__entry-view.icon-button, /* View point [notification list] */
 input:not(input[name^="maxAmountInBag"]), /* CUI Compatibility */
+.cui-clear-cache-button, /* CUI Compatibility */
 select {
   border-style: solid;
   text-transform: uppercase;
@@ -58,8 +59,6 @@ select {
 #discover, #deploy, #repair, #draw {
   position: relative;
 }
-
-
 
 #eui-sort:disabled {
   opacity: 0.7;
@@ -90,7 +89,7 @@ select {
 .sbgcui_compare_stats>button,
 .inventory__manage-amount button,
 .notifs__entry-view.icon-button, /* View point [notification list] */
-input:not(input[name^="maxAmountInBag"]), .sbgcui_drawslider_sort, /* CUI Compatibility */
+input:not(input[name^="maxAmountInBag"]), .sbgcui_drawslider_sort, .cui-clear-cache-button, /* CUI Compatibility */
 select {
   color: var(--ingress-btn-color);
   background: linear-gradient(to top, var(--ingress-btn-glow-color) 0%, var(--ingress-btn-bg-color) 30%, var(--ingress-btn-bg-color) 70%, var(--ingress-btn-glow-color) 100%), var(--ingress-btn-bg-color);
@@ -296,6 +295,21 @@ select[data-setting='theme']:disabled {
   background-color: var(--ingress-bg-color-aa);
 }
 
+/* POINT INFO */
+@media screen and (max-height: 668px) and (max-width: 384px)  {
+  .i-image-box {
+    min-height: 2em !important;
+  }
+
+  .i-stat__entry {
+    font-size: smaller;
+  }
+
+  #discover, #deploy, #eui-repair, #draw, #draw[sbgcui-possible-lines]::after {
+    font-size: smaller;
+    font-weight: lighter;
+  }
+}
 
 /* SETTINGS */
 

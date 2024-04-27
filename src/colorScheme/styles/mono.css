@@ -75,7 +75,7 @@
 .sbgcui_compare_stats>button,
 .inventory__manage-amount button,
 .notifs__entry-view.icon-button, /* View point [notification list] */
-input:not(input[name^="maxAmountInBag"]):not([type='checkbox']), /* CUI Compatibility */
+input:not(input[name^="maxAmountInBag"]):not([type='checkbox']), .cui-clear-cache-button, /* CUI Compatibility */
 select {
   text-transform: uppercase;
   border-color: var(--ingress-btn-border-color);
@@ -192,8 +192,6 @@ option:checked { /* WTF? checked is non-documented??? */
   background-color: var(--highlight-color) !important;
 }
 
-
-
 /* SLIDER ITEMS */
 
 .draw-slider-wrp .splide__slide.is-active .refs-list__image>div {
@@ -290,7 +288,7 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 /* GRAYSCALE COLOR ELEMENTS */
-.info.popup::after, #i-image, input[type="checkbox"]  {
+.info.popup::after, #i-image, input[type="checkbox"], input[type="radio"]  {
   filter: grayscale(1) !important;
 }
 
@@ -301,6 +299,23 @@ option:checked { /* WTF? checked is non-documented??? */
 
 #i-ref, #i-level, .sbgcui_point_star {
   color: #fff !important;
+}
+
+/* POINT INFO */
+@media screen and (max-height: 668px) and (max-width: 384px)  {
+  .i-image-box {
+    min-height: 2em !important;
+  }
+
+  .i-stat__entry {
+    font-size: smaller;
+  }
+
+  #discover, #deploy, #eui-repair, #draw, #draw[sbgcui-possible-lines]::after {
+    font-size: smaller;
+    font-weight: lighter;
+    text-transform: capitalize;
+  }
 }
 
 /* SETTINGS */

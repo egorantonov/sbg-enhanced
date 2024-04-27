@@ -41,6 +41,7 @@ body, input, button {
 .inventory__manage-amount button,
 .notifs__entry-view.icon-button, /* View point [notification list] */
 input:not(input[name^="maxAmountInBag"]), /* CUI Compatibility */
+.cui-clear-cache-button, /* CUI Compatibility */
 select {
   border-color: var(--ingress-btn-border-left-color);
   border-right-color: var(--ingress-btn-border-right-color);
@@ -216,6 +217,22 @@ option:checked { /* WTF? checked is non-documented??? */
   background-color: #201A3E;
 }
 
+/* POINT INFO */
+@media screen and (max-height: 668px) and (max-width: 384px)  {
+  .i-image-box {
+    min-height: 2em !important;
+  }
+
+  .i-stat__entry {
+    font-size: smaller;
+  }
+
+  #discover, #deploy, #eui-repair, #draw, #draw[sbgcui-possible-lines]::after {
+    font-size: smaller;
+    font-weight: lighter;
+    text-transform: capitalize;
+  }
+}
 
 /* SETTINGS */
 

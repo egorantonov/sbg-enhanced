@@ -625,4 +625,22 @@ input[type="range"] {
   background-color: var(--sbgcui-branding-color, var(--selection));
 }
 
+.cui-clear-cache-button {
+  color: var(--btn-text);
+  background-color: var(--accent);
+  border: none !important;
+  text-transform: uppercase;
+  font-weight: bold;
+  min-height: 30px;
+  padding: 1px 6px;
+  border-radius: 5px;
+}
+
+#draw[sbgcui-possible-lines]::after {
+  color: inherit;
+  position: absolute;
+  align-self: flex-end;
+  margin-top: calc(0px - var(--button-height)/2);
+}
+
 /* DRAW & REPAIR BUTTONS */

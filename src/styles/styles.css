@@ -580,22 +580,9 @@ input[data-type="reference-search"] {
   margin-top: 1em;
 }
 
-/* TODO: removed CUI sort until it has the same sort speed */
 .sbgcui_refs-sort-button, .sbgcui_refs-sort-select {
   display: none !important;
 }
-/*.sbgcui_refs-sort-button {
-  position: static;
-  height: revert;
-  width: revert;
-  color: revert;
-  background-color: revert;
-  border: 1px solid #777;
-  border-radius: 2px;
-  box-shadow: revert;
-  min-width: 30px;
-  font-size: 1em;
-}*/
 
 /* Linear gradient for energy amount */
 .inventory__content[data-tab="3"] .inventory__item.loaded .inventory__item-left::before {
@@ -616,6 +603,21 @@ input[data-type="reference-search"] {
   border-radius: 10px;
   padding: 5px;
 }
+
+.cui-clear-cache-button {
+  align-self: flex-end;
+}
+
+#draw[sbgcui-possible-lines]::after {
+  font-size: smaller;
+}
+
+#draw[sbgcui-possible-lines="0"]::after {
+  content: "";
+  display: none;
+}
+
+/* Animation */
 
 @keyframes blink-box-shadow-inset {
   0% {
@@ -639,6 +641,7 @@ input[data-type="reference-search"] {
   box-shadow: inset 0px 2px 5px 2px;
   animation: 1.5s linear infinite blink-box-shadow-inset;
 }
+
 /* Cores should be round */
 .cores-list__level {
   border-radius: 100px;

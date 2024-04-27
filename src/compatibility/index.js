@@ -1,4 +1,4 @@
-import { Elements, Events, EUI, Modifiers, Nodes, t } from "../constants"
+import { Elements, Events, EUI, Modifiers, Nodes, t } from '../constants'
 import styles from './styles.css'
 
 export function Compatibility () {
@@ -64,6 +64,25 @@ export function Compatibility () {
     })
   }
 
-  Firefox();
-  PerformanceMode();
+  function CUI() {
+    // Move clear cache button after layers list
+    const clearCacheButton = document.querySelector('.layers-config__buttons').querySelector('button:not(#layers-config__save):not(.popup-close)')
+    if (clearCacheButton) {
+      const objects = document.querySelector('h4.layers-config__subheader[data-i18n="layers.objects.header"]')
+      objects.before(clearCacheButton)
+      clearCacheButton.classList.add('cui-clear-cache-button')
+    }
+
+    // Move reload button for webview in a compact mode
+    if (localStorage.getItem(EUI.CompactView) == 1) {
+      const reloadButton = document.querySelector('.game-menu button.fa-solid-rotate')
+      if (reloadButton) {
+        Nodes.Layers.after(reloadButton)
+      }
+    }
+  }
+
+  Firefox()
+  PerformanceMode()
+  CUI()
 }
