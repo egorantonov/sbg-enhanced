@@ -236,9 +236,12 @@
   mask-size: contain;
 }
 
-#draw:disabled {
+#draw:disabled,
+#draw[sbgcui-possible-lines="0"] { /* CUI Compatibility */
   color:#ccc7;
 }
+
+
 
 #bottom #i-share, #bottom #i-copy-pos {
   font-size: 24px;

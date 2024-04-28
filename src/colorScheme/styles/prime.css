@@ -56,7 +56,8 @@ select {
   position: relative;
 }
 
-.i-buttons>button[disabled] {
+.i-buttons>button[disabled],
+#draw[sbgcui-possible-lines="0"] { /* CUI Compatibility */
   filter: opacity(0.5) !important;
 }
 

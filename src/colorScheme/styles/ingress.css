@@ -89,7 +89,7 @@ select {
 .sbgcui_compare_stats>button,
 .inventory__manage-amount button,
 .notifs__entry-view.icon-button, /* View point [notification list] */
-input:not(input[name^="maxAmountInBag"]), .sbgcui_drawslider_sort, .cui-clear-cache-button, /* CUI Compatibility */
+input:not(input[name^="maxAmountInBag"]), .sbgcui_drawslider_sort, .sbgcui_drawslider_fit, .cui-clear-cache-button, /* CUI Compatibility */
 select {
   color: var(--ingress-btn-color);
   background: linear-gradient(to top, var(--ingress-btn-glow-color) 0%, var(--ingress-btn-bg-color) 30%, var(--ingress-btn-bg-color) 70%, var(--ingress-btn-glow-color) 100%), var(--ingress-btn-bg-color);
@@ -150,13 +150,17 @@ option:checked { /* WTF? checked is non-documented??? */
   backdrop-filter: var(--blur5);
 }
 
-.i-buttons>button[disabled], .draw-slider-buttons>button[disabled] {
+.i-buttons>button[disabled], 
+.draw-slider-buttons>button[disabled],
+#draw[sbgcui-possible-lines="0"] { /* CUI Compatibility */
   color: var(--ingress-btn-disabled-color);
   background: var(--ingress-btn-disabled-bg-color);
   border-color: var(--ingress-btn-disabled-accent-color);
 }
 
-.i-buttons>button[disabled]::before, .draw-slider-buttons>button[disabled]::before {
+.i-buttons>button[disabled]::before, 
+.draw-slider-buttons>button[disabled]::before,
+#draw[sbgcui-possible-lines="0"]::before { /* CUI Compatibility */
   background-color: var(--ingress-btn-disabled-accent-color);
   border-color: var(--ingress-btn-disabled-accent-color);
   box-shadow: inset 2px 2px 0 0px var(--ingress-btn-disabled-bg-color);
