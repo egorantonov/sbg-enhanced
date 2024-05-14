@@ -117,6 +117,10 @@
   padding-bottom: 5em;
 }
 
+.notifs__entry[data-id="x"] .notifs__entry-date::before {
+  content: '🅰 ';
+}
+
 .splide__arrow {
   height: 3em;
   width: 3em;
@@ -208,6 +212,12 @@
 .draw-slider-wrp .draw-slider-buttons button:not(.fa) {
   padding: 6px;
   text-transform: uppercase;
+}
+
+.draw-slider-buttons { /* CUI Compatibility - wide screens (e.g. iPad) */
+  max-width: 400px;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 /* POINT INFO */
@@ -362,6 +372,11 @@ input[type='range']  {
   background: #7777;
   border-radius: 3px;
   border: none !important;
+}
+
+input[type="range"][name="notifications_interval"]::after,
+input[type="range"][name="notifications_duration"]::after { /* CUI Compatibility */
+  top: unset;
 }
 
 input[type='range']::-webkit-slider-thumb {

@@ -358,7 +358,8 @@
 .inventory__controls button,
 .inventory__controls select,
 .inventory__controls input[type="search"],
-.profile.popup button {
+.profile.popup button,
+.sbgcui_settings-buttons_wrp>button, .sbgcui_settings select { /* CUI Compatibility */
   color: #fff !important;
   border-radius: 5px;
   border: none !important;
@@ -366,6 +367,10 @@
   filter: var(--button-filter);
   padding: 5px;
   text-transform: uppercase;
+}
+
+.sbgcui_settings-buttons_wrp>button#sbgcui_settings-close { /* CUI Compatibility */
+  background-color: var(--accent);
 }
 
 .settings-section__item select option:checked {
@@ -497,7 +502,8 @@ input[type="range"] {
 }
 
 /* SETTINGS */
-.settings-section__item input[type="checkbox"] {
+.settings-section__item input[type="checkbox"] ,
+.sbgcui_settings input[type="checkbox"] { /* CUI compatibility */
   width: 0px;
   height: 0px;
   filter: none;
@@ -506,7 +512,22 @@ input[type="range"] {
   appearance: none;
 }
 
-.settings-section__item input[type="checkbox"]::before {
+.sbgcui_settings input[type="checkbox"] { /* CUI compatibility */
+  margin-top: 10px;
+  margin-right: 18px;
+}
+
+.sbgcui_settings, .sbgcui_favs { /* CUI compatibility */
+  background: var(--background-transp);
+  backdrop-filter: var(--blur5);
+}
+
+.sbgcui_settings-buttons_wrp { /* CUI compatibility */
+  background: transparent;
+}
+
+.settings-section__item input[type="checkbox"]::before,
+.sbgcui_settings input[type="checkbox"]::before { /* CUI compatibility */
   content: "";
   -webkit-mask: var(--on);
   mask: var(--on);
@@ -524,7 +545,8 @@ input[type="range"] {
   transition: background-color 0.15s ease-in-out;
 }
 
-.settings-section__item input[type="checkbox"]:not(:checked)::before {
+.settings-section__item input[type="checkbox"]:not(:checked)::before,
+.sbgcui_settings input[type="checkbox"]:not(:checked)::before { /* CUI compatibility */
   -webkit-mask: var(--off);
   mask: var(--off);
   -webkit-mask-size: contain;
@@ -539,7 +561,8 @@ input[type="range"] {
   background-color: #777c;
 }
 
-.settings-section__item input[type="checkbox"]:disabled::before {
+.settings-section__item input[type="checkbox"]:disabled::before,
+.sbgcui_settings input[type="checkbox"]:disabled::before { /* CUI compatibility */
   opacity: 0.5;
 }
 

@@ -40,6 +40,8 @@ function setCustomFetch() {
 		// fix for latestId
 		let [capture, neutralize] = document.querySelectorAll(`div.notifs__entry[data-id="${localStorage['latest-notif'] ?? 0}"]`)
 		if (neutralize) {
+			neutralize.classList.remove('latest')
+			capture.dataset.id = x
 			nodes.push(capture)
 		}
 
@@ -68,14 +70,16 @@ function setCustomFetch() {
 						na: actions[i].o == 'n/a' ? '' : actions[i].o,
 						c: actions[i].c,
 						g: actions[i].g,
-						id: x, // id: data.list[0].id - 1,
+						id: x,
 						t: actions[i].t,
 						ta: actions[i].te,
-						ti: new Date(actions[i].timestamp).toISOString()
+						ti: new Date(new Date(actions[i].timestamp).setSeconds(0, 0)).toISOString()
 					})
 				}
 				data.list.sort((a,b) => Date.parse(b.ti) - Date.parse(a.ti))
-				data.list[0].id = latestId
+				if (data.list[0].id === x) {
+					data.list[0].id = latestId
+				}
 				return data
 			})
 

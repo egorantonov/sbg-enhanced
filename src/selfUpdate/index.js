@@ -122,7 +122,7 @@ async function ExecuteScript () {
 export async function RunWithOnlineUpdate() {
   const processResponse = (response) => {
     if (!response) {
-      const message = 'Github releases api is unavailable. Possible network issue.'
+      const message = t('githubUnavailable')
       console.log(message)
       showToast(message)
       ExecuteScript()
@@ -175,11 +175,18 @@ export async function RunWithOnlineUpdate() {
 
   if (!onlineInUse && window.fetch) {
     try {
+      showToast(t('githubCheckingUpdates'))
       await fetch(releaseUrl)
       .then(r => r.json())
       .then(x => processResponse(x))
     }
     catch (error) {
+      if (['Failed to fetch', 'NetworkError when attempting to fetch resource.'].includes(error.message)) {
+        const message = t('githubUnavailable')
+        console.log(message)
+        showToast(message)
+      }
+
       console.log(error)
       ExecuteScript() // fallback
     }

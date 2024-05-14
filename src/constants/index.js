@@ -395,8 +395,8 @@ const Translations = {
     ru: 'Будут принудительно отключены:\r\n• Фильтры карты\r\n• Размытия элементов\r\n• Анимации\r\nДля тёмной темы карты используйте подложку "Carto".'
   },
   actions: {
-    en: 'Actions',
-    ru: 'Действия'
+    en: 'Actions 🅰',
+    ru: 'Действия 🅰'
   },
   actionsCapturedMessage: {
     en: ' captured by ',
@@ -437,6 +437,14 @@ const Translations = {
   cuiRoute: {
     en: 'Route',
     ru: 'Маршрут'
+  },
+  githubCheckingUpdates: {
+    en: 'Checking updates...',
+    ru: 'Проверка обновлений...'
+  },
+  githubUnavailable: {
+    en: 'Github API is unavailable. Possible network issue.',
+    ru: 'Github API недоступен. Возможная проблема c сетью.'
   }
 }
 
