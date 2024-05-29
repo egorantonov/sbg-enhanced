@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Elements, Events, EUI, Modifiers, Nodes, t } from '../constants'
+import { Elements, Events, EUI, Modifiers, Nodes, t, Translations as i18n } from '../constants'
 import { showToast } from '../utils'
 
 let intervalId
@@ -98,27 +98,29 @@ function setCustomFetch() {
  * Actions Feature
  */
 export async function Actions() {
-
-	if (!['0','1'].includes(localStorage.getItem(EUI.Actions))) {
-		localStorage.setItem(EUI.Actions, 1)
-	}
-
 	const input = document.createElement(Elements.Input)
-	const global = Nodes.SettingSections.at(0)
-	if (global) {
+	const notifsHeader = Nodes.GetSelector('.notifs>.popup-header')
+	if (notifsHeader) {
 		const title = document.createElement(Elements.Span)
-		title.innerText = t('actions')
+		title.innerText = t(i18n.showActions)
 		input.type = Elements.CheckBox
 		input.dataset.setting = EUI.Actions
+		const notifsClose = Nodes.GetSelector('.notifs>.popup-close')
+		notifsClose && Nodes.Notifs && input.addEventListener(Events.onClick, () => {
+			notifsClose.click()
+			Nodes.Notifs.click()
+		})
 		const label = document.createElement(Elements.Label) 
 		label.classList.add(Modifiers.SettingsSectionItemClassName)
 		label.appendChild(title)
 		label.appendChild(input)
-		global.appendChild(label)
+		const container = document.createElement(Elements.Div)
+		container.classList.add('notifs-settings')
+		container.appendChild(label)
+		notifsHeader.after(container)
 	}
 
 	const checked = localStorage.getItem(EUI.Actions) == 1
-	const notifsHeader = Nodes.GetSelector('.notifs>.popup-header')
 
 	function NetworkInterval() {
 		intervalId = setTimeout(() => {
@@ -128,15 +130,15 @@ export async function Actions() {
 	}
 
 	if (checked && Nodes.Settings) {
-		notifsHeader.textContent += `/${t('actions')}`
+		notifsHeader.textContent += `/${t(i18n.actions)}`
 		GetLocAndInview();
 		(NetworkInterval)()
 	}
 
 	input.checked = checked
 	input.addEventListener(Events.onChange, (event) => {
-		if (event.target.checked) {
-			notifsHeader.textContent += `/${t('actions')}`
+		if (event.target.checked) { 
+			notifsHeader.textContent += `/${t(i18n.actions)}`
 			localStorage.setItem(EUI.Actions, 1)
 			if (!intervalId) {
 				GetLocAndInview();
@@ -144,7 +146,7 @@ export async function Actions() {
 			}
 		}
 		else {
-			notifsHeader.textContent = notifsHeader.textContent.replace(`/${t('actions')}`, '')
+			notifsHeader.textContent = notifsHeader.textContent.replace(`/${t(i18n.actions)}`, '')
 			localStorage.setItem(EUI.Actions, 0)
 			clearInterval(intervalId)
 			intervalId = 0

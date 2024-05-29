@@ -117,6 +117,19 @@
   padding-bottom: 5em;
 }
 
+/* NOTIFS */
+.notifs>.notifs-settings {
+  margin: 0 10px 10px;
+}
+
+.notifs>.notifs-settings>.settings-section__item {
+  padding: 10px 0px 10px 15px;
+  border: 2px solid #7773;
+  border-radius: var(--radius);
+  background: var(--background);
+  grid-template-columns: 3fr 1fr;
+}
+
 .notifs__entry[data-id="x"] .notifs__entry-date::before {
   content: '🅰 ';
 }

@@ -179,7 +179,7 @@ export const GetLocale = () => {
 }
 
 //const NumberFormat = Intl.NumberFormat(GetLocale()).formatToParts(1111.1)
-const Translations = {
+export const Translations = {
   incompatibility: {
     en: 'Enhanced UI may be incompatible with current version of SBG',
     ru: 'Enhanced UI может быть несовместим с текущей версией игры',
@@ -395,8 +395,12 @@ const Translations = {
     ru: 'Будут принудительно отключены:\r\n• Фильтры карты\r\n• Размытия элементов\r\n• Анимации\r\nДля тёмной темы карты используйте подложку "Carto".'
   },
   actions: {
-    en: 'Actions 🅰',
-    ru: 'Действия 🅰'
+    en: 'Actions',
+    ru: 'Действия'
+  },
+  showActions: {
+    en: 'Show actions 🅰',
+    ru: 'Показывать действия 🅰'
   },
   actionsCapturedMessage: {
     en: ' captured by ',
@@ -449,6 +453,12 @@ const Translations = {
 }
 
 export function t(key) {
+
+  if (typeof(key) === 'object') { 
+    return key[GetLocale()] ?? key[SBG.DefaultLang] ?? '[Missing translation]'
+  }
+
+  // todo: remove after refactoring
   const entry = Translations[key]
 
   if (!entry) {
@@ -457,8 +467,7 @@ export function t(key) {
   }
 
   let translation = entry[GetLocale()]
-
-  return translation ?? entry[SBG.DefaultLang] ?? key
+  return translation ?? entry[SBG.DefaultLang] ?? key  
 }
 
 export const Themes = {
