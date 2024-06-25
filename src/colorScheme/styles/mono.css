@@ -272,10 +272,6 @@ option:checked { /* WTF? checked is non-documented??? */
   text-transform: uppercase;
 }
 
-#discover[data-time]:after {
-  color: var(--ingress-color);
-}
-
 .discover-progress {
   background-color: #777;
   border-top-left-radius: 0 !important;

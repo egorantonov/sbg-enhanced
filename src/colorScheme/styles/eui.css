@@ -164,11 +164,7 @@
 }
 
 #discover[data-time]:after {
-  color: #fff;
-  text-shadow: 0 0 2px var(--text-shadow), 0 0 2px var(--text-shadow), 0 0 2px var(--text-shadow), 0 0 2px var(--text-shadow);
-  filter: drop-shadow(2px 4px 6px var(--text-shadow));
-  transform: translate(0, -25px);
-  width: 100%;
+  transform: translate(0, -25px) !important;
 }
 
 #bottom {

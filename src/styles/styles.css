@@ -168,6 +168,7 @@
   height: 100%;
   border-radius: 2px;
   background-color: #7777;
+  backdrop-filter: var(--blur10);
   filter: opacity(0.75);
   transition: width 1s linear;
 }
@@ -287,11 +288,17 @@
   order: 1 !important;
 }
 
+#discover[data-time] {
+  color: #7773 !important;
+}
+
 #discover[data-time]:after {
-  color: var(--text);
-  width: 30%;
+  color: #fff;
+  text-shadow: 0 0 2px var(--text-shadow), 0 0 2px var(--text-shadow), 0 0 2px var(--text-shadow), 0 0 2px var(--text-shadow);
+  filter: drop-shadow(2px 4px 6px var(--text-shadow));
+  width: 100%;
+  transform: translate(0, -50%);
   left: 0;
-  transform: translate(0%, 110%);
   direction: ltr;
 }
 
@@ -304,6 +311,7 @@
     "distance lines"
     "owner regions"
     "energy reward"
+    "captured captured"
     "cores cores"
     "slider slider"
     "buttons buttons" !important;
