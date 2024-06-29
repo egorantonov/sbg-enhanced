@@ -365,10 +365,6 @@
   text-transform: uppercase;
 }
 
-.sbgcui_settings-buttons_wrp>button#sbgcui_settings-close { /* CUI Compatibility */
-  background-color: var(--accent);
-}
-
 .settings-section__item select option:checked {
   background-color: #111c;
 }
@@ -508,20 +504,6 @@ input[type="range"] {
   appearance: none;
 }
 
-.sbgcui_settings input[type="checkbox"] { /* CUI compatibility */
-  margin-top: 10px;
-  margin-right: 18px;
-}
-
-.sbgcui_settings, .sbgcui_favs { /* CUI compatibility */
-  background: var(--background-transp);
-  backdrop-filter: var(--blur5);
-}
-
-.sbgcui_settings-buttons_wrp { /* CUI compatibility */
-  background: transparent;
-}
-
 .settings-section__item input[type="checkbox"]::before,
 .sbgcui_settings input[type="checkbox"]::before { /* CUI compatibility */
   content: "";
@@ -647,7 +629,7 @@ input[type="range"] {
   background-color: var(--sbgcui-branding-color, var(--selection));
 }
 
-.cui-clear-cache-button {
+.cui-clear-cache-button, button#sbgcui_forceclear {
   color: var(--btn-text);
   background-color: var(--accent);
   border: none !important;
@@ -663,6 +645,61 @@ input[type="range"] {
   position: absolute;
   align-self: flex-end;
   margin-top: calc(0px - var(--button-height)/2);
+}
+
+/* CUI: Settings */
+
+.sbgcui_settings {
+  border-radius: var(--radius);
+}
+
+.sbgcui_settings input[type="checkbox"] {
+  margin-top: 10px;
+  margin-right: 18px;
+}
+
+.sbgcui_settings, .sbgcui_favs {
+  background: var(--background-transp);
+  backdrop-filter: var(--blur5);
+}
+
+.sbgcui_settings-version {
+  font-family: monospace;
+  font-weight: bold;
+}
+
+.sbgcui_settings-header {
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.sbgcui_settings-header::after {
+  content: " CUI";
+}
+
+.sbgcui_settings-section {
+    margin-bottom: 5px;
+    border: 1px solid #7777;
+    border-radius: var(--radius);
+    padding: 5px 0px 5px 10px;
+    background: linear-gradient(90deg, #7771, #7773);
+}
+
+.sbgcui_settings-title {
+    font-weight: bold;
+}
+
+.sbgcui_settings-buttons_wrp {
+  background: linear-gradient(180deg, transparent, var(--background-transp));
+}
+
+.sbgcui_settings-buttons_wrp>button {
+  font-weight: bold;
+}
+
+button#sbgcui_settings-close {
+  color: var(--btn-text) !important;
+  background-color: var(--accent);
 }
 
 /* DRAW & REPAIR BUTTONS */
