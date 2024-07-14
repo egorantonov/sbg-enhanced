@@ -403,24 +403,24 @@ export const Translations = {
     ru: 'Показывать действия 🅰'
   },
   actionsCapturedMessage: {
-    en: ' captured by ',
-    ru: ' захвачена '
+    en: 'owned by ',
+    ru: 'принадлежит '
   },
   actionsNeutralizedMessage: {
-    en: ' neutralized or decayed',
-    ru: ' нейтрализована или разряжена'
+    en: 'lost owner',
+    ru: 'потеряла владельца'
   },
   actionsDiffMessage: {
     en: 'Some point changed ownership: ',
     ru: 'Несколько точек сменили владельца: '
   },
   actionsNeutralized: {
-    en: 'neutralized',
-    ru: 'нейтрализована'
+    en: 'was neutralized',
+    ru: 'была нейтрализована'
   },
   actionsCapturedReplacer: {
-    en: 'captured',
-    ru: 'захвачена'
+    en: 'owned',
+    ru: 'принадлежит'
   },
   donations: {
     en: 'Donations',
