@@ -17,6 +17,7 @@ export const SBG = {
   CompatibleVersion: '0.4.2-4',
   Settings: 'settings',
   DefaultLang: 'en',
+  GooglePhoto: 'https://lh3.googleusercontent.com/'
 }
 
 export const EUI = {
@@ -54,7 +55,8 @@ export const Events = {
   onTouchStart: 'touchstart',
   onTouchMove: 'touchmove',
   onTouchEnd: 'touchend',
-  onBackButton: 'backbutton'
+  onBackButton: 'backbutton',
+  onScroll: 'scroll'
 }
 
 export const Modifiers = {
@@ -414,9 +416,13 @@ export const Translations = {
     en: 'Some point changed ownership: ',
     ru: 'Несколько точек сменили владельца: '
   },
+  actionsNeutralizedPrefix: {
+    en: 'was ',
+    ru: 'была '
+  },
   actionsNeutralized: {
-    en: 'was neutralized',
-    ru: 'была нейтрализована'
+    en: 'neutralized',
+    ru: 'нейтрализована'
   },
   actionsCapturedReplacer: {
     en: 'owned',
@@ -449,13 +455,39 @@ export const Translations = {
   githubUnavailable: {
     en: 'Github API is unavailable. Possible network issue.',
     ru: 'Github API недоступен. Возможная проблема c сетью.'
+  },
+  clearStore: {
+    en: 'Images cache',
+    ru: 'Кэш картинок'
+  },
+  clearStoreAction: {
+    en: 'Clear',
+    ru: 'Очистить'
+  },
+  storeCleared: {
+    en: 'Store "{0}" has been cleared',
+    ru: 'Хранилище "{0}" очищено'
+  },
+  sharePointButton: {
+    en: 'Share',
+    ru: 'Поделиться'
+  },
+  copyPosPointButton: {
+    en: 'Copy position',
+    ru: 'Координаты'
   }
 }
 
-export function t(key) {
+export function t(key, params = []) {
 
-  if (typeof(key) === 'object') { 
-    return key[GetLocale()] ?? key[SBG.DefaultLang] ?? '[Missing translation]'
+  if (typeof(key) === 'object') {
+    let result = key[GetLocale()] ?? key[SBG.DefaultLang] ?? '[Missing translation]'
+    if (params && Array.isArray(params) && params.length) {
+      for (let i = 0; i < params.length; i++) {
+        result = result.replace(`{${i}}`, params[i])
+      }
+    }
+    return result
   }
 
   // todo: remove after refactoring
@@ -466,8 +498,14 @@ export function t(key) {
     return key
   }
 
-  let translation = entry[GetLocale()]
-  return translation ?? entry[SBG.DefaultLang] ?? key  
+  let translation = entry[GetLocale()] ?? entry[SBG.DefaultLang] ?? key
+  if (params && Array.isArray(params) && params.length) {
+    for (let i = 0; i < params.length; i++) {
+      translation.replace(`{${i}}`, params[i])
+    }
+  }
+
+  return translation
 }
 
 export const Themes = {

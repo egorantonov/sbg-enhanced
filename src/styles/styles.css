@@ -197,9 +197,11 @@
 
 /* DEPLOY SLIDER */
 
-#cores-list > .splide__slide {
+#cores-list > .splide__slide,
+#catalysers-list > .splide__slide {
   min-width: max-content !important;
   width: 80px !important;
+  height: initial !important;
 }
 
 
@@ -421,6 +423,14 @@ input[type='range']::-moz-range-thumb {
   cursor: pointer;
 }
 
+#eui-images[data-size]::after {
+  content: ' (~' attr(data-size) 'mb)';
+}
+
+#eui-images[data-size="0"]::after {
+  content: '';
+}
+
 /* INVENTORY */
 
 .inventory__tab {
@@ -457,6 +467,10 @@ input[type='range']::-moz-range-thumb {
 .material-symbols-outlined {
   line-height: normal !important;
   font-weight: normal !important;
+}
+
+.inventory__item-controls>button {
+  padding: 2px 6px;
 }
 
 .inventory__ic-manage::before, .inventory__ic-view::before {
@@ -620,9 +634,22 @@ input[data-type="reference-search"] {
   display: none !important;
 }
 
+.inventory__item-left {
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  border-radius: 3px;
+}
+
 /* Linear gradient for energy amount */
-.inventory__content[data-tab="3"] .inventory__item.loaded .inventory__item-left::before {
-  background: linear-gradient(90deg, #fff0 0%, var(--sbgcui-branding-color) 100%) !important;
+.inventory__content[data-tab="3"] .inventory__item.loaded.eui_img .inventory__item-left::before {
+  background: linear-gradient(90deg, #fff0 95%, var(--sbgcui-branding-color) 100%), 
+    radial-gradient(ellipse at 0%, #fff0 50%, var(--sbgcui-branding-color) 100%) !important;
+}
+
+.inventory__content[data-tab="3"] .inventory__item.loaded:not(.eui_img) .inventory__item-left::before {
+  background: linear-gradient(90deg, #fff0 0%, #fff0 33%, var(--sbgcui-branding-color) 100%), 
+    radial-gradient(ellipse at 0%, #fff0 50%, var(--sbgcui-branding-color) 100%);
 }
 
 /* Replace 'R' button symbol with '⚡' emoji symbol */
@@ -636,8 +663,20 @@ input[data-type="reference-search"] {
 }
 
 .catalysers-list__level, .cores-list__level {
+  aspect-ratio: 1;
   border-radius: 10px;
   padding: 5px;
+  font-size: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+}
+
+.catalysers-list__amount,
+.cores-list__amount {
+  width: 100%;
+  text-align: center;
+  font-size: 1em;
 }
 
 .cui-clear-cache-button {

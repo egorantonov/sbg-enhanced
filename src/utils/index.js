@@ -26,6 +26,11 @@ export function showToast(text = '', layout = 'bottom center', duration = 3000, 
 	createToast(text, layout, duration, className).showToast()
 }
 
+export const Logger = {
+	log: (message) => console.log(`[EUI] ${message}`),
+	error: (message, ...optionalParams) => console.error(`[EUI] ${message}`, optionalParams)
+}
+
 /**
  * Disabled due to CUI compatibility error
  * @returns Browser's native fetch()

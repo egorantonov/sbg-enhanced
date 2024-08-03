@@ -50,8 +50,8 @@ function setCustomFetch() {
 			let secondRow = node.childNodes[2]
 			let toReplace = secondRow.childNodes[0].textContent
 			secondRow.childNodes[0].textContent = secondRow.childNodes[1].innerText
-				? toReplace.replace(t('actionsNeutralized'), t('actionsCapturedReplacer'))
-				: toReplace.replace('by', '').replace(t('actionsNeutralized'), t('actionsNeutralizedMessage').trimStart())
+				? toReplace.replace(t(i18n.actionsNeutralizedPrefix), '').replace(t(i18n.actionsNeutralized), t(i18n.actionsCapturedReplacer))
+				: toReplace.replace(t(i18n.actionsNeutralizedPrefix), '').replace('by', '').replace(t(i18n.actionsNeutralized), t(i18n.actionsNeutralizedMessage).trimStart())
 		}
 	}
 	const { fetch: originalFetch } = window
@@ -197,7 +197,7 @@ async function computeDiff (saved, fresh) {
 		return
 	}
 
-	const diffLengthMessage = `${t('actionsDiffMessage')}${diff.length}`
+	const diffLengthMessage = `${t(i18n.actionsDiffMessage)}${diff.length}`
 	console.log(diffLengthMessage)
 	showToast(diffLengthMessage, 'top left')
 
@@ -210,11 +210,11 @@ async function computeDiff (saved, fresh) {
 			.then(json => json?.data)
 
 		const diffMessageConsole = point.te === 0 
-			? `${point.t}${t('actionsNeutralizedMessage')}`
-			: `${point.t}${t('actionsCapturedMessage')}${TEAM_COLORS[point.te]}${point.o}`
+			? `${point.t}${t(i18n.actionsNeutralizedMessage)}`
+			: `${point.t}${t(i18n.actionsCapturedMessage)}${TEAM_COLORS[point.te]}${point.o}`
 
 		const diffMessage = point.te === 0 
-			? `${point.t}<br/>${t('actionsNeutralizedMessage')}`
+			? `${point.t}<br/>${t(i18n.actionsNeutralizedMessage)}`
 			: `<span style="color: var(--team-${point.te}); font-weight: bold">${point.o}</span><br/>${point.t}`
 
 		log.push({timestamp, ...point})

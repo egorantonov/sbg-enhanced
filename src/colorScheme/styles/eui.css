@@ -1,3 +1,5 @@
+/* COLORS, SCHEMES AND VARIABLES */
+
 :root {
   --radius: 10px;  
   --border-eui: 1px solid #7777;
@@ -17,17 +19,23 @@
 @media (prefers-color-scheme: light) {
   :root[data-theme="auto"] {
     --btn-text: #000;
-    --mono-selection-color: #000;
+    --mono-selection-color: var(--sbgcui-branding-color, #000);
     --mono-selection-bg-color: #3337;
   }
 }
 
 :root[data-theme="light"] {
   --btn-text: #000;
-  --mono-selection-color: #000;
+  --mono-selection-color: var(--sbgcui-branding-color, #000);
   --mono-selection-bg-color: #3337;
 }
 
+/* GLOBAL */
+body, input, select, button {
+  font-family: 'Noto Sans', 'Manrope', sans-serif;
+}
+
+/* SLIDERS */
 .draw-slider-wrp .splide__slide.is-active .refs-list__image>div {
   box-shadow: inset -8px 0px 0px -5px  var(--mono-selection-color),
       inset -10px 0px 8px -6px  var(--mono-selection-bg-color),
@@ -45,6 +53,7 @@
   backdrop-filter: var(--blur5);
 }
 
+/* ALL POPUPS */
 .popup {
   border-radius: 0px !important;
   border-width: 0px !important;
@@ -151,6 +160,7 @@
   margin-bottom: var(--margin);
   width: 100%;
   transition: background-color 0.25s linear;
+  text-transform: uppercase;
 }
 
 #discover:disabled {
@@ -245,17 +255,17 @@
 }
 
 #bottom #i-share::after, #bottom #i-copy-pos::after {
-  font-family: 'Manrope';
+  font-family: 'Roboto Condensed', 'Manrope', sans-serif;
   font-weight: bold;
   font-size: small;
 } 
 
 #bottom #i-share::after {
-  content: "Share point"
+  content: attr(data-i18n)
 }
 
 #bottom #i-copy-pos::after {
-  content: "Copy position"
+  content: attr(data-i18n)
 }
 
 /* ATTACK */
@@ -288,7 +298,9 @@
   padding: 0;
   margin: 0;
   color: #000;
-  background-color: var(--selection);
+  background-color: #F90;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 /* DRAW */

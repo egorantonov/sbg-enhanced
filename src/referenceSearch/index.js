@@ -199,7 +199,7 @@ export default async function AddReferenceSearch() {
 
       performance.mark('end')
       const duration = performance.measure('time','start','end').duration
-      const rs = duration < 50 ? refs.length : `${refs.length}\u{a0}x\u{a0}${+(duration/1000).toFixed(1)}s`
+      const rs = duration < 50 ? refs.length : `${refs.length}\u{a0}×\u{a0}${+(duration/1000).toFixed(1)}s`
       console.log(rs)
       createToast(rs)?.showToast()
       sort.disabled = false

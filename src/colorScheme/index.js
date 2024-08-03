@@ -1,4 +1,4 @@
-import { CUI, EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Proposed, Themes, t } from '../constants'
+import { CUI, EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Proposed, Themes, t, Translations as i18n } from '../constants'
 import monoStyles from './styles/mono.css'
 import ingressStyles from './styles/ingress.css'
 import primeStyles from './styles/prime.css'
@@ -135,6 +135,7 @@ export default function AddColorScheme() {
 			}
 			else {
 				const share = Nodes.GetId('i-share')
+				share.dataset.i18n = t(i18n.sharePointButton)
 				draw.before(share)
 			}
 
@@ -144,6 +145,7 @@ export default function AddColorScheme() {
 			}
 			else {
 				const copyPos = Nodes.GetId('i-copy-pos')
+				copyPos.dataset.i18n = t(i18n.copyPosPointButton)
 				repair.after(copyPos)
 			}
 		}

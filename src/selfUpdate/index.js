@@ -9,6 +9,7 @@ import AddReferenceSearch from '../referenceSearch'
 import AddStyles from '../styles'
 import BeautifyCloseButtons from '../closeButtons'
 import { Actions } from '../actions'
+import { Cache } from '../cache'
 import CompactView from '../compactView'
 import { Compatibility } from '../compatibility'
 import ImportExport from '../importExport'
@@ -55,6 +56,7 @@ function ExecuteSyncFeatures(/** @type any[] */features) {
 }
 
 async function ExecuteScript () {
+
   let delaySyncMs = 500
   let delayAsyncMs = 1000
 
@@ -79,7 +81,7 @@ async function ExecuteScript () {
         alert('CUI seems to be failed! Force reloading...')
         location.reload()
       }
-      if (i === 10) {
+      if (i === 5) {
         confirm('CUI seems to be failed! \r\nConfirm to reload or cancel to wait if connection is weak.') && location.reload()
       }
       console.log(`Waiting for CUI, try #${i}...`)
@@ -94,11 +96,12 @@ async function ExecuteScript () {
         AddHighContrast,
         AddAnimations,
         AddColorScheme,
+        Cache,
         InitObservers,
         RemoveBadges,
         RenderBadges,
         RepairButton,
-        ZenMode,
+        ZenMode
       ]
 
       ExecuteSyncFeatures(syncFeatures)
