@@ -90,20 +90,19 @@ export const AddBadges = () => {
     }
 }
 
-const onProfileStatsChanged = 'profileStatsChanged'
 export const ProfileStatsChanged = () => ({
     target: Nodes.ProfileStatsContainer,
     config: { childList: true },
     callback: (mutationsList) => {
         if (mutationsList.find(x => x.addedNodes.length && x.addedNodes[0].classList.contains('pr-stats__section'))) {
-            const event = new Event(onProfileStatsChanged, { bubbles: true })
+            const event = new Event(Events.onProfileStatsChanged, { bubbles: true })
             mutationsList[0].target.dispatchEvent(event)
         }
     }
 })
 
 export const RenderBadges = () => {
-    Nodes.ProfilePopup?.addEventListener(onProfileStatsChanged, () => {
+    Nodes.ProfilePopup?.addEventListener(Events.onProfileStatsChanged, () => {
         AddBadges()
     })
 }

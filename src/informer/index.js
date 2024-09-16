@@ -113,4 +113,9 @@ export default async function Informer() {
         localStorage.removeItem(EUI.Connection)
       }
   }
+
+  if (!localStorage.getItem(EUI.Team))
+    fetch('/api/self', { headers: { authorization: `Bearer ${localStorage.auth}` }})
+      .then(r => r.json())
+      .then(json => localStorage.setItem(EUI.Team, json.t ?? 0))
 }

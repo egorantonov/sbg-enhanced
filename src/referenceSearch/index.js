@@ -1,7 +1,8 @@
 import { EUI, Elements, Events, Modifiers, Nodes, Sleep, t } from '../constants'
 import { LongTouchEventListener } from '../helpers'
-import { createToast } from '../utils'
+import { createToast, Logger } from '../utils'
 
+let Team = 0
 export default async function AddReferenceSearch() {
 
   const tabs = Nodes.GetSelectorAll('.inventory__tab')
@@ -110,8 +111,10 @@ export default async function AddReferenceSearch() {
   })
 
   sort.addEventListener(Events.onChange, async (e) => {
-
-      sort.disabled = true
+    Team = +localStorage.getItem(EUI.Team) || 0
+    sort.style.filter = 'saturate(0.5)'
+    sort.disabled = true
+    Logger.log('Starting sorting')
 
       performance.mark('start')
 
@@ -129,8 +132,10 @@ export default async function AddReferenceSearch() {
 
       refs = getRefs()
 
+      Logger.log('Loaded refs nodes')
       if (sortType !== sorts[5] && sortType !== sorts[6] && refs.filter(ref => !ref.classList.contains(Modifiers.Loaded)).length !== 0) {
 
+          Logger.log('Fetching info from server')
           let hiddenSet = false
 
           while (refs.find(ref => !ref.classList.contains(Modifiers.Loaded))) {
@@ -145,7 +150,7 @@ export default async function AddReferenceSearch() {
 
               scroll()
 
-              console.log('Yet to load: ' + refs.filter(ref => !ref.classList.contains(Modifiers.Loaded)).length)
+              Logger.log('Yet to load: ' + refs.filter(ref => !ref.classList.contains(Modifiers.Loaded)).length)
               await Sleep(250)
           }
 
@@ -153,6 +158,8 @@ export default async function AddReferenceSearch() {
               ref.classList.contains(Modifiers.Hidden) && ref.classList.remove(Modifiers.Hidden)
           })
       }
+
+      Logger.log('Sorting...')
 
       // ADD SORTED
       let sorted = []
@@ -163,10 +170,10 @@ export default async function AddReferenceSearch() {
         sorted = refs.sort((a, b) => ParseMeterDistance(b) - ParseMeterDistance(a))
       }
       else if (sortType === sorts[3]) {
-        sorted = refs.sort((a, b) => ParseEnergy(a) - ParseEnergy(b))
+        sorted = refs.sort((a, b) => ParseTeam(a) - ParseTeam(b) || ParseEnergy(a) - ParseEnergy(b))
       }
       else if (sortType === sorts[4]) {
-        sorted = refs.sort((a, b) => ParseEnergy(b) - ParseEnergy(a))
+        sorted = refs.sort((a, b) => ParseTeam(a) - ParseTeam(b) || ParseEnergy(b) - ParseEnergy(a))
       }
       else if (sortType === sorts[5]) {
         sorted = refs.sort((a, b) => ParseAmount(a) - ParseAmount(b))
@@ -200,7 +207,8 @@ export default async function AddReferenceSearch() {
       performance.mark('end')
       const duration = performance.measure('time','start','end').duration
       const rs = duration < 50 ? refs.length : `${refs.length}\u{a0}×\u{a0}${+(duration/1000).toFixed(1)}s`
-      console.log(rs)
+      Logger.log(rs)
+      sort.style.filter = 'none'
       createToast(rs)?.showToast()
       sort.disabled = false
   })
@@ -218,18 +226,17 @@ const ParseMeterDistance = (ref) => {
 }
 
 const ParseEnergy = (ref) => +ref.querySelector('.inventory__item-descr')
-        .childNodes[4]?.textContent
-        .replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.')
-
+.childNodes[4]?.textContent
+.replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.')
 
 const ParseAmount = (ref) => {
-    const text = ref.querySelector('.inventory__item-title').innerText
-    return +text.slice(text.indexOf('(x')+2, text.indexOf(')'))
+  const text = ref.querySelector('.inventory__item-title').innerText
+  return +text.slice(text.indexOf('(x')+2, text.indexOf(')'))
 }
 
 const ParseTeam = (ref) => {
-    const text = ref.querySelector('.inventory__item-title').style.color.slice(11,12)
-    return text === 'n' ? 0 : +text 
+    const text = +ref.querySelector('.inventory__item-title').style.color.slice(11,12) || 0
+    return text === Team ? -1 : text 
 }
 
 const ParseLevel = (ref) => {

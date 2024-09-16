@@ -470,7 +470,7 @@ input[type='range']::-moz-range-thumb {
 }
 
 .inventory__item-controls>button {
-  padding: 2px 6px;
+  padding: 3px 6px;
 }
 
 .inventory__ic-manage::before, .inventory__ic-view::before {
@@ -641,6 +641,15 @@ input[data-type="reference-search"] {
   border-radius: 3px;
 }
 
+.inventory__content[data-tab="3"] {
+  gap: 6px !important;
+}
+
+.inventory__content[data-tab="3"] .inventory__item {
+  padding-right: 40px !important;
+}
+
+
 /* Linear gradient for energy amount */
 .inventory__content[data-tab="3"] .inventory__item.loaded.eui_img .inventory__item-left::before {
   background: linear-gradient(90deg, #fff0 95%, var(--sbgcui-branding-color) 100%), 
@@ -660,6 +669,7 @@ input[data-type="reference-search"] {
 .inventory__content[data-tab="3"] .inventory__item-controls::after {
   display: var(--sbgcui-display-r-button);
   content: '⚡' !important;
+  width: 40px;
 }
 
 .catalysers-list__level, .cores-list__level {

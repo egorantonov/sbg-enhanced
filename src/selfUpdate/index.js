@@ -9,6 +9,7 @@ import AddReferenceSearch from '../referenceSearch'
 import AddStyles from '../styles'
 import BeautifyCloseButtons from '../closeButtons'
 import { Actions } from '../actions'
+import { Avatars } from '../avatars'
 import { Cache } from '../cache'
 import CompactView from '../compactView'
 import { Compatibility } from '../compatibility'
@@ -100,6 +101,7 @@ async function ExecuteScript () {
         InitObservers,
         RemoveBadges,
         RenderBadges,
+        Avatars,
         RepairButton,
         ZenMode
       ]

@@ -44,7 +44,9 @@ export const EUI = {
   PerformanceMode: 'eui-perf-mode',
   Actions: 'eui-actions',
   ActionsCurrent: '__eui-actions-current',
-  ActionsLog: '__eui-actions-log'
+  ActionsLog: '__eui-actions-log',
+  Avatar: 'eui-avatar',
+  Team: '__eui-team' // user can flip color
 }
 
 export const Events = {
@@ -56,7 +58,8 @@ export const Events = {
   onTouchMove: 'touchmove',
   onTouchEnd: 'touchend',
   onBackButton: 'backbutton',
-  onScroll: 'scroll'
+  onScroll: 'scroll',
+  onProfileStatsChanged: 'profileStatsChanged'
 }
 
 export const Modifiers = {
@@ -82,7 +85,8 @@ export const Elements = {
   CheckBox: 'checkbox',
   Button: 'button',
   Image: 'img',
-  Link: 'a'
+  Link: 'a',
+  Canvas: 'canvas'
 }
 
 export const Proposed = '-proposed'
@@ -137,6 +141,7 @@ class LazyNodes {
   get Discover() { return this.GetId('discover') }
   get Settings() { return this.GetId('settings') }
   get SelfName() { return this.GetId('self-info__name') }
+  get PrName() { return this.GetId('pr-name')}
   get Leaderboard() { return this.GetId('leaderboard') }
   get ToggleFollow() { return this.GetId('toggle-follow') }
   get InfoPopupClose() { return this.GetSelector('div.info.popup>button.popup-close') }
@@ -164,7 +169,7 @@ const cuiElements = () => window.document.querySelectorAll('*[class^="sbgcui"]')
 const lastElement = () => window.document.querySelector('.sbgcui_inventory__ma-shortcuts')
 export const CUI = {
   Detected: () => window.cuiStatus || window.TeamColors || window.Catalysers || window.attack_slider || window.deploy_slider || window.draw_slider || window.requestEntities || window.cl || window.onerror || cuiElements()?.length, // || getSbgSettings()?.base // нестабильно, тк остаётся в localStorage
-  Loaded: () => window.cuiStatus == 'loaded' || window.TeamColors && window.Catalysers && window.attack_slider && window.deploy_slider && window.draw_slider && window.requestEntities && cuiElements()?.length && lastElement()
+  Loaded: () => window.cuiStatus == 'loaded' || window.TeamColors && window.Catalysers && window.attack_slider && window.deploy_slider && window.draw_slider && window.requestEntities && cuiElements()?.length && lastElement() && !document.querySelector('button.ol-rotate-reset')
 }
 
 /**
