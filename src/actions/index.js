@@ -64,7 +64,7 @@ function setCustomFetch() {
 		if (localStorage.getItem(EUI.Actions) == 1 && resource.includes('/api/notifs') && !resource.includes('?latest')) {
 			const enrichedResponse = response.clone().json().then(data => {
 				let actions = JSON.parse(localStorage.getItem(EUI.ActionsLog) ?? '[]')
-				const latestId = data.list[0].id
+				const latestId = data?.list && data.list.length ? data.list[0].id : 0
 				for (let i = 0; i < actions.length; i++) {
 					data.list.push({
 						na: actions[i].o == 'n/a' ? '' : actions[i].o,
@@ -76,10 +76,14 @@ function setCustomFetch() {
 						ti: new Date(new Date(actions[i].timestamp).setSeconds(0, 0)).toISOString()
 					})
 				}
-				data.list.sort((a,b) => Date.parse(b.ti) - Date.parse(a.ti))
-				if (data.list[0].id === x) {
-					data.list[0].id = latestId
+
+				if (data.list.length) {
+					data.list.sort((a,b) => Date.parse(b.ti) - Date.parse(a.ti))
+					if (data.list[0].id === x) {
+						data.list[0].id = latestId
+					}
 				}
+
 				return data
 			})
 
