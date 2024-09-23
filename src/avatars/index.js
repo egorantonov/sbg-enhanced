@@ -35,17 +35,17 @@ export function Avatars() {
     // TODO: ?
     const simpleHash = (str) => {
       let hash = 0
-      for (let i = 0, len = str.length; i < len; i++) {
+      for (let i = 0; i < str.length; i++) {
           let chr = str.charCodeAt(i)
           hash = (hash << 5) - hash + chr
           hash |= 0 // to 32bit integer
       }
-      return `${Math.abs(hash)}`
+      return btoa(`${Math.abs(hash)}`.padStart(10, '0')).slice(1, -2)
     }
 
     const canvas = document.getElementById(canvasId)
     const ctx = canvas.getContext('2d')
-    const binary = Array.from(inputString.toUpperCase())
+    const binary = Array.from(simpleHash(inputString))
                     .map(c => c.charCodeAt(0).toString(2).padStart(8, '0'))
                     .join('')
 

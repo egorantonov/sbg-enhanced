@@ -1,5 +1,5 @@
 import { AddDiscoverProgress } from '../discoverButton'
-import { CUI, Elements, EUI, Events, Nodes, Sleep, t } from '../constants'
+import { CUI, Elements, EUI, Events, IsWebView, Nodes, Sleep, t } from '../constants'
 import { RemoveBadges, RenderBadges } from '../badges'
 import AddAnimations from '../animations'
 import AddCanvasStyles from '../canvasStyles'
@@ -176,7 +176,7 @@ export async function RunWithOnlineUpdate() {
   }
 
   const releaseUrl = 'https://api.github.com/repos/egorantonov/sbg-enhanced/releases/latest'
-  let onlineInUse = Nodes.GetId(EUI.Id)
+  let onlineInUse = Nodes.GetId(EUI.Id) || IsWebView()
 
   if (!onlineInUse && window.fetch) {
     try {

@@ -1,4 +1,4 @@
-import { Elements, Events, Modifiers, Nodes, SBG, t, Translations as i18n } from '../constants'
+import { CUI, Elements, Events, Modifiers, Nodes, SBG, t, Translations as i18n, IsPrivate, IsWebView } from '../constants'
 import { AddEntry, ClearStore, GetEntry, StoreInfo, STORE_NAMES, IndexedDb } from '../db'
 import { State } from '../state'
 import { Logger, showToast } from '../utils'
@@ -84,11 +84,32 @@ export function Cache() {
   })
 
   document.querySelector('.inventory__content')?.addEventListener(Events.onScroll, e => getRefsPics(e.target))
-  document.getElementById('ops')?.addEventListener(Events.onClick, () => {
-    // e.preventDefault() // prevent scroll reset - inventory isnt updating TODO: create force update button
-    Nodes.InventoryPopup.classList.contains(Modifiers.Hidden) && Nodes.InventoryPopup.classList.toggle(Modifiers.Hidden)
+  const ops = document.getElementById('ops')
+  ops?.addEventListener(Events.onClick, () => {
     setTimeout(async () => getRefsPics(document.querySelector('.inventory__content')), 150)
   })
+
+  if (CUI.Loaded() && !IsWebView()) {
+    const hide = document.createElement(Elements.Button)
+    hide.id = 'eui-hide'
+    hide.style.position = 'absolute'
+    hide.style.left = '53px'
+    hide.style.bottom = '-15px'
+    hide.style.border = 'none'
+    hide.style.borderRadius = '0 var(--radius) 0 0'
+    hide.style.color = 'var(--sbgcui-branding-color, var(--selection))'
+    hide.style.backgroundColor = 'var(--background-transp)'
+    hide.style.fontSize = '2em'
+    hide.addEventListener(Events.onClick, () => {
+      Nodes.InventoryPopup.classList.contains(Modifiers.Hidden) && Nodes.InventoryPopup.classList.toggle(Modifiers.Hidden)
+    })
+    hide.innerText = '>'
+
+    ops.addEventListener(Events.onClick, () => {
+      ops?.after(hide)
+    }, { once: true })
+  }
+
   document.querySelector('.inventory__tab[data-tab="3"]:not(.active)')?.addEventListener(Events.onClick, () => getRefsPics(document.querySelector('.inventory__content')))
 }
 
