@@ -1,5 +1,5 @@
 import { EUI, Elements, Events, Modifiers, Nodes, t } from '../constants'
-import styles from './styles.css'
+import styles from './styles.min.css'
 
 export default function AddHighContrast() {
   const input = document.createElement(Elements.Input)

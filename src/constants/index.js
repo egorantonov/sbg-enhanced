@@ -480,6 +480,10 @@ export const Translations = {
   copyPosPointButton: {
     en: 'Copy position',
     ru: 'Координаты'
+  },
+  featureFailed: {
+    en: 'feature failed. Reason:',
+    ru: 'функции неуспешна. Причина:'
   }
 }
 

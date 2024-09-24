@@ -1,5 +1,5 @@
 import { Elements, Events, EUI, Modifiers, Nodes, t } from '../constants'
-import styles from './styles.css'
+import styles from './styles.min.css'
 
 export function Compatibility () {
   function Firefox() {

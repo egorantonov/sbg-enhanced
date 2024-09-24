@@ -1,8 +1,8 @@
 import { CUI, EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Proposed, Themes, t, Translations as i18n } from '../constants'
-import monoStyles from './styles/mono.css'
-import ingressStyles from './styles/ingress.css'
-import primeStyles from './styles/prime.css'
-import euiStyles from './styles/eui.css'
+import monoStyles from './styles/mono.min.css'
+import ingressStyles from './styles/ingress.min.css'
+import primeStyles from './styles/prime.min.css'
+import euiStyles from './styles/eui.min.css'
 import { getSbgSettings, setSbgSettings } from '../utils'
 
 class Theme {

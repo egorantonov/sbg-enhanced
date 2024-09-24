@@ -1,5 +1,5 @@
 import { AddDiscoverProgress } from '../discoverButton'
-import { CUI, Elements, EUI, Events, IsWebView, Nodes, Sleep, t } from '../constants'
+import { CUI, Elements, EUI, Events, IsWebView, Nodes, Sleep, t, Translations } from '../constants'
 import { RemoveBadges, RenderBadges } from '../badges'
 import AddAnimations from '../animations'
 import AddCanvasStyles from '../canvasStyles'
@@ -18,8 +18,8 @@ import Informer from '../informer'
 import InitObservers from '../observers'
 import { Private } from '../private'
 import { RepairButton } from '../repairButton'
-import { showToast } from '../utils'
-import styles from './styles.css'
+import { showToast, Logger } from '../utils'
+import styles from './styles.min.css'
 import ZenMode from '../zenMode'
 
 function AddImmediateStyles() {
@@ -29,7 +29,7 @@ function AddImmediateStyles() {
     document.head?.appendChild(style)
   }
   catch (error) {
-    console.log(error)
+    Logger.log(error)
   }
   style.innerHTML = styles
 }
@@ -38,22 +38,77 @@ function ExecuteImmediateAction() {
   Nodes.GetSelector('.fatal-error')?.addEventListener(Events.onClick, () => location.reload())
 }
 
-function ExecuteSyncFeatures(/** @type any[] */features) {
+function ExecuteSyncFeatures() {
+  const executions = [
+    [AddStyles, 'AddStyles'],
+    [AddHighContrast, 'AddHighContrast'],
+    [AddAnimations, 'AddAnimations'],
+    [AddColorScheme, 'AddColorScheme'],
+    [Cache, 'Cache'],
+    [InitObservers, 'InitObservers'],
+    [RemoveBadges, 'RemoveBadges'],
+    [RenderBadges, 'RenderBadges'],
+    [Avatars, 'Avatars'],
+    [RepairButton, 'RepairButton'],
+    [ZenMode, 'ZenMode']
+  ]
+
   let succeed = 0
-  const total = features.length
+  const total = executions.length
   for (let i = 0; i < total; i++) {
-    const feature = features[i]
-    try {
-      feature()
-      console.log(`executed ${feature.name}`)
-      succeed++
-    }
-    catch (error) {
-      console.error(`error during ${feature.name} exectuion`)
-      console.error(error)
-    }
+    succeed+=ExecuteSyncFeature(executions[i])
   }
-  console.log(`executed ${succeed} of ${total} sync features`)
+  Logger.log(`Executed ${succeed} of ${total} sync features`)
+}
+
+function ExecuteSyncFeature([feature, name]) {
+  let success = true
+  try {
+    feature()
+    Logger.log(`Executed '${name}' feature`)
+  }
+  catch (error) {
+    success = false
+    const message = `'${name ?? feature.name}' ${t(Translations.featureFailed)} ${error.message}`
+    showToast(message)
+    Logger.error(message, error)
+  }
+  return success
+}
+
+async function ExecuteAsyncFeatures() {
+  let result = await Promise.all([
+    ExecuteAsyncFeature(Informer, 'Informer'),
+    ExecuteAsyncFeature(AddCanvasStyles, 'AddCanvasStyles'),
+    ExecuteAsyncFeature(BeautifyCloseButtons, 'BeautifyCloseButtons'),
+    ExecuteAsyncFeature(ImportExport, 'ImportExport'),
+    ExecuteAsyncFeature(AddReferenceSearch, 'AddReferenceSearch'),
+    ExecuteAsyncFeature(AddDiscoverProgress, 'AddDiscoverProgress'),
+    ExecuteAsyncFeature(CompactView, 'CompactView'),
+    ExecuteAsyncFeature(Compatibility, 'Compatibility'),
+    ExecuteAsyncFeature(Actions, 'Actions')
+  ])
+
+  Private && (result.push(await ExecuteAsyncFeature(Private, 'Debug')))
+
+  let succeed = result.reduce((s, e) => s+=e)
+  Logger.log(`Executed ${succeed} of ${result.length} async features`)
+}
+
+async function ExecuteAsyncFeature(feature, name) {
+  let succeed = true
+  try {
+    await feature()
+    Logger.log(`Executed '${name}' feature`)
+
+  }
+  catch (error) {
+    const message = `'${name ?? feature.name}' ${t(Translations.featureFailed)} ${error.message}`
+    showToast(message)
+    Logger.error(message, error)
+    succeed = false
+  }
+  return succeed
 }
 
 async function ExecuteScript () {
@@ -85,50 +140,20 @@ async function ExecuteScript () {
       if (i === 5) {
         confirm('CUI seems to be failed! \r\nConfirm to reload or cancel to wait if connection is weak.') && location.reload()
       }
-      console.log(`Waiting for CUI, try #${i}...`)
+      Logger.log(`Waiting for CUI, try #${i}...`)
       await Sleep(1000)
     }
   }
 
-  await Sleep(delaySyncMs)
-    .then(() => {
-      const syncFeatures = [
-        AddStyles,
-        AddHighContrast,
-        AddAnimations,
-        AddColorScheme,
-        Cache,
-        InitObservers,
-        RemoveBadges,
-        RenderBadges,
-        Avatars,
-        RepairButton,
-        ZenMode
-      ]
-
-      ExecuteSyncFeatures(syncFeatures)
-    })
-
-  await Sleep(delayAsyncMs) // sleep for a while to make sure SBG is loaded
-    .then(async () => await Promise.all([
-    Informer(),
-    AddCanvasStyles(),
-    BeautifyCloseButtons(),
-    ImportExport(),
-    AddReferenceSearch(),
-    AddDiscoverProgress(),
-    CompactView(),
-    Compatibility(),
-    Actions(),
-    Private && (Private())
-  ]))
+  await Sleep(delaySyncMs).then(() => ExecuteSyncFeatures())
+  await Sleep(delayAsyncMs).then(async () => await ExecuteAsyncFeatures())
 }
 
 export async function RunWithOnlineUpdate() {
   const processResponse = (response) => {
     if (!response) {
       const message = t('githubUnavailable')
-      console.log(message)
+      Logger.log(message)
       showToast(message)
       ExecuteScript()
       return
@@ -137,7 +162,7 @@ export async function RunWithOnlineUpdate() {
     const version = response?.tag_name
     if (!version) {
       const message = 'Can\'t get an online version of the script'
-      console.log(message)
+      Logger.log(message)
       console.error(JSON.stringify(response))
       showToast(message)
       ExecuteScript()
@@ -145,7 +170,7 @@ export async function RunWithOnlineUpdate() {
     }
 
     if (version === EUI.Version) {
-      console.log('Latest version already loaded')
+      Logger.log('Latest version already loaded')
       localStorage.setItem(EUI.Online, 0)
       ExecuteScript()
       return
@@ -156,14 +181,14 @@ export async function RunWithOnlineUpdate() {
 
     if (a[0] < b[0] || (a[0] === b[0] && (a[1] < b[1] || (a[1] === b[1] && a[2] < b[2])))) {
       const message = 'Hello, time traveler!'
-      console.log(message)
+      Logger.log(message)
       showToast(message)
       localStorage.setItem(EUI.Online, 0)
       ExecuteScript()
       return
     }
 
-    console.log(`Online update (${version}) found, trying to inject the script...`)
+    Logger.log(`Online update (${version}) found, trying to inject the script...`)
     localStorage.getItem(EUI.Online) != 1 && alert(`${t('updateFound')}${version}`)
     localStorage.setItem(EUI.Online, 1)
 
@@ -176,7 +201,7 @@ export async function RunWithOnlineUpdate() {
   }
 
   const releaseUrl = 'https://api.github.com/repos/egorantonov/sbg-enhanced/releases/latest'
-  let onlineInUse = Nodes.GetId(EUI.Id) || IsWebView()
+  let onlineInUse = Nodes.GetId(EUI.Id) || IsWebView() /* APK */
 
   if (!onlineInUse && window.fetch) {
     try {
@@ -188,11 +213,11 @@ export async function RunWithOnlineUpdate() {
     catch (error) {
       if (['Failed to fetch', 'NetworkError when attempting to fetch resource.'].includes(error.message)) {
         const message = t('githubUnavailable')
-        console.log(message)
+        Logger.log(message)
         showToast(message)
       }
 
-      console.log(error)
+      Logger.log(error)
       ExecuteScript() // fallback
     }
   }

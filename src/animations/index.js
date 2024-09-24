@@ -1,5 +1,5 @@
 import { EUI, Elements, Events, Modifiers, Nodes, Proposed, t } from '../constants'
-import styles from './styles.css'
+import styles from './styles.min.css'
 
 export default function AddAnimations() {
     const IsAnimated = () => localStorage.getItem(EUI.Animations) == 1
@@ -67,13 +67,13 @@ export default function AddAnimations() {
                 startY = touch.clientY
                 isSwipe = true
             }
-        });
+        })
 
         Nodes.InfoPopup?.addEventListener(Events.onTouchMove, (e) => {
-            if (!isSwipe || !IsAnimated()) return;
+            if (!isSwipe || !IsAnimated()) return
 
-            e.preventDefault(); // Prevent scrolling while swiping
-        });
+            e.preventDefault() // Prevent scrolling while swiping
+        })
 
         Nodes.InfoPopup?.addEventListener(Events.onTouchEnd, (e) => {
             if (!isSwipe || !IsAnimated()) return
@@ -108,11 +108,11 @@ export default function AddAnimations() {
                 startY = touch.clientY
                 isSwipe = true
             }
-        });
+        })
 
         Nodes.InventoryPopup?.addEventListener(Events.onTouchMove, () => {
-            if (!isSwipe || !IsAnimated()) return;
-        });
+            if (!isSwipe || !IsAnimated()) return
+        })
 
         Nodes.InventoryPopup?.addEventListener(Events.onTouchEnd, (e) => {
             if (!isSwipe || !IsAnimated()) return
@@ -128,7 +128,7 @@ export default function AddAnimations() {
                 Nodes.InventoryPopupClose.click()
             }
         })
-    };
+    }
 
     SwipeToCloseInfoPopup()
     SwipeToCloseInventoryPopup()

@@ -5,19 +5,19 @@ body, input, button {
 }
 
 :root {
-  --ingress-color: #F9FAFC;
-  --ingress-bg-color: #141220;
-  --ingress-bg-color-cc: #141220CC;
-  --ingress-bg-color-aa: #141220AA;
+  --i-color: #F9FAFC;
+  --i-bg-color: #141220;
+  --i-bg-color-cc: #141220CC;
+  --i-bg-color-aa: #141220AA;
 
-  --ingress-selection-color: #F5BF5B;
-  --ingress-selection-bg-color: #49230E77;
+  --i-selection-color: #F5BF5B;
+  --i-selection-bg-color: #49230E77;
 
-  --ingress-btn-color: #fff;
-  --ingress-btn-bg-left-color: #353D6E;
-  --ingress-btn-bg-right-color: #523271;
-  --ingress-btn-border-left-color: #2872B1;
-  --ingress-btn-border-right-color: #6E599E;
+  --i-btn-color: #fff;
+  --i-btn-bg-left-color: #353D6E;
+  --i-btn-bg-right-color: #523271;
+  --i-btn-border-left-color: #2872B1;
+  --i-btn-border-right-color: #6E599E;
 }
 
 /* BADGES */
@@ -43,13 +43,13 @@ body, input, button {
 input:not(input[name^="maxAmountInBag"]), /* CUI Compatibility */
 .cui-clear-cache-button, /* CUI Compatibility */
 select {
-  border-color: var(--ingress-btn-border-left-color);
-  border-right-color: var(--ingress-btn-border-right-color);
-  border-bottom-color: var(--ingress-btn-border-right-color);
+  border-color: var(--i-btn-border-left-color);
+  border-right-color: var(--i-btn-border-right-color);
+  border-bottom-color: var(--i-btn-border-right-color);
   border-style: solid;
   border-radius: 5px;
-  color: var(--ingress-btn-color);
-  background: linear-gradient(135deg, var(--ingress-btn-bg-left-color), var(--ingress-btn-bg-right-color)), var(--ingress-btn-bg-right-color);
+  color: var(--i-btn-color);
+  background: linear-gradient(135deg, var(--i-btn-bg-left-color), var(--i-btn-bg-right-color)), var(--i-btn-bg-right-color);
 }
 
 #discover, #deploy, #repair, #draw {
@@ -70,17 +70,17 @@ select[data-setting='theme']:disabled {
 }
 
 option {
-  background-color: var(--ingress-btn-bg-right-color);
+  background-color: var(--i-btn-bg-right-color);
 }
 
 option:checked { /* WTF? checked is non-documented??? */
-  color: var(--ingress-btn-color);
-  background-color: var(--ingress-btn-bg-right-color);
+  color: var(--i-btn-color);
+  background-color: var(--i-btn-bg-right-color);
 }
 
 .inventory__item-controls::after {
-  color: var(--ingress-btn-color) !important;
-  background: linear-gradient(135deg, var(--ingress-btn-bg-left-color), var(--ingress-btn-bg-right-color)), var(--ingress-btn-bg-right-color) !important;
+  color: var(--i-btn-color) !important;
+  background: linear-gradient(135deg, var(--i-btn-bg-left-color), var(--i-btn-bg-right-color)), var(--i-btn-bg-right-color) !important;
 }
 
 #attack-slider-fire[disabled], #draw-slider-confirm[disabled] {
@@ -88,15 +88,15 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 .popup-close[data-round=true], #inventory__close, .splide__arrow {
-  color: var(--ingress-color) !important;
-  background: var(--ingress-bg-color-aa) !important;
+  color: var(--i-color) !important;
+  background: var(--i-bg-color-aa) !important;
   -webkit-backdrop-filter: var(--blur5);
   backdrop-filter: var(--blur5);
-  border-color: var(--ingress--color) !important;
+  border-color: var(--i--color) !important;
 }
 
 .splide__arrow svg {
-  fill: var(--ingress-color);
+  fill: var(--i-color);
 }
 
 .ol-control {
@@ -105,12 +105,12 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 .ol-control button {
-  color: var(--ingress-btn-color) !important;
+  color: var(--i-btn-color) !important;
   background-color: transparent !important;
 }
 
 #ops {
-  color: var(--ingress-btn-color) !important;
+  color: var(--i-btn-color) !important;
   border-radius: 0;
   border: none;
   background-color: var(--ol-subtle-background-color);
@@ -130,17 +130,17 @@ option:checked { /* WTF? checked is non-documented??? */
 /* SLIDER ITEMS */
 
 .draw-slider-wrp .splide__slide.is-active .refs-list__image>div {
-  box-shadow: inset -8px 0px 0px -5px  var(--ingress-selection-color),
-      inset -10px 0px 8px -6px  var(--ingress-selection-bg-color),
-      inset 8px 0px 0px -5px  var(--ingress-selection-color),
-      inset 10px 0px 8px -6px  var(--ingress-selection-bg-color);
+  box-shadow: inset -8px 0px 0px -5px  var(--i-selection-color),
+      inset -10px 0px 8px -6px  var(--i-selection-bg-color),
+      inset 8px 0px 0px -5px  var(--i-selection-color),
+      inset 10px 0px 8px -6px  var(--i-selection-bg-color);
 }
 
 #catalysers-list>.splide__slide.is-active, #cores-list>.splide__slide.is-active{
-  box-shadow: inset -8px 0px 0px -5px var(--ingress-selection-color),
-      inset -10px 0px 8px -6px var(--ingress-selection-bg-color),
-      inset 8px 0px 0px -5px var(--ingress-selection-color),
-      inset 10px 0px 8px -6px var(--ingress-selection-bg-color);
+  box-shadow: inset -8px 0px 0px -5px var(--i-selection-color),
+      inset -10px 0px 8px -6px var(--i-selection-bg-color),
+      inset 8px 0px 0px -5px var(--i-selection-color),
+      inset 10px 0px 8px -6px var(--i-selection-bg-color);
   border-radius: 5px;
   -webkit-backdrop-filter: var(--blur5);
   backdrop-filter: var(--blur5);
@@ -174,16 +174,16 @@ option:checked { /* WTF? checked is non-documented??? */
 #draw-slider,
 #attack-slider,
 .attack-slider-highlevel {
-  color: var(--ingress-color);
-  background-color: var(--ingress-bg-color-cc);
+  color: var(--i-color);
+  background-color: var(--i-bg-color-cc);
   -webkit-backdrop-filter: var(--blur5);
   backdrop-filter: var(--blur5);
-  border-color: var(--ingress-btn-border-left-color) !important;
+  border-color: var(--i-btn-border-left-color) !important;
 }
 
 .i-stat__core.selected {
-  border-color: var(--ingress-btn-border-left-color) !important;
-  box-shadow: 0px 0px 2px 2px var(--ingress-btn-border-left-color);
+  border-color: var(--i-btn-border-left-color) !important;
+  box-shadow: 0px 0px 2px 2px var(--i-btn-border-left-color);
 }
 
 .pr-stat:not(:last-child) {
@@ -207,11 +207,11 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 #discover[data-time]:after {
-  color: var(--ingress-color);
+  color: var(--i-color);
 }
 
 .discover-progress {
-  background-color: var(--ingress-btn-border-left-color);
+  background-color: var(--i-btn-border-left-color);
 }
 
 .deploy-slider-error {
@@ -238,21 +238,21 @@ option:checked { /* WTF? checked is non-documented??? */
 /* SETTINGS */
 
 input:checked {
-  filter: drop-shadow(0px 0px 6px var(--ingress-btn-border-right-color));
+  filter: drop-shadow(0px 0px 6px var(--i-btn-border-right-color));
 }
 
 input[type='range'] {
-  background: linear-gradient(135deg, var(--ingress-btn-bg-left-color), var(--ingress-btn-bg-right-color)), var(--ingress-btn-bg-right-color) !important;
+  background: linear-gradient(135deg, var(--i-btn-bg-left-color), var(--i-btn-bg-right-color)), var(--i-btn-bg-right-color) !important;
 }
 
 input[type='range']::-webkit-slider-thumb {
-  background: var(--ingress-btn-border-left-color);
-  box-shadow: -250px 0 0 250px var(--ingress-btn-border-left-color);
+  background: var(--i-btn-border-left-color);
+  box-shadow: -250px 0 0 250px var(--i-btn-border-left-color);
 }
 
 input[type='range']::-moz-range-thumb {
-  background: var(--ingress-btn-border-left-color);
-  box-shadow: -250px 0 0 250px var(--ingress-btn-border-left-color);
+  background: var(--i-btn-border-left-color);
+  box-shadow: -250px 0 0 250px var(--i-btn-border-left-color);
 }
 
 /* CUI */
