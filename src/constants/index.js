@@ -305,6 +305,10 @@ export const Translations = {
     en: 'Enhanced UI',
     ru: 'Enhanced UI'
   },
+  themeArcade: {
+    en: 'Arcade',
+    ru: 'Аркада'
+  },
   sortName: {
     en: 'By name',
     ru: 'По названию'
@@ -518,9 +522,10 @@ export function t(key, params = []) {
 }
 
 export const Themes = {
-  Default: t('themeDefault'),
-  Ingress: t('themeIngress'),
-  Prime: t('themePrime'),
-  Mono: t('themeMono'),
-  EUI: t('themeEUI')
+  Default: t(Translations.themeDefault),
+  Ingress: t(Translations.themeIngress),
+  Prime: t(Translations.themePrime),
+  Mono: t(Translations.themeMono),
+  EUI: t(Translations.themeEUI),
+  Arcade: t(Translations.themeArcade)
 }

@@ -1,1 +1,1 @@
- 
+@keyframes flicker{50%{filter:opacity(.75)}}.fatal-error::before{content:''!important;display:block;width:64px;height:64px;margin:64px auto;background:url(https://raw.githubusercontent.com/egorantonov/sbg-enhanced/master/assets/script/64.png) no-repeat;animation:flicker 3s linear infinite}.fatal-error::after{content:'SBG Enhanced UI'!important;display:block;margin:64px auto;font-size:small}

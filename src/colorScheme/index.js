@@ -3,6 +3,7 @@ import monoStyles from './styles/mono.min.css'
 import ingressStyles from './styles/ingress.min.css'
 import primeStyles from './styles/prime.min.css'
 import euiStyles from './styles/eui.min.css'
+import arcadeStyles from './styles/arcade.min.css'
 import { getSbgSettings, setSbgSettings } from '../utils'
 
 class Theme {
@@ -64,7 +65,8 @@ export default function AddColorScheme() {
 		new Theme(Themes.EUI, 0, euiStyles),
 		new Theme(Themes.Ingress, 1, ingressStyles),
 		new Theme(Themes.Prime, 2, primeStyles),
-		new Theme(Themes.Mono, 3, monoStyles)
+		new Theme(Themes.Mono, 3, monoStyles),
+		new Theme(Themes.Arcade, 4, `${euiStyles}\r\n${arcadeStyles}`)
 	]
 	const settings = Nodes.SettingSections.at(0)
 	if (settings) {
@@ -106,7 +108,7 @@ export default function AddColorScheme() {
 	document.head.appendChild(style)
 
 	const currentTheme = localStorage.getItem(EUI.CustomTheme)
-  
+
 	function applyIngress() {
 		ensureDarkTheme()
 		applyTranslations(i18next_main)
@@ -185,7 +187,7 @@ export default function AddColorScheme() {
 	if (currentTheme == 1 || currentTheme == 2) {
 		applyIngress()
 	}
-	else if (currentTheme == 0) {
+	else if (currentTheme == 0 || currentTheme == 4) {
 		applyEnhancedUITheme()
 	}
 

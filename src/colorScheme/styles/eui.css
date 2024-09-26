@@ -1,7 +1,8 @@
 /* COLORS, SCHEMES AND VARIABLES */
 
 :root {
-  --radius: 10px;  
+  --radius10: 10px;
+  --radius5: 5px;
   --border-eui: 1px solid #7777;
   --button-height: 70px;
   --margin: 10px;
@@ -48,7 +49,7 @@ body, input, select, button {
       inset -10px 0px 8px -6px var(--mono-selection-bg-color),
       inset 8px 0px 0px -5px var(--mono-selection-color),
       inset 10px 0px 8px -6px var(--mono-selection-bg-color);
-  border-radius: var(--radius);
+  border-radius: var(--radius10);
   -webkit-backdrop-filter: var(--blur5);
   backdrop-filter: var(--blur5);
 }
@@ -66,7 +67,7 @@ body, input, select, button {
 /* LAYERS POPUP */
 .popup.layers-config, .popup.score {
   min-width: 250px;
-  border-radius: var(--radius) !important;
+  border-radius: var(--radius10) !important;
   overflow: hidden;
   box-shadow: 0px 0px 5px 2px #7774;
 }
@@ -114,7 +115,7 @@ body, input, select, button {
 }
 
 #i-image {
-  border-radius: var(--radius);
+  border-radius: var(--radius10);
 }
 
 .deploy-slider-wrp {
@@ -123,7 +124,7 @@ body, input, select, button {
 
 #deploy-slider {
   border: none !important;
-  border-radius: var(--radius);
+  border-radius: var(--radius10);
   overflow: hidden;
   min-height: var(--button-height) !important;
   display: grid !important;
@@ -155,7 +156,7 @@ body, input, select, button {
   background-color: var(--sbgcui-branding-color, var(--selection));
   min-height: var(--button-height);
   border: none;
-  border-radius: var(--radius);
+  border-radius: var(--radius10);
   box-shadow: none;
   margin-bottom: var(--margin);
   width: 100%;
@@ -182,8 +183,8 @@ body, input, select, button {
   width: calc(2 * var(--margin) + 100%);
   display: flex;
   justify-content: space-around;
-  border-top-left-radius: var(--radius);
-  border-top-right-radius: var(--radius);
+  border-top-left-radius: var(--radius10);
+  border-top-right-radius: var(--radius10);
   overflow: hidden;
 }
 
@@ -274,7 +275,7 @@ body, input, select, button {
 }
 
 .attack-slider-wrp {
-  border-radius: var(--radius);
+  border-radius: var(--radius10);
   overflow: hidden;
   box-shadow: 0px 0px 5px 2px #7774;
 }
@@ -310,7 +311,7 @@ body, input, select, button {
 
 #draw-slider {
   padding-bottom: 10px;
-  border-radius: var(--radius) var(--radius) 0 0;
+  border-radius: var(--radius10) var(--radius10) 0 0;
   border: var(--border-eui);
   border-bottom: none !important;
   background-color: var(--background-transp);
@@ -329,13 +330,13 @@ body, input, select, button {
 }
 
 #draw-slider-confirm {
-  border-bottom-left-radius: var(--radius);
+  border-bottom-left-radius: var(--radius10);
   border-right: none;
   border-top: none;
 }
 
 #draw-slider-close {
-  border-bottom-right-radius: var(--radius);
+  border-bottom-right-radius: var(--radius10);
   border-left: none;
   border-top: none;
   color: var(--btn-text);
@@ -343,12 +344,12 @@ body, input, select, button {
 }
 
 .sbgcui_drawslider_sort {
-  border-radius: var(--radius) 0 0 var(--radius);
+  border-radius: var(--radius10) 0 0 var(--radius10);
   border-right: none !important;
 }
 
 .sbgcui_drawslider_fit {
-  border-radius: 0 var(--radius) var(--radius) 0;
+  border-radius: 0 var(--radius10) var(--radius10) 0;
   border-left: none !important;
 }
 
@@ -369,7 +370,7 @@ body, input, select, button {
 .profile.popup button,
 .sbgcui_settings-buttons_wrp>button, .sbgcui_settings select { /* CUI Compatibility */
   color: #fff !important;
-  border-radius: 5px;
+  border-radius: var(--radius5);
   border: none !important;
   background-color: var(--sbgcui-branding-color, var(--selection));
   filter: var(--button-filter);
@@ -399,7 +400,7 @@ input[type="range"] {
   width: 300px;
   box-shadow: 3px 4px 7px -2px var(--shadow);
   border: none !important;
-  border-radius: var(--radius);
+  border-radius: var(--radius10);
   overflow: hidden;
   padding: 10px 0 0 0 !important;
   z-index: 2;
@@ -484,8 +485,8 @@ input[type="range"] {
   gap: 0;
   padding: 0;
   background-color: #7774;
-  border-bottom-left-radius: var(--radius);
-  border-bottom-right-radius: var(--radius);
+  border-bottom-left-radius: var(--radius10);
+  border-bottom-right-radius: var(--radius10);
 }
 
 .inventory__tab {
@@ -493,8 +494,8 @@ input[type="range"] {
   justify-content: center;
   border-top: 2px solid var(--border);
   border-top-color: var(--sbgcui-branding-color, var(--selection));
-  border-bottom-left-radius: var(--radius);
-  border-bottom-right-radius: var(--radius);
+  border-bottom-left-radius: var(--radius10);
+  border-bottom-right-radius: var(--radius10);
 }
 
 .inventory__tab.active {
@@ -575,12 +576,12 @@ input[type="range"] {
 
 .ol-zoom.ol-control {
   right: 0 !important;
-  border-radius: var(--radius) 0 0 var(--radius);
+  border-radius: var(--radius10) 0 0 var(--radius10);
 }
 
 .sbgcui_toolbar-control {
   left: 0 !important;
-  border-radius: 0 var(--radius) var(--radius) 0;
+  border-radius: 0 var(--radius10) var(--radius10) 0;
 }
 
 .bottom-container #ops {
@@ -588,7 +589,7 @@ input[type="range"] {
   left: -5px;
   bottom: -15px;
   border: none !important;
-  border-radius: 0 var(--radius) 0 0;
+  border-radius: 0 var(--radius10) 0 0;
   box-shadow: 0px 0px 5px 2px #7774;
   backdrop-filter: var(--blur5);
 }
@@ -649,7 +650,7 @@ input[type="range"] {
   font-weight: bold;
   min-height: 30px;
   padding: 1px 6px;
-  border-radius: 5px;
+  border-radius: var(--radius5);
 }
 
 #draw[sbgcui-possible-lines]::after {
@@ -662,7 +663,7 @@ input[type="range"] {
 /* CUI: Settings */
 
 .sbgcui_settings {
-  border-radius: var(--radius);
+  border-radius: var(--radius10);
 }
 
 .sbgcui_settings input[type="checkbox"] {
@@ -692,7 +693,7 @@ input[type="range"] {
 .sbgcui_settings-section {
     margin-bottom: 5px;
     border: 1px solid #7777;
-    border-radius: var(--radius);
+    border-radius: var(--radius10);
     padding: 5px 0px 5px 10px;
     background: linear-gradient(90deg, #7771, #7773);
 }

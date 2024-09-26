@@ -125,7 +125,7 @@
 .notifs>.notifs-settings>.settings-section__item {
   padding: 10px 0px 10px 15px;
   border: 2px solid #7773;
-  border-radius: var(--radius);
+  border-radius: var(--radius10);
   background: var(--background);
   grid-template-columns: 3fr 1fr;
 }

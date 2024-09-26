@@ -96,7 +96,7 @@ export function Cache() {
     hide.style.left = '53px'
     hide.style.bottom = '-15px'
     hide.style.border = 'none'
-    hide.style.borderRadius = '0 var(--radius) 0 0'
+    hide.style.borderRadius = '0 var(--radius10) 0 0'
     hide.style.color = 'var(--sbgcui-branding-color, var(--selection))'
     hide.style.backgroundColor = 'var(--background-transp)'
     hide.style.fontSize = '2em'

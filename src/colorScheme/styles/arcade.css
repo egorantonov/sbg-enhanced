@@ -1,0 +1,63 @@
+@font-face {
+  font-family: JoystixProportional;
+  font-style: normal;
+  font-size: small;
+  font-weight: 400;
+  src: url(https://raw.githubusercontent.com/egorantonov/sbg-enhanced/master/assets/fonts/JoystixProportional-Regular.otf) format("opentype")
+}
+
+:root {
+  --radius0: 0;
+  --radius5: 0;
+  --radius10: 0;
+
+  --on: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" ><path d="m424-292 304-304-74-74-230 230-116-116-74 74 190 190ZM88-88v-784h784v784H88Zm106-106h572v-572H194v572Zm0 0v-572 572Z"/></svg>');
+  --off: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" ><path d="M88-88v-784h784v784H88Zm106-106h572v-572H194v572Z"/></svg>');
+  
+}
+
+/* GLOBAL */
+body, input, select, button {
+  font-family: JoystixProportional, sans-serif;
+  /*font-family: 'Noto Sans', 'Manrope', sans-serif;*/
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+.info.popup>h3 {
+  font-size: 1em;
+}
+
+.i-stat__entry,
+#bottom button {
+  font-size: x-small;
+}
+
+input[type='range'],
+.toastify,
+#attack-menu,
+#attack-menu::after,
+.i-stat__core,
+.cores-list__level,
+.catalysers-list__level,
+.inventory__content,
+.inventory__content[data-tab="3"] .inventory__item-controls::after,
+.inventory__item-controls>button,
+.inventory__item-left,
+.popup-close[data-round=true], #inventory__close, #inventory__close[data-round=true],
+.sbgcui_log button {
+  border-radius: var(--radius0) !important;
+}
+
+
+.leaderboard__list td:nth-child(3) {
+  font-family: 'JoystixProportional';
+  font-size: small;
+  word-spacing: -0.3ch;
+}
+
+.sbgcui_log-console {
+  font-family: monospace;
+}
