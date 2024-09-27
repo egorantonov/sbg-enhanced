@@ -82,7 +82,7 @@ export default async function Informer() {
       donateItem.classList.add(Modifiers.SettingsSectionItemClassName)
       donateItem.appendChild(donateKey)
       donateItem.appendChild(donateButton)
-      about.appendChild(donateItem)
+      // about.appendChild(donateItem)
 
       const connection = navigator.connection
       if (connection) {

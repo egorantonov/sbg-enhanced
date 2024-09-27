@@ -54,6 +54,18 @@ body, input, select, button {
   backdrop-filter: var(--blur5);
 }
 
+.splide__pagination {
+  padding-bottom: 10px;
+}
+
+.splide__pagination__page {
+  background: var(--sbgcui-branding-color, var(--progress));
+}
+
+.splide__pagination__page.is-active {
+  background: var(--selection);
+}
+
 /* ALL POPUPS */
 .popup {
   border-radius: 0px !important;
