@@ -185,7 +185,7 @@ select[data-setting='theme']:disabled {
   border-radius: 0 !important;
 }
 
-.ol-control button {
+.ol-control button, #eui-hide {
   border: 1px solid var(--i-btn-border-color) !important;
   color: var(--i-btn-color) !important;
   background-color: var(--i-btn-bg-color) !important;
@@ -199,6 +199,10 @@ select[data-setting='theme']:disabled {
   background-color: var(--i-btn-hl-bg-color) !important;
   border-radius: 0 !important;
   box-shadow: inset 0px 0px 6px 3px var(--i-btn-hl-glow-color) !important;
+}
+
+#eui-hide, #ops {
+  min-height: 64px;
 }
 
 .ol-zoom .ol-zoom-in {

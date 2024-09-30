@@ -176,9 +176,18 @@ option:checked { /* WTF? checked is non-documented??? */
   border-radius: 0 0 100px 100px !important;
 }
 
-#attack-menu, #ops {
+#attack-menu, #ops, #eui-hide {
   color: var(--text) !important;
   border-color: var(--text) !important;
+}
+
+#eui-hide {
+  border: 1px solid var(--ol-subtle-background-color);
+  border-radius: 4px;
+}
+
+#ops, #eui-hide {
+  min-height: 64px;
 }
 
 #attack-menu::after {

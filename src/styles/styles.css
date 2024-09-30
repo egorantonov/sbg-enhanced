@@ -161,6 +161,17 @@
   transition: all ease-in-out 50ms;
 }
 
+#eui-hide {
+  position: absolute;
+  left: 58px;
+  bottom: -10px;
+  border: none;
+  border-radius: 0 var(--radius10) 0 0;
+  color: var(--sbgcui-branding-color, var(--selection));
+  background-color: var(--background-transp);
+  font-size: 2em;
+}
+
 .discover-progress {
   position: absolute;
   top: 0;

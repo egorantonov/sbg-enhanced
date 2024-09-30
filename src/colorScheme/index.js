@@ -1,4 +1,4 @@
-import { CUI, EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Proposed, Themes, t, Translations as i18n } from '../constants'
+import { ClientData, CUI, EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Proposed, Themes, t, Translations as i18n } from '../constants'
 import monoStyles from './styles/mono.min.css'
 import ingressStyles from './styles/ingress.min.css'
 import primeStyles from './styles/prime.min.css'
@@ -68,6 +68,7 @@ export default function AddColorScheme() {
 		new Theme(Themes.Mono, 3, monoStyles),
 		new Theme(Themes.Arcade, 4, `${euiStyles}\r\n${arcadeStyles}`)
 	]
+
 	const settings = Nodes.SettingSections.at(0)
 	if (settings) {
 		const title = document.createElement(Elements.Span)
@@ -76,6 +77,9 @@ export default function AddColorScheme() {
 			let o = document.createElement(Elements.Option)
 			o.value = t.code
 			o.innerText = t.title
+			if (t.code == 4 && ClientData.GetUserAgentData.browser == 'Safari') {
+				o.toggleAttribute('disabled')
+			}
 			input.appendChild(o)
 		})
 		input.id = EUI.CustomTheme

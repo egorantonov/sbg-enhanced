@@ -223,6 +223,14 @@ body, input, select, button {
   filter: var(--button-filter);
 }
 
+#eui-hide {
+  min-width: 40px;
+  border-radius: var(--radius10);
+  box-shadow: 0 0 5px 2px #7774;
+  padding: 0;
+  backdrop-filter: var(--blur5);
+}
+
 #eui-repair::before {
   -webkit-mask: var(--repair);
   mask: var(--repair);

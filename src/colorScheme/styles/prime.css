@@ -109,12 +109,18 @@ option:checked { /* WTF? checked is non-documented??? */
   background-color: transparent !important;
 }
 
-#ops {
+#eui-hide {
+  left: 56px;
+  font-family: 'Manrope',sans-serif;
+}
+
+#eui-hide, #ops {
   color: var(--i-btn-color) !important;
   border-radius: 0;
   border: none;
   background-color: var(--ol-subtle-background-color);
   backdrop-filter: var(--blur10);
+  min-height: 58px;
 }
 
 .ol-zoom .ol-zoom-in {

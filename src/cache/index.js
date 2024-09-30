@@ -1,4 +1,4 @@
-import { CUI, Elements, Events, Modifiers, Nodes, SBG, t, Translations as i18n, IsPrivate, IsWebView } from '../constants'
+import { CUI, Elements, Events, Modifiers, Nodes, SBG, t, Translations as i18n } from '../constants'
 import { AddEntry, ClearStore, GetEntry, StoreInfo, STORE_NAMES, IndexedDb } from '../db'
 import { State } from '../state'
 import { Logger, showToast } from '../utils'
@@ -89,17 +89,9 @@ export function Cache() {
     setTimeout(async () => getRefsPics(document.querySelector('.inventory__content')), 150)
   })
 
-  if (CUI.Loaded() && !IsWebView()) {
+  if (CUI.Loaded()) {
     const hide = document.createElement(Elements.Button)
     hide.id = 'eui-hide'
-    hide.style.position = 'absolute'
-    hide.style.left = '53px'
-    hide.style.bottom = '-15px'
-    hide.style.border = 'none'
-    hide.style.borderRadius = '0 var(--radius10) 0 0'
-    hide.style.color = 'var(--sbgcui-branding-color, var(--selection))'
-    hide.style.backgroundColor = 'var(--background-transp)'
-    hide.style.fontSize = '2em'
     hide.addEventListener(Events.onClick, () => {
       Nodes.InventoryPopup.classList.contains(Modifiers.Hidden) && Nodes.InventoryPopup.classList.toggle(Modifiers.Hidden)
     })
