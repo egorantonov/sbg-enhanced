@@ -24,7 +24,7 @@
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^6.18.1",
     "css-loader": "^7.1.2",
-    "eslint": "^8.57.0",
+    "eslint": "^8.57.1",
     "husky": "^8.0.3",
     "style-loader": "^4.0.0",
     "to-string-loader": "^1.2.0",
