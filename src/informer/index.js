@@ -82,7 +82,7 @@ export default async function Informer() {
       donateItem.classList.add(Modifiers.SettingsSectionItemClassName)
       donateItem.appendChild(donateKey)
       donateItem.appendChild(donateButton)
-      // about.appendChild(donateItem)
+      //setTimeout(() => about.appendChild(donateItem), 500)
 
       const connection = navigator.connection
       if (connection) {
@@ -108,7 +108,7 @@ export default async function Informer() {
         connectionItem.classList.add(Modifiers.SettingsSectionItemClassName)
         connectionItem.appendChild(connectionKey)
         connectionItem.appendChild(connectionShow)
-        about.appendChild(connectionItem)
+        setTimeout(() => about.appendChild(connectionItem), 500)
 
         localStorage.removeItem(EUI.Connection)
       }

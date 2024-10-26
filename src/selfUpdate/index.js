@@ -13,6 +13,7 @@ import { Avatars } from '../avatars'
 import { Cache } from '../cache'
 import CompactView from '../compactView'
 import { Compatibility } from '../compatibility'
+import { EuiConsole } from '../console'
 import ImportExport from '../importExport'
 import Informer from '../informer'
 import InitObservers from '../observers'
@@ -50,7 +51,8 @@ function ExecuteSyncFeatures() {
     [RenderBadges, 'RenderBadges'],
     [Avatars, 'Avatars'],
     [RepairButton, 'RepairButton'],
-    [ZenMode, 'ZenMode']
+    [ZenMode, 'ZenMode'],
+    [EuiConsole, 'EUI Console']
   ]
 
   let succeed = 0

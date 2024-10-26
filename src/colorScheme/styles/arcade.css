@@ -76,6 +76,7 @@ select,
 .popup-close[data-round=true], #inventory__close, #inventory__close[data-round=true],
 .level-pill,
 .sbgcui_log button,
+#eui-console-execute,
 .sbgcui_log-tags span {
   border-radius: var(--radius0) !important;
 }
@@ -106,4 +107,8 @@ select,
   background-color: var(--sbgcui-branding-color);
   color: #fff;
   border: none;
+}
+
+.sbgcui_discharge_timeout {
+  font-size: 11px;
 }

@@ -74,6 +74,7 @@
 #form__buttons-login,
 .sbgcui_compare_stats>button,
 .inventory__manage-amount button,
+#eui-console-execute,
 .notifs__entry-view.icon-button, /* View point [notification list] */
 input:not(input[name^="maxAmountInBag"]):not([type='checkbox']), .cui-clear-cache-button, /* CUI Compatibility */
 select {

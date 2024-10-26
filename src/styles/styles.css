@@ -606,6 +606,61 @@ input[data-type="reference-search"] {
   filter: drop-shadow(2px 2px 4px var(--shadow));
 }
 
+/*
+ * EUI Console
+ */
+#eui-console {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+}
+
+#eui-console>h3 {
+  align-self: center;
+  margin: 0 auto 10px;
+}
+
+#eui-console-input, #eui-console-output {
+  font-family: monospace;
+  font-size: 16px;
+  height: 40%;
+  width: 100%;
+  align-self: center;
+  border-color: var(--sbgcui-branding-color, var(--progress));
+  border-width: 2px;
+  border-radius: var(--radius5);
+  margin-bottom: 10px;
+}
+
+#eui-console-input {
+  height: 120px;
+}
+
+#eui-console-output {
+  border-color: revert;
+}
+
+#eui-console-output::selection {
+  color: #fff;
+  background-color: var(--sbgcui-branding-color, var(--progress));
+}
+
+#eui-console-execute {
+  width: 100%;
+  height: 32px;
+  align-self: center;
+  font-weight: bold;
+}
+
+#eui-console-close {
+  position: absolute;
+  bottom: 1em;
+  align-self: center;
+}
+
 /* 
  * SBG CUI Compatibility: enhancements and support 
  */

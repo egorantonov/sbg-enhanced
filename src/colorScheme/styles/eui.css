@@ -388,6 +388,7 @@ body, input, select, button {
 .inventory__controls select,
 .inventory__controls input[type="search"],
 .profile.popup button,
+#eui-console-execute,
 .sbgcui_settings-buttons_wrp>button, .sbgcui_settings select { /* CUI Compatibility */
   color: #fff !important;
   border-radius: var(--radius5);
@@ -527,7 +528,7 @@ input[type="range"] {
 }
 
 /* SETTINGS */
-.settings-section__item input[type="checkbox"] ,
+.settings-section__item input[type="checkbox"],
 .sbgcui_settings input[type="checkbox"] { /* CUI compatibility */
   width: 0px;
   height: 0px;
