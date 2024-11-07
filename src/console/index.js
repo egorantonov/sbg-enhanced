@@ -82,7 +82,7 @@ export function EuiConsole () {
   closeButton.dataset.round = 'true'
   closeButton.classList.add('popup-close')
   closeButton.addEventListener('click', () => {
-    consolePopup.classList.toggle(hidden)
+    consolePopup.classList.add(hidden)
   })
   consolePopup.appendChild(closeButton)
 
