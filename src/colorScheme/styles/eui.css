@@ -736,4 +736,48 @@ button#sbgcui_settings-close {
   background-color: var(--accent);
 }
 
+.sbgcui_discharge_timeout {
+  font-size: 14px;
+}
+
 /* DRAW & REPAIR BUTTONS */
+
+@media screen and (max-height: 639px) {
+  :root {
+    --button-height: 50px;
+  }
+
+  #bottom button {
+    font-size: 10px;
+  }
+
+  .catalysers-list__amount, .cores-list__amount {
+    font-size: 0.75em;
+  }
+
+  .catalysers-list__level, .cores-list__level {
+    font-size: 18px;
+    line-height: 18px;
+    height: 18px;
+  }
+
+  .i-stat__entry {
+    font-size: 14px;
+  }
+
+  .i-buttons {
+    margin: 0;
+  }
+
+  #discover {
+    margin-bottom: 5px;
+  }
+
+  .popup-close[data-round=true], #inventory__close[data-round=true] {
+    font-size: 1.25em !important;
+  }
+
+  .sbgcui_discharge_timeout {
+    font-size: 12px;
+  }
+}

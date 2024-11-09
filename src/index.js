@@ -1,5 +1,5 @@
 import { Sleep } from './constants'
-import { RunWithOnlineUpdate } from './selfUpdate'
+import { RunWithOnlineUpdate } from './init'
 import { Debug } from './private'
 
 Debug && (Debug())

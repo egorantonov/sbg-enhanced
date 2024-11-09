@@ -191,6 +191,10 @@ export const Translations = {
     en: 'Enhanced UI may be incompatible with current version of SBG',
     ru: 'Enhanced UI может быть несовместим с текущей версией игры',
   },
+  portraitScreen: {
+    en: 'Please, rotate screen to portrait mode',
+    ru: 'Переверните экран в вертикальное положение',
+  },
   enhancedUIVersion: {
     en: 'Enhanced UI Version',
     ru: 'Версия Enhanced UI',

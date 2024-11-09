@@ -322,6 +322,19 @@ option:checked { /* WTF? checked is non-documented??? */
     font-size: smaller;
     font-weight: lighter;
     text-transform: capitalize;
+    min-height: 35px;
+  }
+
+  .popup-close[data-round=true], #inventory__close[data-round=true] {
+    font-size: 1.25em!important;
+  }
+
+  .sbgcui_navbutton, .sbgcui_jumpToButton {
+    font-size: 20px;
+  }
+
+  .catalysers-list__amount, .cores-list__amount {
+    font-size: 0.75em;
   }
 }
 

@@ -1,10 +1,17 @@
-import { Elements, Events, EUI, Modifiers, Nodes, t } from '../constants'
+import { Elements, Events, EUI, Modifiers, Nodes, t, Translations } from '../constants'
 import styles from './styles.min.css'
 
 export function Compatibility () {
   function Firefox() {
     // Fix score popup (can't be closed on FF)
     Nodes.GetSelector('.score.popup .score__header').addEventListener(Events.onClick, () => Nodes.ScorePopup.classList.toggle('hidden'))
+  }
+
+  function Portrait() {
+    const portraitScreen = document.createElement(Elements.Div)
+    portraitScreen.classList.add('force_portrait')
+    portraitScreen.dataset.text = `↻ ${t(Translations.portraitScreen)}`
+    document.body.appendChild(portraitScreen)
   }
 
   const style = document.createElement(Elements.Style)
@@ -83,6 +90,7 @@ export function Compatibility () {
   }
 
   Firefox()
+  Portrait()
   PerformanceMode()
   CUI()
 }

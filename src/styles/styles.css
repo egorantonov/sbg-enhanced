@@ -53,12 +53,14 @@
 
 .popup {
   border-radius: 5px;
+  min-width: 300px;
 }
 
 .info.popup {
   padding-bottom: 5px !important;
   padding-left: 0;
   padding-right: 0;
+  justify-content: space-between;
 }
 
 /* BUTTONS */
@@ -806,4 +808,24 @@ input[data-type="reference-search"] {
 
 .info.popup>.popup-close {
   position: relative !important;
+}
+
+@media screen and (max-height: 600px) and (orientation: landscape) {
+  .force_portrait {
+    padding: 0;
+    margin: 0;
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    background: var(--background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .force_portrait::after {
+    content: attr(data-text);
+  }
 }

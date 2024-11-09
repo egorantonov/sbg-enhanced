@@ -24,6 +24,11 @@
   --i-btn-disabled-accent-color: #CB3C36;
 }
 
+body, input, select, button,
+#bottom #i-share::after, #bottom #i-copy-pos::after {
+  font-family: 'Coda', system-ui, -apple-system, BlinkMacSystemFont, 'Manrope', sans-serif;
+}
+
 /* BADGES */
 
 .eui-badge-container {
@@ -317,6 +322,19 @@ select[data-setting='theme']:disabled {
   #discover, #deploy, #eui-repair, #draw, #draw[sbgcui-possible-lines]::after {
     font-size: smaller;
     font-weight: lighter;
+    min-height: 35px;
+  }
+
+  .popup-close[data-round=true], #inventory__close[data-round=true] {
+    font-size: 1.25em!important;
+  }
+
+  .sbgcui_navbutton, .sbgcui_jumpToButton {
+    font-size: 20px;
+  }
+
+  .catalysers-list__amount, .cores-list__amount {
+    font-size: 0.75em;
   }
 }
 

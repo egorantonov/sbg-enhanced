@@ -20,6 +20,11 @@ body, input, button {
   --i-btn-border-right-color: #6E599E;
 }
 
+body, input, select, button,
+#bottom #i-share::after, #bottom #i-copy-pos::after {
+  font-family: 'Exo 2', system-ui, -apple-system, BlinkMacSystemFont, 'Manrope', sans-serif;
+}
+
 /* BADGES */
 
 .eui-badge-container {
@@ -239,6 +244,19 @@ option:checked { /* WTF? checked is non-documented??? */
     font-size: smaller;
     font-weight: lighter;
     text-transform: capitalize;
+    min-height: 35px;
+  }
+
+  .popup-close[data-round=true], #inventory__close[data-round=true] {
+    font-size: 1.25em!important;
+  }
+
+  .sbgcui_navbutton, .sbgcui_jumpToButton {
+    font-size: 20px;
+  }
+
+  .catalysers-list__amount, .cores-list__amount {
+    font-size: 0.75em;
   }
 }
 
