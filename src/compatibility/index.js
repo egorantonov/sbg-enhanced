@@ -1,4 +1,5 @@
 import { Elements, Events, EUI, Modifiers, Nodes, t, Translations } from '../constants'
+import { Logger } from '../utils'
 import styles from './styles.min.css'
 
 export function Compatibility () {
@@ -89,8 +90,30 @@ export function Compatibility () {
     }
   }
 
+  function PWA() {
+    window.addEventListener('popstate', () => {
+      let currentPopup = Array.from(document.querySelectorAll('.popup:not(.hidden)')).at(-1)
+      if (currentPopup) {
+          currentPopup.classList.add('hidden')
+      }
+    })
+    const ids = ['ops', 'settings', 'self-info__name', 'notifs-menu', 'leaderboard', 'score', 'layers']
+    for (let i = 0; i < ids.length; i++) {
+      const id = ids[i]
+      const element = document.getElementById(id)
+      if (!element) {
+        Logger.error(`Element #${id} not found!`)
+        continue
+      }
+      element.addEventListener(Events.onClick, () => {
+        history.pushState({page: '1'}, id, `#${id}`)
+      })
+    }
+  }
+
   Firefox()
   Portrait()
   PerformanceMode()
   CUI()
+  setTimeout(() => PWA(), 1000)
 }
