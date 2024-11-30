@@ -46,6 +46,10 @@ export const EUI = {
   ActionsCurrent: '__eui-actions-current',
   ActionsLog: '__eui-actions-log',
   Avatar: 'eui-avatar',
+  Progress: 'eui-progress',
+  ProgressText: 'eui-progress-text',
+  ProgressStepsCount: '__eui-progress-steps-count',
+  ProgressStatus: 'eui-progress-status',
   Team: '__eui-team' // user can flip color
 }
 
@@ -492,6 +496,14 @@ export const Translations = {
   featureFailed: {
     en: 'feature failed. Reason:',
     ru: 'функции неуспешна. Причина:'
+  },
+  progress: {
+    en: 'Loading...',
+    ru: 'Загрузка...'
+  },
+  progressCui: {
+    en: 'Waiting for CUI',
+    ru: 'Ждём загрузку CUI'
   }
 }
 

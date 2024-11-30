@@ -19,6 +19,7 @@ import Informer from '../informer'
 import InitObservers from '../observers'
 import { Private } from '../private'
 import { RepairButton } from '../repairButton'
+import { UpdateProgressStatus, RemoveProgress } from '../progress'
 import { showToast, Logger } from '../utils'
 import styles from './styles.min.css'
 import ZenMode from '../zenMode'
@@ -75,6 +76,7 @@ function ExecuteSyncFeature([feature, name]) {
     showToast(message)
     Logger.error(message, error)
   }
+  UpdateProgressStatus(name)
   return success
 }
 
@@ -95,6 +97,7 @@ async function ExecuteAsyncFeatures() {
 
   let succeed = result.reduce((s, e) => s+=e)
   Logger.log(`Executed ${succeed} of ${result.length} async features`)
+  RemoveProgress()
 }
 
 async function ExecuteAsyncFeature(feature, name) {
@@ -102,7 +105,6 @@ async function ExecuteAsyncFeature(feature, name) {
   try {
     await feature()
     Logger.log(`Executed '${name}' feature`)
-
   }
   catch (error) {
     const message = `'${name ?? feature.name}' ${t(Translations.featureFailed)} ${error.message}`
@@ -110,6 +112,7 @@ async function ExecuteAsyncFeature(feature, name) {
     Logger.error(message, error)
     succeed = false
   }
+  UpdateProgressStatus(name)
   return succeed
 }
 
@@ -129,6 +132,7 @@ async function ExecuteScript () {
   ExecuteImmediateAction()
 
   if (CUI.Detected()) {
+    UpdateProgressStatus(t(Translations.progressCui))
     for (let i = 1; i <= 30; i++) {
       if (CUI.Loaded()) {
         delaySyncMs = 0
@@ -142,7 +146,7 @@ async function ExecuteScript () {
       if (i === 5) {
         confirm('CUI seems to be failed! \r\nConfirm to reload or cancel to wait if connection is weak.') && location.reload()
       }
-      Logger.log(`Waiting for CUI, try #${i}...`)
+      Logger.log(`${t(Translations.progressCui)}, try #${i}...`)
       await Sleep(1000)
     }
   }
@@ -154,7 +158,7 @@ async function ExecuteScript () {
 export async function RunWithOnlineUpdate() {
   const processResponse = (response) => {
     if (!response) {
-      const message = t('githubUnavailable')
+      const message = t(Translations.githubUnavailable)
       Logger.log(message)
       showToast(message)
       ExecuteScript()
@@ -207,14 +211,15 @@ export async function RunWithOnlineUpdate() {
 
   if (!onlineInUse && window.fetch) {
     try {
-      showToast(t('githubCheckingUpdates'))
+      //showToast(t(Translations.githubCheckingUpdates))
+      UpdateProgressStatus(t(Translations.githubCheckingUpdates))
       await fetch(releaseUrl)
       .then(r => r.json())
       .then(x => processResponse(x))
     }
     catch (error) {
       if (['Failed to fetch', 'NetworkError when attempting to fetch resource.'].includes(error.message)) {
-        const message = t('githubUnavailable')
+        const message = t(Translations.githubUnavailable)
         Logger.log(message)
         showToast(message)
       }
