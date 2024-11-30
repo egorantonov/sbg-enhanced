@@ -94,7 +94,7 @@ export function Cache() {
     hide.id = 'eui-hide'
     hide.addEventListener(Events.onClick, () => {
       Nodes.InventoryPopup.classList.contains(Modifiers.Hidden) && Nodes.InventoryPopup.classList.toggle(Modifiers.Hidden)
-      history.pushState({page: '1'}, 'ops', '#ops')
+      history.pushState({page: '1'}, 'ops', '#_ops')
     })
     hide.innerText = '>'
 

@@ -91,10 +91,11 @@ export function Compatibility () {
   }
 
   function PWA() {
+    history.pushState({page: '1'}, 'game', '#_game')
     window.addEventListener('popstate', () => {
       let currentPopup = Array.from(document.querySelectorAll('.popup:not(.hidden)')).at(-1)
       if (currentPopup) {
-          currentPopup.classList.add('hidden')
+        currentPopup.classList.add('hidden')
       }
     })
     const ids = ['ops', 'settings', 'self-info__name', 'notifs-menu', 'leaderboard', 'score', 'layers']
@@ -106,7 +107,7 @@ export function Compatibility () {
         continue
       }
       element.addEventListener(Events.onClick, () => {
-        history.pushState({page: '1'}, id, `#${id}`)
+        history.pushState({page: '1'}, id, `#_${id}`)
       })
     }
   }
