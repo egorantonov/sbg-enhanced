@@ -10,7 +10,7 @@ export default async function ImportExport() {
   const Week = 604800000
   const ua = ClientData.GetUserAgentData
   const userAgent = `${ua.platform} ${ua.browser}${ua.mobile ? ' (Mobile)' : ''}`
-  await Sleep(500) // make sure other async functions started earlier, e.g. Informer
+  await Sleep(100) // make sure other async functions started earlier, e.g. Informer
 
   const GetSettingsAsJson = () => {
     const itemsToExport = Object.entries(localStorage)

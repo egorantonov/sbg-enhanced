@@ -1,16 +1,14 @@
 // eslint-disable-next-line no-unused-vars
-import { EUI, Elements, Events, Modifiers, Nodes, Sleep, t } from '../constants'
-import { createToast, getSbgSettings, setSbgSettings } from '../utils'
+import { EUI, Elements, Events, Modifiers, Nodes, t, Translations } from '../constants'
+import { getSbgSettings, setSbgSettings } from '../utils'
 
-export default async function AddCanvasStyles() {
+export default function AddCanvasStyles() {
     document.getElementById('regions-opacity__cur')?.parentElement?.parentElement?.remove() // remove native control
-    await AddLayerOpacity('.ol-layer__lines', 'linesOpacity', 'linesOpacityMessage', EUI.LinksOpacity)
-    await AddLayerOpacity('.ol-layer__regions', 'regionsOpacity', 'regionsOpacityMessage', EUI.RegionsOpacity, '1')
+    AddLayerOpacity(t(Translations.linesOpacity), EUI.LinksOpacity)
+    AddLayerOpacity(t(Translations.regionsOpacity), EUI.RegionsOpacity, '1')
 }
 
-async function AddLayerOpacity (layerClassName, innerTextTranslation, errorMessageTranslation, controlId, defaultValue = 1) {
-    const getLayer = () => document.querySelector(layerClassName)
-
+function AddLayerOpacity(innerTextTranslation, controlId, defaultValue = 1) {
     let settings = getSbgSettings()
     delete settings['opacity']
     setSbgSettings(settings)
@@ -36,37 +34,15 @@ async function AddLayerOpacity (layerClassName, innerTextTranslation, errorMessa
 
     const value = localStorage.getItem(controlId)
     range.setAttribute('value', value ?? defaultValue)
+    SetCssValue(controlId, value ?? defaultValue)
 
-    let layer = getLayer()
     range.disabled = localStorage.getItem(EUI.PerformanceMode) == 1
-
-    if (!layer) { // make sure lines layer exist (or loaded if connection is throttling)
-        await Sleep(2000)
-        layer = getLayer()
-    }
-
     range.addEventListener(Events.onChange, (event) => {
-        if (!layer) { // make sure lines layer exist when user change slider
-            layer = getLayer()
-        }
-
-        if (layer) {
-            layer.style.filter = `opacity(${event.target.value})`
-            localStorage.setItem(controlId, event.target.value)
-        }
-        else {
-            let toast = createToast(t(errorMessageTranslation), 'top center')
-            if (toast) {
-                toast.options.className = 'error-toast'
-                toast.showToast()
-            }
-            else {
-                alert(t(errorMessageTranslation))
-            }
-        }
+        SetCssValue(controlId, event.target.value)
+        localStorage.setItem(controlId, event.target.value)
     })
+}
 
-    if (layer) {
-        layer.style.filter = `opacity(${value ?? defaultValue})`
-    }
+function SetCssValue(variable, value) {
+    document.documentElement.style.setProperty(`--${variable}`, value)
 }

@@ -18,13 +18,23 @@ import ImportExport from '../importExport'
 import Informer from '../informer'
 import InitObservers from '../observers'
 import { Private } from '../private'
+import { Progress, UpdateProgressStatus, RemoveProgress } from '../progress'
 import { RepairButton } from '../repairButton'
-import { UpdateProgressStatus, RemoveProgress } from '../progress'
 import { showToast, Logger } from '../utils'
 import styles from './styles.min.css'
 import ZenMode from '../zenMode'
 
-function AddImmediateStyles() {
+function isFatalError() {
+  const fatalError = Nodes.GetSelector('.fatal-error')
+  if (fatalError) {
+    addImmediateStyles()
+    fatalError.addEventListener(Events.onClick, () => location.reload())
+    return true
+  }
+  else return false
+}
+
+function addImmediateStyles() {
   const style = document.createElement(Elements.Style)
   style.dataset.id = EUI.ImmediateStyles
   try {
@@ -36,14 +46,11 @@ function AddImmediateStyles() {
   style.innerHTML = styles
 }
 
-function ExecuteImmediateAction() {
-  Nodes.GetSelector('.fatal-error')?.addEventListener(Events.onClick, () => location.reload())
-}
-
 function ExecuteSyncFeatures() {
   const executions = [
     [AddStyles, 'AddStyles'],
     [AddHighContrast, 'AddHighContrast'],
+    [AddCanvasStyles, 'AddCanvasStyles'],
     [AddAnimations, 'AddAnimations'],
     [AddColorScheme, 'AddColorScheme'],
     [Cache, 'Cache'],
@@ -83,7 +90,6 @@ function ExecuteSyncFeature([feature, name]) {
 async function ExecuteAsyncFeatures() {
   let result = await Promise.all([
     ExecuteAsyncFeature(Informer, 'Informer'),
-    ExecuteAsyncFeature(AddCanvasStyles, 'AddCanvasStyles'),
     ExecuteAsyncFeature(BeautifyCloseButtons, 'BeautifyCloseButtons'),
     ExecuteAsyncFeature(ImportExport, 'ImportExport'),
     ExecuteAsyncFeature(AddReferenceSearch, 'AddReferenceSearch'),
@@ -97,7 +103,6 @@ async function ExecuteAsyncFeatures() {
 
   let succeed = result.reduce((s, e) => s+=e)
   Logger.log(`Executed ${succeed} of ${result.length} async features`)
-  RemoveProgress()
 }
 
 async function ExecuteAsyncFeature(feature, name) {
@@ -117,7 +122,7 @@ async function ExecuteAsyncFeature(feature, name) {
 }
 
 async function ExecuteScript () {
-
+  if (isFatalError()) return
   let delaySyncMs = 500
   let delayAsyncMs = 1000
 
@@ -128,9 +133,6 @@ async function ExecuteScript () {
     delayAsyncMs += connection.rtt
   }
 
-  AddImmediateStyles()
-  ExecuteImmediateAction()
-
   if (CUI.Detected()) {
     UpdateProgressStatus(t(Translations.progressCui))
     for (let i = 1; i <= 30; i++) {
@@ -140,11 +142,11 @@ async function ExecuteScript () {
         break
       }
       if (i === 30) {
-        alert('CUI seems to be failed! Force reloading...')
+        alert(t(Translations.progressCuiFailedReload))
         location.reload()
       }
       if (i === 5) {
-        confirm('CUI seems to be failed! \r\nConfirm to reload or cancel to wait if connection is weak.') && location.reload()
+        confirm(t(Translations.progressCuiFailed)) && location.reload()
       }
       Logger.log(`${t(Translations.progressCui)}, try #${i}...`)
       await Sleep(1000)
@@ -152,10 +154,14 @@ async function ExecuteScript () {
   }
 
   await Sleep(delaySyncMs).then(() => ExecuteSyncFeatures())
-  await Sleep(delayAsyncMs).then(async () => await ExecuteAsyncFeatures())
+  await Sleep(delayAsyncMs).then(async () => await ExecuteAsyncFeatures()).then(() => RemoveProgress())
 }
 
 export async function RunWithOnlineUpdate() {
+  if (isFatalError()) return
+
+  Progress()
+
   const processResponse = (response) => {
     if (!response) {
       const message = t(Translations.githubUnavailable)

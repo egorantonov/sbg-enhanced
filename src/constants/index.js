@@ -211,14 +211,6 @@ export const Translations = {
     en: 'High Contrast',
     ru: 'Высокий контраст',
   },
-  linesOpacity: {
-    en: 'Lines opacity',
-    ru: 'Прозрачность линий',
-  },
-  linesOpacityMessage: {
-    en: 'Enable lines layer to edit opacity',
-    ru: 'Включите слой линий для редактирования прозрачности',
-  },
   regionsOpacity: {
     en: 'Regions opacity',
     ru: 'Прозрачность регионов',
@@ -504,6 +496,14 @@ export const Translations = {
   progressCui: {
     en: 'Waiting for CUI',
     ru: 'Ждём загрузку CUI'
+  },
+  progressCuiFailed: {
+    en: 'CUI seems to be failed! \r\nConfirm to reload or cancel to wait if connection is weak.',
+    ru: 'Похоже, CUI не удалось! \r\nПодтвердите для перезагрузки или отмените для ожидания загрузки.'
+  },
+  progressCuiFailedReload: {
+    en: 'CUI seems to be failed! Force reloading...',
+    ru: 'Похоже, CUI не работает! Принудительная перезагрузка...'
   }
 }
 

@@ -5,16 +5,7 @@ import { createToast, getSbgSettings, setSbgSettings } from '../utils'
 let currentStep = 0
 const defaultSteps = 22
 
-export function InitProgress() {
-  if (document.readyState === 'interactive') {
-    progress()
-  }
-  else {
-    window.addEventListener('DOMContentLoaded', () => progress())
-  }
-}
-
-function progress() {
+export function Progress() {
   getTotal()
   const container = document.createElement(Elements.Div)
   container.id = EUI.Progress
@@ -75,7 +66,7 @@ export function RemoveProgress() {
   const container = document.getElementById(EUI.Progress)
   if (container) container.remove()
   const total = getTotal()
-  if (total < currentStep) {
+  if (total != currentStep) {
     localStorage.setItem(EUI.ProgressStepsCount, currentStep)
   } 
 }

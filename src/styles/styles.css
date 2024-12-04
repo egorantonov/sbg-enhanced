@@ -2,6 +2,9 @@
   --ol-control-radius: 100px;
   --blur5: blur(5px) !important;
   --blur10: blur(10px);
+
+  --eui-links-opacity: 1;
+  --eui-regions-opacity: 1;
 }
 
 /* SELF */
@@ -606,6 +609,14 @@ input[data-type="reference-search"] {
  */
 .ol-layer__player {
   filter: drop-shadow(2px 2px 4px var(--shadow));
+}
+
+.ol-layer__lines {
+  filter: opacity(var(--eui-links-opacity))
+}
+
+.ol-layer__regions {
+  filter: opacity(var(--eui-regions-opacity))
 }
 
 /*

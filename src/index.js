@@ -1,9 +1,13 @@
 import { Sleep } from './constants'
-import { RunWithOnlineUpdate } from './init'
+import { RunWithOnlineUpdate, IsFatalError } from './init'
 import { Debug } from './private'
-import { InitProgress } from './progress'
+import { Progress } from './progress'
 
 Debug && (Debug())
-InitProgress()
 
-await Sleep(1000).then(_ => RunWithOnlineUpdate())
+if (['interactive', 'complete'].includes(document.readyState)) {
+  RunWithOnlineUpdate()
+}
+else {
+  window.addEventListener('DOMContentLoaded', _ => RunWithOnlineUpdate())
+}
