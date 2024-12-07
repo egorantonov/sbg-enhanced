@@ -211,13 +211,13 @@ export const Translations = {
     en: 'High Contrast',
     ru: 'Высокий контраст',
   },
+  linesOpacity: {
+    en: 'Lines opacity',
+    ru: 'Прозрачность линий',
+  },
   regionsOpacity: {
     en: 'Regions opacity',
     ru: 'Прозрачность регионов',
-  },
-  regionsOpacityMessage: {
-    en: 'Enable regions layer to edit opacity',
-    ru: 'Включите слой регионов для редактирования прозрачности',
   },
   animations: {
     en: 'Animations',
