@@ -21,7 +21,8 @@ export function Progress() {
     width: 100%;
     height: 100%;
     background: var(--background-transp);
-    backdrop-filter: blur(10px) saturate(0);
+    backdrop-filter: blur(20px) saturate(0);
+    -webkit-backdrop-filter: blur(20px) saturate(0);
     display: flex;
     flex-direction: column;
     justify-content: center;

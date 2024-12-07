@@ -713,6 +713,23 @@ input[data-type="reference-search"] {
   display: none !important;
 }
 
+.sbgcui_log-close,
+.sbgcui_log-buttons>button,
+#sbgcui_batch_remove,
+#sbgcui_hide_viewer {
+  box-shadow: none;
+  background-color: var(--sbgcui-branding-color);
+  color: #fff;
+  border: none;
+}
+
+#sbgcui_batch_remove {
+  font-size: 1.7em !important;
+  right: 0.5em !important;
+  height: 1.375em;
+  width: 1.375em;
+}
+
 .inventory__item-left {
   background-position: center !important;
   background-repeat: no-repeat !important;

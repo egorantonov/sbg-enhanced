@@ -102,11 +102,11 @@ select,
   font-size: 16px;
 }
 
-.sbgcui_log-close, .sbgcui_log-buttons-console {
-  box-shadow: none;
-  background-color: var(--sbgcui-branding-color);
-  color: #fff;
-  border: none;
+.sbgcui_log-close,
+.sbgcui_log-buttons>button,
+#sbgcui_batch_remove,
+#sbgcui_hide_viewer {
+  border-radius: var(--radius0);
 }
 
 .sbgcui_discharge_timeout {

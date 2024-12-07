@@ -354,6 +354,22 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 /* CUI */
-.sbgcui_refs-sort-button {
-  border-width: revert;
+.sbgcui_log {
+  background-color: var(--i-bg-color-cc);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.sbgcui_log-buttons>button, 
+#sbgcui_batch_remove,
+.sbgcui_log-close, 
+#sbgcui_hide_viewer {
+  color: var(--text)!important;
+  border: 1px solid var(--border)!important;
+  border-radius: 100px!important;
+  background-color: var(--ol-background-color);
+}
+
+.sbgcui_log-close, #sbgcui_hide_viewer {
+  border-width: 1.6px !important;
 }

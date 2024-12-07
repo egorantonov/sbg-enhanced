@@ -88,6 +88,32 @@ export function Compatibility () {
         Nodes.Layers.after(reloadButton)
       }
     }
+
+    // Precise colors for non-Safari
+    const colorInput = Nodes.GetSelector('input[name="mapFilters_brandingColor"]')
+    if (colorInput) {
+      const textInput = document.createElement(Elements.Input)
+      textInput.type = 'text'
+      textInput.style.cssText = `
+        width: 100px;
+        margin: 0 auto;
+        padding: 5px;
+        border: none!important;
+        border-radius: var(--radius5);
+        color: var(--sbgcui-branding-color, var(--selection));
+        background: var(--ol-subtle-background-color, #7777);
+        text-transform: uppercase;
+        text-align: center;
+        font-weight: bolder;
+      `
+      textInput.value = colorInput.value.replace('#', '')
+      colorInput.after(textInput)
+      textInput.addEventListener(Events.onInput, (event) => {
+        if (event.target.value && /[0-9a-fA-F]{6}/.test(event.target.value)) {
+          colorInput.value = `#${event.target.value}`
+        }
+      })
+    }
   }
 
   function PWA() {

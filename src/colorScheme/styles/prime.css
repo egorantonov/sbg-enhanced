@@ -93,7 +93,8 @@ option:checked { /* WTF? checked is non-documented??? */
   filter: opacity(0.5);
 }
 
-.popup-close[data-round=true], #inventory__close, .splide__arrow {
+.popup-close[data-round=true], #inventory__close, .splide__arrow,
+.sbgcui_log-close, #sbgcui_hide_viewer { /* CUI Compatibility */
   color: var(--i-color) !important;
   background: var(--i-bg-color-aa) !important;
   -webkit-backdrop-filter: var(--blur5);
@@ -281,6 +282,19 @@ input[type='range']::-moz-range-thumb {
 }
 
 /* CUI */
-.sbgcui_refs-sort-button {
-  border-width: revert;
+.sbgcui_log {
+  background-color: var(--i-bg-color-cc);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.sbgcui_log-close, #sbgcui_hide_viewer {
+  border: 2px solid !important;
+}
+
+.sbgcui_log-buttons>button, #sbgcui_batch_remove {
+  border-radius: 0 !important;
+  backdrop-filter: var(--blur10);
+  color: var(--i-btn-color) !important;
+  background-color: var(--ol-subtle-background-color);
 }
