@@ -20,11 +20,11 @@ class Theme {
 export default function AddColorScheme() {
 	const applyTranslations = (target) => {
 		let tCache = JSON.parse(localStorage.getItem(target))
-  
+
 		if (!tCache) {
 			return
 		}
-  
+
 		tCache.buttons.discover = t('discover')
 		tCache.buttons.deploy = t('deploy')
 		tCache.buttons.repair = t('repair')
@@ -34,20 +34,20 @@ export default function AddColorScheme() {
 		tCache.info.refs = '🔑 {{count}}/100'
 		tCache.info.lines = t('lines')
 		tCache.info.regions = t('fields')
-  
+
 		localStorage.setItem(target, JSON.stringify(tCache))
 	}
 
 	const removeControlChars = (target) => {
 		let tCache = JSON.parse(localStorage.getItem(target))
-  
+
 		if (!tCache) {
 			return
 		}
-  
+
 		tCache.buttons.references.manage = ''
 		tCache.buttons.references.view = ''
-  
+
 		localStorage.setItem(target, JSON.stringify(tCache))
 	}
 
@@ -217,4 +217,7 @@ export default function AddColorScheme() {
 			cuiRefsOnMap.style.minWidth = '40px'
 		}
 	}
+
+	// eslint-disable-next-line no-undef
+	i18next.reloadResources()
 }

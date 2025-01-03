@@ -707,10 +707,6 @@ input[type="range"] {
   margin-bottom: 10px;
 }
 
-.sbgcui_settings-header::after {
-  content: " CUI";
-}
-
 .sbgcui_settings-section {
     margin-bottom: 5px;
     border: 1px solid #7777;

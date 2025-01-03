@@ -13,8 +13,8 @@ export const Backend = {
 export const SBG = {
   OutboundLinksLimit: 30,
   DefaultCloseButtonText: '[x]',
-  VersionHeader: 'sbg-version',
-  CompatibleVersion: '0.4.2-4',
+  VersionHeader: 'Sbg-Version',
+  CompatibleVersion: '0.4.3',
   Settings: 'settings',
   DefaultLang: 'en',
   GooglePhoto: 'https://lh3.googleusercontent.com/'

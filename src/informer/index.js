@@ -1,17 +1,16 @@
-import {Backend, EUI, Elements, Events, IsWebView, Modifiers, Nodes, SBG, t} from '../constants'
+import {EUI, Elements, Events, Modifiers, Nodes, SBG, Translations as i18n, t} from '../constants'
 import { showToast } from '../utils'
 
 export default async function Informer() {
   console.log(`SBG Enhanced UI, version ${EUI.Version}`)
   const sbgCurrentVersion = await fetch('/api/')
-    .then(response => response.json())
-    .then(json => json.v)
+    .then(response => response.headers.get(SBG.VersionHeader))
 
   if (sbgCurrentVersion != SBG.CompatibleVersion) {
       const alertShown = localStorage.getItem(EUI.Incompatibility)
 
       if (alertShown != 'true') {
-          alert(`⚠️ ${t('incompatibility')} (${sbgCurrentVersion})`)
+          alert(`⚠️ ${t(i18n.incompatibility)} (${sbgCurrentVersion})`)
           localStorage.setItem(EUI.Incompatibility, true)
       }
   }
@@ -22,7 +21,7 @@ export default async function Informer() {
   const about = Nodes.SettingSections.at(3)
   if (about) {
       const euiVersionKey = document.createElement(Elements.Span)
-      euiVersionKey.innerText = t('enhancedUIVersion')
+      euiVersionKey.innerText = t(i18n.enhancedUIVersion)
       const euiVersionValue = document.createElement(Elements.Span)
       euiVersionValue.innerText = `v${EUI.Version}`
       const euiVersionItem = document.createElement(Elements.Div)
@@ -31,7 +30,7 @@ export default async function Informer() {
       euiVersionItem.appendChild(euiVersionValue)
       about.appendChild(euiVersionItem)
 
-      const donateKey = document.createElement(Elements.Span)
+      /*const donateKey = document.createElement(Elements.Span)
       donateKey.innerText = t('donations')
       const donateButton = document.createElement(Elements.Button)
       donateButton.innerText = t('donate')
@@ -81,23 +80,23 @@ export default async function Informer() {
       const donateItem = document.createElement(Elements.Div)
       donateItem.classList.add(Modifiers.SettingsSectionItemClassName)
       donateItem.appendChild(donateKey)
-      donateItem.appendChild(donateButton)
+      donateItem.appendChild(donateButton)*/
       //setTimeout(() => about.appendChild(donateItem), 500)
 
       const connection = navigator.connection
       if (connection) {
         const connectionKey = document.createElement(Elements.Span)
-        connectionKey.innerText = t('connection')
+        connectionKey.innerText = t(i18n.connection)
         const connectionShow = document.createElement(Elements.Button)
-        connectionShow.innerText = t('showConnection')
+        connectionShow.innerText = t(i18n.showConnection)
         connectionShow.addEventListener(Events.onClick, () => {
             const connectionValue = `
-                ${t('connectionPing')}:\u{a0}${connection.rtt}${t('m')}${t('s')},
-                ${t('connectionLink')}:\u{a0}~${connection.downlink}mb/s,
-                ${t('connectionGrade')}:\u{a0}${connection.effectiveType.toUpperCase()}
+                ${t(i18n.connectionPing)}:\u{a0}${connection.rtt}${t('m')}${t('s')},
+                ${t(i18n.connectionLink)}:\u{a0}~${connection.downlink}mb/s,
+                ${t(i18n.connectionGrade)}:\u{a0}${connection.effectiveType.toUpperCase()}
                 ${
                     (connection.type && connection.type !== 'unknown')
-                        ? `, ${t('connectionType')}:\u{a0}${connection.type.toUpperCase()}` 
+                        ? `, ${t(i18n.connectionType)}:\u{a0}${connection.type.toUpperCase()}` 
                         : ''
                 }
             `
