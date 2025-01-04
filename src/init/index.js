@@ -160,7 +160,9 @@ async function ExecuteScript () {
 export async function RunWithOnlineUpdate() {
   if (isFatalError()) return
 
-  Progress()
+  if (!document.getElementById(EUI.Progress)) {
+    Progress()
+  }
 
   const processResponse = (response) => {
     if (!response) {

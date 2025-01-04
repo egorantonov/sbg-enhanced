@@ -1,4 +1,4 @@
-import { ClientData, CUI, EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Proposed, Themes, t, Translations as i18n } from '../constants'
+import { ClientData, CUI, EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Proposed, SBG, Themes, t, Translations as i18n } from '../constants'
 import monoStyles from './styles/mono.min.css'
 import ingressStyles from './styles/ingress.min.css'
 import primeStyles from './styles/prime.min.css'
@@ -18,6 +18,7 @@ class Theme {
 }
 
 export default function AddColorScheme() {
+	const i18next = window.i18next
 	const applyTranslations = (target) => {
 		let tCache = JSON.parse(localStorage.getItem(target))
 
@@ -25,30 +26,33 @@ export default function AddColorScheme() {
 			return
 		}
 
-		tCache.buttons.discover = t('discover')
-		tCache.buttons.deploy = t('deploy')
-		tCache.buttons.repair = t('repair')
-		tCache.buttons.draw = t('draw')
-		tCache.buttons.references.manage = ''
-		tCache.buttons.references.view = ''
+		tCache.buttons.discover = t(i18n.discover)
+		tCache.buttons.deploy = t(i18n.deploy)
+		tCache.buttons.repair = t(i18n.repair)
+		tCache.buttons.draw = t(i18n.draw)
 		tCache.info.refs = '🔑 {{count}}/100'
-		tCache.info.lines = t('lines')
-		tCache.info.regions = t('fields')
+		tCache.info.lines = t(i18n.lines)
+		tCache.info.regions = t(i18n.fields)
 
 		localStorage.setItem(target, JSON.stringify(tCache))
 	}
 
-	const removeControlChars = (target) => {
-		let tCache = JSON.parse(localStorage.getItem(target))
+	const updateControlChars = (target) => {
+		if (i18next) {
+			i18next.addResources(i18next.resolvedLanguage, 'main', {
+				'buttons.references.manage': '',
+				'buttons.references.view': '',
+				'items.catalyser-short': '{{level}}',
+				'items.core-short': '{{level}}',
+			})
 
-		if (!tCache) {
-			return
+			let tCache = JSON.parse(localStorage.getItem(target))
+
+			if (tCache && i18next.resolvedLanguage == SBG.DefaultLang) {
+				tCache.items.types.references = 'Refs'
+				localStorage.setItem(target, JSON.stringify(tCache))
+			}
 		}
-
-		tCache.buttons.references.manage = ''
-		tCache.buttons.references.view = ''
-
-		localStorage.setItem(target, JSON.stringify(tCache))
 	}
 
 	const ensureDarkTheme = () => {
@@ -59,7 +63,7 @@ export default function AddColorScheme() {
 	}
 
 	const i18next_main = `i18next_${GetLocale()}-main`
-	removeControlChars(i18next_main)
+	updateControlChars(i18next_main)
 	const input = document.createElement(Elements.Select)
 	/** @type Theme[] */const themes = [
 		new Theme(Themes.EUI, 0, euiStyles),
@@ -72,7 +76,7 @@ export default function AddColorScheme() {
 	const settings = Nodes.SettingSections.at(0)
 	if (settings) {
 		const title = document.createElement(Elements.Span)
-		title.innerText = t('colorScheme')
+		title.innerText = t(i18n.colorScheme)
 		themes.forEach(t => {
 			let o = document.createElement(Elements.Option)
 			o.value = t.code
@@ -136,7 +140,7 @@ export default function AddColorScheme() {
 		if (draw) {
 			close.after(repair)
 			if (route) {
-				route.innerText = t('cuiRoute')
+				route.innerText = t(i18n.cuiRoute)
 				draw.before(route)
 			}
 			else {
@@ -146,7 +150,7 @@ export default function AddColorScheme() {
 			}
 
 			if (map) {
-				map.innerText = t('cuiOnMap')
+				map.innerText = t(i18n.cuiOnMap)
 				repair.after(map)
 			}
 			else {
@@ -217,7 +221,4 @@ export default function AddColorScheme() {
 			cuiRefsOnMap.style.minWidth = '40px'
 		}
 	}
-
-	// eslint-disable-next-line no-undef
-	i18next.reloadResources()
 }
