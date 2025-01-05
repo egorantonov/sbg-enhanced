@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { EUI, Elements, Events, Modifiers, Nodes, Sleep, Translations, t } from '../constants'
-import { createToast, getSbgSettings, setSbgSettings } from '../utils'
+import { EUI, Elements, Translations, t } from '../constants'
 
 let currentStep = 0
-const defaultSteps = 22
+const defaultSteps = 23
 
 export function Progress() {
   getTotal()

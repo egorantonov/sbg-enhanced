@@ -50,6 +50,7 @@ export const EUI = {
   ProgressText: 'eui-progress-text',
   ProgressStepsCount: '__eui-progress-steps-count',
   ProgressStatus: 'eui-progress-status',
+  SpeedoMeter: 'eui-speedometer',
   Team: '__eui-team' // user can flip color
 }
 
@@ -504,6 +505,10 @@ export const Translations = {
   progressCuiFailedReload: {
     en: 'CUI seems to be failed! Force reloading...',
     ru: 'Похоже, CUI не работает! Принудительная перезагрузка...'
+  },
+  speedoMeter: {
+    en: 'Show speed',
+    ru: 'Показывать скорость'
   }
 }
 

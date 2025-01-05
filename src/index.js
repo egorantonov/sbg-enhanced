@@ -1,7 +1,5 @@
-import { Sleep } from './constants'
-import { RunWithOnlineUpdate, IsFatalError } from './init'
+import { RunWithOnlineUpdate } from './init'
 import { Debug } from './private'
-import { Progress } from './progress'
 
 Debug && (Debug())
 

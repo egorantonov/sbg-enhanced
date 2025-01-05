@@ -21,6 +21,7 @@ import { Private } from '../private'
 import { Progress, UpdateProgressStatus, RemoveProgress } from '../progress'
 import { RepairButton } from '../repairButton'
 import { showToast, Logger } from '../utils'
+import SpeedoMeter from '../speedometer'
 import styles from './styles.min.css'
 import ZenMode from '../zenMode'
 
@@ -60,6 +61,7 @@ function ExecuteSyncFeatures() {
     [Avatars, 'Avatars'],
     [RepairButton, 'RepairButton'],
     [ZenMode, 'ZenMode'],
+    [SpeedoMeter, 'Speedometer'],
     [EuiConsole, 'EUI Console']
   ]
 

@@ -97,6 +97,12 @@ select,
   box-shadow: none;
 }
 
+#eui-speedometer {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  border-radius: 0 !important;
+}
+
 .sbgcui_log-console {
   font-family: monospace;
   font-size: 16px;
