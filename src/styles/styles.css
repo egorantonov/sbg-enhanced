@@ -418,6 +418,22 @@ input[type="range"][name="notifications_duration"]::after { /* CUI Compatibility
   top: unset;
 }
 
+#eui-links-opacity, .regions-opacity__range>input[type='range'] {
+  position: relative;
+}
+
+#eui-links-opacity::after, .regions-opacity__range>input[type='range']::after {
+  content: attr(percents) "%";
+  position: absolute;
+  color: #fff;
+  pointer-events: none;
+  right: 0;
+  margin: 2px 5px;
+  text-shadow: 1px 1px 3px #000;
+}
+
+
+
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   border: 0px solid transparent;

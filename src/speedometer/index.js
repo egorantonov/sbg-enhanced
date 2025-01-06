@@ -2,9 +2,9 @@ import { EUI, Elements, Events, Modifiers, Nodes, t, Translations as i18n } from
 
 export default function SpeedoMeter() {
 
-  const interfaceSettings = Nodes.SettingSections.at(1)
+  const showSelfPos = Nodes.GetSelector('label.settings-section__item:has(input[data-setting="selfpos"])')
 
-  if (!interfaceSettings) {
+  if (!showSelfPos) {
     return
   }
 
@@ -22,7 +22,7 @@ export default function SpeedoMeter() {
   label.classList.add(Modifiers.SettingsSectionItemClassName)
   label.appendChild(title)
   label.appendChild(input)
-  interfaceSettings.appendChild(label)
+  showSelfPos.before(label)
 
   // ui
   const speedometer = document.createElement(Elements.Div)
