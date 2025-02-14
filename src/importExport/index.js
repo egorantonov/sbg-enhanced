@@ -3,7 +3,7 @@ import { getSbgSettings, setSbgSettings } from '../utils'
 //const { Host, Endpoints } = Backend
 
 export default async function ImportExport() {
-  if (!localStorage.getItem('auth')){
+  if (!localStorage.getItem('auth') || IsWebView()){
     return
   }
 
@@ -143,7 +143,7 @@ export default async function ImportExport() {
   }
 
   const about = Nodes.SettingSections.at(3)
-  if (!IsWebView() && about) {
+  if (about) {
     const key = document.createElement(Elements.Span)
     key.innerText = t('importExport')
     const value = document.createElement(Elements.Div)

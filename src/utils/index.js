@@ -32,6 +32,12 @@ export const Logger = {
 	debug: (message, ...optionalParams) => window?.__eui_debug && console.warn(`[Debug] ${message}`, optionalParams)
 }
 
+window.EUI = {
+	...window.EUI,
+	createToast,
+	showToast
+}
+
 /**
  * Disabled due to CUI compatibility error
  * @returns Browser's native fetch()

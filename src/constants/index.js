@@ -14,7 +14,7 @@ export const SBG = {
   OutboundLinksLimit: 30,
   DefaultCloseButtonText: '[x]',
   VersionHeader: 'Sbg-Version',
-  CompatibleVersion: '0.4.3',
+  CompatibleVersion: '0.4.4',
   Settings: 'settings',
   DefaultLang: 'en',
   GooglePhoto: 'https://lh3.googleusercontent.com/'
