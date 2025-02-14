@@ -1,4 +1,4 @@
-import { EUI, Elements, Events, Modifiers, Nodes, Sleep, t } from '../constants'
+import { EUI, Elements, Events, Modifiers, Nodes, Sleep, t, Translations as i18n } from '../constants'
 import { LongTouchEventListener } from '../helpers'
 import { createToast, Logger } from '../utils'
 
@@ -37,17 +37,18 @@ export default async function AddReferenceSearch() {
   document.querySelector('.sbgcui_refs-sort-select')?.remove()
 
   const sorts = [
-    t('sortName'),
-    `${t('sortDist')} +`,
-    `${t('sortDist')} -`,
-    `${t('sortEnergy')} +`,
-    `${t('sortEnergy')} -`,
-    `${t('sortAmount')} +`,
-    `${t('sortAmount')} -`,
-    `${t('sortTeam')} +`,
-    `${t('sortTeam')} -`,
-    `${t('sortLevel')} +`,
-    `${t('sortLevel')} -`
+    t(i18n.sortName),
+    `${t(i18n.sortDist)} +`,
+    `${t(i18n.sortDist)} -`,
+    `${t(i18n.sortEnergy)} +`,
+    `${t(i18n.sortEnergy)} -`,
+    `${t(i18n.sortAmount)} +`,
+    `${t(i18n.sortAmount)} -`,
+    `${t(i18n.sortTeam)} +`,
+    `${t(i18n.sortTeam)} -`,
+    `${t(i18n.sortLevel)} +`,
+    `${t(i18n.sortLevel)} -`,
+    `${t(i18n.sortAnotherUselessInformation)}`
   ]
 
   sorts.forEach(s => {
@@ -156,6 +157,13 @@ export default async function AddReferenceSearch() {
 
           refs.forEach(ref => {
               ref.classList.contains(Modifiers.Hidden) && ref.classList.remove(Modifiers.Hidden)
+              const params = ref.querySelector('.inventory__item-descr').textContent.split(';')
+              ref.dataset.level = params[0].split(' ')[1]
+              ref.dataset.energy = parseFloat(params[2].split(' ')[2].slice(0, -1).replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.'))
+              ref.dataset.dist = parseFloat(params[3].split(' ')[2]
+                .replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.')
+                .replace(` ${t('kilo')}${t('m')}`, 'e3'))
+              ref.dataset.guard = +(params[4]?.split(' ')[2] ?? 0)
           })
       }
 
@@ -164,10 +172,10 @@ export default async function AddReferenceSearch() {
       // ADD SORTED
       let sorted = []
       if (sortType === sorts[1]) {
-        sorted = refs.sort((a, b) => ParseMeterDistance(a) - ParseMeterDistance(b))
+        sorted = refs.sort((a, b) => a.dataset.dist - b.dataset.dist)
       }
       else if (sortType === sorts[2]) {
-        sorted = refs.sort((a, b) => ParseMeterDistance(b) - ParseMeterDistance(a))
+        sorted = refs.sort((a, b) => b.dataset.dist - a.dataset.dist)
       }
       else if (sortType === sorts[3]) {
         sorted = refs.sort((a, b) => ParseTeam(a) - ParseTeam(b) || ParseEnergy(a) - ParseEnergy(b))
@@ -188,10 +196,13 @@ export default async function AddReferenceSearch() {
         sorted = refs.sort((a, b) => ParseTeam(b) - ParseTeam(a))
       }
       else if (sortType === sorts[9]) {
-        sorted = refs.sort((a, b) => ParseLevel(a) - ParseLevel(b))
+        sorted = refs.sort((a, b) => a.dataset.level - b.dataset.level)
       }
-      else  {
-        sorted = refs.sort((a, b) => ParseLevel(b) - ParseLevel(a))
+      else if (sortType === sorts[10])  {
+        sorted = refs.sort((a, b) => b.dataset.level - a.dataset.level)
+      }
+      else {
+        sorted = refs.sort((a, b) => b.dataset.guard - a.dataset.guard)
       }
 
       sorted.forEach(ref => {
@@ -215,15 +226,6 @@ export default async function AddReferenceSearch() {
 }
 
 const DistanceRegex = new RegExp(String.raw`(\d*\.?\d+?)\s?(${t('kilo')}?)${t('m')}`, 'i')
-const ParseMeterDistance = (ref) => {
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-    const [_, dist, kilo] = ref.querySelector('.inventory__item-descr')
-        .lastChild.textContent
-        .replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.')
-        .match(DistanceRegex)
-
-    return kilo === t('kilo') ? dist * 1e3 : +dist
-}
 
 const ParseEnergy = (ref) => +ref.querySelector('.inventory__item-descr')
 .childNodes[4]?.textContent

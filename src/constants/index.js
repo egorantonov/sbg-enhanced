@@ -334,6 +334,10 @@ export const Translations = {
     en: 'By level',
     ru: 'По уровню'
   },
+  sortAnotherUselessInformation: {
+    en: 'By guard',
+    ru: 'По гарду'
+  },
   hacker: {
     en: 'Discoveries Done',
     ru: 'Проведено изучений'
