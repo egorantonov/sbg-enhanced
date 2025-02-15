@@ -1,6 +1,6 @@
 import { EUI, Elements, Events, Modifiers, Nodes, Sleep, t, Translations as i18n } from '../constants'
 import { LongTouchEventListener } from '../helpers'
-import { createToast, Logger } from '../utils'
+import { showToast, Logger } from '../utils'
 
 let Team = 0
 export default async function AddReferenceSearch() {
@@ -108,7 +108,7 @@ export default async function AddReferenceSearch() {
 
   LongTouchEventListener(sort, () => {
     localStorage.removeItem('refs-cache')
-    createToast('♻ Refs cache cleared')?.showToast()
+    showToast('♻ Refs cache cleared')
   })
 
   sort.addEventListener(Events.onChange, async (e) => {
@@ -134,6 +134,13 @@ export default async function AddReferenceSearch() {
       refs = getRefs()
 
       Logger.log('Loaded refs nodes')
+
+      if (sortType === sorts[5] || sortType === sorts[6]) {
+        refs.forEach(ref => {
+          ref.dataset.amount = ParseAmount(ref)
+        })
+      }
+
       if (sortType !== sorts[5] && sortType !== sorts[6] && refs.filter(ref => !ref.classList.contains(Modifiers.Loaded)).length !== 0) {
 
           Logger.log('Fetching info from server')
@@ -155,15 +162,22 @@ export default async function AddReferenceSearch() {
               await Sleep(250)
           }
 
+          const gs = t(i18n.groupSeparator)
+          const ds = t(i18n.decimalSeparator)
+          const kilo = t(i18n.kilo)
+          const m = t(i18n.m)
+          const DistanceRegex = new RegExp(String.raw`(\s)|(${gs})|(${m})`, 'g')
           refs.forEach(ref => {
               ref.classList.contains(Modifiers.Hidden) && ref.classList.remove(Modifiers.Hidden)
               const params = ref.querySelector('.inventory__item-descr').textContent.split(';')
               ref.dataset.level = params[0].split(' ')[1]
-              ref.dataset.energy = parseFloat(params[2].split(' ')[2].slice(0, -1).replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.'))
-              ref.dataset.dist = parseFloat(params[3].split(' ')[2]
-                .replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.')
-                .replace(` ${t('kilo')}${t('m')}`, 'e3'))
               ref.dataset.guard = +(params[4]?.split(' ')[2] ?? 0)
+              ref.dataset.dist = parseFloat(params[3].split(' ')[2]
+              .replace(DistanceRegex, '')
+              .replace(ds, '.')
+              .replace(kilo, 'e3'))
+              ref.dataset.team = ParseTeam(ref)
+              ref.dataset.energy = parseFloat(params[2].split(' ')[2].slice(0, -1).replace(gs,'').replace(ds,'.')) // при зарядке не обновляется
           })
       }
 
@@ -178,22 +192,22 @@ export default async function AddReferenceSearch() {
         sorted = refs.sort((a, b) => b.dataset.dist - a.dataset.dist)
       }
       else if (sortType === sorts[3]) {
-        sorted = refs.sort((a, b) => ParseTeam(a) - ParseTeam(b) || ParseEnergy(a) - ParseEnergy(b))
+        sorted = refs.sort((a, b) => a.dataset.team - b.dataset.team || ParseEnergy(a) - ParseEnergy(b))
       }
       else if (sortType === sorts[4]) {
-        sorted = refs.sort((a, b) => ParseTeam(a) - ParseTeam(b) || ParseEnergy(b) - ParseEnergy(a))
+        sorted = refs.sort((a, b) => a.dataset.team - b.dataset.team || ParseEnergy(b) - ParseEnergy(a))
       }
       else if (sortType === sorts[5]) {
-        sorted = refs.sort((a, b) => ParseAmount(a) - ParseAmount(b))
+        sorted = refs.sort((a, b) => a.dataset.amount - b.dataset.amount)
       }
       else if (sortType === sorts[6]) {
-        sorted = refs.sort((a, b) => ParseAmount(b) - ParseAmount(a))
+        sorted = refs.sort((a, b) => b.dataset.amount - a.dataset.amount)
       }
       else if (sortType === sorts[7]) {
-        sorted = refs.sort((a, b) => ParseTeam(a) - ParseTeam(b))
+        sorted = refs.sort((a, b) => a.dataset.team - b.dataset.team)
       }
       else if (sortType === sorts[8]) {
-        sorted = refs.sort((a, b) => ParseTeam(b) - ParseTeam(a))
+        sorted = refs.sort((a, b) => b.dataset.team - a.dataset.team)
       }
       else if (sortType === sorts[9]) {
         sorted = refs.sort((a, b) => a.dataset.level - b.dataset.level)
@@ -220,16 +234,16 @@ export default async function AddReferenceSearch() {
       const rs = duration < 50 ? refs.length : `${refs.length}\u{a0}×\u{a0}${+(duration/1000).toFixed(1)}s`
       Logger.log(rs)
       sort.style.filter = 'none'
-      createToast(rs)?.showToast()
+      showToast(rs)
       sort.disabled = false
   })
 }
 
-const DistanceRegex = new RegExp(String.raw`(\d*\.?\d+?)\s?(${t('kilo')}?)${t('m')}`, 'i')
+// const DistanceRegex = new RegExp(String.raw`(\d*\.?\d+?)\s?(${t('kilo')}?)${t('m')}`, 'i')
 
 const ParseEnergy = (ref) => +ref.querySelector('.inventory__item-descr')
-.childNodes[4]?.textContent
-.replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.')
+.childNodes[4]?.textContent.replace(',','.')
+//.replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.') // когда точка не захвачена [4] попадает на ноду ядер (==0)
 
 const ParseAmount = (ref) => {
   const text = ref.querySelector('.inventory__item-title').innerText
@@ -241,6 +255,6 @@ const ParseTeam = (ref) => {
     return text === Team ? -1 : text 
 }
 
-const ParseLevel = (ref) => {
-    return +ref.querySelector('.inventory__item-descr').firstChild.style.color.slice(12,-1)
-}
+// const ParseLevel = (ref) => {
+//     return +ref.querySelector('.inventory__item-descr').firstChild.style.color.slice(12,-1)
+// }

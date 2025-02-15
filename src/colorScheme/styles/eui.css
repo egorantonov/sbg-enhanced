@@ -412,6 +412,20 @@ body, input, select, button {
   color: #fff;
 }
 
+.inventory__controls {
+  min-height: 45px;
+}
+
+.inventory__content[data-tab="3"]~.inventory__controls {
+  gap: 0.1em;
+  overflow: auto;
+  border-radius: var(--radius5);
+}
+
+.inventory__content[data-tab="3"]~.inventory__controls>* {
+  border-radius: 0px !important;
+}
+
 input[type="range"] {
   padding: 0 !important;
 }
@@ -526,6 +540,7 @@ input[type="range"] {
   border-top-color: var(--sbgcui-branding-color, var(--selection));
   border-bottom-left-radius: var(--radius10);
   border-bottom-right-radius: var(--radius10);
+  min-height: 45px;
 }
 
 .inventory__tab.active {

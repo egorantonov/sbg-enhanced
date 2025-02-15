@@ -190,7 +190,7 @@ export const GetLocale = () => {
   return lang ?? SBG.DefaultLang
 }
 
-//const NumberFormat = Intl.NumberFormat(GetLocale()).formatToParts(1111.1)
+const NumberFormat = Intl.NumberFormat(GetLocale()).formatToParts(1234.56)
 export const Translations = {
   incompatibility: {
     en: 'Enhanced UI may be incompatible with current version of SBG',
@@ -245,14 +245,14 @@ export const Translations = {
     ru: 'с',
   },
   decimalSeparator: {
-    en: ',',
-    ru: ','
-    // [GetLocale()]: NumberFormat.find(x => x.type==='decimal').value ?? '.' // Formatter changed to RU format
+    // en: '.',
+    // ru: ','
+    [GetLocale()]: NumberFormat.find(x => x.type==='decimal').value ?? '.'
   },
   groupSeparator: {
-    en: ' ',
-    ru: ' '
-    // [GetLocale()]: NumberFormat.find(x => x.type==='group').value ?? ',' // Formatter changed to RU format
+    // en: ',',
+    // ru: ' '
+    [GetLocale()]: NumberFormat.find(x => x.type==='group').value ?? ','
   },
   deploy: {
     en: 'Deploy',

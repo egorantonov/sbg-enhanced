@@ -10,7 +10,7 @@ export function createToast(text = '', layout = 'bottom center', duration = 3000
 	if (!window.Toastify) return
 	const [gravity, position] = layout.split(/\s+/)
 	const toast = window.Toastify({
-		text,
+		text: text.toString(),
 		duration,
 		gravity,
 		position,
@@ -23,7 +23,7 @@ export function createToast(text = '', layout = 'bottom center', duration = 3000
 
 export function showToast(text = '', layout = 'bottom center', duration = 3000, className = 'interaction-toast') {
 	if (!window.Toastify) return
-	createToast(text, layout, duration, className).showToast()
+	createToast(text.toString(), layout, duration, className).showToast()
 }
 
 export const Logger = {

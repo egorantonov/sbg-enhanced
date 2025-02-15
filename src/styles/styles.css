@@ -755,6 +755,8 @@ input[data-type="reference-search"] {
 
 .inventory__content[data-tab="3"] {
   gap: 6px !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .inventory__content[data-tab="3"] .inventory__item {
@@ -776,6 +778,19 @@ input[data-type="reference-search"] {
 /* Replace 'R' button symbol with '⚡' emoji symbol */
 :root {
   --sbgcui-display-r-button: none;
+}
+
+.inventory__content[data-tab="3"] .inventory__item-controls {
+  order: 1;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.inventory__item-left {
+  order: 2;
 }
 
 .inventory__content[data-tab="3"] .inventory__item-controls::after {
