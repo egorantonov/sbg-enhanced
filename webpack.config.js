@@ -21,7 +21,8 @@ module.exports = {
       match: 'https://sbg-game.ru/app/*',
       iconURL: 'https://raw.githubusercontent.com/egorantonov/sbg-enhanced/master/assets/script/64.png',
       icon64URL: 'https://raw.githubusercontent.com/egorantonov/sbg-enhanced/master/assets/script/64.png',
-      grant: 'none'
+      grant: 'none',
+      license: 'MIT'
     }
   })],
   module: {
