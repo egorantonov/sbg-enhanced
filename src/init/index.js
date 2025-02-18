@@ -162,7 +162,7 @@ async function ExecuteScript () {
 export async function RunWithOnlineUpdate() {
   if (isFatalError()) return
 
-  if (!document.getElementById(EUI.Progress)) {
+  if (!document.getElementById(EUI.Progress) && !IsWebView()) {
     Progress()
   }
 

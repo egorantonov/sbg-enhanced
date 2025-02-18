@@ -1,4 +1,5 @@
 import { EUI, Elements, Events, Modifiers, Nodes, t, Translations as i18n } from '../constants'
+import { Logger } from '../utils'
 
 export default function SpeedoMeter() {
 
@@ -57,7 +58,6 @@ export default function SpeedoMeter() {
       speedometer.textContent = speed
       speedometer.style.transform = speed == 0 ? 'translateX(75px)' : 'none'
     }
-    console.log(speed)
   }
 
   const Enable = () => {
@@ -66,7 +66,7 @@ export default function SpeedoMeter() {
     selfInfo.style.marginRight = '64px'
     speedometer.textContent = ''
     watchId = navigator.geolocation.watchPosition(watchSpeed)
-    console.log(`Watch Id is: ${watchId}`)
+    Logger.log(`Watch Id is: ${watchId}`)
 
     if (CUISpeed) {
       CUISpeed.style.display = 'none'
@@ -79,7 +79,7 @@ export default function SpeedoMeter() {
     selfInfo.style.marginRight = 'initial'
     speedometer.textContent = '0'
     navigator.geolocation.clearWatch(watchId)
-    console.log(`Cleared watch with id: ${watchId}`)
+    Logger.log(`Cleared watch with id: ${watchId}`)
 
     if (CUISpeed) {
       CUISpeed.style.display = 'block'
@@ -92,12 +92,5 @@ export default function SpeedoMeter() {
     Enable()
   }
 
-  input.addEventListener(Events.onChange, (event) => {
-    if (event.target.checked) {
-      Enable()
-    }
-    else {
-      Disable()
-    }
-  })
+  input.addEventListener(Events.onChange, e => e.target.checked ? Enable() : Disable())
 }
