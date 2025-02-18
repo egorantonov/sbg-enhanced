@@ -1,9 +1,10 @@
-import { EUI, Elements, Translations, t } from '../constants'
+import { EUI, Elements, IsWebView, Translations, t } from '../constants'
 
 let currentStep = 0
 const defaultSteps = 23
 
 export function Progress() {
+  if (IsWebView()) return
   getTotal()
 
   /* CONTAINER */
@@ -19,8 +20,8 @@ export function Progress() {
     width: 100%;
     height: 100%;
     background: var(--background-transp);
-    backdrop-filter: blur(20px) saturate(0);
-    -webkit-backdrop-filter: blur(20px) saturate(0);
+    backdrop-filter: blur(50px) saturate(0);
+    -webkit-backdrop-filter: blur(50px) saturate(0);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -71,6 +72,7 @@ export function Progress() {
 }
 
 export function UpdateProgressStatus(stepText) {
+  if (IsWebView()) return
   const total = getTotal()
   const status = document.getElementById(EUI.ProgressStatus)
   let value = 100 * ++currentStep / total
@@ -81,6 +83,7 @@ export function UpdateProgressStatus(stepText) {
 }
 
 export function RemoveProgress() {
+  if (IsWebView()) return
   const container = document.getElementById(EUI.Progress)
   if (container) container.remove()
   const total = getTotal()
