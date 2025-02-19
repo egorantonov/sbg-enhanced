@@ -43,7 +43,3 @@
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
-
-#discover[data-time]:after {
-  color: var(--text);
-}

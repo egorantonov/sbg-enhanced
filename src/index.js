@@ -1,7 +1,12 @@
-import { Sleep } from './constants'
-import { RunWithOnlineUpdate } from './selfUpdate'
+import { RunWithOnlineUpdate } from './init'
 import { Debug } from './private'
 
+window.EUI = {}
 Debug && (Debug())
 
-await Sleep(1000).then(_ => RunWithOnlineUpdate())
+if (['interactive', 'complete'].includes(document.readyState)) {
+  RunWithOnlineUpdate()
+}
+else {
+  window.addEventListener('DOMContentLoaded', _ => RunWithOnlineUpdate())
+}

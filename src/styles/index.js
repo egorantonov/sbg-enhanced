@@ -1,5 +1,5 @@
 import { EUI, Elements } from '../constants'
-import styles from './styles.css'
+import styles from './styles.min.css'
 
 // adds filter styles to the canvas wrapper layers
 export default function AddStyles() {

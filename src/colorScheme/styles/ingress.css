@@ -1,27 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Coda&display=swap');
 
 :root {
-  --ingress-color: #F9FAFC;
-  --ingress-bg-color: #112025;
-  --ingress-bg-color-cc: #112025CC;
-  --ingress-bg-color-aa: #112025AA;
+  --i-color: #F9FAFC;
+  --i-bg-color: #112025;
+  --i-bg-color-cc: #112025CC;
+  --i-bg-color-aa: #112025AA;
 
-  --ingress-selection-color: #FF7C2B;
-  --ingress-selection-bg-color: #49230E77;
+  --i-selection-color: #FF7C2B;
+  --i-selection-bg-color: #49230E77;
 
-  --ingress-btn-color: #97FBFB;
-  --ingress-btn-bg-color: #20474C;
-  --ingress-btn-glow-color: #007B85;
-  --ingress-btn-border-color: #38E8E6;
+  --i-btn-color: #97FBFB;
+  --i-btn-bg-color: #20474C;
+  --i-btn-glow-color: #007B85;
+  --i-btn-border-color: #38E8E6;
 
-  --ingress-btn-hl-color: #FCD959;
-  --ingress-btn-hl-bg-color: #563F20;
-  --ingress-btn-hl-glow-color: #A07F14;
-  --ingress-btn-hl-border-color: #DAC546;
+  --i-btn-hl-color: #FCD959;
+  --i-btn-hl-bg-color: #563F20;
+  --i-btn-hl-glow-color: #A07F14;
+  --i-btn-hl-border-color: #DAC546;
 
-  --ingress-btn-disabled-color: #7E888A;
-  --ingress-btn-disabled-bg-color: #112325;
-  --ingress-btn-disabled-accent-color: #CB3C36;
+  --i-btn-disabled-color: #7E888A;
+  --i-btn-disabled-bg-color: #112325;
+  --i-btn-disabled-accent-color: #CB3C36;
+}
+
+body, input, select, button,
+#bottom #i-share::after, #bottom #i-copy-pos::after {
+  font-family: 'Coda', system-ui, -apple-system, BlinkMacSystemFont, 'Manrope', sans-serif;
 }
 
 /* BADGES */
@@ -49,6 +54,7 @@
 .inventory__manage-amount button,
 .notifs__entry-view.icon-button, /* View point [notification list] */
 input:not(input[name^="maxAmountInBag"]), /* CUI Compatibility */
+.cui-clear-cache-button, /* CUI Compatibility */
 select {
   border-style: solid;
   text-transform: uppercase;
@@ -58,8 +64,6 @@ select {
 #discover, #deploy, #repair, #draw {
   position: relative;
 }
-
-
 
 #eui-sort:disabled {
   opacity: 0.7;
@@ -89,12 +93,13 @@ select {
 .pr-buttons>button,
 .sbgcui_compare_stats>button,
 .inventory__manage-amount button,
+#eui-console-execute,
 .notifs__entry-view.icon-button, /* View point [notification list] */
-input:not(input[name^="maxAmountInBag"]), .sbgcui_drawslider_sort, /* CUI Compatibility */
+input:not(input[name^="maxAmountInBag"]), .sbgcui_drawslider_sort, .sbgcui_drawslider_fit, .cui-clear-cache-button, /* CUI Compatibility */
 select {
-  color: var(--ingress-btn-color);
-  background: linear-gradient(to top, var(--ingress-btn-glow-color) 0%, var(--ingress-btn-bg-color) 30%, var(--ingress-btn-bg-color) 70%, var(--ingress-btn-glow-color) 100%), var(--ingress-btn-bg-color);
-  border-color: var(--ingress-btn-border-color);
+  color: var(--i-btn-color);
+  background: linear-gradient(to top, var(--i-btn-glow-color) 0%, var(--i-btn-bg-color) 30%, var(--i-btn-bg-color) 70%, var(--i-btn-glow-color) 100%), var(--i-btn-bg-color);
+  border-color: var(--i-btn-border-color);
 }
 
 input[type="search"] {
@@ -102,20 +107,20 @@ input[type="search"] {
 }
 
 option {
-  background-color: var(--ingress-btn-bg-color);
+  background-color: var(--i-btn-bg-color);
 }
 
 option:checked { /* WTF? checked is non-documented??? */
-  color: var(--ingress-btn-hl-color);
-  background-color: var(--ingress-btn-hl-bg-color);
+  color: var(--i-btn-hl-color);
+  background-color: var(--i-btn-hl-bg-color);
 }
 
 .i-buttons>button::before,
 #draw-slider-close::before,
 #attack-slider-close::before {
-  background-color: var(--ingress-btn-border-color);
-  border-color: var(--ingress-btn-border-color);
-  box-shadow: inset 2px 2px 0 0px var(--ingress-btn-glow-color);
+  background-color: var(--i-btn-border-color);
+  border-color: var(--i-btn-border-color);
+  box-shadow: inset 2px 2px 0 0px var(--i-btn-glow-color);
 }
 
 #attack-slider-fire,
@@ -125,24 +130,24 @@ option:checked { /* WTF? checked is non-documented??? */
 #layers-config__save,
 #classic-login,
 #form__buttons-login {
-  color: var(--ingress-btn-hl-color) !important;
-  background: linear-gradient(to top, var(--ingress-btn-hl-glow-color) 0%, var(--ingress-btn-hl-bg-color) 30%, var(--ingress-btn-hl-bg-color) 70%, var(--ingress-btn-hl-glow-color) 100%), var(--ingress-btn-hl-bg-color) !important;
-  border-color: var(--ingress-btn-hl-border-color) !important;
+  color: var(--i-btn-hl-color) !important;
+  background: linear-gradient(to top, var(--i-btn-hl-glow-color) 0%, var(--i-btn-hl-bg-color) 30%, var(--i-btn-hl-bg-color) 70%, var(--i-btn-hl-glow-color) 100%), var(--i-btn-hl-bg-color) !important;
+  border-color: var(--i-btn-hl-border-color) !important;
 }
 
 .inventory__item-controls::after {
   border-radius: 0px !important;
-  box-shadow: inset 0px 0px 0px 2px var(--ingress-btn-hl-border-color);
-  color: var(--ingress-btn-hl-color) !important;
-  background: linear-gradient(to top, var(--ingress-btn-hl-glow-color) 0%, var(--ingress-btn-hl-bg-color) 30%, var(--ingress-btn-hl-bg-color) 70%, var(--ingress-btn-hl-glow-color) 100%) !important;
+  box-shadow: inset 0px 0px 0px 2px var(--i-btn-hl-border-color);
+  color: var(--i-btn-hl-color) !important;
+  background: linear-gradient(to top, var(--i-btn-hl-glow-color) 0%, var(--i-btn-hl-bg-color) 30%, var(--i-btn-hl-bg-color) 70%, var(--i-btn-hl-glow-color) 100%) !important;
 }
 
 #attack-slider-fire::before, 
 #eui-attack-slider-fire::before, 
 #draw-slider-confirm::before {
-  background-color: var(--ingress-btn-hl-border-color);
-  border-color: var(--ingress-btn-hl-border-color);
-  box-shadow: inset 2px 2px 0 0px var(--ingress-btn-hl-glow-color);
+  background-color: var(--i-btn-hl-border-color);
+  border-color: var(--i-btn-hl-border-color);
+  box-shadow: inset 2px 2px 0 0px var(--i-btn-hl-glow-color);
 }
 
 #attack-slider-fire[disabled], #draw-slider-confirm[disabled] {
@@ -151,51 +156,61 @@ option:checked { /* WTF? checked is non-documented??? */
   backdrop-filter: var(--blur5);
 }
 
-.i-buttons>button[disabled], .draw-slider-buttons>button[disabled] {
-  color: var(--ingress-btn-disabled-color);
-  background: var(--ingress-btn-disabled-bg-color);
-  border-color: var(--ingress-btn-disabled-accent-color);
+.i-buttons>button[disabled], 
+.draw-slider-buttons>button[disabled],
+#draw[sbgcui-possible-lines="0"] { /* CUI Compatibility */
+  color: var(--i-btn-disabled-color);
+  background: var(--i-btn-disabled-bg-color);
+  border-color: var(--i-btn-disabled-accent-color);
 }
 
-.i-buttons>button[disabled]::before, .draw-slider-buttons>button[disabled]::before {
-  background-color: var(--ingress-btn-disabled-accent-color);
-  border-color: var(--ingress-btn-disabled-accent-color);
-  box-shadow: inset 2px 2px 0 0px var(--ingress-btn-disabled-bg-color);
+.i-buttons>button[disabled]::before, 
+.draw-slider-buttons>button[disabled]::before,
+#draw[sbgcui-possible-lines="0"]::before { /* CUI Compatibility */
+  background-color: var(--i-btn-disabled-accent-color);
+  border-color: var(--i-btn-disabled-accent-color);
+  box-shadow: inset 2px 2px 0 0px var(--i-btn-disabled-bg-color);
 }
 
 select[data-setting='theme']:disabled {
   filter: opacity(0.5) !important;
 }
 
-.popup-close[data-round=true], #inventory__close, .splide__arrow {
-  color: var(--ingress-btn-hl-color) !important;
-  background: var(--ingress-btn-hl-bg-color) !important;
-  box-shadow: inset 0px 0px 6px 3px var(--ingress-btn-hl-glow-color) !important;
-  border-color: var(--ingress-btn-hl-border-color) !important;
+.popup-close[data-round=true], #inventory__close, .splide__arrow,
+.sbgcui_log-close, #sbgcui_hide_viewer { /* CUI Compatibility */
+  color: var(--i-btn-hl-color) !important;
+  background: var(--i-btn-hl-bg-color) !important;
+  box-shadow: inset 0px 0px 6px 3px var(--i-btn-hl-glow-color) !important;
+  border-color: var(--i-btn-hl-border-color) !important;
 }
 
 .splide__arrow svg {
-  fill: var(--ingress-btn-hl-color);
+  fill: var(--i-btn-hl-color);
 }
 
 .ol-control {
   border-radius: 0 !important;
 }
 
-.ol-control button {
-  border: 1px solid var(--ingress-btn-border-color) !important;
-  color: var(--ingress-btn-color) !important;
-  background-color: var(--ingress-btn-bg-color) !important;
+.ol-control button, #eui-hide,
+.sbgcui_log-buttons>button, #sbgcui_batch_remove { /* CUI Compatibility */
+  border: 1px solid var(--i-btn-border-color) !important;
+  color: var(--i-btn-color) !important;
+  background-color: var(--i-btn-bg-color) !important;
   border-radius: 0 !important;
-  box-shadow: inset 0px 0px 6px 3px var(--ingress-btn-glow-color) !important;
+  box-shadow: inset 0px 0px 6px 3px var(--i-btn-glow-color) !important;
 }
 
 #ops {
-  border: 1px solid var(--ingress-btn-hl-border-color) !important;
-  color: var(--ingress-btn-hl-color) !important;
-  background-color: var(--ingress-btn-hl-bg-color) !important;
+  border: 1px solid var(--i-btn-hl-border-color) !important;
+  color: var(--i-btn-hl-color) !important;
+  background-color: var(--i-btn-hl-bg-color) !important;
   border-radius: 0 !important;
-  box-shadow: inset 0px 0px 6px 3px var(--ingress-btn-hl-glow-color) !important;
+  box-shadow: inset 0px 0px 6px 3px var(--i-btn-hl-glow-color) !important;
+}
+
+#eui-hide, #ops {
+  min-height: 64px;
 }
 
 .ol-zoom .ol-zoom-in {
@@ -205,17 +220,17 @@ select[data-setting='theme']:disabled {
 /* SLIDER ITEMS */
 
 .draw-slider-wrp .splide__slide.is-active .refs-list__image>div {
-  box-shadow: inset -8px 0px 0px -5px  var(--ingress-selection-color),
-      inset -10px 0px 8px -6px  var(--ingress-selection-bg-color),
-      inset 8px 0px 0px -5px  var(--ingress-selection-color),
-      inset 10px 0px 8px -6px  var(--ingress-selection-bg-color);
+  box-shadow: inset -8px 0px 0px -5px  var(--i-selection-color),
+      inset -10px 0px 8px -6px  var(--i-selection-bg-color),
+      inset 8px 0px 0px -5px  var(--i-selection-color),
+      inset 10px 0px 8px -6px  var(--i-selection-bg-color);
 }
 
 #catalysers-list>.splide__slide.is-active, #cores-list>.splide__slide.is-active{
-  box-shadow: inset -8px 0px 0px -5px var(--ingress-selection-color),
-      inset -10px 0px 8px -6px var(--ingress-selection-bg-color),
-      inset 8px 0px 0px -5px var(--ingress-selection-color),
-      inset 10px 0px 8px -6px var(--ingress-selection-bg-color);
+  box-shadow: inset -8px 0px 0px -5px var(--i-selection-color),
+      inset -10px 0px 8px -6px var(--i-selection-bg-color),
+      inset 8px 0px 0px -5px var(--i-selection-color),
+      inset 10px 0px 8px -6px var(--i-selection-bg-color);
   border-radius: 5px;
   -webkit-backdrop-filter: var(--blur5);
   backdrop-filter: var(--blur5);
@@ -249,17 +264,17 @@ select[data-setting='theme']:disabled {
 #draw-slider,
 #attack-slider,
 .attack-slider-highlevel {
-  color: var(--ingress-color);
-  background-color: var(--ingress-bg-color-cc);
+  color: var(--i-color);
+  background-color: var(--i-bg-color-cc);
   -webkit-backdrop-filter: var(--blur5);
   backdrop-filter: var(--blur5);
   border-radius: 0px;
-  border-color: var(--ingress-btn-border-color) !important;
+  border-color: var(--i-btn-border-color) !important;
 }
 
 .i-stat__core.selected {
-  border-color: var(--ingress-btn-border-color) !important;
-  box-shadow: 0px 0px 2px 2px var(--ingress-btn-border-color);
+  border-color: var(--i-btn-border-color) !important;
+  box-shadow: 0px 0px 2px 2px var(--i-btn-border-color);
 }
 
 .pr-stat:not(:last-child) {
@@ -284,45 +299,78 @@ select[data-setting='theme']:disabled {
 }
 
 #discover[data-time]:after {
-  color: var(--ingress-color);
+  color: var(--i-color);
 }
 
 .discover-progress {
   border-radius: 0px !important;
-  background-color: var(--ingress-btn-disabled-accent-color);
+  background-color: var(--i-btn-disabled-accent-color);
 }
 
 .deploy-slider-error {
-  background-color: var(--ingress-bg-color-aa);
+  background-color: var(--i-bg-color-aa);
 }
 
+/* POINT INFO */
+@media screen and (max-height: 668px) and (max-width: 384px)  {
+  .i-image-box {
+    min-height: 2em !important;
+  }
+
+  .i-stat__entry {
+    font-size: smaller;
+  }
+
+  #discover, #deploy, #eui-repair, #draw, #draw[sbgcui-possible-lines]::after {
+    font-size: smaller;
+    font-weight: lighter;
+    min-height: 35px;
+  }
+
+  .popup-close[data-round=true], #inventory__close[data-round=true] {
+    font-size: 1.25em!important;
+  }
+
+  .sbgcui_navbutton, .sbgcui_jumpToButton {
+    font-size: 20px;
+  }
+
+  .catalysers-list__amount, .cores-list__amount {
+    font-size: 0.75em;
+  }
+}
 
 /* SETTINGS */
 
 input:checked {
-  filter: drop-shadow(0px 0px 6px var(--ingress-btn-border-color));
+  filter: drop-shadow(0px 0px 6px var(--i-btn-border-color));
 }
 
 input[type='range'] {
-  background: var(--ingress-btn-bg-color) !important;
+  background: var(--i-btn-bg-color) !important;
   border-radius: 0px !important;
-  border: 2px solid var(--ingress-btn-border-color) !important;
+  border: 2px solid var(--i-btn-border-color) !important;
 }
 
 input[type='range']::-webkit-slider-thumb {
   border-radius: 0px;
-  background: var(--ingress-btn-border-color);
-  box-shadow: -250px 0 0 250px var(--ingress-btn-border-color);
+  background: var(--i-btn-border-color);
+  box-shadow: -250px 0 0 250px var(--i-btn-border-color);
 }
 
 input[type='range']::-moz-range-thumb {
   border-radius: 0px;
-  background: var(--ingress-btn-border-color);
-  box-shadow: -250px 0 0 250px var(--ingress-btn-border-color);
+  background: var(--i-btn-border-color);
+  box-shadow: -250px 0 0 250px var(--i-btn-border-color);
 }
 
 /* CUI */
-.sbgcui_refs-sort-button {
-  border-width: revert;
-  border-radius: 0;
+.sbgcui_log {
+  background-color: var(--i-bg-color-cc);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.sbgcui_log-close, #sbgcui_hide_viewer {
+  border: 2px solid !important;
 }

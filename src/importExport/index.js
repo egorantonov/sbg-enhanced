@@ -1,16 +1,16 @@
 import { /*Backend,*/ ClientData, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t } from '../constants'
-//import { createToast } from '../utils'
+import { getSbgSettings, setSbgSettings } from '../utils'
 //const { Host, Endpoints } = Backend
 
 export default async function ImportExport() {
-  if (!localStorage.getItem('auth')){
+  if (!localStorage.getItem('auth') || IsWebView()){
     return
   }
 
   const Week = 604800000
   const ua = ClientData.GetUserAgentData
   const userAgent = `${ua.platform} ${ua.browser}${ua.mobile ? ' (Mobile)' : ''}`
-  await Sleep(500) // make sure other async functions started earlier, e.g. Informer
+  await Sleep(100) // make sure other async functions started earlier, e.g. Informer
 
   const GetSettingsAsJson = () => {
     const itemsToExport = Object.entries(localStorage)
@@ -47,7 +47,7 @@ export default async function ImportExport() {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const GetCloudData = async (userId) => {
-    return JSON.parse(localStorage.getItem('settings')).euiSettings
+    return getSbgSettings()?.euiSettings
     /*return await fetch(`${Host}${Endpoints.Sync}?id=${userId}&userAgent=${userAgent}`)
       .then(response => response.json())
       .then(json => { return json.settings })
@@ -59,9 +59,9 @@ export default async function ImportExport() {
     const settings = GetSettingsAsJson()
     const settingsCache = localStorage.getItem(EUI.SettingsCache)
     if (!settingsCache || settings !== settingsCache) {
-      let sbgSettings = JSON.parse(localStorage.getItem('settings'))
+      let sbgSettings = getSbgSettings()
       sbgSettings.euiSettings = settings
-      localStorage.setItem('settings', JSON.stringify(sbgSettings))
+      setSbgSettings(sbgSettings)
       /*await fetch(`${Host}${Endpoints.Sync}`,
       {
         method: 'POST',
@@ -143,7 +143,7 @@ export default async function ImportExport() {
   }
 
   const about = Nodes.SettingSections.at(3)
-  if (!IsWebView() && about) {
+  if (about) {
     const key = document.createElement(Elements.Span)
     key.innerText = t('importExport')
     const value = document.createElement(Elements.Div)

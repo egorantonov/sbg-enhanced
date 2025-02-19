@@ -1,6 +1,7 @@
 import { version } from '../../package.json'
 import { getUserAgentData } from '../utils/userAgentData'
 import { getGPU } from '../utils/gpu'
+import { getSbgSettings } from '../utils'
 
 export const Backend = {
   Host: 'https://sbg-settings.egorantonov.workers.dev',
@@ -12,10 +13,11 @@ export const Backend = {
 export const SBG = {
   OutboundLinksLimit: 30,
   DefaultCloseButtonText: '[x]',
-  VersionHeader: 'sbg-version',
-  CompatibleVersion: '0.4.2-3',
+  VersionHeader: 'Sbg-Version',
+  CompatibleVersion: '0.4.4',
   Settings: 'settings',
   DefaultLang: 'en',
+  GooglePhoto: 'https://lh3.googleusercontent.com/'
 }
 
 export const EUI = {
@@ -42,7 +44,14 @@ export const EUI = {
   PerformanceMode: 'eui-perf-mode',
   Actions: 'eui-actions',
   ActionsCurrent: '__eui-actions-current',
-  ActionsLog: '__eui-actions-log'
+  ActionsLog: '__eui-actions-log',
+  Avatar: 'eui-avatar',
+  Progress: 'eui-progress',
+  ProgressText: 'eui-progress-text',
+  ProgressStepsCount: '__eui-progress-steps-count',
+  ProgressStatus: 'eui-progress-status',
+  SpeedoMeter: 'eui-speedometer',
+  Team: '__eui-team' // user can flip color
 }
 
 export const Events = {
@@ -53,7 +62,9 @@ export const Events = {
   onTouchStart: 'touchstart',
   onTouchMove: 'touchmove',
   onTouchEnd: 'touchend',
-  onBackButton: 'backbutton'
+  onBackButton: 'backbutton',
+  onScroll: 'scroll',
+  onProfileStatsChanged: 'profileStatsChanged'
 }
 
 export const Modifiers = {
@@ -79,7 +90,8 @@ export const Elements = {
   CheckBox: 'checkbox',
   Button: 'button',
   Image: 'img',
-  Link: 'a'
+  Link: 'a',
+  Canvas: 'canvas'
 }
 
 export const Proposed = '-proposed'
@@ -134,6 +146,7 @@ class LazyNodes {
   get Discover() { return this.GetId('discover') }
   get Settings() { return this.GetId('settings') }
   get SelfName() { return this.GetId('self-info__name') }
+  get PrName() { return this.GetId('pr-name')}
   get Leaderboard() { return this.GetId('leaderboard') }
   get ToggleFollow() { return this.GetId('toggle-follow') }
   get InfoPopupClose() { return this.GetSelector('div.info.popup>button.popup-close') }
@@ -157,6 +170,12 @@ export const Nodes = new LazyNodes()
 
 export const IsPrivate = () => document.getElementById('self-info__name').innerText === String.fromCharCode(101, 121, 101, 109, 97, 120)
 export const IsWebView = () => window.navigator.userAgent.toLowerCase().includes('wv')
+const cuiElements = () => window.document.querySelectorAll('*[class^="sbgcui"]')
+const lastElement = () => window.document.querySelector('.sbgcui_inventory__ma-shortcuts')
+export const CUI = {
+  Detected: () => window.cuiStatus || window.TeamColors || window.Catalysers || window.attack_slider || window.deploy_slider || window.draw_slider || window.requestEntities || window.cl || window.onerror || cuiElements()?.length, // || getSbgSettings()?.base // нестабильно, тк остаётся в localStorage
+  Loaded: () => window.cuiStatus == 'loaded' || window.TeamColors && window.Catalysers && window.attack_slider && window.deploy_slider && window.draw_slider && window.requestEntities && cuiElements()?.length && lastElement() && !document.querySelector('button.ol-rotate-reset')
+}
 
 /**
  * 
@@ -166,16 +185,20 @@ export const IsWebView = () => window.navigator.userAgent.toLowerCase().includes
 export const Sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const GetLocale = () => {
-  let lang = JSON.parse(localStorage.getItem(SBG.Settings))?.lang
-  lang === 'sys' && (lang = navigator.language?.slice(0,2) ?? SBG.DefaultLang)
+  let lang = getSbgSettings()?.lang
+  !!lang && lang === 'sys' && (lang = navigator.language?.slice(0,2) ?? SBG.DefaultLang)
   return lang ?? SBG.DefaultLang
 }
 
-//const NumberFormat = Intl.NumberFormat(GetLocale()).formatToParts(1111.1)
-const Translations = {
+const NumberFormat = Intl.NumberFormat(GetLocale()).formatToParts(1234.56)
+export const Translations = {
   incompatibility: {
     en: 'Enhanced UI may be incompatible with current version of SBG',
     ru: 'Enhanced UI может быть несовместим с текущей версией игры',
+  },
+  portraitScreen: {
+    en: 'Please, rotate screen to portrait mode',
+    ru: 'Переверните экран в вертикальное положение',
   },
   enhancedUIVersion: {
     en: 'Enhanced UI Version',
@@ -193,17 +216,9 @@ const Translations = {
     en: 'Lines opacity',
     ru: 'Прозрачность линий',
   },
-  linesOpacityMessage: {
-    en: 'Enable lines layer to edit opacity',
-    ru: 'Включите слой линий для редактирования прозрачности',
-  },
   regionsOpacity: {
     en: 'Regions opacity',
     ru: 'Прозрачность регионов',
-  },
-  regionsOpacityMessage: {
-    en: 'Enable regions layer to edit opacity',
-    ru: 'Включите слой регионов для редактирования прозрачности',
   },
   animations: {
     en: 'Animations',
@@ -230,14 +245,14 @@ const Translations = {
     ru: 'с',
   },
   decimalSeparator: {
-    en: ',',
-    ru: ','
-    // [GetLocale()]: NumberFormat.find(x => x.type==='decimal').value ?? '.' // Formatter changed to RU format
+    // en: '.',
+    // ru: ','
+    [GetLocale()]: NumberFormat.find(x => x.type==='decimal').value ?? '.'
   },
   groupSeparator: {
-    en: ' ',
-    ru: ' '
-    // [GetLocale()]: NumberFormat.find(x => x.type==='group').value ?? ',' // Formatter changed to RU format
+    // en: ',',
+    // ru: ' '
+    [GetLocale()]: NumberFormat.find(x => x.type==='group').value ?? ','
   },
   deploy: {
     en: 'Deploy',
@@ -291,6 +306,10 @@ const Translations = {
     en: 'Enhanced UI',
     ru: 'Enhanced UI'
   },
+  themeArcade: {
+    en: 'Arcade',
+    ru: 'Аркада'
+  },
   sortName: {
     en: 'By name',
     ru: 'По названию'
@@ -314,6 +333,10 @@ const Translations = {
   sortLevel: {
     en: 'By level',
     ru: 'По уровню'
+  },
+  sortAnotherUselessInformation: {
+    en: 'By guard',
+    ru: 'По гарду'
   },
   hacker: {
     en: 'Discoveries Done',
@@ -391,25 +414,33 @@ const Translations = {
     en: 'Actions',
     ru: 'Действия'
   },
+  showActions: {
+    en: 'Show actions 🅰',
+    ru: 'Показывать действия 🅰'
+  },
   actionsCapturedMessage: {
-    en: ' captured by ',
-    ru: ' захвачена '
+    en: 'owned by ',
+    ru: 'принадлежит '
   },
   actionsNeutralizedMessage: {
-    en: ' neutralized or decayed',
-    ru: ' нейтрализована или разряжена'
+    en: 'lost owner',
+    ru: 'потеряла владельца'
   },
   actionsDiffMessage: {
     en: 'Some point changed ownership: ',
     ru: 'Несколько точек сменили владельца: '
+  },
+  actionsNeutralizedPrefix: {
+    en: 'was ',
+    ru: 'была '
   },
   actionsNeutralized: {
     en: 'neutralized',
     ru: 'нейтрализована'
   },
   actionsCapturedReplacer: {
-    en: 'captured',
-    ru: 'захвачена'
+    en: 'owned',
+    ru: 'принадлежит'
   },
   donations: {
     en: 'Donations',
@@ -430,10 +461,74 @@ const Translations = {
   cuiRoute: {
     en: 'Route',
     ru: 'Маршрут'
+  },
+  githubCheckingUpdates: {
+    en: 'Checking updates...',
+    ru: 'Проверка обновлений...'
+  },
+  githubUnavailable: {
+    en: 'Github API is unavailable. Possible network issue.',
+    ru: 'Github API недоступен. Возможная проблема c сетью.'
+  },
+  clearStore: {
+    en: 'Images cache',
+    ru: 'Кэш картинок'
+  },
+  clearStoreAction: {
+    en: 'Clear',
+    ru: 'Очистить'
+  },
+  storeCleared: {
+    en: 'Store "{0}" has been cleared',
+    ru: 'Хранилище "{0}" очищено'
+  },
+  sharePointButton: {
+    en: 'Share',
+    ru: 'Поделиться'
+  },
+  copyPosPointButton: {
+    en: 'Copy position',
+    ru: 'Координаты'
+  },
+  featureFailed: {
+    en: 'feature failed. Reason:',
+    ru: 'функции неуспешна. Причина:'
+  },
+  progress: {
+    en: 'Loading...',
+    ru: 'Загрузка...'
+  },
+  progressCui: {
+    en: 'Waiting for CUI',
+    ru: 'Ждём загрузку CUI'
+  },
+  progressCuiFailed: {
+    en: 'CUI seems to be failed! \r\nConfirm to reload or cancel to wait if connection is weak.',
+    ru: 'Похоже, CUI не удалось! \r\nПодтвердите для перезагрузки или отмените для ожидания загрузки.'
+  },
+  progressCuiFailedReload: {
+    en: 'CUI seems to be failed! Force reloading...',
+    ru: 'Похоже, CUI не работает! Принудительная перезагрузка...'
+  },
+  speedoMeter: {
+    en: 'Show speed',
+    ru: 'Показывать скорость'
   }
 }
 
-export function t(key) {
+export function t(key, params = []) {
+
+  if (typeof(key) === 'object') {
+    let result = key[GetLocale()] ?? key[SBG.DefaultLang] ?? '[Missing translation]'
+    if (params && Array.isArray(params) && params.length) {
+      for (let i = 0; i < params.length; i++) {
+        result = result.replace(`{${i}}`, params[i])
+      }
+    }
+    return result
+  }
+
+  // todo: remove after refactoring
   const entry = Translations[key]
 
   if (!entry) {
@@ -441,15 +536,21 @@ export function t(key) {
     return key
   }
 
-  let translation = entry[GetLocale()]
+  let translation = entry[GetLocale()] ?? entry[SBG.DefaultLang] ?? key
+  if (params && Array.isArray(params) && params.length) {
+    for (let i = 0; i < params.length; i++) {
+      translation.replace(`{${i}}`, params[i])
+    }
+  }
 
-  return translation ?? entry[SBG.DefaultLang] ?? key
+  return translation
 }
 
 export const Themes = {
-  Default: t('themeDefault'),
-  Ingress: t('themeIngress'),
-  Prime: t('themePrime'),
-  Mono: t('themeMono'),
-  EUI: t('themeEUI')
+  Default: t(Translations.themeDefault),
+  Ingress: t(Translations.themeIngress),
+  Prime: t(Translations.themePrime),
+  Mono: t(Translations.themeMono),
+  EUI: t(Translations.themeEUI),
+  Arcade: t(Translations.themeArcade)
 }

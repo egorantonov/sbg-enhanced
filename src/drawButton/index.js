@@ -7,6 +7,7 @@ export const PointStatsChanged = () => ({
     callback: (mutationsList) => {
         const event = new Event(onPointStatsChanged, { bubbles: true })
         mutationsList[0].target.dispatchEvent(event)
+        history.pushState({page: '1'}, 'point', '#point')
     }
 })
 

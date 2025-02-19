@@ -1,7 +1,8 @@
-import { EUI, Elements, Events, Modifiers, Nodes, Sleep, t } from '../constants'
+import { EUI, Elements, Events, Modifiers, Nodes, Sleep, t, Translations as i18n } from '../constants'
 import { LongTouchEventListener } from '../helpers'
-import { createToast } from '../utils'
+import { showToast, Logger } from '../utils'
 
+let Team = 0
 export default async function AddReferenceSearch() {
 
   const tabs = Nodes.GetSelectorAll('.inventory__tab')
@@ -36,17 +37,18 @@ export default async function AddReferenceSearch() {
   document.querySelector('.sbgcui_refs-sort-select')?.remove()
 
   const sorts = [
-    t('sortName'),
-    `${t('sortDist')} +`,
-    `${t('sortDist')} -`,
-    `${t('sortEnergy')} +`,
-    `${t('sortEnergy')} -`,
-    `${t('sortAmount')} +`,
-    `${t('sortAmount')} -`,
-    `${t('sortTeam')} +`,
-    `${t('sortTeam')} -`,
-    `${t('sortLevel')} +`,
-    `${t('sortLevel')} -`
+    t(i18n.sortName),
+    `${t(i18n.sortDist)} +`,
+    `${t(i18n.sortDist)} -`,
+    `${t(i18n.sortEnergy)} +`,
+    `${t(i18n.sortEnergy)} -`,
+    `${t(i18n.sortAmount)} +`,
+    `${t(i18n.sortAmount)} -`,
+    `${t(i18n.sortTeam)} +`,
+    `${t(i18n.sortTeam)} -`,
+    `${t(i18n.sortLevel)} +`,
+    `${t(i18n.sortLevel)} -`,
+    `${t(i18n.sortAnotherUselessInformation)}`
   ]
 
   sorts.forEach(s => {
@@ -106,12 +108,14 @@ export default async function AddReferenceSearch() {
 
   LongTouchEventListener(sort, () => {
     localStorage.removeItem('refs-cache')
-    createToast('♻ Refs cache cleared')?.showToast()
+    showToast('♻ Refs cache cleared')
   })
 
   sort.addEventListener(Events.onChange, async (e) => {
-
-      sort.disabled = true
+    Team = +localStorage.getItem(EUI.Team) || 0
+    sort.style.filter = 'saturate(0.5)'
+    sort.disabled = true
+    Logger.log('Starting sorting')
 
       performance.mark('start')
 
@@ -129,8 +133,17 @@ export default async function AddReferenceSearch() {
 
       refs = getRefs()
 
+      Logger.log('Loaded refs nodes')
+
+      if (sortType === sorts[5] || sortType === sorts[6]) {
+        refs.forEach(ref => {
+          ref.dataset.amount = ParseAmount(ref)
+        })
+      }
+
       if (sortType !== sorts[5] && sortType !== sorts[6] && refs.filter(ref => !ref.classList.contains(Modifiers.Loaded)).length !== 0) {
 
+          Logger.log('Fetching info from server')
           let hiddenSet = false
 
           while (refs.find(ref => !ref.classList.contains(Modifiers.Loaded))) {
@@ -145,46 +158,65 @@ export default async function AddReferenceSearch() {
 
               scroll()
 
-              console.log('Yet to load: ' + refs.filter(ref => !ref.classList.contains(Modifiers.Loaded)).length)
+              Logger.log('Yet to load: ' + refs.filter(ref => !ref.classList.contains(Modifiers.Loaded)).length)
               await Sleep(250)
           }
 
+          const gs = t(i18n.groupSeparator)
+          const ds = t(i18n.decimalSeparator)
+          const kilo = t(i18n.kilo)
+          const m = t(i18n.m)
+          const DistanceRegex = new RegExp(String.raw`(\s)|(${gs})|(${m})`, 'g')
           refs.forEach(ref => {
               ref.classList.contains(Modifiers.Hidden) && ref.classList.remove(Modifiers.Hidden)
+              const params = ref.querySelector('.inventory__item-descr').textContent.split(';')
+              ref.dataset.level = params[0].split(' ')[1]
+              ref.dataset.guard = +(params[4]?.split(' ')[2] ?? 0)
+              ref.dataset.dist = parseFloat(params[3].split(' ')[2]
+              .replace(DistanceRegex, '')
+              .replace(ds, '.')
+              .replace(kilo, 'e3'))
+              ref.dataset.team = ParseTeam(ref)
+              ref.dataset.energy = parseFloat(params[2].split(' ')[2].slice(0, -1).replace(gs,'').replace(ds,'.')) // при зарядке не обновляется
           })
       }
+
+      Logger.log('Sorting...')
 
       // ADD SORTED
       let sorted = []
       if (sortType === sorts[1]) {
-        sorted = refs.sort((a, b) => ParseMeterDistance(a) - ParseMeterDistance(b))
+        sorted = refs.sort((a, b) => a.dataset.dist - b.dataset.dist)
       }
       else if (sortType === sorts[2]) {
-        sorted = refs.sort((a, b) => ParseMeterDistance(b) - ParseMeterDistance(a))
+        sorted = refs.sort((a, b) => b.dataset.dist - a.dataset.dist)
       }
       else if (sortType === sorts[3]) {
-        sorted = refs.sort((a, b) => ParseEnergy(a) - ParseEnergy(b))
+        sorted = refs.sort((a, b) => a.dataset.team - b.dataset.team || ParseEnergy(a) - ParseEnergy(b))
       }
       else if (sortType === sorts[4]) {
-        sorted = refs.sort((a, b) => ParseEnergy(b) - ParseEnergy(a))
+        sorted = refs.sort((a, b) => a.dataset.team - b.dataset.team || ParseEnergy(b) - ParseEnergy(a))
       }
       else if (sortType === sorts[5]) {
-        sorted = refs.sort((a, b) => ParseAmount(a) - ParseAmount(b))
+        sorted = refs.sort((a, b) => a.dataset.amount - b.dataset.amount)
       }
       else if (sortType === sorts[6]) {
-        sorted = refs.sort((a, b) => ParseAmount(b) - ParseAmount(a))
+        sorted = refs.sort((a, b) => b.dataset.amount - a.dataset.amount)
       }
       else if (sortType === sorts[7]) {
-        sorted = refs.sort((a, b) => ParseTeam(a) - ParseTeam(b))
+        sorted = refs.sort((a, b) => a.dataset.team - b.dataset.team)
       }
       else if (sortType === sorts[8]) {
-        sorted = refs.sort((a, b) => ParseTeam(b) - ParseTeam(a))
+        sorted = refs.sort((a, b) => b.dataset.team - a.dataset.team)
       }
       else if (sortType === sorts[9]) {
-        sorted = refs.sort((a, b) => ParseLevel(a) - ParseLevel(b))
+        sorted = refs.sort((a, b) => a.dataset.level - b.dataset.level)
       }
-      else  {
-        sorted = refs.sort((a, b) => ParseLevel(b) - ParseLevel(a))
+      else if (sortType === sorts[10])  {
+        sorted = refs.sort((a, b) => b.dataset.level - a.dataset.level)
+      }
+      else {
+        sorted = refs.sort((a, b) => b.dataset.guard - a.dataset.guard)
       }
 
       sorted.forEach(ref => {
@@ -199,39 +231,30 @@ export default async function AddReferenceSearch() {
 
       performance.mark('end')
       const duration = performance.measure('time','start','end').duration
-      const rs = duration < 50 ? refs.length : `${refs.length}\u{a0}x\u{a0}${+(duration/1000).toFixed(1)}s`
-      console.log(rs)
-      createToast(rs)?.showToast()
+      const rs = duration < 50 ? refs.length : `${refs.length}\u{a0}×\u{a0}${+(duration/1000).toFixed(1)}s`
+      Logger.log(rs)
+      sort.style.filter = 'none'
+      showToast(rs)
       sort.disabled = false
   })
 }
 
-const DistanceRegex = new RegExp(String.raw`(\d*\.?\d+?)\s?(${t('kilo')}?)${t('m')}`, 'i')
-const ParseMeterDistance = (ref) => {
-    // eslint-disable-next-line no-unused-vars
-    const [_, dist, kilo] = ref.querySelector('.inventory__item-descr')
-        .lastChild.textContent
-        .replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.')
-        .match(DistanceRegex)
-
-    return kilo === t('kilo') ? dist * 1e3 : +dist
-}
+// const DistanceRegex = new RegExp(String.raw`(\d*\.?\d+?)\s?(${t('kilo')}?)${t('m')}`, 'i')
 
 const ParseEnergy = (ref) => +ref.querySelector('.inventory__item-descr')
-        .childNodes[4]?.textContent
-        .replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.')
-
+.childNodes[4]?.textContent.replace(',','.')
+//.replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.') // когда точка не захвачена [4] попадает на ноду ядер (==0)
 
 const ParseAmount = (ref) => {
-    const text = ref.querySelector('.inventory__item-title').innerText
-    return +text.slice(text.indexOf('(x')+2, text.indexOf(')'))
+  const text = ref.querySelector('.inventory__item-title').innerText
+  return +text.slice(text.indexOf('(x')+2, text.indexOf(')'))
 }
 
 const ParseTeam = (ref) => {
-    const text = ref.querySelector('.inventory__item-title').style.color.slice(11,12)
-    return text === 'n' ? 0 : +text 
+    const text = +ref.querySelector('.inventory__item-title').style.color.slice(11,12) || 0
+    return text === Team ? -1 : text 
 }
 
-const ParseLevel = (ref) => {
-    return +ref.querySelector('.inventory__item-descr').firstChild.style.color.slice(12,-1)
-}
+// const ParseLevel = (ref) => {
+//     return +ref.querySelector('.inventory__item-descr').firstChild.style.color.slice(12,-1)
+// }

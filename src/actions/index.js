@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Elements, Events, EUI, Modifiers, Nodes, t } from '../constants'
+import { Elements, Events, EUI, Modifiers, Nodes, t, Translations as i18n } from '../constants'
 import { showToast } from '../utils'
 
 let intervalId
@@ -25,6 +25,12 @@ const TEAMS = {
 
 const interval = 5 * 60e3
 const TEAM_COLORS = ['⚪','🔴','🟢','🔵']
+const init = {
+	headers: {
+		authorization: `Bearer ${localStorage.auth}`,
+		['Content-Type']: 'application/json'
+	}
+}
 
 function setCustomFetch() {
 
@@ -34,6 +40,8 @@ function setCustomFetch() {
 		// fix for latestId
 		let [capture, neutralize] = document.querySelectorAll(`div.notifs__entry[data-id="${localStorage['latest-notif'] ?? 0}"]`)
 		if (neutralize) {
+			neutralize.classList.remove('latest')
+			capture.dataset.id = x
 			nodes.push(capture)
 		}
 
@@ -42,8 +50,8 @@ function setCustomFetch() {
 			let secondRow = node.childNodes[2]
 			let toReplace = secondRow.childNodes[0].textContent
 			secondRow.childNodes[0].textContent = secondRow.childNodes[1].innerText
-				? toReplace.replace(t('actionsNeutralized'), t('actionsCapturedReplacer'))
-				: toReplace.replace('by', '').replace(t('actionsNeutralized'), t('actionsNeutralizedMessage').trimStart())
+				? toReplace.replace(t(i18n.actionsNeutralizedPrefix), '').replace(t(i18n.actionsNeutralized), t(i18n.actionsCapturedReplacer))
+				: toReplace.replace(t(i18n.actionsNeutralizedPrefix), '').replace('by', '').replace(t(i18n.actionsNeutralized), t(i18n.actionsNeutralizedMessage).trimStart())
 		}
 	}
 	const { fetch: originalFetch } = window
@@ -56,20 +64,26 @@ function setCustomFetch() {
 		if (localStorage.getItem(EUI.Actions) == 1 && resource.includes('/api/notifs') && !resource.includes('?latest')) {
 			const enrichedResponse = response.clone().json().then(data => {
 				let actions = JSON.parse(localStorage.getItem(EUI.ActionsLog) ?? '[]')
-				const latestId = data.list[0].id
+				const latestId = data?.list && data.list.length ? data.list[0].id : 0
 				for (let i = 0; i < actions.length; i++) {
 					data.list.push({
 						na: actions[i].o == 'n/a' ? '' : actions[i].o,
 						c: actions[i].c,
 						g: actions[i].g,
-						id: x, // id: data.list[0].id - 1,
+						id: x,
 						t: actions[i].t,
 						ta: actions[i].te,
-						ti: new Date(actions[i].timestamp).toISOString()
+						ti: new Date(new Date(actions[i].timestamp).setSeconds(0, 0)).toISOString()
 					})
 				}
-				data.list.sort((a,b) => Date.parse(b.ti) - Date.parse(a.ti))
-				data.list[0].id = latestId
+
+				if (data.list.length) {
+					data.list.sort((a,b) => Date.parse(b.ti) - Date.parse(a.ti))
+					if (data.list[0].id === x) {
+						data.list[0].id = latestId
+					}
+				}
+
 				return data
 			})
 
@@ -88,32 +102,29 @@ function setCustomFetch() {
  * Actions Feature
  */
 export async function Actions() {
-
-	if (!window.ol?.proj) {
-		console.log('window.ol object is undefined')
-		return
-	}
-
-	if (!['0','1'].includes(localStorage.getItem(EUI.Actions))) {
-		localStorage.setItem(EUI.Actions, 1)
-	}
-
 	const input = document.createElement(Elements.Input)
-	const global = Nodes.SettingSections.at(0)
-	if (global) {
+	const notifsHeader = Nodes.GetSelector('.notifs>.popup-header')
+	if (notifsHeader) {
 		const title = document.createElement(Elements.Span)
-		title.innerText = t('actions')
+		title.innerText = t(i18n.showActions)
 		input.type = Elements.CheckBox
 		input.dataset.setting = EUI.Actions
+		const notifsClose = Nodes.GetSelector('.notifs>.popup-close')
+		notifsClose && Nodes.Notifs && input.addEventListener(Events.onClick, () => {
+			notifsClose.click()
+			Nodes.Notifs.click()
+		})
 		const label = document.createElement(Elements.Label) 
 		label.classList.add(Modifiers.SettingsSectionItemClassName)
 		label.appendChild(title)
 		label.appendChild(input)
-		global.appendChild(label)
+		const container = document.createElement(Elements.Div)
+		container.classList.add('notifs-settings')
+		container.appendChild(label)
+		notifsHeader.after(container)
 	}
 
 	const checked = localStorage.getItem(EUI.Actions) == 1
-	const notifsHeader = Nodes.GetSelector('.notifs>.popup-header')
 
 	function NetworkInterval() {
 		intervalId = setTimeout(() => {
@@ -123,15 +134,15 @@ export async function Actions() {
 	}
 
 	if (checked && Nodes.Settings) {
-		notifsHeader.textContent += `/${t('actions')}`
+		notifsHeader.textContent += `/${t(i18n.actions)}`
 		GetLocAndInview();
 		(NetworkInterval)()
 	}
 
 	input.checked = checked
 	input.addEventListener(Events.onChange, (event) => {
-		if (event.target.checked) {
-			notifsHeader.textContent += `/${t('actions')}`
+		if (event.target.checked) { 
+			notifsHeader.textContent += `/${t(i18n.actions)}`
 			localStorage.setItem(EUI.Actions, 1)
 			if (!intervalId) {
 				GetLocAndInview();
@@ -139,7 +150,7 @@ export async function Actions() {
 			}
 		}
 		else {
-			notifsHeader.textContent = notifsHeader.textContent.replace(`/${t('actions')}`, '')
+			notifsHeader.textContent = notifsHeader.textContent.replace(`/${t(i18n.actions)}`, '')
 			localStorage.setItem(EUI.Actions, 0)
 			clearInterval(intervalId)
 			intervalId = 0
@@ -190,30 +201,24 @@ async function computeDiff (saved, fresh) {
 		return
 	}
 
-	const diffLengthMessage = `${t('actionsDiffMessage')}${diff.length}`
+	const diffLengthMessage = `${t(i18n.actionsDiffMessage)}${diff.length}`
 	console.log(diffLengthMessage)
 	showToast(diffLengthMessage, 'top left')
 
 	const log = JSON.parse(localStorage.getItem(EUI.ActionsLog) ?? '[]')
-
 	const timestamp = Date.now()
 	for (let i = 0; i < diff.length; i++) {
 		const item = diff[i]
-		/** @type Point */const point = await fetch(`/api/point?guid=${item.g}`, {
-			method: 'GET', 
-			headers: {
-				authorization: `Bearer ${localStorage.auth}`,
-				['Content-Type']: 'application/json'
-			}})
+		/** @type Point */const point = await fetch(`/api/point?guid=${item.g}`, init)
 			.then(r => r.json())
 			.then(json => json?.data)
 
 		const diffMessageConsole = point.te === 0 
-			? `${point.t}${t('actionsNeutralizedMessage')}`
-			: `${point.t}${t('actionsCapturedMessage')}${TEAM_COLORS[point.te]}${point.o}`
+			? `${point.t}${t(i18n.actionsNeutralizedMessage)}`
+			: `${point.t}${t(i18n.actionsCapturedMessage)}${TEAM_COLORS[point.te]}${point.o}`
 
 		const diffMessage = point.te === 0 
-			? `${point.t}<br/>${t('actionsNeutralizedMessage')}`
+			? `${point.t}<br/>${t(i18n.actionsNeutralizedMessage)}`
 			: `<span style="color: var(--team-${point.te}); font-weight: bold">${point.o}</span><br/>${point.t}`
 
 		log.push({timestamp, ...point})
@@ -230,49 +235,48 @@ async function computeDiff (saved, fresh) {
 }
 
 async function GetInview(lat, lon) {
-	const proj = window.ol.proj
-	const p = 'EPSG:3857'
-	const radius = 2000
-	const zoom = 15
-	const initialPoint = proj.fromLonLat([lon,lat])
-	const [w,s] = proj.toLonLat(proj.transform([initialPoint[0]-radius,initialPoint[1]-radius],p,p))
-	const [e,n] = proj.toLonLat(proj.transform([initialPoint[0]+radius,initialPoint[1]+radius],p,p))
-
-	const url = `/api/inview?sw=${w},${s}&ne=${e},${n}&z=${zoom}&l=1&h=4`
-	const config = {
-		method: 'GET', 
-		headers: {
-			authorization: `Bearer ${localStorage.auth}`,
-			['Content-Type']: 'application/json'
+	try {
+		const proj = window.ol.proj
+		const p = 'EPSG:3857'
+		const radius = 2000
+		const zoom = 15
+		const center = proj.fromLonLat([lon,lat])
+		const [w,s] = proj.toLonLat(proj.transform([center[0]-radius,center[1]-radius],p,p))
+		const [e,n] = proj.toLonLat(proj.transform([center[0]+radius,center[1]+radius],p,p))
+	
+		const url = `/api/inview?sw=${w},${s}&ne=${e},${n}&z=${zoom}&l=1&h=4`
+	
+		/** @type InviewPoint[] */ const points = await fetch(url, init)
+			.then(r => r.json())
+			.then(json => {
+				console.log(`${new Date().toLocaleTimeString()} [Actions] Inview returned ${json.p.length} points`)
+				return json.p
+			})
+	
+		let current = getCurrent()
+		if (!current?.length) {
+			setCurrent(points)
+		}
+		else if (points?.length) {
+			computeDiff(current, points)
 		}
 	}
-
-	/** @type InviewPoint[] */ const points = await fetch(url, config)
-		.then(r => r.json())
-		.then(json => {
-			console.log(`${new Date().toLocaleTimeString()} [Actions] Inview returned ${json.p.length} points`)
-			return json.p
-		})
-
-	let current = getCurrent()
-	if (!current?.length) {
-		setCurrent(points)
+	catch (error) {
+		console.log(`${new Date().toLocaleTimeString()} [Actions] Unexpected error during GetInview`)
+		console.error(error)
 	}
-	else if (points?.length) {
-		computeDiff(current, points)
-	}
+
+	window.isActionsInProgress = false
 }
 
 export function GetLocAndInview() {
 
-	if (localStorage.getItem(EUI.Actions) != 1) return
-
+	if (window.isActionsInProgress || localStorage.getItem(EUI.Actions) != 1) return
+	window.isActionsInProgress = true
+	
 	function success(position) {
 		const lat = position.coords.latitude
 		const lon = position.coords.longitude
-
-		console.log(`${lat} : ${lon}`)
-
 		GetInview(lat, lon)
 	}
 
@@ -286,6 +290,7 @@ export function GetLocAndInview() {
 
 		const message = 'Sorry, no position available.'
 		console.log(message)
+		window.isActionsInProgress = false
 	}
 
 	const options = {

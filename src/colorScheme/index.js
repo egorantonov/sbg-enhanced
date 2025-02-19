@@ -1,8 +1,10 @@
-import { EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Proposed, SBG, Themes, t } from '../constants'
-import monoStyles from './styles/mono.css'
-import ingressStyles from './styles/ingress.css'
-import primeStyles from './styles/prime.css'
-import euiStyles from './styles/eui.css'
+import { ClientData, CUI, EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Proposed, SBG, Themes, t, Translations as i18n } from '../constants'
+import monoStyles from './styles/mono.min.css'
+import ingressStyles from './styles/ingress.min.css'
+import primeStyles from './styles/prime.min.css'
+import euiStyles from './styles/eui.min.css'
+import arcadeStyles from './styles/arcade.min.css'
+import { getSbgSettings, setSbgSettings } from '../utils'
 
 class Theme {
 	constructor(title, code, innerHTML) {
@@ -16,37 +18,41 @@ class Theme {
 }
 
 export default function AddColorScheme() {
+	const i18next = window.i18next
 	const applyTranslations = (target) => {
 		let tCache = JSON.parse(localStorage.getItem(target))
-  
+
 		if (!tCache) {
 			return
 		}
-  
-		tCache.buttons.discover = t('discover')
-		tCache.buttons.deploy = t('deploy')
-		tCache.buttons.repair = t('repair')
-		tCache.buttons.draw = t('draw')
-		tCache.buttons.references.manage = ''
-		tCache.buttons.references.view = ''
+
+		tCache.buttons.discover = t(i18n.discover)
+		tCache.buttons.deploy = t(i18n.deploy)
+		tCache.buttons.repair = t(i18n.repair)
+		tCache.buttons.draw = t(i18n.draw)
 		tCache.info.refs = '🔑 {{count}}/100'
-		tCache.info.lines = t('lines')
-		tCache.info.regions = t('fields')
-  
+		tCache.info.lines = t(i18n.lines)
+		tCache.info.regions = t(i18n.fields)
+
 		localStorage.setItem(target, JSON.stringify(tCache))
 	}
 
-	const removeControlChars = (target) => {
-		let tCache = JSON.parse(localStorage.getItem(target))
-  
-		if (!tCache) {
-			return
+	const updateControlChars = (target) => {
+		if (i18next) {
+			i18next.addResources(i18next.resolvedLanguage, 'main', {
+				'buttons.references.manage': '',
+				'buttons.references.view': '',
+				'items.catalyser-short': '{{level}}',
+				'items.core-short': '{{level}}',
+			})
+
+			let tCache = JSON.parse(localStorage.getItem(target))
+
+			if (tCache && i18next.resolvedLanguage == SBG.DefaultLang) {
+				tCache.items.types.references = 'Refs'
+				localStorage.setItem(target, JSON.stringify(tCache))
+			}
 		}
-  
-		tCache.buttons.references.manage = ''
-		tCache.buttons.references.view = ''
-  
-		localStorage.setItem(target, JSON.stringify(tCache))
 	}
 
 	const ensureDarkTheme = () => {
@@ -57,22 +63,27 @@ export default function AddColorScheme() {
 	}
 
 	const i18next_main = `i18next_${GetLocale()}-main`
-	removeControlChars(i18next_main)
+	updateControlChars(i18next_main)
 	const input = document.createElement(Elements.Select)
 	/** @type Theme[] */const themes = [
 		new Theme(Themes.EUI, 0, euiStyles),
 		new Theme(Themes.Ingress, 1, ingressStyles),
 		new Theme(Themes.Prime, 2, primeStyles),
-		new Theme(Themes.Mono, 3, monoStyles)
+		new Theme(Themes.Mono, 3, monoStyles),
+		new Theme(Themes.Arcade, 4, `${euiStyles}\r\n${arcadeStyles}`)
 	]
+
 	const settings = Nodes.SettingSections.at(0)
 	if (settings) {
 		const title = document.createElement(Elements.Span)
-		title.innerText = t('colorScheme')
+		title.innerText = t(i18n.colorScheme)
 		themes.forEach(t => {
 			let o = document.createElement(Elements.Option)
 			o.value = t.code
 			o.innerText = t.title
+			if (t.code == 4 && ClientData.GetUserAgentData.browser == 'Safari') {
+				o.toggleAttribute('disabled')
+			}
 			input.appendChild(o)
 		})
 		input.id = EUI.CustomTheme
@@ -91,11 +102,11 @@ export default function AddColorScheme() {
 		localStorage.setItem(EUI.CustomTheme, themes.find(t=>t.title===Themes.EUI).code)
 
 		document.documentElement.dataset.theme = Modifiers.Auto
-		let gameSettings = JSON.parse(localStorage.getItem(SBG.Settings))
+		let sbgSettings = getSbgSettings()
 
-		if (gameSettings) {
-			gameSettings.theme = Modifiers.Auto
-			localStorage.setItem(SBG.Settings, JSON.stringify(gameSettings))
+		if (sbgSettings) {
+			sbgSettings.theme = Modifiers.Auto
+			setSbgSettings(sbgSettings)
 		}
 	}
 
@@ -105,7 +116,7 @@ export default function AddColorScheme() {
 	document.head.appendChild(style)
 
 	const currentTheme = localStorage.getItem(EUI.CustomTheme)
-  
+
 	function applyIngress() {
 		ensureDarkTheme()
 		applyTranslations(i18next_main)
@@ -129,21 +140,22 @@ export default function AddColorScheme() {
 		if (draw) {
 			close.after(repair)
 			if (route) {
-				route.innerText = t('cuiRoute')
+				route.innerText = t(i18n.cuiRoute)
 				draw.before(route)
-				Nodes.Ops.childNodes[0].remove()
 			}
 			else {
 				const share = Nodes.GetId('i-share')
+				share.dataset.i18n = t(i18n.sharePointButton)
 				draw.before(share)
 			}
 
 			if (map) {
-				map.innerText = t('cuiOnMap')
+				map.innerText = t(i18n.cuiOnMap)
 				repair.after(map)
 			}
 			else {
 				const copyPos = Nodes.GetId('i-copy-pos')
+				copyPos.dataset.i18n = t(i18n.copyPosPointButton)
 				repair.after(copyPos)
 			}
 		}
@@ -151,7 +163,7 @@ export default function AddColorScheme() {
 		if (invClose) invClose.innerText = EUI.CloseButtonText
 
 		/* CUI Compatibility */
-		if (window.cuiStatus) { 
+		if (CUI.Loaded) { 
 			const owner = Nodes.GetId('i-stat__owner')
 			owner?.addEventListener('pointOwnerChanged', () => {
 				const buttons = Array.from(document.querySelectorAll('#bottom>button'))
@@ -183,7 +195,7 @@ export default function AddColorScheme() {
 	if (currentTheme == 1 || currentTheme == 2) {
 		applyIngress()
 	}
-	else if (currentTheme == 0) {
+	else if (currentTheme == 0 || currentTheme == 4) {
 		applyEnhancedUITheme()
 	}
 

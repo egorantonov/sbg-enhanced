@@ -1,8 +1,16 @@
+export function getSbgSettings() {
+	return JSON.parse(localStorage.getItem('settings'))
+}
+
+export function setSbgSettings(settings) {
+	localStorage.setItem('settings', JSON.stringify(settings))
+}
+
 export function createToast(text = '', layout = 'bottom center', duration = 3000, className = 'interaction-toast') {
 	if (!window.Toastify) return
 	const [gravity, position] = layout.split(/\s+/)
 	const toast = window.Toastify({
-		text,
+		text: text.toString(),
 		duration,
 		gravity,
 		position,
@@ -14,11 +22,20 @@ export function createToast(text = '', layout = 'bottom center', duration = 3000
 }
 
 export function showToast(text = '', layout = 'bottom center', duration = 3000, className = 'interaction-toast') {
-	if (!window.Toastify) {
-		alert(text)
-		return
-	}
-	createToast(text, layout, duration, className).showToast()
+	if (!window.Toastify) return
+	createToast(text.toString(), layout, duration, className).showToast()
+}
+
+export const Logger = {
+	log: (message) => console.log(`[EUI] ${message}`),
+	error: (message, ...optionalParams) => console.error(`[EUI] ${message}`, optionalParams),
+	debug: (message, ...optionalParams) => window?.__eui_debug && console.warn(`[Debug] ${message}`, optionalParams)
+}
+
+window.EUI = {
+	...window.EUI,
+	createToast,
+	showToast
 }
 
 /**
