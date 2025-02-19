@@ -2,11 +2,11 @@
     "manifest_version": 3,
     "name": "SBG Enhanced UI",
     "description": "Расширение для браузера, добавляющее новый функционал SBG Enhanced UI без установки дополнительных расширений",
-    "version": "3.0.7",
+    "version": "6.5.1",
     "permissions": ["unlimitedStorage", "scripting", "geolocation"],
     "content_scripts": [
         {
-            "matches": ["https://sbg-game.ru/app", "https://sbg-game.ru/app/*", "https://185.151.243.53/app", "https://185.151.243.53/app/*"],
+            "matches": ["https://sbg-game.ru/app", "https://sbg-game.ru/app/*"],
             "js": ["private.user.js"]
         }
     ],
