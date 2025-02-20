@@ -69,7 +69,7 @@ export default function AddColorScheme() {
 		new Theme(Themes.EUI, 0, euiStyles),
 		new Theme(Themes.Ingress, 1, ingressStyles),
 		new Theme(Themes.Prime, 2, primeStyles),
-		new Theme(Themes.Mono, 3, monoStyles),
+		new Theme(Themes.Mono, 3, `${euiStyles}\r\n${monoStyles}`),
 		new Theme(Themes.Arcade, 4, `${euiStyles}\r\n${arcadeStyles}`)
 	]
 
@@ -116,6 +116,7 @@ export default function AddColorScheme() {
 	document.head.appendChild(style)
 
 	const currentTheme = localStorage.getItem(EUI.CustomTheme)
+	const isDynamicColors = [0, 4].includes(+currentTheme)
 
 	function applyIngress() {
 		ensureDarkTheme()
@@ -163,7 +164,7 @@ export default function AddColorScheme() {
 		if (invClose) invClose.innerText = EUI.CloseButtonText
 
 		/* CUI Compatibility */
-		if (CUI.Loaded) { 
+		if (CUI.Loaded && isDynamicColors) { 
 			const owner = Nodes.GetId('i-stat__owner')
 			owner?.addEventListener('pointOwnerChanged', () => {
 				const buttons = Array.from(document.querySelectorAll('#bottom>button'))
@@ -192,10 +193,10 @@ export default function AddColorScheme() {
 
 	style.innerHTML = themes[+currentTheme].innerHTML
 	input.selectedIndex = +currentTheme
-	if (currentTheme == 1 || currentTheme == 2) {
+	if ([1, 2].includes(+currentTheme)) {
 		applyIngress()
 	}
-	else if (currentTheme == 0 || currentTheme == 4) {
+	else if ([0, 3, 4].includes(+currentTheme)) {
 		applyEnhancedUITheme()
 	}
 
