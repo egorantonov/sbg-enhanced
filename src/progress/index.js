@@ -78,6 +78,11 @@ export function UpdateProgressStatus(stepText) {
   let value = 100 * ++currentStep / total
   if (value > 100) value = 100
   if (status) status.style.width = `${value}%`
+  const container = document.getElementById(EUI.Progress)
+  if (container) {
+    container.style.backdropFilter = `blur(50px) saturate(${value/100})`
+    container.style.webkitBackdropFilter = `blur(50px) saturate(${value/100})`
+  }
   const text = document.getElementById(EUI.ProgressText)
   if (text && stepText) text.textContent = stepText
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // Mac[Safari]: Apple GPU
 // Mac[Firefox]1: Intel(R) HD Graphics 400
 // Mac[Firefox]2: Intel 945GM
@@ -60,6 +61,7 @@ export function parseGpu(renderer: string): string {
 
 	renderer = removeGfxApi(renderer, DIRECT_VERSION)
 	renderer = removeGfxApi(renderer, OPENGL_VERSION)
+	renderer = renderer.replace(/\(0x([0-9A-Fa-f]){8}\)/, _ => '')
 
 	if (renderer[renderer.length - 1] === ',') {
 		renderer = renderer.slice(0, renderer.length - 1)
