@@ -100,6 +100,7 @@ select {
   color: var(--i-btn-color);
   background: linear-gradient(to top, var(--i-btn-glow-color) 0%, var(--i-btn-bg-color) 30%, var(--i-btn-bg-color) 70%, var(--i-btn-glow-color) 100%), var(--i-btn-bg-color);
   border-color: var(--i-btn-border-color);
+  border-width: revert;
 }
 
 input[type="search"] {
@@ -129,7 +130,8 @@ option:checked { /* WTF? checked is non-documented??? */
 .inventory__ma-delete,
 #layers-config__save,
 #classic-login,
-#form__buttons-login {
+#form__buttons-login,
+#inventory-delete[data-del="1"] {
   color: var(--i-btn-hl-color) !important;
   background: linear-gradient(to top, var(--i-btn-hl-glow-color) 0%, var(--i-btn-hl-bg-color) 30%, var(--i-btn-hl-bg-color) 70%, var(--i-btn-hl-glow-color) 100%), var(--i-btn-hl-bg-color) !important;
   border-color: var(--i-btn-hl-border-color) !important;

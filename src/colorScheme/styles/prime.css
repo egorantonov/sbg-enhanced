@@ -48,12 +48,15 @@ body, input, select, button,
 .notifs__entry-view.icon-button, /* View point [notification list] */
 input:not(input[name^="maxAmountInBag"]), /* CUI Compatibility */
 .cui-clear-cache-button, /* CUI Compatibility */
+.inventory__controls>*,
 select {
   border-color: var(--i-btn-border-left-color);
   border-right-color: var(--i-btn-border-right-color);
   border-bottom-color: var(--i-btn-border-right-color);
   border-style: solid;
   border-radius: 5px;
+  -webkit-border-radius: 5px !important;
+  border-width: revert;
   color: var(--i-btn-color);
   background: linear-gradient(135deg, var(--i-btn-bg-left-color), var(--i-btn-bg-right-color)), var(--i-btn-bg-right-color);
 }

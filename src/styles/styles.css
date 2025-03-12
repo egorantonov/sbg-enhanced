@@ -746,9 +746,9 @@ input[data-type="reference-search"] {
   margin-top: 1em;
 }
 
-.sbgcui_refs-sort-button, .sbgcui_refs-sort-select {
+/* .sbgcui_refs-sort-button, .sbgcui_refs-sort-select {
   display: none !important;
-}
+} */
 
 .sbgcui_log-close,
 .sbgcui_log-buttons>button,

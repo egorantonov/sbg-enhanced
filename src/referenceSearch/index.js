@@ -1,8 +1,8 @@
 import { EUI, Elements, Events, Modifiers, Nodes, Sleep, t, Translations as i18n } from '../constants'
-import { LongTouchEventListener } from '../helpers'
-import { showToast, Logger } from '../utils'
+// import { LongTouchEventListener } from '../helpers'
+// import { showToast, Logger } from '../utils'
 
-let Team = 0
+// let Team = 0
 export default async function AddReferenceSearch() {
 
   const tabs = Nodes.GetSelectorAll('.inventory__tab')
@@ -28,8 +28,11 @@ export default async function AddReferenceSearch() {
   search.type = 'search'
   search.id = EUI.Search
   search.dataset.type = Modifiers.ReferenceSearch
-  search.placeholder = t('searchRefPlaceholder')
+  search.placeholder = t(i18n.searchRefPlaceholder)
+  search.style.order = 1
 
+  /* SORT */
+  /* // Disabled, reverted to CUI sort
   const sort = document.createElement(Elements.Select)
   sort.id = EUI.Sort
 
@@ -57,7 +60,7 @@ export default async function AddReferenceSearch() {
     opt.innerText = s
     sort.appendChild(opt)
   })
-
+  */
   const selectButton = document.getElementById('inventory-delete')
   tabs.forEach(tab => {
       tab.addEventListener(Events.onClick, () => {
@@ -65,15 +68,15 @@ export default async function AddReferenceSearch() {
               refs = []
               search.dataset.active = '0'
               search.remove()
-              sort.selectedIndex = 0
-              sort.disabled = false
-              sort.remove()
+              // sort.selectedIndex = 0
+              // sort.disabled = false
+              // sort.remove()
           }
           else {
               refs = getRefs()
               inventoryRefs.length === 0 && (inventoryRefs = getRefs())
-              selectButton?.before(search)
-              search.after(sort)
+              selectButton?.after(search)
+              // search.after(sort)
               search.dataset.active = '1'
               search.value && searchRefs(search.value)
           }
@@ -83,8 +86,8 @@ export default async function AddReferenceSearch() {
   Nodes.InventoryPopupClose?.addEventListener(Events.onClick, () => {
       refs = []
       inventoryRefs = []
-      sort.selectedIndex = 0
-      sort.disabled = false
+      // sort.selectedIndex = 0
+      // sort.disabled = false
   })
   Nodes.Ops?.addEventListener(Events.onClick, async () => {
 
@@ -106,7 +109,7 @@ export default async function AddReferenceSearch() {
       searchRefs(e.target.value)
   })
 
-  LongTouchEventListener(sort, () => {
+  /*LongTouchEventListener(sort, () => {
     localStorage.removeItem('refs-cache')
     showToast('♻ Refs cache cleared')
   })
@@ -236,12 +239,12 @@ export default async function AddReferenceSearch() {
       sort.style.filter = 'none'
       showToast(rs)
       sort.disabled = false
-  })
+  })*/
 }
 
 // const DistanceRegex = new RegExp(String.raw`(\d*\.?\d+?)\s?(${t('kilo')}?)${t('m')}`, 'i')
 
-const ParseEnergy = (ref) => +ref.querySelector('.inventory__item-descr')
+/*const ParseEnergy = (ref) => +ref.querySelector('.inventory__item-descr')
 .childNodes[4]?.textContent.replace(',','.')
 //.replace(t('groupSeparator'),'').replace(t('decimalSeparator'),'.') // когда точка не захвачена [4] попадает на ноду ядер (==0)
 
@@ -253,7 +256,7 @@ const ParseAmount = (ref) => {
 const ParseTeam = (ref) => {
     const text = +ref.querySelector('.inventory__item-title').style.color.slice(11,12) || 0
     return text === Team ? -1 : text 
-}
+}*/
 
 // const ParseLevel = (ref) => {
 //     return +ref.querySelector('.inventory__item-descr').firstChild.style.color.slice(12,-1)

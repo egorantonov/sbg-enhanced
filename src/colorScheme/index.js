@@ -214,12 +214,12 @@ export default function AddColorScheme() {
 		location.reload()
 	})
 
-	/* PRIVATE */
-	if (IsPrivate()) {
-		const cuiRefsOnMap = Nodes.GetSelector('button.sbgcui_show_viewer')
-		if (cuiRefsOnMap){
-			cuiRefsOnMap.innerText = '🌍'
-			cuiRefsOnMap.style.minWidth = '40px'
-		}
+	const cuiRefsOnMap = Nodes.GetSelector('button.sbgcui_show_viewer')
+	if (cuiRefsOnMap) {
+		cuiRefsOnMap.innerText = '🌍'
+		cuiRefsOnMap.style.minWidth = '40px'
 	}
+	
+	const cuiSortOrder = document.querySelector('button.sbgcui_refs-sort-button')
+  if (cuiSortOrder) cuiSortOrder.style.minWidth = '40px'
 }
