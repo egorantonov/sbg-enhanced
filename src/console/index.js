@@ -1,3 +1,5 @@
+import { ButtonSettingsItem } from '../components/settingsItem'
+
 export function EuiConsole () {
   const euiConsole = 'eui-console'
   const hidden = 'hidden'
@@ -88,17 +90,7 @@ export function EuiConsole () {
 
   const about = Array.from(document.querySelectorAll('.settings-section')).at(3)
   if (about) {
-    const key = document.createElement('span')
-    key.innerText = 'Debug Console'
-    const consoleShow = document.createElement('button')
-    consoleShow.innerText = 'Open'
-    consoleShow.addEventListener('click', () => {
-      consolePopup.classList.toggle(hidden)
-    })
-    const settingsItem = document.createElement('div')
-    settingsItem.classList.add('settings-section__item')
-    settingsItem.appendChild(key)
-    settingsItem.appendChild(consoleShow)
-    setTimeout(() => about.appendChild(settingsItem), 1000)
+    const callback = () => consolePopup.classList.toggle(hidden)
+    setTimeout(() => about.appendChild(ButtonSettingsItem('Debug Console', 'Open', callback)), 1000)
   }
 }

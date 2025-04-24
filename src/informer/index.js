@@ -1,4 +1,5 @@
-import {EUI, Elements, Events, Modifiers, Nodes, SBG, Translations as i18n, t} from '../constants'
+import {EUI, Nodes, SBG, Translations as i18n, t} from '../constants'
+import { InfoSettingsItem, ButtonSettingsItem } from '../components/settingsItem'
 import { showToast } from '../utils'
 
 export default async function Informer() {
@@ -20,15 +21,7 @@ export default async function Informer() {
 
   const about = Nodes.SettingSections.at(3)
   if (about) {
-      const euiVersionKey = document.createElement(Elements.Span)
-      euiVersionKey.innerText = t(i18n.enhancedUIVersion)
-      const euiVersionValue = document.createElement(Elements.Span)
-      euiVersionValue.innerText = `v${EUI.Version}`
-      const euiVersionItem = document.createElement(Elements.Div)
-      euiVersionItem.classList.add(Modifiers.SettingsSectionItemClassName)
-      euiVersionItem.appendChild(euiVersionKey)
-      euiVersionItem.appendChild(euiVersionValue)
-      about.appendChild(euiVersionItem)
+      about.appendChild(InfoSettingsItem(t(i18n.enhancedUIVersion), `v${EUI.Version}`))
 
       /*const donateKey = document.createElement(Elements.Span)
       donateKey.innerText = t('donations')
@@ -85,11 +78,7 @@ export default async function Informer() {
 
       const connection = navigator.connection
       if (connection) {
-        const connectionKey = document.createElement(Elements.Span)
-        connectionKey.innerText = t(i18n.connection)
-        const connectionShow = document.createElement(Elements.Button)
-        connectionShow.innerText = t(i18n.showConnection)
-        connectionShow.addEventListener(Events.onClick, () => {
+        const connectionItemCallback = () => {
             const connectionValue = `
                 ${t(i18n.connectionPing)}:\u{a0}${connection.rtt}${t('m')}${t('s')},
                 ${t(i18n.connectionLink)}:\u{a0}~${connection.downlink}mb/s,
@@ -102,11 +91,8 @@ export default async function Informer() {
             `
             showToast(connectionValue)
             localStorage.setItem(EUI.Connection, connectionValue)
-        })
-        const connectionItem = document.createElement(Elements.Div)
-        connectionItem.classList.add(Modifiers.SettingsSectionItemClassName)
-        connectionItem.appendChild(connectionKey)
-        connectionItem.appendChild(connectionShow)
+        }
+        const connectionItem = ButtonSettingsItem(t(i18n.connection), t(i18n.showConnection), connectionItemCallback)
         setTimeout(() => about.appendChild(connectionItem), 500)
 
         localStorage.removeItem(EUI.Connection)

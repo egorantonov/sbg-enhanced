@@ -1,5 +1,6 @@
 import { /*Backend,*/ ClientData, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t } from '../constants'
 import { getSbgSettings, setSbgSettings } from '../utils'
+import { InfoSettingsItem } from '../components/settingsItem'
 //const { Host, Endpoints } = Backend
 
 export default async function ImportExport() {
@@ -172,26 +173,11 @@ export default async function ImportExport() {
     about.appendChild(item)
   }
 
-  function appendLine(parent, keyText, valueText, id) {
-    const key = document.createElement(Elements.Span)
-    key.innerText = keyText
-
-    const value = document.createElement(Elements.Span)
-    id && (value.id = id)
-    value.innerText = valueText
-
-    const item = document.createElement(Elements.Div)
-    item.classList.add(Modifiers.SettingsSectionItemClassName)
-    item.appendChild(key)
-    item.appendChild(value)
-    parent.appendChild(item)
-  }
-
   if (about) {
     // appendLine(about, t('cloudSync'), (new Date(+localStorage.getItem(EUI.CloudSync))).toLocaleString(), EUI.LastSynced)
-    appendLine(about, 'User ID', `${(await GetUserId()).slice(0,4)}...`, 'eui-userId')
-    appendLine(about, 'Client', userAgent, 'eui-clientId')
-    appendLine(about, 'GPU', ClientData.GetGPU, 'eui-gpu')
+    about.appendChild(InfoSettingsItem('User ID', `${(await GetUserId()).slice(0,4)}...`, 'eui-userId'))
+    about.appendChild(InfoSettingsItem('Client', userAgent, 'eui-clientId'))
+    about.appendChild(InfoSettingsItem('GPU', ClientData.GetGPU, 'eui-gpu'))
 
     Nodes.SettingsPopupClose?.addEventListener(Events.onClick, () => CloudSync(true))
     Nodes.GetId('layers-config__save')?.addEventListener(Events.onClick, () => CloudSync(true))
