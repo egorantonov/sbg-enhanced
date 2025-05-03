@@ -767,6 +767,11 @@ input[data-type="reference-search"] {
   width: 1.375em;
 }
 
+#inventory__close::after {
+  border-top: 1px solid var(--level-9);
+  box-shadow: inset 0px 10px 15px -8px var(--level-9);
+}
+
 .inventory__item-left {
   background-position: center !important;
   background-repeat: no-repeat !important;

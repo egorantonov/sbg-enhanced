@@ -419,11 +419,12 @@ body, input, select, button {
 .inventory__content[data-tab="3"]~.inventory__controls {
   gap: 0.1em;
   overflow: auto;
-  border-radius: var(--radius5);
+  border-radius: var(--radius10);
 }
 
 .inventory__content[data-tab="3"]~.inventory__controls>* {
   border-radius: 0px !important;
+  font-weight: bolder;
 }
 
 input[type="range"] {

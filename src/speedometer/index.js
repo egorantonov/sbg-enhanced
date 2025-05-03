@@ -37,8 +37,10 @@ export default function SpeedoMeter() {
     width: 48px;
     height: 48px;
     color: var(--text);
+    backdrop-filter: var(--blur5);
     background-color: var(--background-transp);
-    border: 6px solid var(--accent);
+    border: 6px solid;
+    border-color: #7779;
     border-radius: 100px;
     position: fixed;
     top: 0;
@@ -57,6 +59,7 @@ export default function SpeedoMeter() {
     if (speed != speedometer.textContent) {
       speedometer.textContent = speed
       speedometer.style.transform = speed == 0 ? 'translateX(75px)' : 'none'
+      speedometer.style.borderColor = speed > 60 ? 'var(--accent)' : '#7779'
     }
   }
 
