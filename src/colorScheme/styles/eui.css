@@ -96,6 +96,14 @@ body, input, select, button {
   padding: 0 10px;
 }
 
+.layers-config__list input {
+  accent-color: var(--sbgcui-branding-color, --selection);
+}
+
+.layers-config__list input:checked {
+  filter: drop-shadow(0 0 6px var(--sbgcui-branding-color, --selection));
+}
+
 .layers-config__buttons button {
   min-height: 50px;
   width: 100%;
@@ -103,11 +111,13 @@ body, input, select, button {
   text-transform: uppercase;
   font-size: 1.1em !important;
   font-weight: bold;
+  background: linear-gradient(transparent, var(--background-transp));
 }
 
 .layers-config__buttons button.popup-close {
-  color: var(--btn-text);
-  background-color: var(--accent);
+  /* color: var(--btn-text); */
+  color: var(--accent);
+  /* background-color: var(--accent); */
 }
 
 /* INFO POPUP */
@@ -427,6 +437,11 @@ body, input, select, button {
   font-weight: bolder;
 }
 
+.inventory__content:not([data-tab="3"])~.inventory__controls>* {
+  border-radius: var(--radius10);
+  font-weight: bolder;
+}
+
 input[type="range"] {
   padding: 0 !important;
 }
@@ -440,6 +455,8 @@ input[type="range"] {
   overflow: hidden;
   padding: 10px 0 0 0 !important;
   z-index: 2;
+  background: var(--background-transp);
+  backdrop-filter: blur(10px);
 }
 
 .inventory__ma-counter {
@@ -469,6 +486,7 @@ input[type="range"] {
   text-transform: uppercase;
   font-weight: bolder;
   min-height: 50px;
+  background: transparent;
 }
 
 .inventory__ma-cancel {
@@ -479,8 +497,9 @@ input[type="range"] {
 .inventory__ma-delete {
   border: none !important;
   width: 100%;
-  color: var(--btn-text);
-  background-color: var(--accent);
+  color: var(--accent);
+  /* color: var(--btn-text); */
+  /* background-color: var(--accent); */
 }
 
 .inventory__item-controls button {
@@ -488,6 +507,13 @@ input[type="range"] {
   border-style: solid;
   border-color: var(--sbgcui-branding-color, var(--selection));
   color: #fff;
+}
+
+.sbgcui_inventory__ma-shortcuts>span {
+  border: 1px solid var(--sbgcui-branding-color);
+  border-radius: var(--radius10);
+  font-weight: bolder;
+  color: var(--sbgcui-branding-color);
 }
 
 .inventory__ic-manage {
@@ -550,6 +576,7 @@ input[type="range"] {
   border-top: none !important;
   border-bottom: 2px solid;
   border-color: var(--sbgcui-branding-color, var(--selection));
+  font-weight: bolder;
 }
 
 /* SETTINGS */

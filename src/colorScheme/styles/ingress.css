@@ -345,6 +345,7 @@ select[data-setting='theme']:disabled {
 /* SETTINGS */
 
 input:checked {
+  accent-color: var(--i-btn-color);
   filter: drop-shadow(0px 0px 6px var(--i-btn-border-color));
 }
 

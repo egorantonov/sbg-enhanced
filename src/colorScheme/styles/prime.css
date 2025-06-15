@@ -267,6 +267,7 @@ option:checked { /* WTF? checked is non-documented??? */
 /* SETTINGS */
 
 input:checked {
+  accent-color: #99c8ff;
   filter: drop-shadow(0px 0px 6px var(--i-btn-border-right-color));
 }
 

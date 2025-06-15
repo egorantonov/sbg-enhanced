@@ -714,6 +714,9 @@ input[data-type="reference-search"] {
 /* 
  * SBG CUI Compatibility: enhancements and support 
  */
+.sbgcui_compare_stats-timestamp {
+  color: var(--text);
+}
 
 /* Speed z-index fix */
 .sbgcui_speed {
