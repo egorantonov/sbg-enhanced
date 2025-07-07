@@ -32,7 +32,7 @@ body, input, select, button,
 }
 
 /* BUTTONS */
-
+#discover,
 .i-buttons>button,
 .settings.popup button:not(.popup-close),
 .attack-slider-buttons>button,
@@ -65,6 +65,7 @@ select {
   position: relative;
 }
 
+#discover[disabled],
 .i-buttons>button[disabled],
 #draw[sbgcui-possible-lines="0"] { /* CUI Compatibility */
   filter: opacity(0.5) !important;

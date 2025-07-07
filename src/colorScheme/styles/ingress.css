@@ -41,6 +41,7 @@ body, input, select, button,
   font-family: 'Coda', 'Manrope', sans-serif;
 }
 
+#discover,
 .i-buttons>button,
 .settings.popup button:not(.popup-close),
 .attack-slider-buttons>button,
@@ -69,6 +70,7 @@ select {
   opacity: 0.7;
 }
 
+#discover::before,
 .i-buttons>button::before,
 .attack-slider-buttons>button::before,
 .draw-slider-buttons>button:not(.fa)::before {
@@ -84,6 +86,7 @@ select {
   border-top: 2px solid;
 }
 
+#discover,
 .i-buttons>button,
 .settings.popup button:not(.popup-close),
 #draw-slider-close,
@@ -116,6 +119,7 @@ option:checked { /* WTF? checked is non-documented??? */
   background-color: var(--i-btn-hl-bg-color);
 }
 
+#discover::before,
 .i-buttons>button::before,
 #draw-slider-close::before,
 #attack-slider-close::before {
@@ -158,6 +162,7 @@ option:checked { /* WTF? checked is non-documented??? */
   backdrop-filter: var(--blur5);
 }
 
+#discover[disabled],
 .i-buttons>button[disabled], 
 .draw-slider-buttons>button[disabled],
 #draw[sbgcui-possible-lines="0"] { /* CUI Compatibility */
@@ -166,6 +171,7 @@ option:checked { /* WTF? checked is non-documented??? */
   border-color: var(--i-btn-disabled-accent-color);
 }
 
+#discover[disabled]::before,
 .i-buttons>button[disabled]::before, 
 .draw-slider-buttons>button[disabled]::before,
 #draw[sbgcui-possible-lines="0"]::before { /* CUI Compatibility */

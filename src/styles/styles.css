@@ -310,7 +310,7 @@
   width: 100% !important;
 }
 
-.i-buttons>button {
+.i-buttons>button, #discover {
   padding: 6px 2px;
   min-width: fit-content;
   min-height: 45px;
@@ -320,6 +320,17 @@
 
 .i-buttons>button[disabled] {
   filter: opacity(0.75);
+}
+
+.popping-button {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.discovery-ring {
+  display: none;
 }
 
 #discover {
