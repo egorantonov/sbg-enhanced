@@ -352,6 +352,20 @@
   direction: ltr;
 }
 
+.pb-sub {
+  z-index: 1;
+  backdrop-filter: blur(10px) saturate(1.25);
+  width: 100% !important;
+  background: var(--background-transp);
+  justify-content: space-evenly;
+}
+
+.discover-mod {
+  height: 40px;
+  width: 25%;
+  min-width: 40px;
+}
+
 .i-stat {
   flex-direction: row;
   flex-wrap: wrap;
@@ -779,6 +793,10 @@ input[data-type="reference-search"] {
   right: 0.5em !important;
   height: 1.375em;
   width: 1.375em;
+}
+
+.sbgcui_no_loot, .sbgcui_no_refs { /* пока отключим */
+  display: none !important;
 }
 
 #inventory__close::after {

@@ -5,12 +5,10 @@ export default async function CompactView() {
 
   const i18next_main = `i18next_${GetLocale()}-main`
   let translations = JSON.parse(localStorage.getItem(i18next_main))
-  if (!translations) {
-    return
+  if (translations) {
+    translations.buttons.references.manage = ''
+    translations.buttons.references.view = ''
   }
-
-  translations.buttons.references.manage = ''
-  translations.buttons.references.view = ''
 
   // CREATE SETTING
   const input = document.createElement(Elements.Input)
@@ -91,7 +89,7 @@ export default async function CompactView() {
     [Nodes.Notifs, Nodes.Layers, Nodes.ToggleFollow].forEach(n => n.innerText === '' && (n.classList.add('compactview_icon')))
   }
 
-  localStorage.setItem(i18next_main, JSON.stringify(translations))
+  if (translations) localStorage.setItem(i18next_main, JSON.stringify(translations))
 
   input.addEventListener(Events.onChange, (event) => {
     localStorage.setItem(EUI.CompactView, event.target.checked ? 1 : 0)

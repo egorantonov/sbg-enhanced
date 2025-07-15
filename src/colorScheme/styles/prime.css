@@ -45,6 +45,7 @@ body, input, select, button,
 .sbgcui_compare_stats>button,
 .inventory__manage-amount button,
 #eui-console-execute,
+.discover-mod,
 .notifs__entry-view.icon-button, /* View point [notification list] */
 input:not(input[name^="maxAmountInBag"]), /* CUI Compatibility */
 .cui-clear-cache-button, /* CUI Compatibility */

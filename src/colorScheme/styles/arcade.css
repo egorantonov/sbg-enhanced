@@ -77,6 +77,7 @@ select,
 .level-pill,
 .sbgcui_log button,
 #eui-console-execute,
+.discover-mod,
 .sbgcui_log-tags span {
   border-radius: var(--radius0) !important;
 }

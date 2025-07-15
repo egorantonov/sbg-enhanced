@@ -75,6 +75,7 @@
 .sbgcui_compare_stats>button,
 .inventory__manage-amount button,
 #eui-console-execute,
+.discover-mod,
 .notifs__entry-view.icon-button, /* View point [notification list] */
 input:not(input[name^="maxAmountInBag"]):not([type='checkbox']), .cui-clear-cache-button, /* CUI Compatibility */
 select {
@@ -395,11 +396,13 @@ input[type='range']::-webkit-slider-thumb {
   border-top: 1.6px solid var(--i-color);
 }
 
-.settings-section__item select, 
-.settings-section__item button:not(.popup-close), 
-#leaderboard__term-select, 
-.profile.popup button, #eui-console-execute, 
-.sbgcui_settings-buttons_wrp>button, 
+.settings-section__item select,
+.settings-section__item button:not(.popup-close),
+#leaderboard__term-select,
+.profile.popup button,
+#eui-console-execute,
+.discover-mod,
+.sbgcui_settings-buttons_wrp>button,
 .sbgcui_settings select {
   color: var(--i-btn-color) !important;
   border: 1.6px solid var(--i-btn-border-color) !important;
