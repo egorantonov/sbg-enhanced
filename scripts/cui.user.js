@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      1.14.83.fix1
+// @version      1.14.83.fix2
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -1201,7 +1201,8 @@
 			let isInvClearInProgress = false;
 
 			let lastOpenedPoint = {};
-			let discoverModifier;
+			//let discoverModifier;
+			let discoverModifier = new DiscoverModifier(1, 1);
 			let latestNotifTime;
 			let { excludedCores, isMainToolbarOpened, isRotationLocked, isStarMode, lastUsedCatalyser, starModeTarget, versionWarns } = state;
 			const uniques = { c: new Set(), v: new Set() };
@@ -1237,8 +1238,11 @@
 				const options = { headers, method: 'GET' };
 				const response = await fetch(url, options);
 				const parsedResponse = await response.json();
-
-				return parsedResponse;
+                const stats = parsedResponse.stats;
+                stats.xp = parsedResponse.xp;
+                stats.level = parsedResponse.level;
+                stats.name = parsedResponse.name;
+				return stats;
 			}
 
 			async function getPointData(guid, isCompact = true, signal) {
@@ -3834,26 +3838,26 @@
 
 
 			/* Дискавер без рефа или предметов */
-			{
-				let noLootSpan = document.createElement('span');
-				let noRefsSpan = document.createElement('span');
+// 			{
+// 				let noLootSpan = document.createElement('span');
+// 				let noRefsSpan = document.createElement('span');
 
-				noLootSpan.classList.add('sbgcui_no_loot', 'fa', 'fa-solid-droplet-slash');
-				noRefsSpan.classList.add('sbgcui_no_refs', 'fa', 'fa-solid-link-slash');
+// 				noLootSpan.classList.add('sbgcui_no_loot', 'fa', 'fa-solid-droplet-slash');
+// 				noRefsSpan.classList.add('sbgcui_no_refs', 'fa', 'fa-solid-link-slash');
 
-				discoverButton.append(noLootSpan, noRefsSpan);
+// 				discoverButton.append(noLootSpan, noRefsSpan);
 
-				discoverButton.addEventListener('click', event => {
-					if (event.target == discoverButton) {
-						discoverModifier = new DiscoverModifier(1, 1);
-					} else {
-						let isLoot = !event.target.classList.contains('sbgcui_no_loot');
-						let isRefs = !event.target.classList.contains('sbgcui_no_refs');
+// 				discoverButton.addEventListener('click', event => {
+// 					if (event.target == discoverButton) {
+// 						discoverModifier = new DiscoverModifier(1, 1);
+// 					} else {
+// 						let isLoot = !event.target.classList.contains('sbgcui_no_loot');
+// 						let isRefs = !event.target.classList.contains('sbgcui_no_refs');
 
-						discoverModifier = new DiscoverModifier(isLoot, isRefs);
-					}
-				});
-			}
+// 						discoverModifier = new DiscoverModifier(isLoot, isRefs);
+// 					}
+// 				});
+// 			}
 
 
 			/* Сортировка рефов */
