@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      1.14.83.fix2
+// @version      25.7.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -43,15 +43,25 @@
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
 
-	const USERSCRIPT_VERSION = '1.14.82';
+	const USERSCRIPT_VERSION = '25.7.1';
 	const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
+	const __CUI_WEB_RES_CACHE_TIMEOUT = 24 * 60 * 60 * 1000 // 24h
 	const VIEW_PADDING = (window.innerHeight / 2) * 0.7;
+
+	const __cui_constants = '__cui_constants';
+	let cached_constants = JSON.parse(localStorage.getItem(__cui_constants) ?? '{}')
+	if (!cached_constants?.timestamp || (Date.now() - cached_constants?.timestamp > __CUI_WEB_RES_CACHE_TIMEOUT)) {
+		cached_constants = await fetch(`${HOME_DIR}/const.json`).then(res => res.json()).catch(error => { window.alert(`Ошибка при получении ${HOME_DIR}/const.json.\n\n${error.message}`); });
+		localStorage.setItem(__cui_constants, JSON.stringify({...cached_constants, timestamp: Date.now()}))
+	}
+
 	const {
 		ACTIONS_REWARDS, CORES_ENERGY, CORES_LIMITS, LINES_LIMIT, DISCOVERY_COOLDOWN, HIGHLEVEL_MARKER, HIT_TOLERANCE, INVENTORY_LIMIT,
-		INVIEW_MARKERS_MAX_ZOOM, INVIEW_POINTS_DATA_TTL, INVIEW_POINTS_LIMIT, ITEMS_TYPES, LATEST_KNOWN_VERSION, LEVEL_TARGETS,
+		INVIEW_MARKERS_MAX_ZOOM, INVIEW_POINTS_DATA_TTL, INVIEW_POINTS_LIMIT, ITEMS_TYPES, /*LATEST_KNOWN_VERSION,*/ LEVEL_TARGETS,
 		MAX_DISPLAYED_CLUSTER, MIN_FREE_SPACE, PLAYER_RANGE, TILE_CACHE_SIZE, POSSIBLE_LINES_DISTANCE_LIMIT, BLAST_ANIMATION_DURATION
-	} = await fetch(`${HOME_DIR}/const.json`).then(res => res.json()).catch(error => { window.alert(`Ошибка при получении ${HOME_DIR}/const.json.\n\n${error.message}`); });
+	} = cached_constants;
 
+	const LATEST_KNOWN_VERSION = '0.5.0' // override
 
 	const config = {}, state = {}, favorites = {};
 	const isCdbMap = JSON.parse(localStorage.getItem('settings'))?.base == 'cdb';
@@ -1324,12 +1334,22 @@
 			}
 
 			async function getHTMLasset(filename) {
-				const url = `${HOME_DIR}/assets/html/${filename}.html`;
-				const response = await fetch(url);
 
-				if (response.status != 200) { throw new Error(`Ошибка при загрузке ресурса "${filename}.html" (${response.status})`); }
+				const cached_filename = `__CUI_WEB_RES_CACHE_${filename}`
+				let text
+				let cached = JSON.parse(localStorage.getItem(cached_filename) ?? '{}')
+				if (!cached?.timestamp || !cached?.timestamp || (Date.now() - cached_constants?.timestamp > __CUI_WEB_RES_CACHE_TIMEOUT))
+				{
+					const url = `${HOME_DIR}/assets/html/${filename}.html`;
+					const response = await fetch(url);
+					if (response.status != 200) { throw new Error(`Ошибка при загрузке ресурса "${filename}.html" (${response.status})`); }
+					text = await response.text();
+					localStorage.setItem(cached_filename, JSON.stringify({ text, timestamp: Date.now() }))
+				}
+				else {
+					text = cached.text
+				}
 
-				const text = await response.text();
 				const parser = new DOMParser();
 				const node = parser.parseFromString(text, 'text/html').body.firstChild;
 
@@ -3040,6 +3060,7 @@
 					if (!event.currentTarget.matches('.inventory__content[data-tab="3"]')) { return; }
 					if (!event.target.closest('.inventory__item-controls')) { return; }
 					if (!event.target.closest('.inventory__item.loaded')) { return; }
+					if (event.target.className === 'inventory__ic-view') { return; }
 
 					// Ширина блока кнопок "V M" около 30 px.
 					// Правее них находится кнопка-псевдоэлемент "R".
