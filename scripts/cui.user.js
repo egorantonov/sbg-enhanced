@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      25.7.1
+// @version      25.8.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -43,7 +43,7 @@
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
 
-	const USERSCRIPT_VERSION = '25.7.1';
+	const USERSCRIPT_VERSION = '25.8.1';
 	const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 24 * 60 * 60 * 1000 // 24h
 	const VIEW_PADDING = (window.innerHeight / 2) * 0.7;
@@ -61,7 +61,7 @@
 		MAX_DISPLAYED_CLUSTER, MIN_FREE_SPACE, PLAYER_RANGE, TILE_CACHE_SIZE, POSSIBLE_LINES_DISTANCE_LIMIT, BLAST_ANIMATION_DURATION
 	} = cached_constants;
 
-	const LATEST_KNOWN_VERSION = '0.5.0' // override
+	const LATEST_KNOWN_VERSION = '0.5.1' // override
 
 	const config = {}, state = {}, favorites = {};
 	const isCdbMap = JSON.parse(localStorage.getItem('settings'))?.base == 'cdb';
@@ -2382,9 +2382,9 @@
       		}
   			`);
 
-				if (mapFilters.branding == 'custom') {
-					window.TeamColors[player.team].fill = mapFilters.brandingColor + '80';
-					window.TeamColors[player.team].stroke = hex623(mapFilters.brandingColor);
+				if (mapFilters.branding == 'custom' && window.TeamColors && window.TeamColors[player.team]) {
+					window.TeamColors[player.team].fill = () => mapFilters.brandingColor + '80';
+					window.TeamColors[player.team].stroke = () => hex623(mapFilters.brandingColor);
 				}
 
 				[styles, fa, faSvg].forEach(e => e.setAttribute('rel', 'stylesheet'));
@@ -2773,15 +2773,15 @@
 					'sbgcui.sort-amount': 'Amount',
 					'sbgcui.sort-guard': 'Guard',
 				});
-				i18next.addResources(i18next.resolvedLanguage, 'main', {
+				i18next.addResources(i18next.resolvedLanguage ?? 'en', 'main', {
 					'items.catalyser-short': '{{level}}',
 					'items.core-short': '{{level}}',
 				});
 				['cm', 'm', 'km', 'sqm', 'sqkm'].forEach(unit => {
 					const key = `units.${unit}`;
-					let value = i18next.getResource(i18next.resolvedLanguage, 'main', key);
+					let value = i18next.getResource(i18next.resolvedLanguage ?? 'en', 'main', key);
 					value = value.replace(/(maximumFractionDigits:\s)(\d)/, '$1$2; minimumFractionDigits: $2');
-					i18next.addResource(i18next.resolvedLanguage, 'main', key, value);
+					i18next.addResource(i18next.resolvedLanguage ?? 'en', 'main', key, value);
 				});
 
 				window.attack_slider.options = {
@@ -3131,8 +3131,8 @@
 					html.style.setProperty('--sbgcui-point-image-blur', ui.pointBgImageBlur ? '2px' : '0px');
 					html.style.setProperty('--sbgcui-show-speedometer', ui.speedometer);
 					html.style.setProperty('--sbgcui-branding-color', mapFilters.branding == 'custom' ? mapFilters.brandingColor : player.teamColor);
-					window.TeamColors[player.team].fill = `${mapFilters.branding == 'custom' ? mapFilters.brandingColor : hex326(player.teamColor)}80`;
-					window.TeamColors[player.team].stroke = mapFilters.branding == 'custom' ? hex623(mapFilters.brandingColor) : player.teamColor;
+					window.TeamColors[player.team].fill = () => `${mapFilters.branding == 'custom' ? mapFilters.brandingColor : hex326(player.teamColor)}80`;
+					window.TeamColors[player.team].stroke = () => mapFilters.branding == 'custom' ? hex623(mapFilters.brandingColor) : player.teamColor;
 
 					doubleClickZoomInteraction.setActive(Boolean(ui.doubleClickZoom));
 
@@ -4745,7 +4745,7 @@
 				async function toggleValues() {
 					const playerStats = await getPlayerData(null, profileNameSpan.innerText);
 					const selfStats = await getPlayerData(null, player.name);
-					const i18nextStats = i18next.getResourceBundle(i18next.resolvedLanguage).profile.stats;
+					const i18nextStats = i18next.getResourceBundle(i18next.resolvedLanguage ?? 'en').profile.stats;
 					const statTitles = document.querySelectorAll('.pr-stat-title');
 
 					compareButton.toggleAttribute('sbgcui_self_stats');
@@ -4774,7 +4774,7 @@
 				}
 
 				function formatStatValue(key, value) {
-					const lang = i18next.resolvedLanguage;
+					const lang = i18next.resolvedLanguage ?? 'en';
 					const formatter = new Intl.NumberFormat(i18next.language);
 
 					if (/^guard_/.test(key)) {
@@ -4903,7 +4903,7 @@
 					zeroPointFeature.setStyle(new ol.style.Style({
 						geometry: new ol.geom.Circle([0, 0], 30),
 						fill: new ol.style.Fill({ color: '#BB7100' }),
-						stroke: new ol.style.Stroke({ color: window.TeamColors[3].stroke, width: 5 }),
+						stroke: new ol.style.Stroke({ color: window.TeamColors[3].stroke(), width: 5 }),
 						text: new ol.style.Text({
 							font: '30px Manrope',
 							text: '?',
@@ -5369,7 +5369,7 @@
 					style: (feature, resolution) => {
 						const { amount, isSelected, mapCoords, team, title } = feature.getProperties();
 						const fillColor = () => isSelected ? '#BB7100' : (team == undefined ? '#11111180' : team == 0 ? '#66666680' : window.TeamColors[team].fill);
-						const strokeColor = () => team == undefined ? '#66666680' : team == 0 ? '#CCCCCC80' : window.TeamColors[team].stroke;
+						const strokeColor = () => team == undefined ? '#66666680' : team == 0 ? '#CCCCCC80' : window.TeamColors[team].stroke();
 						const zoom = view.getZoom();
 						const markerSize = zoom >= 16 ? 20 : 20 * resolution / 2.5;
 						const markerStyle = new ol.style.Style({
