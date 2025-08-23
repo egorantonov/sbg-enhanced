@@ -46,7 +46,7 @@
 	const USERSCRIPT_VERSION = '25.8.2';
 	const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 24 * 60 * 60 * 1000 // 24h
-	const VIEW_PADDING = (window.innerHeight / 2) * 0.7;
+	const VIEW_PADDING = 0;//(window.innerHeight / 2) * 0.7;
 
 	const __cui_constants = '__cui_constants';
 	let cached_constants = JSON.parse(localStorage.getItem(__cui_constants) ?? '{}')
@@ -70,11 +70,18 @@
 	let isFollow = localStorage.getItem('follow') == 'true';
 	let map, view, playerFeature, tempLinesSource;
 
+	const EVENTS = {
+		dbReady: 'dbReady',
+		olReady: 'olReady',
+		olExtReady: 'olExtReady',
+		mapReady: 'mapReady'
+	}
 
-	window.addEventListener('dbReady', loadPageSource);
-	window.addEventListener('olReady', () => { olInjection(); loadMainScript(); });
-	window.addEventListener('mapReady', main);
-
+	window.addEventListener(EVENTS.dbReady, () => { console.log(EVENTS.dbReady); loadPageSource() });
+	// window.addEventListener(EVENTS.olReady, () => { console.log(EVENTS.olReady); olInjection(); loadMainScript(); });
+	window.addEventListener(EVENTS.olExtReady, () => { console.log(EVENTS.olExtReady); olInjection(); loadMainScript(); });
+	// window.addEventListener(EVENTS.olExtReady, () => { console.log(EVENTS.olExtReady); });
+	window.addEventListener(EVENTS.mapReady, () => { console.log(EVENTS.mapReady); main() });
 
 	let database;
 	const openRequest = indexedDB.open('CUI', 9);
@@ -301,7 +308,7 @@
 		});
 
 		const transaction = database.transaction(['config', 'favorites', 'state', 'tiles'], 'readonly');
-		transaction.addEventListener('complete', () => { window.dispatchEvent(new Event('dbReady')); });
+		transaction.addEventListener('complete', () => { window.dispatchEvent(new Event(EVENTS.dbReady)); });
 
 		const configRequest = transaction.objectStore('config').openCursor();
 		const favoritesRequest = transaction.objectStore('favorites').openCursor();
@@ -320,22 +327,33 @@
 		fetch('/app')
 			.then(r => r.text())
 			.then(data => {
-				data = data.replace(/<script class="mobile-check">.+?<\/script>/, '');
-				data = data.replace(/(<script src="\/packages\/js\/ol@\d+.\d+.\d+\.js")(>)/, `$1 onload="window.dispatchEvent(new Event('olReady'))"$2`);
+				const olExt = `</script>\r\n<script async onload="window.dispatchEvent(new Event('${EVENTS.olExtReady}'))" type="text/javascript" src="https://cdn.rawgit.com/Viglino/ol-ext/master/dist/ol-ext.js">`
+				// data = data.replace(/<script class="mobile-check">.+?<\/script>/, ``);
+				data = data.replace(/<script class="mobile-check">.+?<\/script>/, `<link rel="stylesheet" href="https://cdn.rawgit.com/Viglino/ol-ext/master/dist/ol-ext.min.css" />`);
+				data = data.replace(/(<script src="\/packages\/js\/ol@\d+.\d+.\d+\.js")(>)/, `$1 onload="window.dispatchEvent(new Event('${EVENTS.olReady}'))"$2${olExt}`);
 
 				document.write(data);
 				document.close();
+
+				// let olExtCss = document.createElement('link')
+				// olExtCss.rel = 'stylesheet'
+				// olExtCss.type = 'text/css'
+				// olExtCss.href = 'https://cdn.rawgit.com/Viglino/ol-ext/master/dist/ol-ext.min.css'
+				// document.head.append(olExtCss)
+
 			})
 			.catch(error => { console.log('SBG CUI: Ошибка при получении страницы.', error); });
 	}
 
 	function olInjection() {
-		class Map extends ol.Map {
+		debugger
+		class Map extends ol.PerspectiveMap {
+		// class Map extends ol.Map {
 			constructor(options) {
 				super(options);
 				map = this;
 				tempLinesSource = options.layers.filter(layer => layer.get('name') == 'lines')[1]?.getSource();
-				window.dispatchEvent(new Event('mapReady'));
+				window.dispatchEvent(new Event(EVENTS.mapReady));
 			}
 
 			forEachFeatureAtPixel(pixel, callback, options = {}) {
@@ -500,7 +518,7 @@
 			tileLoadFunction: loadTile,
 		};
 
-		ol.Map = Map;
+		ol.PerspectiveMap = Map;
 		ol.View = View;
 		ol.Feature = Feature;
 		ol.PointFeature = PointFeature;
@@ -514,6 +532,8 @@
 		function replacer(match) {
 			replacesMade += 1;
 			switch (match) {
+				case `new ol.Map`: // ~289
+					return `new ol.PerspectiveMap`; // Add 3Dperspective
 				case `const Catalysers`: // Line ~95
 					return `window.Catalysers`;
 				case `const TeamColors`: // Line ~101
@@ -586,6 +606,7 @@
 		}
 
 		const regexp = new RegExp([
+			`(new ol.Map)`,
 			`(const Catalysers)`,
 			`(const TeamColors)`,
 			`((new ol\\.Feature\\({(?=\\s+?geometry: new ol\\.geom\\.Point\\(mpos\\))))`,
@@ -618,18 +639,20 @@
 			`(class Bitfield)`,
 		].join('|'), 'g');
 
-		const replacesShouldBe = 32;
+		const replacesShouldBe = 33;
 		let replacesMade = 0;
 
 		fetch(`/app/${vanillaScriptSrc}`)
 			.then(r => r.text())
 			.then(data => {
+				debugger
 				const script = document.createElement('script');
 				script.textContent = data.replace(regexp, replacer);
 				if (replacesMade != replacesShouldBe) { /*throw new Error*/ alert(`SBG CUI: Сделано замен: ${replacesMade} вместо ${replacesShouldBe}.`); }
 				document.head.appendChild(script);
 			})
 			.catch(error => {
+				debugger
 				alert(`SBG CUI: Ошибка при загрузке основного скрипта. ${error.message}`);
 				console.log('SBG CUI: Ошибка при загрузке основного скрипта.', error);
 			});
@@ -6008,6 +6031,25 @@
 				searchButton.addEventListener('click', clickHandler);
 
 				leaderboardPopup.appendChild(searchButton);
+			}
+
+			/* 3D */
+			{
+				debugger
+				const mapDiv = document.getElementById('map')
+				if (mapDiv) {
+					mapDiv.style.position = ''
+					mapDiv.style.overflow = ''
+				}
+				const pointsLayer = document.querySelector('div.ol-layer__points')
+				if (pointsLayer) {
+					pointsLayer.style.filter = 'drop-shadow(2px 4px 1px black)'
+				}
+
+				window.olMap = map;
+				map.setPerspective(20)
+
+				tlContainer.style.zIndex = 4;
 			}
 		} catch (error) {
 			console.log('SBG CUI: Ошибка в main.', error);
