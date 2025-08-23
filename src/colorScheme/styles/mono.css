@@ -297,6 +297,14 @@ option:checked { /* WTF? checked is non-documented??? */
   background-color: #777;
 }
 
+.discover-mod[data-wish="1"] {
+  border-radius: var(--radius10) 0 0 var(--radius10) !important;
+}
+
+.discover-mod[data-wish="3"] {
+  border-radius: 0 var(--radius10) var(--radius10) 0 !important;
+}
+
 .deploy-slider-error {
   background-color: var(--i-bg-color-aa);
 }

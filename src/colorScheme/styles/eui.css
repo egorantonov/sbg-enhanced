@@ -183,7 +183,8 @@ body, input, select, button {
   margin-bottom: var(--margin);
   width: 100%;
   transition: background-color 0.25s linear;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
+  font-weight: bolder;
 }
 
 #discover:disabled {
@@ -198,6 +199,34 @@ body, input, select, button {
 
 #discover[data-time]:after {
   transform: translate(0, -25px) !important;
+}
+
+.pb-sub {
+  margin-bottom: var(--margin) !important;
+}
+
+.discover-mod[data-wish="1"] {
+  border-radius: var(--radius10) 0 0 var(--radius10) !important;
+}
+
+.discover-mod[data-wish="3"] {
+  border-radius: 0 var(--radius10) var(--radius10) 0 !important;
+}
+
+.discover-mod[data-wish="1"]::after {
+  content: 'Loot+ref';
+}
+
+.discover-mod[data-wish="2"]::after {
+  content: 'No ref';
+}
+
+.discover-mod[data-wish="3"]::after {
+  content: 'No loot';
+}
+
+.discover-mod[data-wish]::after {
+  font-size: small;
 }
 
 #bottom {
@@ -819,7 +848,7 @@ button#sbgcui_settings-close {
     margin: 0;
   }
 
-  #discover {
+  #discover, .pb-sub {
     margin-bottom: 5px;
   }
 

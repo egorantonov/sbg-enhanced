@@ -203,7 +203,6 @@
   top: 0;
   left: 0;
   height: 100%;
-  border-radius: 2px;
   background-color: #7777;
   backdrop-filter: var(--blur10);
   filter: opacity(0.75);
@@ -325,8 +324,10 @@
 .popping-button {
   width: 100%;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
+  flex-direction: row;
   align-items: center;
+  justify-content: space-evenly;
 }
 
 .discovery-ring {
@@ -334,8 +335,10 @@
 }
 
 #discover {
-  width: calc(90% + 0.5em);
-  order: 1 !important;
+  /* width: calc(90% + 0.5em); */
+  /* order: 1 !important; */
+  width: 25% !important;
+  max-width: 25% !important;
 }
 
 #discover[data-time] {
@@ -353,24 +356,38 @@
 }
 
 .pb-sub {
-  z-index: 1;
-  backdrop-filter: blur(10px) saturate(1.25);
-  width: 100% !important;
-  background: var(--background-transp);
-  justify-content: space-evenly;
+  /* z-index: 1; */
+  /* backdrop-filter: blur(10px) saturate(1.25); */
+  /* width: 100% !important; */
+  /* background: var(--background-transp); */
+  /* justify-content: space-evenly; */
+  display: flex !important;
+  padding: 6px 0px 6px 6px;
+  width: 75% !important;
+  position: unset !important;
+  transform: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  gap: 0;
+}
+
+.pb-arrow {
+  display: none !important;
 }
 
 .discover-mod {
-  height: 40px;
-  width: 25%;
+  min-height: var(--button-height, 45px);
+  width: 33%;
   min-width: 40px;
+  border-radius: 0 !important;
+  text-transform: none !important;
+  font-weight: bolder;
 }
 
 .i-stat {
   flex-direction: row;
   flex-wrap: wrap;
   align-content: space-around;
-
   grid-template-areas:
     "distance lines"
     "owner regions"
@@ -884,6 +901,10 @@ input[data-type="reference-search"] {
 
 #draw[sbgcui-possible-lines="0"]::after {
   content: "";
+  display: none;
+}
+
+.notifs__entry-view.icon-button::before {
   display: none;
 }
 

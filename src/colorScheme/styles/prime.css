@@ -66,6 +66,14 @@ select {
   position: relative;
 }
 
+#discover {
+  width: 30% !important;
+}
+
+.pb-sub {
+  width: 60% !important;
+}
+
 #discover[disabled],
 .i-buttons>button[disabled],
 #draw[sbgcui-possible-lines="0"] { /* CUI Compatibility */

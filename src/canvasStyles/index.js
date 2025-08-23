@@ -30,7 +30,7 @@ function AddLayerOpacity(innerTextTranslation, controlId, defaultValue = 1) {
     item.className = Modifiers.SettingsSectionItemClassName
 
     let title = document.createElement(Elements.Span)
-    title.innerText = t(innerTextTranslation)
+    title.innerText = innerTextTranslation
     item.appendChild(title)
 
     let range = document.createElement(Elements.Input)
