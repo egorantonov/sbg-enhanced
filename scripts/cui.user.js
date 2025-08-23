@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      25.8.2
+// @version      25.8.3
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -43,7 +43,7 @@
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
 
-	const USERSCRIPT_VERSION = '25.8.2';
+	const USERSCRIPT_VERSION = '25.8.3';
 	const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 24 * 60 * 60 * 1000 // 24h
 	const VIEW_PADDING = (window.innerHeight / 2) * 0.7;
@@ -512,6 +512,12 @@
 
 	function loadMainScript() {
 		function replacer(match) {
+			const layers = {
+				OSM: `if (type == 'osm') {`, 
+				// STADIA: `if (type.startsWith('stadia')) { source=new ol.source.StadiaMaps({ layer:'stamen_'+type.split('_')[1] })} else if (type == 'osm') {`
+				STADIA: `if (type.startsWith('stadia')) { source=new ol.source.StadiaMaps({ layer:'stamen_'+type.split('_')[1] })} else `,
+				YANDEX: `if (type == 'ymaps') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`https://core-renderer-tiles.maps.yandex.net/tiles?l=map&x={x}&y={y}&z={z}&scale=1&projection=web_mercator&theme=\${theme}&lang=ru\` });\n} else `,
+			}
 			replacesMade += 1;
 			switch (match) {
 				case `const Catalysers`: // Line ~95
@@ -575,8 +581,8 @@
 					return `if (area < 0)`;
 				case `makeItemTitle(item)`: // Line ~2018
 					return `makeShortItemTitle(item)`;
-				case `if (type == 'osm') {`: // Line ~2166
-					return `if (type.startsWith('stadia')) { source=new ol.source.StadiaMaps({ layer:'stamen_'+type.split('_')[1] })} else if (type == 'osm') {`;
+				case layers.OSM: // Line ~2166
+					return [layers.STADIA, layers.YANDEX, layers.OSM].join('');
 				case `class Bitfield`: // Line ~2306
 					return `window.openProfile = openProfile; window.requestEntities = requestEntities; window.showInfo = showInfo; window.Bitfield = class Bitfield`;
 				default:
@@ -2848,30 +2854,38 @@
 				map.removeControl(rotateControl);
 				map.addControl(toolbar);
 
+				// const stadiaWatercolorLabel = document.createElement('label');
+				// const stadiaTonerLabel = document.createElement('label');
+				// const yandexLabel = document.createElement('label');
 
-				const stadiaWatercolorLabel = document.createElement('label');
-				const stadiaTonerLabel = document.createElement('label');
+				const osmToggle = document.querySelector('input[value="osm"]')
+				const addLayers = [
+					{ value: 'stadia_watercolor', title: 'Stadia Watercolor' },
+					{ value: 'stadia_toner', title: 'Stadia Toner' },
+					{ value: 'ymaps', title: 'Yandex' },
+				]
 
-				[stadiaWatercolorLabel, stadiaTonerLabel].forEach((label, index) => {
+				addLayers.forEach((layer) => {
+
+					let label = document.createElement('label');
 					const input = document.createElement('input');
 					const span = document.createElement('span');
-					const theme = index == 0 ? 'Watercolor' : 'Toner';
-					const isSelected = JSON.parse(localStorage.getItem('settings')).base == `stadia_${theme.toLowerCase()}`;
+					const isSelected = JSON.parse(localStorage.getItem('settings')).base == layer.value;
 
 					label.classList.add('layers-config__entry');
 
 					input.type = 'radio';
 					input.name = 'baselayer';
-					input.value = `stadia_${theme.toLowerCase()}`;
+					input.value = layer.value;
 					input.checked = isSelected;
 
-					span.innerText = `Stadia ${theme}`
+					span.innerText = layer.title
 
 					label.append(input, ' ', span);
+					osmToggle.parentElement.after(label);
 				});
 
-				document.querySelector('input[value="osm"]').parentElement.after(stadiaWatercolorLabel, stadiaTonerLabel);
-
+				// osmToggle.parentElement.after(stadiaWatercolorLabel, stadiaTonerLabel);
 
 				const clearTilesCacheButton = document.createElement('button');
 				const layersConfigButtons = document.querySelector('.layers-config__buttons');
