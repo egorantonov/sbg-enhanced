@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      25.8.1
+// @version      25.8.2
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -43,7 +43,7 @@
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
 
-	const USERSCRIPT_VERSION = '25.8.1';
+	const USERSCRIPT_VERSION = '25.8.2';
 	const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 24 * 60 * 60 * 1000 // 24h
 	const VIEW_PADDING = (window.innerHeight / 2) * 0.7;
@@ -321,7 +321,7 @@
 			.then(r => r.text())
 			.then(data => {
 				data = data.replace(/<script class="mobile-check">.+?<\/script>/, '');
-				data = data.replace(/(<script src="\/packages\/js\/ol\.js")(>)/, `$1 onload="window.dispatchEvent(new Event('olReady'))"$2`);
+				data = data.replace(/(<script src="\/packages\/js\/ol@\d+.\d+.\d+\.js")(>)/, `$1 onload="window.dispatchEvent(new Event('olReady'))"$2`);
 
 				document.write(data);
 				document.close();
