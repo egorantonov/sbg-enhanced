@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      25.8.3
+// @version      25.8.4
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -43,7 +43,7 @@
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
 
-	const USERSCRIPT_VERSION = '25.8.3';
+	const USERSCRIPT_VERSION = '25.8.4';
 	const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 24 * 60 * 60 * 1000 // 24h
 	const VIEW_PADDING = (window.innerHeight / 2) * 0.7;
@@ -512,11 +512,20 @@
 
 	function loadMainScript() {
 		function replacer(match) {
+			const yandexBase = `https://core-renderer-tiles.maps.yandex.net/tiles?l=map&x={x}&y={y}&z={z}&scale=1&projection=web_mercator&theme=\${theme}&lang=ru&maptype=`
+			const yandexType = {
+				MAP: 'map',
+				FUTURE: 'future',
+				DRIVING: 'driving',
+				TRANSIT: 'transit'
+			}
 			const layers = {
-				OSM: `if (type == 'osm') {`, 
-				// STADIA: `if (type.startsWith('stadia')) { source=new ol.source.StadiaMaps({ layer:'stamen_'+type.split('_')[1] })} else if (type == 'osm') {`
+				OSM: `if (type == 'osm') {`,
 				STADIA: `if (type.startsWith('stadia')) { source=new ol.source.StadiaMaps({ layer:'stamen_'+type.split('_')[1] })} else `,
-				YANDEX: `if (type == 'ymaps') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`https://core-renderer-tiles.maps.yandex.net/tiles?l=map&x={x}&y={y}&z={z}&scale=1&projection=web_mercator&theme=\${theme}&lang=ru\` });\n} else `,
+				YANDEX_TRANSIT: `if (type == 'ymaps_t') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`${yandexBase}${yandexType.TRANSIT}\` });\n} else `,
+				YANDEX_DRIVING: `if (type == 'ymaps_d') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`${yandexBase}${yandexType.DRIVING}\` });\n} else `,
+				YANDEX_FUTURE: `if (type == 'ymaps_f') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`${yandexBase}${yandexType.FUTURE}\` });\n} else `,
+				YANDEX: `if (type == 'ymaps') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`${yandexBase}${yandexType.MAP}\` });\n} else `,
 			}
 			replacesMade += 1;
 			switch (match) {
@@ -582,7 +591,7 @@
 				case `makeItemTitle(item)`: // Line ~2018
 					return `makeShortItemTitle(item)`;
 				case layers.OSM: // Line ~2166
-					return [layers.STADIA, layers.YANDEX, layers.OSM].join('');
+					return [layers.STADIA, layers.YANDEX_ADMIN, layers.YANDEX_TRANSIT, layers.YANDEX_DRIVING, layers.YANDEX_FUTURE, layers.YANDEX, layers.OSM].join('');
 				case `class Bitfield`: // Line ~2306
 					return `window.openProfile = openProfile; window.requestEntities = requestEntities; window.showInfo = showInfo; window.Bitfield = class Bitfield`;
 				default:
@@ -2854,14 +2863,13 @@
 				map.removeControl(rotateControl);
 				map.addControl(toolbar);
 
-				// const stadiaWatercolorLabel = document.createElement('label');
-				// const stadiaTonerLabel = document.createElement('label');
-				// const yandexLabel = document.createElement('label');
-
 				const osmToggle = document.querySelector('input[value="osm"]')
 				const addLayers = [
 					{ value: 'stadia_watercolor', title: 'Stadia Watercolor' },
 					{ value: 'stadia_toner', title: 'Stadia Toner' },
+					{ value: 'ymaps_t', title: 'Yandex Transport' },
+					{ value: 'ymaps_d', title: 'Yandex Drive' },
+					{ value: 'ymaps_f', title: 'Yandex Future' },
 					{ value: 'ymaps', title: 'Yandex' },
 				]
 
