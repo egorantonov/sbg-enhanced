@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      25.9.1
+// @version      25.9.2
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -48,7 +48,7 @@
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
 
-	const USERSCRIPT_VERSION = '25.9.1';
+	const USERSCRIPT_VERSION = '25.9.2';
 	const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 24 * 60 * 60 * 1000 // 24h
 	const VIEW_PADDING = (window.innerHeight / 2) * 0.7;
@@ -519,7 +519,7 @@
 	function loadMainScript() {
 		function replacer(match) {
 			const yandexBase = `https://core-renderer-tiles.maps.yandex.net/tiles?l=map&x={x}&y={y}&z={z}&scale=1&projection=web_mercator&theme=\${theme}&lang=ru&maptype=`
-			const googleBase = `https://mt{0-3}.google.com/vt/lyrs=TYPE&x={x}&y={y}&z={z}\${is_dark ? '&apistyle=p.il' : ''}`
+			const googleBase = `https://mt{0-3}.google.com/vt/lyrs=TYPE&x={x}&y={y}&z={z}&apistyle=s.t:2|s.e:l|p.v:off,s.t:40|s.e|p.v:on\${is_dark ? ',p.il' : ''}`
 			const yandexType = {
 				MAP: 'map',
 				FUTURE: 'future',
