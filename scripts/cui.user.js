@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      25.9.2
+// @version      25.9.3
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -48,7 +48,7 @@
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
 
-	const USERSCRIPT_VERSION = '25.9.2';
+	const USERSCRIPT_VERSION = '25.9.3';
 	const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 24 * 60 * 60 * 1000 // 24h
 	const VIEW_PADDING = (window.innerHeight / 2) * 0.7;
@@ -203,17 +203,17 @@
 			},
 			mapFilters: {
 				invert: isDarkMode && !isCdbMap ? 1 : 0,
-				hueRotate: isDarkMode ? 180 : 0,
+				hueRotate: 0, //isDarkMode ? 180 : 0,
 				brightness: isDarkMode ? 0.75 : 1,
 				grayscale: isDarkMode ? 1 : 0,
-				sepia: 1,
+				sepia: 0,
 				blur: 0,
 				branding: 'default', // default || custom
 				brandingColor: '#CCCCCC',
 			},
 			tinting: {
 				map: 1,
-				point: 'level', // level || team || off
+				point: 'team', // level || team || off
 				profile: 1,
 			},
 			vibration: {
@@ -223,11 +223,11 @@
 			ui: {
 				doubleClickZoom: 0,
 				restoreRotation: 1,
-				pointBgImage: 1,
+				pointBgImage: 0,
 				pointBtnsRtl: 0,
 				pointBgImageBlur: 1,
 				pointDischargeTimeout: 1,
-				speedometer: 1,
+				speedometer: 0,
 			},
 			pointHighlighting: {
 				inner: 'uniqc', // fav || ref || uniqc || uniqv || cores || highlevel || off
@@ -3202,6 +3202,7 @@
 
 				function onColorFilterInput(event) {
 					const { name, value } = event.target;
+					event.target.dataset.label = value;
 					const filter = name.split('_')[1];
 					setFilterCSSVar(filter, value);
 				}

@@ -908,6 +908,17 @@ input[data-type="reference-search"] {
   display: none;
 }
 
+input[type="range"][name^="mapFilters_"] {
+  position: relative;
+}
+
+input[type="range"][name^="mapFilters_"]::after {
+  content: attr(data-label);
+  position: absolute;
+  right: 5px;
+  font-weight: bolder;
+}
+
 /* Animation */
 
 @keyframes blink-box-shadow-inset {

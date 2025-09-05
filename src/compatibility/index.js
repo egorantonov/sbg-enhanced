@@ -114,6 +114,12 @@ export function Compatibility () {
         }
       })
     }
+
+    const brightnessToggle = document.querySelector('input[name="mapFilters_brightness"]')
+    if (brightnessToggle) {
+      brightnessToggle.step = '0.1'
+      brightnessToggle.max = '3'
+    }
   }
 
   function PWA() {
