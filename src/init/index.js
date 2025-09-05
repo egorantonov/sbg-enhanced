@@ -223,6 +223,7 @@ export async function RunWithOnlineUpdate() {
     try {
       //showToast(t(Translations.githubCheckingUpdates))
       UpdateProgressStatus(t(Translations.githubCheckingUpdates))
+      if (/firefox/i.test(window.navigator.userAgent)) await new Promise(r => setTimeout(r, 50))
       await fetch(releaseUrl)
       .then(r => r.json())
       .then(x => processResponse(x))

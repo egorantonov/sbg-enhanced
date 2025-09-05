@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      25.8.4
+// @version      25.9.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -15,13 +15,18 @@
 (async function () {
 	'use strict';
 
+	const isFirefox = /firefox/i.test(window.navigator.userAgent)
+	if (isFirefox) {
+        await new Promise(r => setTimeout(r, 50));
+  }
+
 	if (window.location.pathname.startsWith('/login')) { return; }
 	if (document.querySelector('[src^="intel"]')) { return; }
 	const vanillaScriptSrc = document.querySelector('[src^="script"]').getAttribute('src');
 
 	window.stop();
 	document.open();
-	if (/firefox/i.test(window.navigator.userAgent) == false) {
+	if (!isFirefox) {
 		for (let i = 0; i <= 100; i += 1) { window.navigator.geolocation.clearWatch(i); }
 	}
 
@@ -43,7 +48,7 @@
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
 
-	const USERSCRIPT_VERSION = '25.8.4';
+	const USERSCRIPT_VERSION = '25.9.1';
 	const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 24 * 60 * 60 * 1000 // 24h
 	const VIEW_PADDING = (window.innerHeight / 2) * 0.7;
@@ -325,6 +330,7 @@
 
 				document.write(data);
 				document.close();
+				window.cuiStatus = 'loading'
 			})
 			.catch(error => { console.log('SBG CUI: Ошибка при получении страницы.', error); });
 	}
@@ -513,6 +519,7 @@
 	function loadMainScript() {
 		function replacer(match) {
 			const yandexBase = `https://core-renderer-tiles.maps.yandex.net/tiles?l=map&x={x}&y={y}&z={z}&scale=1&projection=web_mercator&theme=\${theme}&lang=ru&maptype=`
+			const googleBase = `https://mt{0-3}.google.com/vt/lyrs=TYPE&x={x}&y={y}&z={z}\${is_dark ? '&apistyle=p.il' : ''}`
 			const yandexType = {
 				MAP: 'map',
 				FUTURE: 'future',
@@ -521,6 +528,11 @@
 			}
 			const layers = {
 				OSM: `if (type == 'osm') {`,
+				GOOGLE_MAPS: `if (type == 'goo_m') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'm')}\` }); \n} else  `,
+				GOOGLE_MAPS2: `if (type == 'goo_r') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'r')}\` }); \n} else  `,
+				GOOGLE_ROADS: `if (type == 'goo_h') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'h')}\` }); \n} else  `,
+				GOOGLE_TERRAIN: `if (type == 'goo_p') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'p')}\` }); \n} else  `,
+				GOOGLE_HYBRID: `if (type == 'goo_y') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'y')}\` }); \n} else  `,
 				STADIA: `if (type.startsWith('stadia')) { source=new ol.source.StadiaMaps({ layer:'stamen_'+type.split('_')[1] })} else `,
 				YANDEX_TRANSIT: `if (type == 'ymaps_t') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`${yandexBase}${yandexType.TRANSIT}\` });\n} else `,
 				YANDEX_DRIVING: `if (type == 'ymaps_d') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`${yandexBase}${yandexType.DRIVING}\` });\n} else `,
@@ -529,6 +541,19 @@
 			}
 			replacesMade += 1;
 			switch (match) {
+				case layers.OSM: // Line ~2166
+					return [layers.STADIA,
+						layers.YANDEX_TRANSIT,
+						layers.YANDEX_DRIVING,
+						layers.YANDEX_FUTURE,
+						layers.YANDEX,
+						layers.GOOGLE_MAPS,
+						layers.GOOGLE_MAPS2,
+						layers.GOOGLE_ROADS,
+						layers.GOOGLE_TERRAIN,
+						// layers.GOOGLE_TERRAIN2,
+						layers.GOOGLE_HYBRID,
+						layers.OSM].join('');
 				case `const Catalysers`: // Line ~95
 					return `window.Catalysers`;
 				case `const TeamColors`: // Line ~101
@@ -590,8 +615,6 @@
 					return `if (area < 0)`;
 				case `makeItemTitle(item)`: // Line ~2018
 					return `makeShortItemTitle(item)`;
-				case layers.OSM: // Line ~2166
-					return [layers.STADIA, layers.YANDEX_ADMIN, layers.YANDEX_TRANSIT, layers.YANDEX_DRIVING, layers.YANDEX_FUTURE, layers.YANDEX, layers.OSM].join('');
 				case `class Bitfield`: // Line ~2306
 					return `window.openProfile = openProfile; window.requestEntities = requestEntities; window.showInfo = showInfo; window.Bitfield = class Bitfield`;
 				default:
@@ -640,7 +663,9 @@
 			.then(r => r.text())
 			.then(data => {
 				const script = document.createElement('script');
+				script.id = 'vanilla_script'
 				script.textContent = data.replace(regexp, replacer);
+				debugger
 				if (replacesMade != replacesShouldBe) { /*throw new Error*/ alert(`SBG CUI: Сделано замен: ${replacesMade} вместо ${replacesShouldBe}.`); }
 				document.head.appendChild(script);
 			})
@@ -2867,6 +2892,14 @@
 				const addLayers = [
 					{ value: 'stadia_watercolor', title: 'Stadia Watercolor' },
 					{ value: 'stadia_toner', title: 'Stadia Toner' },
+					{ value: 'stadia_terrain', title: 'Stadia Terrain' },
+					{ value: 'goo_m', title: 'Google Maps' },
+					{ value: 'goo_r', title: 'Google Roadmap' },
+					{ value: 'goo_h', title: 'Google Highways' },
+					{ value: 'goo_p', title: 'Google Terrain' },
+					// { value: 'goo_t', title: 'Google Terrain 2' },
+					{ value: 'goo_y', title: 'Google Hybrid' },
+					// { value: 'ymaps_s', title: 'Yandex Satellite' },
 					{ value: 'ymaps_t', title: 'Yandex Transport' },
 					{ value: 'ymaps_d', title: 'Yandex Drive' },
 					{ value: 'ymaps_f', title: 'Yandex Future' },
@@ -6031,8 +6064,16 @@
 
 				leaderboardPopup.appendChild(searchButton);
 			}
+
+
+			const finalize = () => {
+				window.cuiStatus = 'loaded'
+			}
+
+			finalize()
 		} catch (error) {
 			console.log('SBG CUI: Ошибка в main.', error);
+			window.cuiStatus = 'error'
 		}
 	}
 
