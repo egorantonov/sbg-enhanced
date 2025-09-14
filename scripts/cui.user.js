@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      25.9.3
+// @version      25.9.5
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -48,7 +48,7 @@
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
 	const LATEST_KNOWN_VERSION = '0.5.1' // override
-	const USERSCRIPT_VERSION = '25.9.4';
+	const USERSCRIPT_VERSION = '25.9.5';
 	const HOME_DIR = 'https://sbg-game.ru/plugins/sbg-cui'; // const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 7 * 24 * 60 * 60 * 1000 // 7d
 	const VIEW_PADDING = (window.innerHeight / 2) * 0.7;
@@ -551,7 +551,6 @@
 						layers.GOOGLE_MAPS2,
 						layers.GOOGLE_ROADS,
 						layers.GOOGLE_TERRAIN,
-						// layers.GOOGLE_TERRAIN2,
 						layers.GOOGLE_HYBRID,
 						layers.OSM].join('');
 				case `const Catalysers`: // Line ~95
@@ -562,8 +561,10 @@
 					return 'new ol.PointFeature({';
 				case `constrainResolution: true`: // Line ~261
 					return `constrainResolution: false`;
+				case `function movePlayer`:
+					return `window.movePlayer = ${match}`;
 				case `movePlayer([coords.longitude, coords.latitude])`: // Line ~353
-					return `${match};
+					return `localStorage.getItem('smooth') == 1 ? smoothMovement.handleGeolocation(coords) : ${match};
 									window.dispatchEvent(new Event('playerMove'));
 									if (!document.querySelector('.info.popup').classList.contains('hidden')) {
 										manageControls();
@@ -629,6 +630,7 @@
 			`((new ol\\.Feature\\({(?=\\s+?geometry: new ol\\.geom\\.Point\\(mpos\\))))`,
 			`(constrainResolution: true)`,
 			`(movePlayer\\(\\[coords\\.longitude, coords\\.latitude\\]\\))`,
+			`(function movePlayer)`,
 			`(\\$\\('body'\\)\\.empty\\(\\))`,
 			`(const attack_slider)`,
 			`(const deploy_slider)`,
@@ -656,7 +658,7 @@
 			`(class Bitfield)`,
 		].join('|'), 'g');
 
-		const replacesShouldBe = 32;
+		const replacesShouldBe = 33;
 		let replacesMade = 0;
 
 		fetch(`/app/${vanillaScriptSrc}`)
@@ -679,6 +681,111 @@
 		try {
 			const thousandSeparator = Intl.NumberFormat(i18next.language).formatToParts(1111)[1].value;
 			const decimalSeparator = Intl.NumberFormat(i18next.language).formatToParts(1.1)[1].value;
+
+			class SmoothMapMovement {
+			  constructor() {
+			        this.previousPosition = null
+			        this.targetPosition = null
+			        this.animationId = null
+			        this.isAnimating = false
+
+							setTimeout(() => {
+								const uiSettings = Array.from(document.querySelectorAll('.settings-section')).at(1)
+								const smooth = 'smooth'
+								const input = document.createElement('input')
+								input.type = 'checkbox'
+								input.dataset.setting = smooth
+								const title = document.createElement('span')
+								title.innerText = i18next.t('sbgcui.smooth') ?? 'Smooth Motion'
+
+								const label = document.createElement('label')
+								label.classList.add('settings-section__item')
+								label.appendChild(title)
+								label.appendChild(input)
+
+								if (localStorage.getItem(smooth) == 1) {
+									input.checked = true
+								}
+
+								uiSettings.appendChild(label)
+
+								input.addEventListener('change', (event) => {
+									if (event.target.checked) {
+											localStorage.setItem(smooth, 1)
+									}
+									else {
+											localStorage.setItem(smooth, 0)
+									}
+								})
+
+							}, 200);
+			    }
+
+			  handleGeolocation(coords) {
+			      const newPosition = {
+			          lat: coords.latitude,
+			          lng: coords.longitude,
+			          accuracy: coords.accuracy
+			      }
+
+			      if (!this.previousPosition) {
+			          this.previousPosition = newPosition
+			          this.targetPosition = newPosition
+			          this.updateMarker(newPosition)
+			          return
+			      }
+
+			      this.previousPosition = { ...this.targetPosition }
+			      this.targetPosition = newPosition
+
+			      this.startAnimation()
+			  }
+
+			  startAnimation() {
+			      if (this.isAnimating) {
+			          cancelAnimationFrame(this.animationId)
+			      }
+
+			      this.isAnimating = true
+			      const startTime = Date.now()
+			      const duration = 1000 // ms
+
+			      const animate = () => {
+			          const currentTime = Date.now()
+			          const elapsed = currentTime - startTime
+			          const progress = Math.min(elapsed / duration, 1)
+			          //const easedProgress = this.easeInOutCubic(progress)
+			          const currentPosition = this.interpolatePosition(
+			              this.previousPosition,
+			              this.targetPosition,
+			              progress // easedProgress
+			          )
+			          this.updateMarker(currentPosition)
+								if (progress < 1) {
+			              this.animationId = requestAnimationFrame(animate)
+			          } else {
+			              this.isAnimating = false
+			          }
+			      }
+			      this.animationId = requestAnimationFrame(animate)
+			  }
+			  interpolatePosition(start, end, progress) {
+			      return {
+			          lat: start.lat + (end.lat - start.lat) * progress,
+			          lng: start.lng + (end.lng - start.lng) * progress,
+			          accuracy: end.accuracy
+			      }
+			  }
+			  // easeInOutCubic(t) {
+			  //     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+			  // }
+			  updateMarker(position) {
+			      window.movePlayer([position.lng, position.lat])
+			      // console.log('Moving to:', position.lat, position.lng)
+			  }
+			}
+
+			window.smoothMovement = new SmoothMapMovement()
 
 			class DiscoverModifier {
 				constructor(loot, refs) {
@@ -2782,6 +2889,7 @@
 					'sbgcui.sort-distance': 'Расстоянию',
 					'sbgcui.sort-amount': 'Количеству',
 					'sbgcui.sort-guard': 'Гарду',
+					'sbgcui.smooth': 'Плавное движение',
 				});
 				i18next.addResources('en', 'main', {
 					'notifs.text': 'neutralized by $1$',
@@ -2811,6 +2919,7 @@
 					'sbgcui.sort-distance': 'Distance',
 					'sbgcui.sort-amount': 'Amount',
 					'sbgcui.sort-guard': 'Guard',
+					'sbgcui.smooth': 'Smooth Motion',
 				});
 				i18next.addResources(i18next.resolvedLanguage ?? 'en', 'main', {
 					'items.catalyser-short': '{{level}}',
@@ -6064,7 +6173,6 @@
 
 				leaderboardPopup.appendChild(searchButton);
 			}
-
 
 			const finalize = () => {
 				window.cuiStatus = 'loaded'
