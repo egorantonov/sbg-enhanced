@@ -1,4 +1,4 @@
-import { Elements, Events, EUI, Modifiers, Nodes, t, Translations } from '../constants'
+import { Elements, Events, EUI, Modifiers, Nodes, t, Translations, IsPrivate } from '../constants'
 import { Logger } from '../utils'
 import styles from './styles.min.css'
 
@@ -82,7 +82,7 @@ export function Compatibility () {
     }
 
     // Move reload button for webview in a compact mode
-    if (localStorage.getItem(EUI.CompactView) == 1) {
+    if (localStorage.getItem(EUI.CompactView) == 1 && !IsPrivate()) {
       const reloadButton = document.querySelector('.game-menu button.fa-solid-rotate')
       if (reloadButton) {
         Nodes.Layers.after(reloadButton)

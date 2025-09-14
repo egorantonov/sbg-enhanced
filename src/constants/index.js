@@ -174,7 +174,8 @@ const cuiElements = () => window.document.querySelectorAll('*[class^="sbgcui"]')
 const lastElement = () => window.document.querySelector('.sbgcui_inventory__ma-shortcuts')
 export const CUI = {
   Detected: () => window.cuiStatus || window.TeamColors || window.Catalysers || window.attack_slider || window.deploy_slider || window.draw_slider || window.requestEntities || window.cl || window.onerror || cuiElements()?.length, // || getSbgSettings()?.base // нестабильно, тк остаётся в localStorage
-  Loaded: () => window.cuiStatus == 'loaded' || window.TeamColors && window.Catalysers && window.attack_slider && window.deploy_slider && window.draw_slider && window.requestEntities && cuiElements()?.length && lastElement() && !document.querySelector('button.ol-rotate-reset')
+  Loaded: () => window.cuiStatus == 'loaded' || window.TeamColors && window.Catalysers && window.attack_slider && window.deploy_slider && window.draw_slider && window.requestEntities && cuiElements()?.length && lastElement() && !document.querySelector('button.ol-rotate-reset'),
+  Error: () => window.cuiStatus == 'error'
 }
 
 /**
@@ -504,7 +505,7 @@ export const Translations = {
   },
   progressCuiFailed: {
     en: 'CUI seems to be failed! \r\nConfirm to reload or cancel to wait if connection is weak.',
-    ru: 'Похоже, CUI не удалось! \r\nПодтвердите для перезагрузки или отмените для ожидания загрузки.'
+    ru: 'Похоже, CUI не удалось загрузить! \r\nПодтвердите для перезагрузки или отмените для ожидания загрузки.'
   },
   progressCuiFailedReload: {
     en: 'CUI seems to be failed! Force reloading...',

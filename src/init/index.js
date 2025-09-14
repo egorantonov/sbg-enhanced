@@ -137,13 +137,14 @@ async function ExecuteScript () {
 
   if (CUI.Detected()) {
     UpdateProgressStatus(t(Translations.progressCui))
-    for (let i = 1; i <= 30; i++) {
+    const limit = 30
+    for (let i = 1; i <= limit; i++) {
       if (CUI.Loaded()) {
         delaySyncMs = 0
         delayAsyncMs = 100
         break
       }
-      if (i === 30) {
+      if (i === limit || CUI.Error()) {
         alert(t(Translations.progressCuiFailedReload))
         location.reload()
       }
@@ -151,7 +152,7 @@ async function ExecuteScript () {
         confirm(t(Translations.progressCuiFailed)) && location.reload()
       }
       Logger.log(`${t(Translations.progressCui)}, try #${i}...`)
-      await Sleep(1000)
+      await Sleep(1e3)
     }
   }
 

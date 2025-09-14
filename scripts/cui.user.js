@@ -47,16 +47,17 @@
 	console.error = logDecorator(console.error);
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
-
-	const USERSCRIPT_VERSION = '25.9.3';
-	const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
-	const __CUI_WEB_RES_CACHE_TIMEOUT = 24 * 60 * 60 * 1000 // 24h
+	const LATEST_KNOWN_VERSION = '0.5.1' // override
+	const USERSCRIPT_VERSION = '25.9.4';
+	const HOME_DIR = 'https://sbg-game.ru/plugins/sbg-cui'; // const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
+	const __CUI_WEB_RES_CACHE_TIMEOUT = 7 * 24 * 60 * 60 * 1000 // 7d
 	const VIEW_PADDING = (window.innerHeight / 2) * 0.7;
 
-	const __cui_constants = '__cui_constants';
+	const __cui_constants = `__cui_constants_v${USERSCRIPT_VERSION}`;
 	let cached_constants = JSON.parse(localStorage.getItem(__cui_constants) ?? '{}')
 	if (!cached_constants?.timestamp || (Date.now() - cached_constants?.timestamp > __CUI_WEB_RES_CACHE_TIMEOUT)) {
 		cached_constants = await fetch(`${HOME_DIR}/const.json`).then(res => res.json()).catch(error => { window.alert(`Ошибка при получении ${HOME_DIR}/const.json.\n\n${error.message}`); });
+		cached_constants.LATEST_KNOWN_VERSION = LATEST_KNOWN_VERSION
 		localStorage.setItem(__cui_constants, JSON.stringify({...cached_constants, timestamp: Date.now()}))
 	}
 
@@ -66,7 +67,6 @@
 		MAX_DISPLAYED_CLUSTER, MIN_FREE_SPACE, PLAYER_RANGE, TILE_CACHE_SIZE, POSSIBLE_LINES_DISTANCE_LIMIT, BLAST_ANIMATION_DURATION
 	} = cached_constants;
 
-	const LATEST_KNOWN_VERSION = '0.5.1' // override
 
 	const config = {}, state = {}, favorites = {};
 	const isCdbMap = JSON.parse(localStorage.getItem('settings'))?.base == 'cdb';
@@ -665,7 +665,6 @@
 				const script = document.createElement('script');
 				script.id = 'vanilla_script'
 				script.textContent = data.replace(regexp, replacer);
-				debugger
 				if (replacesMade != replacesShouldBe) { /*throw new Error*/ alert(`SBG CUI: Сделано замен: ${replacesMade} вместо ${replacesShouldBe}.`); }
 				document.head.appendChild(script);
 			})
@@ -1375,7 +1374,7 @@
 
 			async function getHTMLasset(filename) {
 
-				const cached_filename = `__CUI_WEB_RES_CACHE_${filename}`
+				const cached_filename = `__CUI_WEB_RES_CACHE_v${USERSCRIPT_VERSION}_${filename}`
 				let text
 				let cached = JSON.parse(localStorage.getItem(cached_filename) ?? '{}')
 				if (!cached?.timestamp || !cached?.timestamp || (Date.now() - cached_constants?.timestamp > __CUI_WEB_RES_CACHE_TIMEOUT))
@@ -3637,7 +3636,7 @@
 
 			/* Кнопка обновления страницы */
 			{
-				if (window.navigator.userAgent.toLowerCase().includes('wv')) {
+				/*if (window.navigator.userAgent.toLowerCase().includes('wv'))*/ {
 					let gameMenu = document.querySelector('.game-menu');
 					let reloadButton = document.createElement('button');
 
