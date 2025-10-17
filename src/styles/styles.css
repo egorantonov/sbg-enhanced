@@ -66,6 +66,19 @@
   justify-content: space-between;
 }
 
+.info.popup>.inventory__manage-amount {
+  z-index: 3;
+}
+
+.info.popup>.popup-touch {
+  backdrop-filter: var(--blur5);
+}
+
+.info.popup:has(.popup-touch) {
+  backdrop-filter: none !important;
+  background: var(--background) !important;
+}
+
 /* BUTTONS */
 .ol-control #settings {
   margin-top: 20px;
