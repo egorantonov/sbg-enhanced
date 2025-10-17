@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      25.9.5
+// @version      25.10.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -30,7 +30,6 @@
 		for (let i = 0; i <= 100; i += 1) { window.navigator.geolocation.clearWatch(i); }
 	}
 
-
 	const logsNerrors = [];
 	const pushMessage = messages => {
 		logsNerrors.push({ timestamp: Date.now(), messages });
@@ -47,13 +46,14 @@
 	console.error = logDecorator(console.error);
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
-	const LATEST_KNOWN_VERSION = '0.5.1' // override
-	const USERSCRIPT_VERSION = '25.9.5';
+	const LATEST_KNOWN_VERSION = '0.5.2' // override
+	const USERSCRIPT_VERSION = '25.10.1';
+	const CUI_WEB_RES_CACHE_v = '__CUI_WEB_RES_CACHE_v';
 	const HOME_DIR = 'https://sbg-game.ru/plugins/sbg-cui'; // const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 7 * 24 * 60 * 60 * 1000 // 7d
 	const VIEW_PADDING = (window.innerHeight / 2) * 0.7;
 
-	const __cui_constants = `__cui_constants_v${USERSCRIPT_VERSION}`;
+	const __cui_constants = `${CUI_WEB_RES_CACHE_v}${USERSCRIPT_VERSION}_constants`;
 	let cached_constants = JSON.parse(localStorage.getItem(__cui_constants) ?? '{}')
 	if (!cached_constants?.timestamp || (Date.now() - cached_constants?.timestamp > __CUI_WEB_RES_CACHE_TIMEOUT)) {
 		cached_constants = await fetch(`${HOME_DIR}/const.json`).then(res => res.json()).catch(error => { window.alert(`Ошибка при получении ${HOME_DIR}/const.json.\n\n${error.message}`); });
@@ -517,42 +517,48 @@
 	}
 
 	function loadMainScript() {
+
+		const yandexBase = `https://core-renderer-tiles.maps.yandex.net/tiles?l=map&x={x}&y={y}&z={z}&scale=1&projection=web_mercator&theme=\${theme}&lang=ru&maptype=`
+		const googleBase = `https://mt{0-3}.google.com/vt/lyrs=TYPE&x={x}&y={y}&z={z}&apistyle=s.t:2|s.e:l|p.v:off,s.t:40|s.e|p.v:on\${is_dark ? ',p.il' : ''}`
+		const yandexType = {
+			MAP: 'map',
+			FUTURE: 'future',
+			DRIVING: 'driving',
+			TRANSIT: 'transit'
+		}
+		const layers = {
+			OSM: `if (type == 'osm') {`,
+			GOOGLE_MAPS: `if (type == 'goo_m') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'm')}\` }); \n} else  `,
+			GOOGLE_MAPS2: `if (type == 'goo_r') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'r')}\` }); \n} else  `,
+			GOOGLE_ROADS: `if (type == 'goo_h') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'h')}\` }); \n} else  `,
+			GOOGLE_TERRAIN: `if (type == 'goo_p') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'p')}\` }); \n} else  `,
+			GOOGLE_HYBRID: `if (type == 'goo_y') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'y')}\` }); \n} else  `,
+			STADIA: `if (type.startsWith('stadia')) { source=new ol.source.StadiaMaps({ layer:'stamen_'+type.split('_')[1] })} else `,
+			YANDEX_TRANSIT: `if (type == 'ymaps_t') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`${yandexBase}${yandexType.TRANSIT}\` });\n} else `,
+			YANDEX_DRIVING: `if (type == 'ymaps_d') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`${yandexBase}${yandexType.DRIVING}\` });\n} else `,
+			YANDEX_FUTURE: `if (type == 'ymaps_f') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`${yandexBase}${yandexType.FUTURE}\` });\n} else `,
+			YANDEX: `if (type == 'ymaps') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`${yandexBase}${yandexType.MAP}\` });\n} else `,
+		}
+		const layersReplacements = [
+			layers.STADIA,
+			layers.YANDEX_TRANSIT,
+			layers.YANDEX_DRIVING,
+			layers.YANDEX_FUTURE,
+			layers.YANDEX,
+			layers.GOOGLE_MAPS,
+			layers.GOOGLE_MAPS2,
+			layers.GOOGLE_ROADS,
+			layers.GOOGLE_TERRAIN,
+			layers.GOOGLE_HYBRID,
+			layers.OSM
+		]
+
 		function replacer(match) {
-			const yandexBase = `https://core-renderer-tiles.maps.yandex.net/tiles?l=map&x={x}&y={y}&z={z}&scale=1&projection=web_mercator&theme=\${theme}&lang=ru&maptype=`
-			const googleBase = `https://mt{0-3}.google.com/vt/lyrs=TYPE&x={x}&y={y}&z={z}&apistyle=s.t:2|s.e:l|p.v:off,s.t:40|s.e|p.v:on\${is_dark ? ',p.il' : ''}`
-			const yandexType = {
-				MAP: 'map',
-				FUTURE: 'future',
-				DRIVING: 'driving',
-				TRANSIT: 'transit'
-			}
-			const layers = {
-				OSM: `if (type == 'osm') {`,
-				GOOGLE_MAPS: `if (type == 'goo_m') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'm')}\` }); \n} else  `,
-				GOOGLE_MAPS2: `if (type == 'goo_r') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'r')}\` }); \n} else  `,
-				GOOGLE_ROADS: `if (type == 'goo_h') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'h')}\` }); \n} else  `,
-				GOOGLE_TERRAIN: `if (type == 'goo_p') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'p')}\` }); \n} else  `,
-				GOOGLE_HYBRID: `if (type == 'goo_y') { \n source = new ol.source.XYZ({ url: \`${googleBase.replace('TYPE', 'y')}\` }); \n} else  `,
-				STADIA: `if (type.startsWith('stadia')) { source=new ol.source.StadiaMaps({ layer:'stamen_'+type.split('_')[1] })} else `,
-				YANDEX_TRANSIT: `if (type == 'ymaps_t') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`${yandexBase}${yandexType.TRANSIT}\` });\n} else `,
-				YANDEX_DRIVING: `if (type == 'ymaps_d') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`${yandexBase}${yandexType.DRIVING}\` });\n} else `,
-				YANDEX_FUTURE: `if (type == 'ymaps_f') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`${yandexBase}${yandexType.FUTURE}\` });\n} else `,
-				YANDEX: `if (type == 'ymaps') { \n  theme = is_dark ? 'dark' : 'light';\n  source = new ol.source.XYZ({ url: \`${yandexBase}${yandexType.MAP}\` });\n} else `,
-			}
+
 			replacesMade += 1;
 			switch (match) {
 				case layers.OSM: // Line ~2166
-					return [layers.STADIA,
-						layers.YANDEX_TRANSIT,
-						layers.YANDEX_DRIVING,
-						layers.YANDEX_FUTURE,
-						layers.YANDEX,
-						layers.GOOGLE_MAPS,
-						layers.GOOGLE_MAPS2,
-						layers.GOOGLE_ROADS,
-						layers.GOOGLE_TERRAIN,
-						layers.GOOGLE_HYBRID,
-						layers.OSM].join('');
+					return layersReplacements.join('');
 				case `const Catalysers`: // Line ~95
 					return `window.Catalysers`;
 				case `const TeamColors`: // Line ~101
@@ -580,8 +586,8 @@
 					return `window.draw_slider`;
 				// case `closePopup($('.info'))`: // Line ~674
 				// 	return `$('.info').addClass('hidden');`;
-				case `if (new_val < 1) new_val = 1`: // Line ~795
-					return `if (new_val < 1) new_val = max`;
+				// case `if (new_val < 1) new_val = 1`: // Line ~795 /* реализовано в ванилле */
+				// 	return `if (new_val < 1) new_val = max`;
 				case `if ($('.attack-slider-wrp').hasClass('hidden')) {`: // Line ~908
 					return `${match}return;`;
 				case `$('[name="baselayer"]').on('change', e`: // Line ~1108
@@ -610,8 +616,8 @@
 					return `z: Math.floor(view.getZoom())`;
 				case `function explodeRange(prop) {`: // Line ~1967
 					return `${match} window.highlightFeature(player_feature, undefined, { once: true, duration: ${BLAST_ANIMATION_DURATION}, radius: prop.range, color: '#FF0000', width: 5 + prop.lv / 2 }); return;`;
-				case `function explodeRange(level) {`: // Line ~1967
-					return `${match} window.highlightFeature(player_feature, undefined, { once: true, duration: ${BLAST_ANIMATION_DURATION}, radius: Catalysers[level].range, color: '#FF0000', width: 5 + level / 2 }); return;`;
+				// case `function explodeRange(level) {`: // Line ~1967
+				// 	return `${match} window.highlightFeature(player_feature, undefined, { once: true, duration: ${BLAST_ANIMATION_DURATION}, radius: Catalysers[level].range, color: '#FF0000', width: 5 + level / 2 }); return;`;
 				case `if (area < 1)`: // Line ~1972
 					return `if (area < 0)`;
 				case `makeItemTitle(item)`: // Line ~2018
@@ -624,7 +630,7 @@
 			}
 		}
 
-		const regexp = new RegExp([
+		const regexpReplacements = [
 			`(const Catalysers)`,
 			`(const TeamColors)`,
 			`((new ol\\.Feature\\({(?=\\s+?geometry: new ol\\.geom\\.Point\\(mpos\\))))`,
@@ -635,8 +641,8 @@
 			`(const attack_slider)`,
 			`(const deploy_slider)`,
 			`(const draw_slider)`,
-			`(closePopup\\(\\$\\('\\.info'\\)\\))`,
-			`(if \\(new_val < 1\\) new_val = 1)`,
+			// `(closePopup\\(\\$\\('\\.info'\\)\\))`,
+			// `(if \\(new_val < 1\\) new_val = 1)`,
 			`(if \\(\\$\\('\\.attack-slider-wrp'\\)\\.hasClass\\('hidden'\\)\\) {)`,
 			`(\\$\\('\\[name="baselayer"\\]'\\)\\.on\\('change', e)`,
 			`(hour: '2-digit')`,
@@ -651,14 +657,15 @@
 			`(view\\.calculateExtent\\(map\\.getSize\\(\\))`,
 			`(z: view\\.getZoom\\(\\))`,
 			`(function explodeRange\\(prop\\) {)`,
-			`(function explodeRange\\(level\\) {)`,
+			// `(function explodeRange\\(level\\) {)`,
 			`(if \\(area < 1\\))`,
 			`(makeItemTitle\\(item\\)(?!\\s{))`,
 			`(if \\(type == 'osm'\\) {)`,
 			`(class Bitfield)`,
-		].join('|'), 'g');
+		]
 
-		const replacesShouldBe = 33;
+		const regexp = new RegExp(regexpReplacements.join('|'), 'g');
+		const replacesShouldBe = regexpReplacements.length + 3; // повторяются +2x "$('body').empty()" и +1x "view.calculateExtent(map.getSize()"
 		let replacesMade = 0;
 
 		fetch(`/app/${vanillaScriptSrc}`)
@@ -667,7 +674,24 @@
 				const script = document.createElement('script');
 				script.id = 'vanilla_script'
 				script.textContent = data.replace(regexp, replacer);
-				if (replacesMade != replacesShouldBe) { /*throw new Error*/ alert(`SBG CUI: Сделано замен: ${replacesMade} вместо ${replacesShouldBe}.`); }
+				if (replacesMade != replacesShouldBe) { 
+					// даём возможность загрузиться с заменёнными функциями
+					const faultMessage = `SBG CUI: Сделано замен: ${replacesMade} вместо ${replacesShouldBe}.\nВозможно, версия игры обновилась, ожидайте обновления скриптов.`
+					if (!window.Toastify) /*throw new Error*/ alert(faultMessage)
+					else {
+						const [gravity, position] = 'bottom center'.split(/\s+/)
+						const toast = window.Toastify({
+							text: faultMessage,
+							duration: 3000,
+							gravity,
+							position,
+							escapeMarkup: false,
+							className: 'error-toast'
+						})
+						toast.options.onClick = () => toast.hideToast()
+						toast.showToast()
+					}
+				}
 				document.head.appendChild(script);
 			})
 			.catch(error => {
@@ -1481,7 +1505,7 @@
 
 			async function getHTMLasset(filename) {
 
-				const cached_filename = `__CUI_WEB_RES_CACHE_v${USERSCRIPT_VERSION}_${filename}`
+				const cached_filename = `${CUI_WEB_RES_CACHE_v}${USERSCRIPT_VERSION}_${filename}`
 				let text
 				let cached = JSON.parse(localStorage.getItem(cached_filename) ?? '{}')
 				if (!cached?.timestamp || !cached?.timestamp || (Date.now() - cached_constants?.timestamp > __CUI_WEB_RES_CACHE_TIMEOUT))
@@ -1496,10 +1520,17 @@
 					text = cached.text
 				}
 
+				setTimeout(() => { // clear old versions cache
+					for (var key in localStorage){
+						if (key.startsWith(CUI_WEB_RES_CACHE_v) && !key.includes(USERSCRIPT_VERSION)) {
+							console.log(`Удалён старый кэш: ${key}`)
+							localStorage.removeItem(key)
+						}
+					}
+				}, 10 * 1e3);
+
 				const parser = new DOMParser();
 				const node = parser.parseFromString(text, 'text/html').body.firstChild;
-
-
 				return node;
 			}
 

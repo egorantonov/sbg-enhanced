@@ -1,6 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable quotes */
-/* eslint-disable no-undef */
 window.onTelegramAuth = async (data) => {
   const request = await fetch('/api/link', {
     method: 'post',
