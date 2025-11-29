@@ -1,5 +1,7 @@
 import { EUI, Elements, IsWebView, Translations, t } from '../constants'
+import { CircularProgress } from './circular'
 
+window.CircularProgress = CircularProgress
 let currentStep = 0
 const defaultSteps = 23
 

@@ -71,7 +71,7 @@
 }
 
 .info.popup>.popup-touch {
-  backdrop-filter: var(--blur5);
+  backdrop-filter: blur(5px);
 }
 
 .info.popup:has(.popup-touch) {
