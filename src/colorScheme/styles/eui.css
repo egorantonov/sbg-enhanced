@@ -482,7 +482,7 @@ input[type="range"] {
   width: 300px;
   box-shadow: 3px 4px 7px -2px var(--shadow);
   border: none !important;
-  border-radius: var(--radius10);
+  border-radius: var(--radius10) !important;
   overflow: hidden;
   padding: 10px 0 0 0 !important;
   z-index: 2;

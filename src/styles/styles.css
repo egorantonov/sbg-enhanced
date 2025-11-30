@@ -551,6 +551,19 @@ input[type='range']::-moz-range-thumb {
   margin-right: 0;
 }
 
+.inventory__controls>div:first-child  {
+  display: none;
+}
+
+.inventory__controls>div:last-child  {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.inventory__controls {
+  display: flex !important;
+}
+
 .inventory__controls, .inventory__ma-buttons>button {
   min-height: 40px;
 }

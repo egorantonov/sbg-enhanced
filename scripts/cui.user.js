@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      25.10.1
+// @version      25.11.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -47,7 +47,7 @@
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
 	const LATEST_KNOWN_VERSION = '0.5.2' // override
-	const USERSCRIPT_VERSION = '25.10.1';
+	const USERSCRIPT_VERSION = '25.11.1';
 	const CUI_WEB_RES_CACHE_v = '__CUI_WEB_RES_CACHE_v';
 	const HOME_DIR = 'https://sbg-game.ru/plugins/sbg-cui'; // const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 7 * 24 * 60 * 60 * 1000 // 7d
@@ -4217,11 +4217,14 @@
 					invCloseButton.style.removeProperty('--sbgcui-progress');
 				}
 
-				const invControls = document.querySelector('.inventory__controls');
 				const invDelete = document.querySelector('#inventory-delete');
 				const invTabs = document.querySelector('.inventory__tabs');
 				const select = document.createElement('select');
+				select.id = 'sbgcui_refs-sort-select'
+				select.style.display = 'none'
 				const sortOrderButton = document.createElement('button');
+				sortOrderButton.id = 'sbgcui_refs-sort-button'
+				sortOrderButton.style.display = 'none'
 				let abortController = new AbortController();
 				let sortParam = 'none';
 				let inventory = [];
@@ -4250,15 +4253,24 @@
 					select.appendChild(option);
 				});
 
-				select.addEventListener('change', onSelectChange);
-				invTabs.addEventListener('click', onTabClick);
+				select.addEventListener('change', onSelectChange)
+				invTabs.addEventListener('click', onTabClick)
+
+				Array.from(document.querySelectorAll('.inventory__tab')).forEach(tab => {
+					tab.addEventListener('click', () => {
+						const showOnMap = document.getElementById('sbgcui_show_viewer')
+						let tab3controls = [select, sortOrderButton]
+						if (showOnMap) tab3controls.push(showOnMap)
+						tab3controls.forEach(c => c.style.display = (tab.dataset.tab == 3) ? 'block' : 'none')
+					})
+				})
 				invCloseButton.addEventListener('click', onCloseButtonClick);
 				sortOrderButton.addEventListener('click', onSortOrderButtonClick);
 				inventoryPopup.addEventListener('inventoryPopupOpened', onInventoryPopupOpened);
 				inventoryContent.addEventListener('pointRepaired', onPointRepaired);
 
-				invControls.insertBefore(select, invDelete);
-				invControls.appendChild(sortOrderButton);
+				invDelete.after(select);
+				select.after(sortOrderButton);
 			}
 
 
@@ -5611,6 +5623,8 @@
 				hideViewerButton.id = 'sbgcui_hide_viewer';
 				hideViewerButton.classList.add('sbgcui_button_reset', 'sbgcui_hidden', 'fa', 'fa-solid-xmark');
 
+				showViewerButton.id = 'sbgcui_show_viewer'
+				showViewerButton.style.display = 'none'
 				showViewerButton.classList.add('sbgcui_show_viewer');
 				showViewerButton.innerText = 'На карте';
 
@@ -5621,7 +5635,7 @@
 				hideViewerButton.addEventListener('click', hideViewer);
 				trashCanButton.addEventListener('click', deleteRefs);
 
-				invControls.insertBefore(showViewerButton, invDelete);
+				invDelete.after(showViewerButton);
 				buttonsWrapper.append(hideViewerButton, trashCanButton);
 				document.body.appendChild(buttonsWrapper);
 
