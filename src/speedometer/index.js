@@ -25,6 +25,8 @@ export default function SpeedoMeter() {
   label.appendChild(input)
   showSelfPos.before(label)
 
+  const transform = 'translateX(75px)'
+
   // ui
   const speedometer = document.createElement(Elements.Div)
   speedometer.id = EUI.SpeedoMeter
@@ -47,6 +49,7 @@ export default function SpeedoMeter() {
     right: 0;
     margin: 14px;
     display: none;
+    transform: ${transform}
     transition: transform 0.25s ease-in-out;
   `
   const selfInfo = Nodes.GetSelector('.self-info')
@@ -58,7 +61,7 @@ export default function SpeedoMeter() {
     let speed = ((pos1.coords.speed ?? 0) * 3.6).toFixed(0)
     if (speed != speedometer.textContent) {
       speedometer.textContent = speed
-      speedometer.style.transform = speed == 0 ? 'translateX(75px)' : 'none'
+      speedometer.style.transform = speed == 0 ? transform : 'none'
       speedometer.style.borderColor = speed > 60 ? 'var(--accent)' : '#7779'
     }
   }

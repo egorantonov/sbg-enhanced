@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      25.11.1
+// @version      25.12.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -47,7 +47,7 @@
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
 	const LATEST_KNOWN_VERSION = '0.5.2' // override
-	const USERSCRIPT_VERSION = '25.11.1';
+	const USERSCRIPT_VERSION = '25.12.1';
 	const CUI_WEB_RES_CACHE_v = '__CUI_WEB_RES_CACHE_v';
 	const HOME_DIR = 'https://sbg-game.ru/plugins/sbg-cui'; // const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 7 * 24 * 60 * 60 * 1000 // 7d
@@ -228,6 +228,7 @@
 				pointBgImageBlur: 1,
 				pointDischargeTimeout: 1,
 				speedometer: 0,
+				chamomile: 1
 			},
 			pointHighlighting: {
 				inner: 'uniqc', // fav || ref || uniqc || uniqv || cores || highlevel || off
@@ -347,7 +348,8 @@
 			forEachFeatureAtPixel(pixel, callback, options = {}) {
 				const isShowInfoCallback = callback.toString().includes('piv.push');
 
-				options.hitTolerance = isFinite(options.hitTolerance) ? options.hitTolerance : HIT_TOLERANCE;
+				// options.hitTolerance = isFinite(options.hitTolerance) ? options.hitTolerance : HIT_TOLERANCE;
+				options.hitTolerance = isFinite(options.hitTolerance) ? options.hitTolerance : window.HIT_TOLERANCE;
 
 				if (isShowInfoCallback) {
 					const proxiedCallback = (feature, layer) => {
@@ -742,7 +744,7 @@
 									}
 								})
 
-							}, 200);
+							}, 500);
 			    }
 
 			  handleGeolocation(coords) {
@@ -3329,6 +3331,7 @@
 					window.TeamColors[player.team].stroke = () => mapFilters.branding == 'custom' ? hex623(mapFilters.brandingColor) : player.teamColor;
 
 					doubleClickZoomInteraction.setActive(Boolean(ui.doubleClickZoom));
+					window.HIT_TOLERANCE = config.ui.chamomile == 0 ? 0 : HIT_TOLERANCE
 
 					if (config.tinting.map && !isPointPopupOpened && !isProfilePopupOpened) { addTinting('map'); }
 
@@ -3562,6 +3565,44 @@
 
 					setStoredInputsValues();
 					tlContainer.appendChild(settingsMenu);
+
+					function createToggleControl(tId, tTextContent, tValue = false) {
+						const tControl = document.createElement('div')
+						tControl.classList.add('sbgcui_settings-input_wrp')
+
+						const tHiddenInput = document.createElement('input')
+						tHiddenInput.type = 'hidden'
+						tHiddenInput.name = tId
+						tHiddenInput.value = 0
+						tControl.appendChild(tHiddenInput)
+
+						const tInput = document.createElement('input')
+						tInput.type = 'checkbox'
+						tInput.id = tId
+						tInput.name = tId
+						tInput.checked = tValue
+						tInput.value = tValue ? 1 : 0
+						tControl.appendChild(tInput)
+						const tLabel = document.createElement('label')
+						tLabel.htmlFor = tId
+						tLabel.textContent = tTextContent
+						tControl.appendChild(tLabel)
+
+						return tControl
+					}
+
+					// Дополнительные контролы
+					const uiDetails = document.querySelectorAll('details.sbgcui_settings-section')[5] // Раздел "Интерфейс"
+					if (uiDetails) {
+						const uiControls = uiDetails.querySelector('section.sbgcui_settings-subsection')
+						if (uiControls) {
+							const ui_chamomile = 'ui_chamomile'
+							window.HIT_TOLERANCE = config.ui.chamomile == 0 ? 0 : HIT_TOLERANCE
+							const chamomileToggleControl = createToggleControl(ui_chamomile, 'Включить ромашку', config.ui.chamomile == 0 ? false : true)
+							uiControls.appendChild(chamomileToggleControl)
+						}
+					}
+
 				}
 				catch (error) {
 					console.log('SBG CUI: Ошибка при создании меню настроек.', error);
@@ -4504,7 +4545,7 @@
 
 				geolocation.on('change:speed', () => {
 					const speed_mps = geolocation.getSpeed() || 0;
-					speedSpan.innerText = (speed_mps * 3.6).toFixed(2) + ' km/h';
+					speedSpan.innerText = (speed_mps * 3.6).toFixed(0) + ' km/h';
 				});
 			}
 
@@ -4559,7 +4600,8 @@
 				function mapClickHandler(event) {
 					mapClickEvent = event;
 					featuresAtPixel = map.getFeaturesAtPixel(mapClickEvent.pixel, {
-						hitTolerance: HIT_TOLERANCE,
+						// hitTolerance: HIT_TOLERANCE,
+						hitTolerance: window.HIT_TOLERANCE,
 						layerFilter: layer => layer.get('name') == 'points',
 					});
 					let featuresToDisplay = featuresAtPixel.slice();
