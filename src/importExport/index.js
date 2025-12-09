@@ -4,10 +4,6 @@ import { InfoSettingsItem } from '../components/settingsItem'
 //const { Host, Endpoints } = Backend
 
 export default async function ImportExport() {
-  if (!localStorage.getItem('auth') || IsWebView()){
-    return
-  }
-
   const Week = 604800000
   const ua = ClientData.GetUserAgentData
   const userAgent = `${ua.platform} ${ua.browser}${ua.mobile ? ' (Mobile)' : ''}`
@@ -144,6 +140,21 @@ export default async function ImportExport() {
   }
 
   const about = Nodes.SettingSections.at(3)
+
+  if (about) {
+    // appendLine(about, t('cloudSync'), (new Date(+localStorage.getItem(EUI.CloudSync))).toLocaleString(), EUI.LastSynced)
+    about.appendChild(InfoSettingsItem('User ID', `${(await GetUserId()).slice(0,4)}...`, 'eui-userId'))
+    about.appendChild(InfoSettingsItem('Client', userAgent, 'eui-clientId'))
+    about.appendChild(InfoSettingsItem('GPU', ClientData.GetGPU, 'eui-gpu'))
+
+    Nodes.SettingsPopupClose?.addEventListener(Events.onClick, () => CloudSync(true))
+    Nodes.GetId('layers-config__save')?.addEventListener(Events.onClick, () => CloudSync(true))
+  }
+
+  if (IsWebView()){
+    return
+  }
+
   if (about) {
     const key = document.createElement(Elements.Span)
     key.innerText = t('importExport')
@@ -171,16 +182,6 @@ export default async function ImportExport() {
     item.appendChild(key)
     item.appendChild(value)
     about.appendChild(item)
-  }
-
-  if (about) {
-    // appendLine(about, t('cloudSync'), (new Date(+localStorage.getItem(EUI.CloudSync))).toLocaleString(), EUI.LastSynced)
-    about.appendChild(InfoSettingsItem('User ID', `${(await GetUserId()).slice(0,4)}...`, 'eui-userId'))
-    about.appendChild(InfoSettingsItem('Client', userAgent, 'eui-clientId'))
-    about.appendChild(InfoSettingsItem('GPU', ClientData.GetGPU, 'eui-gpu'))
-
-    Nodes.SettingsPopupClose?.addEventListener(Events.onClick, () => CloudSync(true))
-    Nodes.GetId('layers-config__save')?.addEventListener(Events.onClick, () => CloudSync(true))
   }
 
   await CloudSync()
