@@ -24,6 +24,8 @@ import { showToast, Logger } from '../utils'
 import SpeedoMeter from '../speedometer'
 import styles from './styles.min.css'
 import ZenMode from '../zenMode'
+import EUIWakeLock from '../wakelock'
+// import Battery from '../battery'
 
 function isFatalError() {
   const fatalError = Nodes.GetSelector('.fatal-error')
@@ -92,6 +94,8 @@ function ExecuteSyncFeature([feature, name]) {
 async function ExecuteAsyncFeatures() {
   let result = await Promise.all([
     ExecuteAsyncFeature(Informer, 'Informer'),
+    ExecuteAsyncFeature(EUIWakeLock, 'WakeLock'),
+    // ExecuteAsyncFeature(Battery, 'Battery'),
     ExecuteAsyncFeature(BeautifyCloseButtons, 'BeautifyCloseButtons'),
     ExecuteAsyncFeature(ImportExport, 'ImportExport'),
     ExecuteAsyncFeature(AddReferenceSearch, 'AddReferenceSearch'),

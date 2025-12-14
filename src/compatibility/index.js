@@ -1,4 +1,5 @@
-import { Elements, Events, EUI, Modifiers, Nodes, t, Translations, IsPrivate } from '../constants'
+import { ToggleSettingsItem } from '../components/settingsItem'
+import { Elements, Events, EUI, Nodes, t, Translations, IsPrivate } from '../constants'
 import { Logger } from '../utils'
 import styles from './styles.min.css'
 
@@ -19,57 +20,33 @@ export function Compatibility () {
   style.dataset.id = EUI.PerformanceMode
   style.innerHTML = styles
 
+  const disabled = 'disabled'
   function PerformanceMode () {
-    const input = document.createElement(Elements.Input)
-    const uiSettings = Nodes.SettingSections.at(0)
-    if (!uiSettings) {
+    const globalSettings = Nodes.SettingSections.at(0)
+    if (!globalSettings) {
       return
     }
 
-    const title = document.createElement(Elements.Span)
-    title.innerText = t('perfModeTitle')
-    input.type = Elements.CheckBox
-    input.dataset.setting = EUI.PerformanceMode
-    const label = document.createElement(Elements.Label)
-    label.classList.add(Modifiers.SettingsSectionItemClassName)
-    label.appendChild(title)
-    label.appendChild(input)
-    uiSettings.appendChild(label)
-
     const Enable = async () => {
       if (!localStorage.getItem(EUI.PerformanceMode)) {
-        alert(t('perfModeMessage'))
+        alert(t(Translations.perfModeMessage))
       }
 
       localStorage.setItem(EUI.PerformanceMode, 1)
       document.head.append(style)
-      Nodes.GetSelector(`input[data-setting='${EUI.Animations}']`)?.setAttribute('disabled', true)
-      Nodes.GetId(EUI.LinksOpacity)?.setAttribute('disabled', true)
-      Nodes.GetId(EUI.RegionsOpacity)?.setAttribute('disabled', true)
+      Nodes.GetSelector(`input[data-setting='${EUI.Animations}']`)?.setAttribute(disabled, true)
+      Nodes.GetId(EUI.LinksOpacity)?.setAttribute(disabled, true)
     }
 
     const Disable = () => {
       localStorage.setItem(EUI.PerformanceMode, 0)
       style.remove()
-      Nodes.GetSelector(`input[data-setting='${EUI.Animations}']`)?.toggleAttribute('disabled')
-      Nodes.GetId(EUI.LinksOpacity)?.toggleAttribute('disabled')
-      Nodes.GetId(EUI.RegionsOpacity)?.toggleAttribute('disabled')
+      Nodes.GetSelector(`input[data-setting='${EUI.Animations}']`)?.toggleAttribute(disabled)
+      Nodes.GetId(EUI.LinksOpacity)?.toggleAttribute(disabled)
     }
 
-    if (localStorage.getItem(EUI.PerformanceMode) == 1)
-    {
-      input.checked = true
-      Enable()
-    }
-
-    input.addEventListener(Events.onChange, (event) => {
-      if (event.target.checked) {
-        Enable()
-      }
-      else {
-        Disable()
-      }
-    })
+    const toggle = ToggleSettingsItem(t(Translations.perfModeTitle), Enable, Disable, EUI.PerformanceMode)
+    globalSettings.appendChild(toggle)
   }
 
   function CUI() {

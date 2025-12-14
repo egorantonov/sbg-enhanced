@@ -1,4 +1,5 @@
-import { EUI, Elements, Events, Modifiers, Nodes, t, Translations as i18n } from '../constants'
+import { ToggleSettingsItem } from '../components/settingsItem'
+import { EUI, Elements, Nodes, t, Translations } from '../constants'
 import { Logger } from '../utils'
 
 export default function SpeedoMeter() {
@@ -11,23 +12,8 @@ export default function SpeedoMeter() {
 
   let watchId
 
-  // settings
-  const title = document.createElement(Elements.Span)
-  title.innerText = t(i18n.speedoMeter)
-
-  const input = document.createElement(Elements.Input)
-  input.type = Elements.CheckBox
-  input.dataset.setting = EUI.SpeedoMeter
-
-  const label = document.createElement(Elements.Label)
-  label.classList.add(Modifiers.SettingsSectionItemClassName)
-  label.appendChild(title)
-  label.appendChild(input)
-  showSelfPos.before(label)
-
-  const transform = 'translateX(75px)'
-
   // ui
+  const transform = 'translateX(75px)'
   const speedometer = document.createElement(Elements.Div)
   speedometer.id = EUI.SpeedoMeter
   speedometer.style.cssText = `
@@ -92,11 +78,6 @@ export default function SpeedoMeter() {
     }
   }
 
-  if (localStorage.getItem(EUI.SpeedoMeter) == 1)
-  {
-    input.checked = true
-    Enable()
-  }
-
-  input.addEventListener(Events.onChange, e => e.target.checked ? Enable() : Disable())
+  const label = ToggleSettingsItem(t(Translations.speedoMeter), () => Enable(), () => Disable(), EUI.SpeedoMeter)
+  showSelfPos.before(label)
 }

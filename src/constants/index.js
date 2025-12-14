@@ -51,6 +51,8 @@ export const EUI = {
   ProgressStepsCount: '__eui-progress-steps-count',
   ProgressStatus: 'eui-progress-status',
   SpeedoMeter: 'eui-speedometer',
+  WakeLock: 'eui-wakelock',
+  LowBattery: 20,
   Team: '__eui-team' // user can flip color
 }
 
@@ -64,7 +66,14 @@ export const Events = {
   onTouchEnd: 'touchend',
   onBackButton: 'backbutton',
   onScroll: 'scroll',
-  onProfileStatsChanged: 'profileStatsChanged'
+  onProfileStatsChanged: 'profileStatsChanged',
+  onVisibilityChange: 'visibilitychange',
+  onRelease: 'release',
+  onChargingChange: 'chargingchange',
+  onLevelChange: 'levelchange',
+  onChargingTimeChange: 'chargingtimechange',
+  onDischargingTimeChange: 'dischargingtimechange',
+  onBeforeUnload: 'beforeunload'
 }
 
 export const Modifiers = {
@@ -514,6 +523,22 @@ export const Translations = {
   speedoMeter: {
     en: 'Show speed',
     ru: 'Показывать скорость'
+  },
+  wakeLock: {
+    en: 'Keep screen always on',
+    ru: 'Не выключать экран'
+  },
+  batteryExtraLow: {
+    en: 'Attention! 🪫 {0}% battery remaining. It is recommended to enable performance mode',
+    ru: 'Внимание! 🪫 Осталось {0}% заряда батареи. Рекомендуется включить режим производительности.'
+  },
+  batteryLow: {
+    en: 'Attention! 🪫 {0}% battery remaining. The "Keep screen always on" setting will be disabled.',
+    ru: 'Внимание! 🪫 Осталось {0}% заряда батареи. Настройка "Не выключать экран" будет отключена.'
+  },
+  batteryHighOrCharging: {
+    en: '🔋 The "Keep screen always on" setting is activated.',
+    ru: '🔋 Настройка "Не выключать экран" активирована.'
   }
 }
 

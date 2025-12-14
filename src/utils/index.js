@@ -28,8 +28,8 @@ export function showToast(text = '', layout = 'bottom center', duration = 3000, 
 
 export const Logger = {
 	log: (message) => console.log(`[EUI] ${message}`),
-	error: (message, ...optionalParams) => console.error(`[EUI] ${message}`, optionalParams),
-	debug: (message, ...optionalParams) => window?.__eui_debug && console.warn(`[Debug] ${message}`, optionalParams)
+	error: (message, ...optionalParams) => console.error(`[EUI] ${new Date().toISOString()} ${message}`, optionalParams),
+	debug: (message, ...optionalParams) => window?.__eui_debug && console.warn(`[Debug] ${new Date().toISOString()} ${message}`, optionalParams)
 }
 
 window.EUI = {

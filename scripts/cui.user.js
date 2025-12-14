@@ -722,7 +722,9 @@
 								input.type = 'checkbox'
 								input.dataset.setting = smooth
 								const title = document.createElement('span')
-								title.innerText = i18next.t('sbgcui.smooth') ?? 'Smooth Motion'
+								const i18key = 'sbgcui.smooth'
+								const i18tr = i18next.t(i18key)
+								title.innerText = i18tr == '' || i18tr == i18key ? 'Smooth Motion' : i18tr
 
 								const label = document.createElement('label')
 								label.classList.add('settings-section__item')

@@ -54,10 +54,6 @@ export default async function CompactView() {
     Nodes.ToggleFollow.after(Nodes.Score)
     Nodes.Attack?.after(Nodes.Ops)
 
-    // Move 'ops' button into 'bottomleft-container'
-    //const bottomContainer = Nodes.GetSelector('div.bottom-container')
-    //bottomContainer && bottomContainer.appendChild(Nodes.Ops)
-
     // Remove level and XP sections
     const level = Nodes.GetId('self-info__explv')
     if (level.innerText.includes('10')) {
@@ -66,24 +62,6 @@ export default async function CompactView() {
       Nodes.GetId('self-info__exp')?.parentElement?.remove()
       Nodes.GetSelector('div.self-info')?.classList.add('compact')
     }
-
-    // CUI Conflict: TODO: CUI interrupts on `attackSliderOpened` event clicking on selected catalyzer
-    // "Remove" attack button as useless
-    /*const fire = document.getElementById('attack-slider-fire')
-    const cats = document.getElementById('catalysers-list')
-    const isActive = 'is-active'
-    cats.addEventListener(Events.onClick, (e) => {
-      if (e.target.classList.contains(isActive)
-        || e.target.parentElement.classList.contains(isActive)) {
-        fire.click() // TODO: CUI interrupts on `attackSliderOpened` event clicking on selected catalyzer
-      }
-    })
-    fire.innerText = ''
-    fire.style.flex = 0
-    fire.style.width = 0
-    fire.style.height = 0
-    fire.style.border = 0
-    fire.style.opacity = 0*/
   }
   else {
     [Nodes.Notifs, Nodes.Layers, Nodes.ToggleFollow].forEach(n => n.innerText === '' && (n.classList.add('compactview_icon')))
