@@ -167,8 +167,9 @@ export default function AddColorScheme() {
 		if (CUI.Loaded && isDynamicColors) { 
 			const owner = Nodes.GetId('i-stat__owner')
 			owner?.addEventListener('pointOwnerChanged', () => {
-				const buttons = Array.from(document.querySelectorAll('#bottom>button'))
+				let buttons = Array.from(document.querySelectorAll('#bottom>button'))
 				buttons.push(Nodes.Discover)
+				buttons = buttons.concat(Array.from(document.querySelectorAll('button.discover-mod.icon-button')))
 				buttons.forEach(button => {
 					button.style.backgroundColor = owner.style.color === 'var(--team-0)'
 						? 'var(--sbgcui-branding-color)'

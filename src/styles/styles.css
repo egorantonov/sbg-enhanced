@@ -369,11 +369,6 @@
 }
 
 .pb-sub {
-  /* z-index: 1; */
-  /* backdrop-filter: blur(10px) saturate(1.25); */
-  /* width: 100% !important; */
-  /* background: var(--background-transp); */
-  /* justify-content: space-evenly; */
   display: flex !important;
   padding: 6px 0px 6px 6px;
   width: 75% !important;
@@ -386,6 +381,11 @@
 
 .pb-arrow {
   display: none !important;
+}
+
+#discover:disabled + div.pb-sub .discover-mod {
+  color: #7777 !important;
+  background-color: #7777 !important;
 }
 
 .discover-mod {
@@ -435,6 +435,25 @@
 
 .i-stat__core-info {
   margin: 5px 0;
+}
+
+.i-stat__core-info:nth-child(4n)>span:first-child,
+.i-stat__core-info:nth-child(4n+1)>span:first-child
+ {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.i-stat__core-info:nth-child(4n+1)>span:first-child {
+  flex-direction: row-reverse;
+}
+
+.i-stat__core-info>span:first-child::after {
+  content: attr(title);
+  font-size: x-small;
+  color: var(--text);
+  filter: opacity(0.5);
 }
 
 .i-stat__core {

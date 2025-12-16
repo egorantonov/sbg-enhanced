@@ -221,14 +221,14 @@
 				notifications: 1,
 			},
 			ui: {
+				chamomile: 1,
 				doubleClickZoom: 0,
 				restoreRotation: 1,
 				pointBgImage: 0,
 				pointBtnsRtl: 0,
 				pointBgImageBlur: 1,
 				pointDischargeTimeout: 1,
-				speedometer: 0,
-				chamomile: 1
+				speedometer: 0
 			},
 			pointHighlighting: {
 				inner: 'uniqc', // fav || ref || uniqc || uniqv || cores || highlevel || off
@@ -348,8 +348,7 @@
 			forEachFeatureAtPixel(pixel, callback, options = {}) {
 				const isShowInfoCallback = callback.toString().includes('piv.push');
 
-				// options.hitTolerance = isFinite(options.hitTolerance) ? options.hitTolerance : HIT_TOLERANCE;
-				options.hitTolerance = isFinite(options.hitTolerance) ? options.hitTolerance : window.HIT_TOLERANCE;
+				options.hitTolerance = isFinite(options.hitTolerance) ? options.hitTolerance : HIT_TOLERANCE;
 
 				if (isShowInfoCallback) {
 					const proxiedCallback = (feature, layer) => {
@@ -3333,7 +3332,6 @@
 					window.TeamColors[player.team].stroke = () => mapFilters.branding == 'custom' ? hex623(mapFilters.brandingColor) : player.teamColor;
 
 					doubleClickZoomInteraction.setActive(Boolean(ui.doubleClickZoom));
-					window.HIT_TOLERANCE = config.ui.chamomile == 0 ? 0 : HIT_TOLERANCE
 
 					if (config.tinting.map && !isPointPopupOpened && !isProfilePopupOpened) { addTinting('map'); }
 
@@ -3568,22 +3566,28 @@
 					setStoredInputsValues();
 					tlContainer.appendChild(settingsMenu);
 
-					function createToggleControl(tId, tTextContent, tValue = false) {
+					function createToggleControl(tId, tTextContent, options = {}) {
+						const { tValue, tDisabled, tCallback } = options
+
 						const tControl = document.createElement('div')
 						tControl.classList.add('sbgcui_settings-input_wrp')
 
 						const tHiddenInput = document.createElement('input')
-						tHiddenInput.type = 'hidden'
 						tHiddenInput.name = tId
+						tHiddenInput.type = 'hidden'
 						tHiddenInput.value = 0
 						tControl.appendChild(tHiddenInput)
 
 						const tInput = document.createElement('input')
-						tInput.type = 'checkbox'
 						tInput.id = tId
 						tInput.name = tId
-						tInput.checked = tValue
+						tInput.type = 'checkbox'
+						tInput.checked = tValue ? true : false
 						tInput.value = tValue ? 1 : 0
+						tInput.disabled = tDisabled ? true : false
+						if (tCallback) {
+							tInput.addEventListener('change', e => e.target.value = e.target.checked ? 1 : 0 )
+						}
 						tControl.appendChild(tInput)
 						const tLabel = document.createElement('label')
 						tLabel.htmlFor = tId
@@ -3599,8 +3603,7 @@
 						const uiControls = uiDetails.querySelector('section.sbgcui_settings-subsection')
 						if (uiControls) {
 							const ui_chamomile = 'ui_chamomile'
-							window.HIT_TOLERANCE = config.ui.chamomile == 0 ? 0 : HIT_TOLERANCE
-							const chamomileToggleControl = createToggleControl(ui_chamomile, 'Включить ромашку', config.ui.chamomile == 0 ? false : true)
+							const chamomileToggleControl = createToggleControl(ui_chamomile, 'Включить ромашку', { tValue: config.ui.chamomile == 0 ? false : true, tCallback: true })
 							uiControls.appendChild(chamomileToggleControl)
 						}
 					}
@@ -4602,13 +4605,14 @@
 				function mapClickHandler(event) {
 					mapClickEvent = event;
 					featuresAtPixel = map.getFeaturesAtPixel(mapClickEvent.pixel, {
-						// hitTolerance: HIT_TOLERANCE,
-						hitTolerance: window.HIT_TOLERANCE,
+						hitTolerance: HIT_TOLERANCE,
 						layerFilter: layer => layer.get('name') == 'points',
 					});
 					let featuresToDisplay = featuresAtPixel.slice();
 
-					if (featuresToDisplay.length <= 1 || mapClickEvent.isSilent) { // isSilent: такой эвент генерируется при свайпе между карточками точек.
+					// isSilent: такой эвент генерируется при свайпе между карточками точек. 
+					// chamomile == 0 : ромашка выключена 
+					if (featuresToDisplay.length <= 1 || mapClickEvent.isSilent || config.ui.chamomile == 0) {
 						const feature = featuresToDisplay[0];
 
 						if (feature != undefined) {

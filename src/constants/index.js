@@ -6,15 +6,17 @@ import { getSbgSettings } from '../utils'
 export const Backend = {
   Host: 'https://sbg-settings.egorantonov.workers.dev',
   Endpoints: {
-    Sync: '/sync'
-  }
+    Sync: '/sync',
+    Donate: '/donate'
+  },
+  DonationService: 'https://bd.nevalink.net:4446/?amount={amount}&user=59728'
 }
 
 export const SBG = {
   OutboundLinksLimit: 30,
   DefaultCloseButtonText: '[x]',
   VersionHeader: 'Sbg-Version',
-  CompatibleVersion: '0.5.1',
+  CompatibleVersion: '0.5.2',
   Settings: 'settings',
   DefaultLang: 'en',
   GooglePhoto: 'https://lh3.googleusercontent.com/'
@@ -52,6 +54,7 @@ export const EUI = {
   ProgressStatus: 'eui-progress-status',
   SpeedoMeter: 'eui-speedometer',
   WakeLock: 'eui-wakelock',
+  Donate: 'eui-donate',
   LowBattery: 20,
   Team: '__eui-team' // user can flip color
 }
@@ -463,6 +466,10 @@ export const Translations = {
   donateDialogue: {
     en: 'Donate amount, ₽',
     ru: 'Введите сумма доната, ₽'
+  },
+  donateError: {
+    en: 'Unexpected error during donation, try again later.',
+    ru: 'Неожиданная ошибка в процессе доната, попробуйте позже.'
   },
   cuiOnMap: {
     en: 'On map',
