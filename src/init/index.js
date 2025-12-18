@@ -25,6 +25,7 @@ import SpeedoMeter from '../speedometer'
 import styles from './styles.min.css'
 import ZenMode from '../zenMode'
 import EUIWakeLock from '../wakelock'
+import Vibes from '../vibes'
 // import Battery from '../battery'
 
 function isFatalError() {
@@ -102,7 +103,8 @@ async function ExecuteAsyncFeatures() {
     ExecuteAsyncFeature(AddDiscoverProgress, 'AddDiscoverProgress'),
     ExecuteAsyncFeature(CompactView, 'CompactView'),
     ExecuteAsyncFeature(Compatibility, 'Compatibility'),
-    ExecuteAsyncFeature(Actions, 'Actions')
+    ExecuteAsyncFeature(Actions, 'Actions'),
+    ExecuteAsyncFeature(Vibes, 'Vibes')
   ])
 
   Private && (result.push(await ExecuteAsyncFeature(Private, 'Debug')))
@@ -222,6 +224,7 @@ export async function RunWithOnlineUpdate() {
   }
 
   const releaseUrl = 'https://api.github.com/repos/egorantonov/sbg-enhanced/releases/latest'
+  const timeout = 10000
   let onlineInUse = Nodes.GetId(EUI.Id) || IsWebView() /* APK */
 
   if (!onlineInUse && window.fetch) {
@@ -229,18 +232,34 @@ export async function RunWithOnlineUpdate() {
       //showToast(t(Translations.githubCheckingUpdates))
       UpdateProgressStatus(t(Translations.githubCheckingUpdates))
       if (/firefox/i.test(window.navigator.userAgent)) await new Promise(r => setTimeout(r, 50))
-      await fetch(releaseUrl)
+      await fetch(releaseUrl, { signal: AbortSignal.timeout(timeout) })
       .then(r => r.json())
       .then(x => processResponse(x))
     }
     catch (error) {
-      if (['Failed to fetch', 'NetworkError when attempting to fetch resource.'].includes(error.message)) {
-        const message = t(Translations.githubUnavailable)
-        Logger.log(message)
+      if (error.name === 'TimeoutError') {
+        const message = `[TimeoutError] ${t(Translations.githubUnavailable)}\r\n It took more than ${(timeout/100).toFixed(0)} seconds to get the result!`
+        Logger.error(message)
         showToast(message)
       }
+      else if (error.name === 'AbortError') {
+        const message = '[AbortError] Fetch aborted by user action (browser stop button, closing tab, etc.'
+        Logger.error(message)
+        showToast(message)
+      }
+      else if (error.name === 'TypeError' && error.message.includes('abort')) {
+        console.error('[TypeError] AbortSignal.timeout() method is not supported')
+      }
+      else if (['Failed to fetch', 'NetworkError when attempting to fetch resource.'].includes(error.message)) {
+        const message = t(Translations.githubUnavailable)
+        Logger.error(message)
+        showToast(message)
+      }
+      else {
+        Logger.error(error)
+        showToast(`[Unexpected error] ${error.message}`)
+      }
 
-      Logger.log(error)
       ExecuteScript() // fallback
     }
   }

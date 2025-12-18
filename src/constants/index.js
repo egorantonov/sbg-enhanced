@@ -56,6 +56,7 @@ export const EUI = {
   WakeLock: 'eui-wakelock',
   Donate: 'eui-donate',
   LowBattery: 20,
+  Vibes: 'eui-vibes',
   Team: '__eui-team' // user can flip color
 }
 
@@ -546,6 +547,10 @@ export const Translations = {
   batteryHighOrCharging: {
     en: '🔋 The "Keep screen always on" setting is activated.',
     ru: '🔋 Настройка "Не выключать экран" активирована.'
+  },
+  winterVibes: {
+    en: 'Winter vibes ❄',
+    ru: 'Зимнее настроение ❄'
   }
 }
 

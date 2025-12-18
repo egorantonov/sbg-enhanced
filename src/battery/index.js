@@ -92,7 +92,7 @@ export default async function Battery() {
     await handleLowBattery(window.EUI.wakeLockManager)
   })
   function updateLevelInfo() {
-    Logger.log(`Battery level: ${bm.level * 100}%`)
+    Logger.log(`Battery level: ${(bm.level * 100).toFixed(0)}%`)
   }
 
   // bm.addEventListener(Events.onChargingTimeChange, () => {

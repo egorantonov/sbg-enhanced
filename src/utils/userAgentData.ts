@@ -1,4 +1,4 @@
-import { getWebkitUserAgentData } from './webkitUserAgentData'
+import { getWebkitUserAgentData } from './unsafeImport'
 
 interface NavigatorUAData {
   brands: Brand[],
@@ -27,7 +27,7 @@ export function getUserAgentData(): UserAgentData {
   if (webkitUserAgentData && webkitUserAgentData.brands?.length > 0) {
     const brand = webkitUserAgentData.brands.find(x => !x.brand.includes('Not') && x.brand !== 'Chromium' && x.brand !== '') 
     userAgentData.platform = parsePlatform(webkitUserAgentData.platform ? webkitUserAgentData.platform : navigator.platform, navigator.userAgent)
-    userAgentData.browser = !!brand?.brand 
+    userAgentData.browser = brand?.brand 
       ? brand.brand.toLowerCase() == 'android webview' && userAgentData.platform == PLATFORM.ANDROID
         ? APK
         : brand.brand
