@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      25.12.1
+// @version      25.12.2
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -46,8 +46,8 @@
 	console.error = logDecorator(console.error);
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
-	const LATEST_KNOWN_VERSION = '0.5.2' // override
-	const USERSCRIPT_VERSION = '25.12.1';
+	const LATEST_KNOWN_VERSION = '0.5.3' // override
+	const USERSCRIPT_VERSION = '25.12.2';
 	const CUI_WEB_RES_CACHE_v = '__CUI_WEB_RES_CACHE_v';
 	const HOME_DIR = 'https://sbg-game.ru/plugins/sbg-cui'; // const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 7 * 24 * 60 * 60 * 1000 // 7d
@@ -3104,6 +3104,9 @@
 				lvlProgressObserver.observe(selfExpSpan, { childList: true });
 
 				xpProgressBar.classList.add('sbgcui_xpProgressBar');
+				xpProgressBar.style.borderRadius = '10px'
+				xpProgressBar.style.overflow = 'hidden'
+				xpProgressBar.style.backdropFilter = 'var(--blur10, 10px)'
 				xpProgressBarFiller.classList.add('sbgcui_xpProgressBarFiller');
 
 				selfExpSpan.parentElement.prepend(xpProgressBar);

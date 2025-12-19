@@ -1,4 +1,3 @@
-/* eslint-disable */
 window.onTelegramAuth = async (data) => {
   const request = await fetch('/api/link', {
     method: 'post',

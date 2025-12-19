@@ -16,7 +16,7 @@ export const SBG = {
   OutboundLinksLimit: 30,
   DefaultCloseButtonText: '[x]',
   VersionHeader: 'Sbg-Version',
-  CompatibleVersion: '0.5.2',
+  CompatibleVersion: '0.5.3',
   Settings: 'settings',
   DefaultLang: 'en',
   GooglePhoto: 'https://lh3.googleusercontent.com/'
@@ -162,9 +162,9 @@ class LazyNodes {
   get PrName() { return this.GetId('pr-name')}
   get Leaderboard() { return this.GetId('leaderboard') }
   get ToggleFollow() { return this.GetId('toggle-follow') }
-  get InfoPopupClose() { return this.GetSelector('div.info.popup>button.popup-close') }
+  get InfoPopupClose() { return this.GetSelector('div.info.popup button.popup-close') }
   get InventoryPopupClose() { return this.GetId('inventory__close') }
-  get SettingsPopupClose() { return this.GetSelector('div.settings.popup>button.popup-close') }
+  get SettingsPopupClose() { return this.GetSelector('div.settings.popup button.popup-close') }
 
   get InfoPopup() { return this.GetSelector('.info.popup') }
   get ScorePopup() { return this.GetSelector('.score.popup') }

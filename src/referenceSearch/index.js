@@ -37,7 +37,7 @@ export default async function AddReferenceSearch() {
   tabs.forEach(tab => {
       tab.addEventListener(Events.onClick, () => {
 
-          if (['1', '2'].includes(tab.dataset.tab)) {
+          if (tab.dataset.tab != 3) {
               refs = []
               search.dataset.active = '0'
               search.style.display = 'none'

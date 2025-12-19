@@ -518,19 +518,12 @@ input[type="range"] {
   font-weight: bolder;
   min-height: 50px;
   background: transparent;
-}
-
-.inventory__ma-cancel {
   border: none !important;
   width: 100%;
 }
 
 .inventory__ma-delete {
-  border: none !important;
-  width: 100%;
   color: var(--accent);
-  /* color: var(--btn-text); */
-  /* background-color: var(--accent); */
 }
 
 .inventory__item-controls button {
