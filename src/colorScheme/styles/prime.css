@@ -174,9 +174,21 @@ option:checked { /* WTF? checked is non-documented??? */
 
 
 /* INVENTORY */
+.inventory__tab:not(.active) {
+  border-top-color: var(--selection);
+}
 
 .inventory__content, .inventory__tab.active {
   border-color: var(--selection);
+}
+
+.inventory__tab span {
+  font-size: 12px !important;
+  color: var(--i-btn-color);
+}
+
+.inventory__tab.active span {
+  color: var(--selection);
 }
 
 .inventory__controls select,

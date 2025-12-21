@@ -15,34 +15,41 @@ export class CanvasSnowfall {
             display: none;
         `
         document.body.appendChild(this.canvas)
-        
+
         this.snowflakes = []
         this.maxFlakes = 150
+        this.animationId = null
         this.resize()
-        this.init()
-        
+        //this.init()
+
         window.addEventListener('resize', () => this.resize())
     }
 
     show() {
-      this.canvas.style.display = 'block'
+        this.init()
+        this.canvas.style.display = 'block'
     }
     clear() {
-      this.canvas.style.display = 'none'
+        this.canvas.style.display = 'none'
+        this.snowflakes = []
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId)
+            this.animationId = null
+        }
     }
-    
+
     resize() {
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight
     }
-    
+
     init() {
         for (let i = 0; i < this.maxFlakes; i++) {
             this.snowflakes.push(this.createSnowflake())
         }
         this.animate()
     }
-    
+
     createSnowflake() {
         return {
             x: Math.random() * this.canvas.width,
@@ -53,30 +60,30 @@ export class CanvasSnowfall {
             swingPhase: Math.random() * Math.PI * 2
         }
     }
-    
+
     animate() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-        
+
         this.ctx.fillStyle = '#adfc'
         this.ctx.beginPath()
-        
+
         this.snowflakes.forEach(flake => {
             // Обновление позиции
             flake.y += flake.speed
             flake.x += Math.sin(flake.y * 0.01 + flake.swingPhase) * flake.swing
-            
+
             // Если снежинка упала
             if (flake.y > this.canvas.height) {
                 Object.assign(flake, this.createSnowflake())
                 flake.y = -10
             }
-            
+
             // Рисование снежинки
             this.ctx.moveTo(flake.x, flake.y)
             this.ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2)
         })
-        
+
         this.ctx.fill()
-        requestAnimationFrame(() => this.animate())
+        this.animationId = requestAnimationFrame(() => this.animate())
     }
 }

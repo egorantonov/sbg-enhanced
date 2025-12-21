@@ -1,5 +1,5 @@
 import { ToggleSettingsItem } from '../components/settingsItem'
-import { EUI, Nodes, t, Translations } from '../constants'
+import { EUI, IsPrivate, Nodes, t, Translations } from '../constants'
 import { CanvasSnowfall } from './snowflakes'
 
 export default async function Vibes() {
@@ -8,7 +8,7 @@ export default async function Vibes() {
   const start = new Date('2025.12.24') // TODO: переписать на vibes array
   const finish = new Date('2026.01.08')
 
-  if (now < start || now > finish) return
+  if ((now < start || now > finish) && !IsPrivate()) return
 
   const title = t(Translations.winterVibes)
   const vibe = new CanvasSnowfall()

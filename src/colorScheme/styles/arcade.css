@@ -82,6 +82,10 @@ select,
   border-radius: var(--radius0) !important;
 }
 
+.inventory__content:not([data-tab="3"]) .inventory__item {
+  border-radius: var(--radius0) !important;
+}
+
 #self-info__coord, .sbgcui_speed, .leaderboard__list td:nth-child(3) {
   font-family: 'JoystixProportional';
   font-size: 10px;

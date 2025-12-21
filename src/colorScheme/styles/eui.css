@@ -552,29 +552,9 @@ input[type="range"] {
 
 .inventory__content {
   border-radius: 10px 10px 0 0;
-  border-bottom: none;
   border-color: var(--sbgcui-branding-color, var(--selection));
 }
 
-#inventory__close {
-  bottom: 120px;
-  position: absolute;
-  right: 50%;
-  top: initial;
-  transform: translateX(50%);
-  z-index: 2;
-}
-
-.inventory__header {
-  order: 2;
-  margin-bottom: 10px;
-  padding: 0;
-  gap: 0;
-}
-
-.inventory__controls {
-  order: 3;
-}
 
 .inventory__tabs {
   gap: 0;
@@ -587,20 +567,18 @@ input[type="range"] {
 .inventory__tab {
   flex-grow: 1;
   justify-content: center;
-  border-top: 2px solid var(--border);
-  border-top-color: var(--sbgcui-branding-color, var(--selection));
   border-bottom-left-radius: var(--radius10);
   border-bottom-right-radius: var(--radius10);
   min-height: 45px;
 }
 
-.inventory__tab.active {
+.inventory__tab span {
+  font-size: 12px !important;
+  color: var(--text);
+}
+
+.inventory__tab.active span:not(.inventory__tab-counter) {
   color: var(--sbgcui-branding-color, var(--selection));
-  background-color: var(--background-transp);
-  border-top: none !important;
-  border-bottom: 2px solid;
-  border-color: var(--sbgcui-branding-color, var(--selection));
-  font-weight: bolder;
 }
 
 /* SETTINGS */
