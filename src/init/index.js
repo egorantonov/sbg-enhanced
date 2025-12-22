@@ -229,9 +229,11 @@ export async function RunWithOnlineUpdate() {
 
   if (!onlineInUse && window.fetch) {
     try {
-      //showToast(t(Translations.githubCheckingUpdates))
       UpdateProgressStatus(t(Translations.githubCheckingUpdates))
-      if (/firefox/i.test(window.navigator.userAgent)) await new Promise(r => setTimeout(r, 50))
+      await Sleep(0) // reset execution queue
+      if (CUI.Detected() && CUI.Initializing()) {
+        await Sleep(1000) // waiting for 'loading'
+      }
       await fetch(releaseUrl, { signal: AbortSignal.timeout(timeout) })
       .then(r => r.json())
       .then(x => processResponse(x))

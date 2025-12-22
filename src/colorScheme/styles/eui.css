@@ -676,7 +676,6 @@ input[type="range"] {
 #ops #self-info__inv {
   display: flex;
   flex-direction: column;
-  --sbgcui-inventory-limit: "3000";
 }
 
 #attack-menu {

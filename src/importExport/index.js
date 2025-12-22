@@ -145,6 +145,8 @@ export default async function ImportExport() {
     // appendLine(about, t('cloudSync'), (new Date(+localStorage.getItem(EUI.CloudSync))).toLocaleString(), EUI.LastSynced)
     about.appendChild(InfoSettingsItem('User ID', `${(await GetUserId()).slice(0,4)}...`, 'eui-userId'))
     about.appendChild(InfoSettingsItem('Client', userAgent, 'eui-clientId'))
+    if (navigator.hardwareConcurrency) about.appendChild(InfoSettingsItem('CPU', `${navigator.hardwareConcurrency} cores`, 'eui-hardwareConcurrency'))
+    if (navigator.deviceMemory) about.appendChild(InfoSettingsItem('RAM', `${navigator.deviceMemory}${(navigator.deviceMemory >= 8 ? '+' : '')} Gb`, 'eui-deviceMemory'))
     about.appendChild(InfoSettingsItem('GPU', ClientData.GetGPU, 'eui-gpu'))
 
     Nodes.SettingsPopupClose?.addEventListener(Events.onClick, () => CloudSync(true))
