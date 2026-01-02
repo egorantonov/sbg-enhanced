@@ -15,11 +15,14 @@ export const Backend = {
 export const SBG = {
   OutboundLinksLimit: 30,
   DefaultCloseButtonText: '[x]',
-  VersionHeader: 'Sbg-Version',
   CompatibleVersion: '0.5.3',
   Settings: 'settings',
   DefaultLang: 'en',
-  GooglePhoto: 'https://lh3.googleusercontent.com/'
+  GooglePhoto: 'https://lh3.googleusercontent.com/',
+  Headers: {
+    FLAVOR: 'x-sbg-flavor',
+    VERSION: 'x-sbg-version'
+  }
 }
 
 export const EUI = {

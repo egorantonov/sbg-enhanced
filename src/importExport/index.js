@@ -1,5 +1,6 @@
 import { /*Backend,*/ ClientData, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t } from '../constants'
 import { getSbgSettings, setSbgSettings } from '../utils'
+import { flavored_fetch } from '../helpers'
 import { InfoSettingsItem } from '../components/settingsItem'
 //const { Host, Endpoints } = Backend
 
@@ -29,10 +30,9 @@ export default async function ImportExport() {
       return userId
     }
 
-    const id = await fetch('/api/self', {
+    const id = await flavored_fetch('/api/self', {
       headers: {
-        authorization: `Bearer ${localStorage.getItem('auth')}`,
-        'content-type': 'application/json; charset=UTF-8'
+        'content-type': 'application/json'
       }
     })
     .then(response => response.json())

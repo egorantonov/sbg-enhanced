@@ -1,23 +1,29 @@
 import { Backend, EUI, IsWebView, Nodes, SBG, Translations as i18n, t } from '../constants'
 import { InfoSettingsItem, ButtonSettingsItem } from '../components/settingsItem'
 import { Logger, showToast } from '../utils'
+import { flavored_fetch } from '../helpers'
 
 export default async function Informer() {
     Logger.log(`SBG Enhanced UI, version ${EUI.Version}`)
-    const sbgCurrentVersion = await fetch('/api/')
-        .then(response => response.headers.get(SBG.VersionHeader))
 
-    if (sbgCurrentVersion != SBG.CompatibleVersion) {
-        const alertShown = localStorage.getItem(EUI.Incompatibility)
+    flavored_fetch('/api/self')
+    .then(r => {
+        const sbgCurrentVersion = r.headers.get(SBG.Headers.VERSION)
+        if (sbgCurrentVersion != SBG.CompatibleVersion) {
+            const alertShown = localStorage.getItem(EUI.Incompatibility)
 
-        if (alertShown != 'true') {
-            alert(`⚠️ ${t(i18n.incompatibility)} (${sbgCurrentVersion})`)
-            localStorage.setItem(EUI.Incompatibility, true)
+            if (alertShown != 'true') {
+                alert(`⚠️ ${t(i18n.incompatibility)} (${sbgCurrentVersion})`)
+                localStorage.setItem(EUI.Incompatibility, true)
+            }
         }
-    }
-    else {
-        localStorage.setItem(EUI.Incompatibility, false)
-    }
+        else {
+            localStorage.setItem(EUI.Incompatibility, false)
+        }
+
+        return r.json()
+    })
+    .then(json => localStorage.setItem(EUI.Team, json.t ?? 0))
 
     const about = Nodes.SettingSections.at(3)
     if (about) {
@@ -96,8 +102,8 @@ export default async function Informer() {
         }
     }
 
-    if (!localStorage.getItem(EUI.Team))
-        fetch('/api/self', { headers: { authorization: `Bearer ${localStorage.auth}` } })
-            .then(r => r.json())
-            .then(json => localStorage.setItem(EUI.Team, json.t ?? 0))
+    // if (!localStorage.getItem(EUI.Team))
+    //     flavored_fetch('/api/self')
+    //         .then(r => r.json())
+    //         .then(json => localStorage.setItem(EUI.Team, json.t ?? 0))
 }

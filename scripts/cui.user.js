@@ -47,7 +47,28 @@
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
 	const LATEST_KNOWN_VERSION = '0.5.3' // override
-	const USERSCRIPT_VERSION = '25.12.3';
+	const USERSCRIPT_VERSION = '26.1.1'
+	window.cuiVersion = USERSCRIPT_VERSION
+	function flavored_fetch(input, options={}) {
+		if (!('headers'in options)) options.headers = {};
+
+		const flavor = `CUI/${USERSCRIPT_VERSION}`
+		if (!options.headers[SBG_HEADERS.FLAVOR]) {
+			options.headers[SBG_HEADERS.FLAVOR] = flavor
+		}
+		else {
+			let flavors = options.headers[SBG_HEADERS.FLAVOR].split(' ').filter(x => !x.includes('Stock'))
+			if (!flavors.find(x => x == flavor)) flavors.push(flavor)
+			options.headers[SBG_HEADERS.FLAVOR] = flavors.join(' ')
+		}
+
+		return fetch(input,options)
+	}
+	const SBG_HEADERS = {
+		VERSION: 'x-sbg-version',
+		FLAVOR: 'x-sbg-flavor'
+	}
+
 	const CUI_WEB_RES_CACHE_v = '__CUI_WEB_RES_CACHE_v';
 	const HOME_DIR = 'https://sbg-game.ru/plugins/sbg-cui'; // const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 7 * 24 * 60 * 60 * 1000 // 7d
@@ -56,7 +77,7 @@
 	const __cui_constants = `${CUI_WEB_RES_CACHE_v}${USERSCRIPT_VERSION}_constants`;
 	let cached_constants = JSON.parse(localStorage.getItem(__cui_constants) ?? '{}')
 	if (!cached_constants?.timestamp || (Date.now() - cached_constants?.timestamp > __CUI_WEB_RES_CACHE_TIMEOUT)) {
-		cached_constants = await fetch(`${HOME_DIR}/const.json`).then(res => res.json()).catch(error => { window.alert(`Ошибка при получении ${HOME_DIR}/const.json.\n\n${error.message}`); });
+		cached_constants = await flavored_fetch(`${HOME_DIR}/const.json`).then(res => res.json()).catch(error => { window.alert(`Ошибка при получении ${HOME_DIR}/const.json.\n\n${error.message}`); });
 		cached_constants.LATEST_KNOWN_VERSION = LATEST_KNOWN_VERSION
 		localStorage.setItem(__cui_constants, JSON.stringify({...cached_constants, timestamp: Date.now()}))
 	}
@@ -323,7 +344,7 @@
 
 
 	function loadPageSource() {
-		fetch('/app')
+		flavored_fetch('/app')
 			.then(r => r.text())
 			.then(data => {
 				data = data.replace(/<script class="mobile-check">.+?<\/script>/, '');
@@ -669,7 +690,7 @@
 		const replacesShouldBe = regexpReplacements.length + 3; // повторяются +2x "$('body').empty()" и +1x "view.calculateExtent(map.getSize()"
 		let replacesMade = 0;
 
-		fetch(`/app/${vanillaScriptSrc}`)
+		flavored_fetch(`/app/${vanillaScriptSrc}`)
 			.then(r => r.text())
 			.then(data => {
 				const script = document.createElement('script');
@@ -950,7 +971,7 @@
 					]);
 					const url = '/api/draw?' + searchParams.toString();
 					const options = { headers, method: 'GET' };
-					const response = await fetch(url, options);
+					const response = await flavored_fetch(url, options);
 					const parsedResponse = await response.json();
 
 					return parsedResponse.data.map(point => ({ guid: point.p, title: point.t, distance: point.d }));
@@ -1323,7 +1344,6 @@
 				}
 			}
 
-
 			window.fetch = fetchDecorator(window.fetch);
 			window.Toastify = toastifyDecorator(window.Toastify);
 
@@ -1394,7 +1414,7 @@
 
 			const percent_format = new Intl.NumberFormat(i18next.language, { maximumFractionDigits: 1 });
 
-			const headers = { authorization: `Bearer ${localStorage.getItem('auth')}`, 'accept-language': i18next.language };
+			const headers = { 'accept-language': i18next.language };
 			let gameVersion;
 
 
@@ -1407,9 +1427,9 @@
 			async function getSelfData() {
 				const url = '/api/self';
 				const options = { headers, method: 'GET' };
-				const response = await fetch(url, options);
+				const response = await flavored_fetch(url, options);
 				const parsedResponse = await response.json();
-				const version = response.headers.get('SBG-Version');
+				const version = response.headers.get(SBG_HEADERS.VERSION);
 
 				gameVersion = version;
 
@@ -1419,7 +1439,7 @@
 			async function getPlayerData(guid, name) {
 				const url = `/api/profile?${guid ? ('guid=' + guid) : ('name=' + name)}`;
 				const options = { headers, method: 'GET' };
-				const response = await fetch(url, options);
+				const response = await flavored_fetch(url, options);
 				const parsedResponse = await response.json();
                 const stats = parsedResponse.stats;
                 stats.xp = parsedResponse.xp;
@@ -1431,7 +1451,7 @@
 			async function getPointData(guid, isCompact = true, signal) {
 				const url = `/api/point?guid=${guid}${isCompact ? '&status=1' : ''}`;
 				const options = { headers, method: 'GET', signal };
-				const response = await fetch(url, options);
+				const response = await flavored_fetch(url, options);
 				const parsedResponse = await response.json();
 
 				return parsedResponse.data;
@@ -1473,7 +1493,7 @@
 			async function getInventory() {
 				const url = '/api/inventory';
 				const options = { headers, method: 'GET' };
-				const response = await fetch(url, options);
+				const response = await flavored_fetch(url, options);
 				const parsedResponse = await response.json();
 
 				return parsedResponse.i;
@@ -1487,7 +1507,7 @@
 					method: 'POST',
 					body: JSON.stringify({ guid, position }),
 				};
-				const response = await fetch(url, options);
+				const response = await flavored_fetch(url, options);
 				const parsedResponse = await response.json();
 
 				return parsedResponse;
@@ -1500,7 +1520,7 @@
 					method: 'DELETE',
 					body: JSON.stringify({ selection: items, tab: type })
 				};
-				const response = await fetch(url, options);
+				const response = await flavored_fetch(url, options);
 				const parsedResponse = await response.json();
 
 				return parsedResponse;
@@ -1514,7 +1534,7 @@
 				if (!cached?.timestamp || !cached?.timestamp || (Date.now() - cached_constants?.timestamp > __CUI_WEB_RES_CACHE_TIMEOUT))
 				{
 					const url = `${HOME_DIR}/assets/html/${filename}.html`;
-					const response = await fetch(url);
+					const response = await flavored_fetch(url);
 					if (response.status != 200) { throw new Error(`Ошибка при загрузке ресурса "${filename}.html" (${response.status})`); }
 					text = await response.text();
 					localStorage.setItem(cached_filename, JSON.stringify({ text, timestamp: Date.now() }))
@@ -2523,7 +2543,6 @@
 						get percentage() { return (this.goal == Infinity) ? 100 : Math.min(this.current / this.goal * 100, 100); }, // На случай повторного добавления уровней больше 10-го.
 						set string(str) { [this.current, this.goal = Infinity] = str.replace(/\s|,/g, '').split('/'); }
 					},
-					auth: localStorage.getItem('auth'),
 					guid: selfData.g,
 					feature: playerFeature,
 					teamColor: getComputedStyle(html).getPropertyValue(`--team-${selfData.t}`),
@@ -6126,9 +6145,8 @@
 			/* Уведомления о сносе точек */
 			{
 				async function getNotifs(latest) {
-					return fetch(`/api/notifs${latest == undefined ? '' : '?latest=' + latest}`, {
+					return flavored_fetch(`/api/notifs${latest == undefined ? '' : '?latest=' + latest}`, {
 						headers: {
-							authorization: `Bearer ${player.auth}`,
 							'accept-language': i18next.language
 						},
 						method: 'GET'

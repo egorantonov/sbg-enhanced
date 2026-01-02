@@ -1,4 +1,3 @@
-/* eslint-disable */
 ;(async function main() {
   const is_mobile = isMobile()
   if (!is_mobile) return

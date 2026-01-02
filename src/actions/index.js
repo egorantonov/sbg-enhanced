@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Elements, Events, EUI, Modifiers, Nodes, t, Translations as i18n } from '../constants'
+import { flavored_fetch } from '../helpers'
 import { showToast } from '../utils'
 
 let intervalId
@@ -27,7 +28,6 @@ const interval = 5 * 60e3
 const TEAM_COLORS = ['⚪','🔴','🟢','🔵']
 const init = {
 	headers: {
-		authorization: `Bearer ${localStorage.auth}`,
 		['Content-Type']: 'application/json'
 	}
 }
@@ -246,7 +246,7 @@ async function GetInview(lat, lon) {
 	
 		const url = `/api/inview?sw=${w},${s}&ne=${e},${n}&z=${zoom}&l=1&h=4`
 	
-		/** @type InviewPoint[] */ const points = await fetch(url, init)
+		/** @type InviewPoint[] */ const points = await flavored_fetch(url, init)
 			.then(r => r.json())
 			.then(json => {
 				console.log(`${new Date().toLocaleTimeString()} [Actions] Inview returned ${json.p.length} points`)
