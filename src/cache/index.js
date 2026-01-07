@@ -1,4 +1,5 @@
-import { CUI, Elements, Events, Modifiers, Nodes, SBG, t, Translations as i18n } from '../constants'
+import { ButtonSettingsItem } from '../components/settingsItem'
+import { CUI, Elements, EUI, Events, Modifiers, Nodes, SBG, t, Translations as i18n } from '../constants'
 import { AddEntry, ClearStore, GetEntry, StoreInfo, STORE_NAMES, IndexedDb } from '../db'
 import { State } from '../state'
 import { Logger, showToast } from '../utils'
@@ -59,28 +60,24 @@ export function Cache() {
 		return response
 	}
 
-  const title = document.createElement(Elements.Span)
-  title.id = 'eui-images'
-  title.innerText = t(i18n.clearStore)
-  const input = document.createElement(Elements.Button)
-  input.innerText = t(i18n.clearStoreAction)
-  input.addEventListener(Events.onClick, () => {
+  const viewId = `${EUI.ImagesCache}-title`
+
+  const callback = () => {
     ClearStore(STORE_NAMES.images, (name) => {
+      const title = document.getElementById(viewId)
       title.removeAttribute('data-size')
       const message = t(i18n.storeCleared, [name])
       Logger.log(message)
       showToast(message)
     })
-  })
-  const label = document.createElement(Elements.Div)
-  label.classList.add(Modifiers.SettingsSectionItemClassName)
-  label.appendChild(title)
-  label.appendChild(input)
+  }
 
-  Nodes.SettingSections.at(0)?.appendChild(label)
+  const imagesCacheItem = ButtonSettingsItem(t(i18n.clearStore), t(i18n.clearStoreAction), callback, EUI.ImagesCache, { subTitle: t(i18n.clearStoreDesc) })
+  Nodes.SettingSections.at(0)?.appendChild(imagesCacheItem)
 
   StoreInfo(STORE_NAMES.images, (result) => {
-    title.dataset.size = result / 10
+    const title = document.getElementById(viewId)
+    title.dataset.size = (result / 10).toFixed(1)
   })
 
   document.querySelector('.inventory__content')?.addEventListener(Events.onScroll, e => getRefsPics(e.target))

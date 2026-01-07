@@ -21,6 +21,6 @@ export default function AddHighContrast() {
     localStorage.setItem(EUI.HighContrast, 0)
   }
 
-  const toggle = ToggleSettingsItem(t(Translations.highContrast), Enable, Disable, EUI.HighContrast)
+  const toggle = ToggleSettingsItem(t(Translations.highContrast), Enable, Disable, EUI.HighContrast, { subTitle: t(Translations.highContrastDesc) })
   uiSettings.appendChild(toggle)
 }

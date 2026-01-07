@@ -60,6 +60,9 @@ export const EUI = {
   Donate: 'eui-donate',
   LowBattery: 20,
   Vibes: 'eui-vibes',
+  Console: 'eui-console',
+  ImagesCache: 'eui-images',
+  SettingItem: 'eui-setting-item',
   Team: '__eui-team' // user can flip color
 }
 
@@ -230,6 +233,10 @@ export const Translations = {
     en: 'High Contrast',
     ru: 'Высокий контраст',
   },
+  highContrastDesc: {
+    en: 'Increase contrast in bright lighting or for dark themes with OLED displays',
+    ru: 'Повысить контрастность при ярком освещении или для тёмной темы и OLED экранов',
+  },
   linesOpacity: {
     en: 'Lines opacity',
     ru: 'Прозрачность линий',
@@ -242,9 +249,17 @@ export const Translations = {
     en: 'Animations',
     ru: 'Анимации',
   },
+  animationsDesc: {
+    en: 'Enable windows and elements animations',
+    ru: 'Включить анимации окон и элементов',
+  },
   compactView: {
     en: 'Compact View',
     ru: 'Компактный режим'
+  },
+  compactViewDesc: {
+    en: 'Use icons instead of labels',
+    ru: 'Использовать иконки вместо текста'
   },
   searchRefPlaceholder: {
     en: 'Search refs',
@@ -299,6 +314,10 @@ export const Translations = {
   importExport: {
     en: 'Import/export settings',
     ru: 'Импорт/экспорт настроек'
+  },
+  importExportDesc: {
+    en: 'Apply or save current game settings and EUI add-on',
+    ru: 'Применить или сохранить текущие настройки игры и надстройки EUI'
   },
   cloudSync: {
     en: 'Cloud sync',
@@ -396,6 +415,10 @@ export const Translations = {
     en: 'Connection',
     ru: 'Подключение'
   },
+  connectionDesc: {
+    en: 'Check your network connectivity',
+    ru: 'Проверьте свое сетевое подключение'
+  },
   showConnection: {
     en: 'Show',
     ru: 'Показать'
@@ -423,6 +446,10 @@ export const Translations = {
   perfModeTitle: {
     en: 'Performance mode',
     ru: 'Режим производительности'
+  },
+  perfModeDesc: {
+    en: 'Reduce the device load',
+    ru: 'Уменьшить нагрузку на устройство'
   },
   perfModeMessage: {
     en: 'Map filters, animations and blur will be disabled.\r\nUse "Carto" layer for dark theme map.',
@@ -464,6 +491,10 @@ export const Translations = {
     en: 'Donations',
     ru: 'Донаты'
   },
+  donationsDesc: {
+    en: 'Send some money to support add-on development',
+    ru: 'Отправить донат на поддержку скриптов'
+  },
   donate: {
     en: 'Donate',
     ru: 'Задонатить'
@@ -495,6 +526,10 @@ export const Translations = {
   clearStore: {
     en: 'Images cache',
     ru: 'Кэш картинок'
+  },
+  clearStoreDesc: {
+    en: 'Clear point images local cache',
+    ru: 'Очистить локальный кэш картинок точек'
   },
   clearStoreAction: {
     en: 'Clear',
@@ -539,6 +574,10 @@ export const Translations = {
   wakeLock: {
     en: 'Keep screen always on',
     ru: 'Не выключать экран'
+  },
+  wakeLockDesc: {
+    en: 'Depends on the device\'s power saving settings',
+    ru: 'Настройка зависит от параметров энергосбережения устройства'
   },
   batteryExtraLow: {
     en: 'Attention! 🪫 {0}% battery remaining. It is recommended to enable performance mode',

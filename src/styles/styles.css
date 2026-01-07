@@ -519,6 +519,11 @@
   font-weight: bold;
 }
 
+.eui-setting-item.settings-section__item>div.eui-setting-item__label {
+  display: flex;
+  flex-direction: column;
+}
+
 input[type='range']  {
   -webkit-appearance: none;
   appearance: none;
@@ -573,11 +578,11 @@ input[type='range']::-moz-range-thumb {
   cursor: pointer;
 }
 
-#eui-images[data-size]::after {
+#eui-images-title[data-size]::after {
   content: ' (~' attr(data-size) 'mb)';
 }
 
-#eui-images[data-size="0"]::after {
+#eui-images-title[data-size="0"]::after {
   content: '';
 }
 

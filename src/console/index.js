@@ -1,7 +1,7 @@
+import { EUI } from '../constants'
 import { ButtonSettingsItem } from '../components/settingsItem'
 
 export function EuiConsole () {
-  const euiConsole = 'eui-console'
   const hidden = 'hidden'
   const LB = '\r\n'
   function getNativeConsole() {
@@ -15,7 +15,7 @@ export function EuiConsole () {
   }
 
   const consolePopup = document.createElement('div')
-  consolePopup.id = euiConsole
+  consolePopup.id = EUI.Console
   consolePopup.classList.add('popup')
   consolePopup.classList.add(hidden)
   document.body.appendChild(consolePopup)
@@ -25,18 +25,18 @@ export function EuiConsole () {
   consolePopup.appendChild(title)
 
   const output = document.createElement('textarea')
-  output.id = `${euiConsole}-output`
+  output.id = `${EUI.Console}-output`
   output.placeholder = '>'
   output.disabled = true
   consolePopup.appendChild(output)
 
   const input = document.createElement('textarea')
-  input.id = `${euiConsole}-input`
+  input.id = `${EUI.Console}-input`
   input.placeholder = '>'
   consolePopup.appendChild(input)
 
   const executeButton = document.createElement('button')
-  executeButton.id = `${euiConsole}-execute`
+  executeButton.id = `${EUI.Console}-execute`
   executeButton.textContent = 'Execute'
   var logger = getNativeConsole()
 
@@ -79,8 +79,8 @@ export function EuiConsole () {
   consolePopup.appendChild(document.createElement('br'))
 
   const closeButton = document.createElement('button')
-  closeButton.id = `${euiConsole}-close`
-  closeButton.textContent = ' ✕ '
+  closeButton.id = `${EUI.Console}-close`
+  closeButton.textContent = EUI.CloseButtonText
   closeButton.dataset.round = 'true'
   closeButton.classList.add('popup-close')
   closeButton.addEventListener('click', () => {
@@ -91,6 +91,6 @@ export function EuiConsole () {
   const about = Array.from(document.querySelectorAll('.settings-section')).at(3)
   if (about) {
     const callback = () => consolePopup.classList.toggle(hidden)
-    setTimeout(() => about.appendChild(ButtonSettingsItem('Debug Console', 'Open', callback)), 1000)
+    setTimeout(() => about.appendChild(ButtonSettingsItem('Debug Console', 'Open', callback, `${EUI.Console}-control`, { subTitle: 'Execute your own code, use with caution' })), 1000)
   }
 }

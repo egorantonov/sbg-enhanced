@@ -43,13 +43,17 @@ export function getGPU(): string {
 
 	// Unsafe for Firefox (deprecated)
 	const renderer = webgl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+	const vendor = webgl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL)
 
 	console.log(renderer)
-	console.log(webgl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL))
+	console.log(vendor)
 
-	const gpu = parseGpu(renderer)
+	let gpu = parseGpu(renderer)
+	if (vendor && !vendor.toLowerCase().includes('google') && !gpu.toLowerCase().includes(vendor.toLowerCase())) {
+		gpu = `${vendor.toUpperCaseFirst()} ${gpu}`
+	}
 
-	return gpu 
+	return gpu
 }
 
 export function parseGpu(renderer: string): string {
@@ -61,10 +65,16 @@ export function parseGpu(renderer: string): string {
 
 	renderer = removeGfxApi(renderer, DIRECT_VERSION)
 	renderer = removeGfxApi(renderer, OPENGL_VERSION)
-	renderer = renderer.replace(/\(0x([0-9A-Fa-f]){8}\)/, _ => '')
+	renderer = renderer.replace('(TM)', '') // (TM)
+	renderer = renderer.replace(/\(0x([0-9A-Fa-f]){8}\)/, _ => '') // device id
 
 	if (renderer[renderer.length - 1] === ',') {
 		renderer = renderer.slice(0, renderer.length - 1)
+	}
+
+	const renderers = renderer.split(',')
+	if (renderers.length > 1 && renderers[1].includes(renderers[0].trim())) {
+		renderer = renderers[1].trim()
 	}
 
 	return renderer

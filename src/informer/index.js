@@ -27,7 +27,7 @@ export default async function Informer() {
 
     const about = Nodes.SettingSections.at(3)
     if (about) {
-        const euiVersionInfo = InfoSettingsItem(t(i18n.enhancedUIVersion), `v${EUI.Version}`)
+        const euiVersionInfo = InfoSettingsItem(t(i18n.enhancedUIVersion), `v${EUI.Version}`, 'eui-version')
         about.appendChild(euiVersionInfo)
 
         const donateCallback = async () => {
@@ -77,7 +77,7 @@ export default async function Informer() {
               })
         }
 
-        const donateButtonItem = ButtonSettingsItem(t(i18n.donations), t(i18n.donate), donateCallback, EUI.Donate)
+        const donateButtonItem = ButtonSettingsItem(t(i18n.donations), t(i18n.donate), donateCallback, EUI.Donate, { subTitle: t(i18n.donationsDesc) })
         euiVersionInfo.after(donateButtonItem)
 
         const connection = navigator.connection
@@ -95,15 +95,10 @@ export default async function Informer() {
                 showToast(connectionValue)
                 localStorage.setItem(EUI.Connection, connectionValue)
             }
-            const connectionItem = ButtonSettingsItem(t(i18n.connection), t(i18n.showConnection), connectionItemCallback)
+            const connectionItem = ButtonSettingsItem(t(i18n.connection), t(i18n.showConnection), connectionItemCallback, EUI.Connection, { subTitle: t(i18n.connectionDesc) })
             setTimeout(() => about.appendChild(connectionItem), 500)
 
             localStorage.removeItem(EUI.Connection)
         }
     }
-
-    // if (!localStorage.getItem(EUI.Team))
-    //     flavored_fetch('/api/self')
-    //         .then(r => r.json())
-    //         .then(json => localStorage.setItem(EUI.Team, json.t ?? 0))
 }

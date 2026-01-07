@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      25.12.3
+// @version      26.1.4
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -46,8 +46,8 @@
 	console.error = logDecorator(console.error);
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
-	const LATEST_KNOWN_VERSION = '0.5.3' // override
-	const USERSCRIPT_VERSION = '26.1.1'
+	const LATEST_KNOWN_VERSION = '0.5.3' // override // TODO: угадайка (сменить при 0.5.3+)
+	const USERSCRIPT_VERSION = '26.1.4'
 	window.cuiVersion = USERSCRIPT_VERSION
 	function flavored_fetch(input, options={}) {
 		if (!('headers'in options)) options.headers = {};
@@ -2083,7 +2083,9 @@
 												const cores = parsedResponse.data.co;
 
 												lastOpenedPoint.updateCores(cores);
-												lastOpenedPoint.selectCore(config.autoSelect.deploy);
+
+												// TODO: угадайка
+												if (LATEST_KNOWN_VERSION == gameVersion) lastOpenedPoint.selectCore(config.autoSelect.deploy);
 
 												const { coords, guid, level, title, isCaptured } = lastOpenedPoint;
 												const isFirstCore = cores.length == 1;
@@ -2098,7 +2100,9 @@
 												}
 											} else if ('c' in parsedResponse) { // Если апгрейд, то один объект с ядром.
 												lastOpenedPoint.updateCores([parsedResponse.c], parsedResponse.l);
-												lastOpenedPoint.selectCore(config.autoSelect.upgrade, parsedResponse.c.l);
+
+												// TODO: угадайка
+												if (LATEST_KNOWN_VERSION == gameVersion) lastOpenedPoint.selectCore(config.autoSelect.upgrade, parsedResponse.c.l);
 
 												const { coords, level, guid: point, title } = lastOpenedPoint;
 
@@ -3051,9 +3055,9 @@
 
 				const osmToggle = document.querySelector('input[value="osm"]')
 				const addLayers = [
-					{ value: 'stadia_watercolor', title: 'Stadia Watercolor' },
-					{ value: 'stadia_toner', title: 'Stadia Toner' },
-					{ value: 'stadia_terrain', title: 'Stadia Terrain' },
+					// { value: 'stadia_watercolor', title: 'Stadia Watercolor' }, // STADIA blocked free access
+					// { value: 'stadia_toner', title: 'Stadia Toner' },
+					// { value: 'stadia_terrain', title: 'Stadia Terrain' },
 					{ value: 'goo_m', title: 'Google Maps' },
 					{ value: 'goo_r', title: 'Google Roadmap' },
 					{ value: 'goo_h', title: 'Google Highways' },
@@ -3135,15 +3139,20 @@
 
 			/* Автовыбор */
 			{
-				attackSlider.addEventListener('attackSliderOpened', () => {
-					click(chooseCatalyser(config.autoSelect.attack));
-				});
+				// TODO: угадайка
+				if (LATEST_KNOWN_VERSION == gameVersion) {
+					attackSlider.addEventListener('attackSliderOpened', () => {
+						click(chooseCatalyser(config.autoSelect.attack));
+					});
+				}
 
 				pointCores.addEventListener('click', event => {
 					if (event.target.classList.contains('selected')) {
 						const guid = event.target.dataset.guid;
 						const currentLvl = lastOpenedPoint.cores[guid].level;
-						lastOpenedPoint.selectCore(config.autoSelect.upgrade, currentLvl);
+
+						// TODO: угадайка
+						if (LATEST_KNOWN_VERSION == gameVersion) lastOpenedPoint.selectCore(config.autoSelect.upgrade, currentLvl);
 					}
 				});
 
@@ -3186,9 +3195,11 @@
 					const selectedCoreGuid = lastOpenedPoint.selectedCoreGuid;
 					if (selectedCoreGuid != undefined) {
 						const selectedCoreLvl = lastOpenedPoint.cores[selectedCoreGuid].level;
-						lastOpenedPoint.selectCore(config.autoSelect.upgrade, selectedCoreLvl);
+						// TODO: угадайка
+						if (LATEST_KNOWN_VERSION == gameVersion) lastOpenedPoint.selectCore(config.autoSelect.upgrade, selectedCoreLvl);
 					} else {
-						lastOpenedPoint.selectCore(config.autoSelect.deploy);
+						// TODO: угадайка
+						if (LATEST_KNOWN_VERSION == gameVersion) lastOpenedPoint.selectCore(config.autoSelect.deploy);
 					}
 				});
 			}
@@ -3587,6 +3598,15 @@
 
 					setStoredInputsValues();
 					tlContainer.appendChild(settingsMenu);
+
+					// TODO: угадайка
+					if (LATEST_KNOWN_VERSION != gameVersion) {
+						const autoSelects = Array.from(settingsMenu.querySelectorAll('select[name^="autoSelect"]'))
+						autoSelects.forEach(s => {
+							s.disabled = true
+							s.parentElement.children[0].innerHTML = `<b><i>Перенесено в настройки игры</i></b><br/>${s.parentElement.children[0].textContent}`
+						})
+					}
 
 					function createToggleControl(tId, tTextContent, options = {}) {
 						const { tValue, tDisabled, tCallback } = options

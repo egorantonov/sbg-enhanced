@@ -22,7 +22,7 @@ export default function AddAnimations() {
         localStorage.setItem(EUI.Animations, 0)
     }
 
-    const toggle = ToggleSettingsItem(t(Translations.animations), Enable, Disable, EUI.Animations, { disabled: localStorage.getItem(EUI.PerformanceMode) == 1 })
+    const toggle = ToggleSettingsItem(t(Translations.animations), Enable, Disable, EUI.Animations, { disabled: localStorage.getItem(EUI.PerformanceMode) == 1, subTitle: t(Translations.animationsDesc) })
     uiSettings.appendChild(toggle)
 
     // SWIPE ANIMATIONS - INFO POPUP

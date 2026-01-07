@@ -21,3 +21,30 @@ export async function WebGPU() {
 
   return device.adapterInfo?.architecture
 }
+
+export async function GetWebGpu() {
+	if (!navigator.gpu) {
+    console.log('[webgpu] no gpu')
+    return null
+  }
+
+  const adapter = await navigator.gpu.requestAdapter()
+  if (!adapter) {
+    console.log('[webgpu] no adapter')
+    return null
+  }
+
+  const device = await adapter.requestDevice()
+	if (!device) {
+    console.log('[webgpu] no device')
+		return null
+	}
+
+	const adapterInfo = device.adapterInfo
+	if (!adapterInfo) {
+    console.log('[webgpu] no adapterInfo')
+		return null
+	}
+
+	return adapterInfo
+}

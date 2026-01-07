@@ -1,8 +1,8 @@
-import { /*Backend,*/ ClientData, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t } from '../constants'
+import { ClientData, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t, Translations } from '../constants'
 import { getSbgSettings, setSbgSettings } from '../utils'
 import { flavored_fetch } from '../helpers'
 import { InfoSettingsItem } from '../components/settingsItem'
-//const { Host, Endpoints } = Backend
+import { GetWebGpu } from '../utils/unsafeImport'
 
 export default async function ImportExport() {
   const Week = 604800000
@@ -145,9 +145,41 @@ export default async function ImportExport() {
     // appendLine(about, t('cloudSync'), (new Date(+localStorage.getItem(EUI.CloudSync))).toLocaleString(), EUI.LastSynced)
     about.appendChild(InfoSettingsItem('User ID', `${(await GetUserId()).slice(0,4)}...`, 'eui-userId'))
     about.appendChild(InfoSettingsItem('Client', userAgent, 'eui-clientId'))
-    if (navigator.hardwareConcurrency) about.appendChild(InfoSettingsItem('CPU', `${navigator.hardwareConcurrency} cores`, 'eui-hardwareConcurrency'))
-    if (navigator.deviceMemory) about.appendChild(InfoSettingsItem('RAM', `${navigator.deviceMemory}${(navigator.deviceMemory >= 8 ? '+' : '')} Gb`, 'eui-deviceMemory'))
-    about.appendChild(InfoSettingsItem('GPU', ClientData.GetGPU, 'eui-gpu'))
+    if (navigator.hardwareConcurrency) about.appendChild(InfoSettingsItem('CPU (logical cores)', `${navigator.hardwareConcurrency}`, 'eui-hardwareConcurrency'))
+    if (navigator.deviceMemory) about.appendChild(InfoSettingsItem('RAM (at least)', `${navigator.deviceMemory} Gb`, 'eui-deviceMemory'))
+
+    const webGpu = await GetWebGpu()
+    const euiGpu = 'eui-gpu'
+    let gpu = ClientData.GetGPU
+
+    if (webGpu) {
+      let vendor = ''
+      if (webGpu.vendor && !gpu.toLowerCase().includes(webGpu.vendor.toLowerCase())) {
+        switch (webGpu.vendor.toLowerCase()) {
+          case 'intel':
+          case 'qualcomm':
+          case 'unisoc':
+          case 'google':
+          case 'apple':
+            vendor = `${webGpu.vendor.toUpperCaseFirst()} `
+            break
+          case 'mediatek':
+            vendor = 'MediaTek '
+            break
+          default:
+            vendor = `${webGpu.vendor.toUpperCase()} `
+            break
+        }
+      }
+
+      let architecture = ''
+      if (webGpu.architecture) {
+        architecture = ` (${webGpu.architecture.toUpperCaseFirst()})`
+      }
+      gpu = `${vendor}${gpu}${architecture}`
+    }
+
+    about.appendChild(InfoSettingsItem('GPU', gpu, euiGpu))
 
     Nodes.SettingsPopupClose?.addEventListener(Events.onClick, () => CloudSync(true))
     Nodes.GetId('layers-config__save')?.addEventListener(Events.onClick, () => CloudSync(true))
@@ -158,9 +190,27 @@ export default async function ImportExport() {
   }
 
   if (about) {
-    const key = document.createElement(Elements.Span)
-    key.innerText = t('importExport')
+    const key = document.createElement(Elements.Div)
+    key.classList.add(`${EUI.SettingItem}__label`)
+
+    const title = document.createElement(Elements.Span)
+    title.innerText = t(Translations.importExport)
+
+    const subTitle = document.createElement(Elements.Span)
+    subTitle.innerText = t(Translations.importExportDesc)
+    subTitle.style.color = '#777'
+    subTitle.style.fontSize = 'x-small'
+
+    key.appendChild(title)
+    key.appendChild(subTitle)
+
     const value = document.createElement(Elements.Div)
+    value.style.cssText = `
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      width: 100%;
+    `
 
     const inputFile = document.createElement(Elements.Input)
     inputFile.hidden = true
@@ -171,16 +221,18 @@ export default async function ImportExport() {
 
     const importButton = document.createElement(Elements.Button)
     importButton.innerText = ' ↓ '
-    value.appendChild(importButton)
+    importButton.style.width = '50%'
     importButton.addEventListener(Events.onClick, () => inputFile.click())
+    value.appendChild(importButton)
 
     const exportButton = document.createElement(Elements.Button)
     exportButton.innerText = ' ↑ '
-    value.appendChild(exportButton)
+    exportButton.style.width = '50%'
     exportButton.addEventListener(Events.onClick, () => Export())
+    value.appendChild(exportButton)
 
     const item = document.createElement(Elements.Div)
-    item.classList.add(Modifiers.SettingsSectionItemClassName)
+    item.classList.add(Modifiers.SettingsSectionItemClassName, EUI.SettingItem)
     item.appendChild(key)
     item.appendChild(value)
     about.appendChild(item)

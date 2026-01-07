@@ -71,7 +71,7 @@ export default async function EUIWakeLock() {
     return
   }
 
-  const toggle = ToggleSettingsItem(t(Translations.wakeLock), EnableWakeLock, DisableWakeLock, EUI.WakeLock)
+  const toggle = ToggleSettingsItem(t(Translations.wakeLock), EnableWakeLock, DisableWakeLock, EUI.WakeLock, { subTitle: t(Translations.wakeLockDesc) })
   uiSettings.appendChild(toggle)
   window.addEventListener(Events.onBeforeUnload, async () => {
     if (lm.wakeLock && !lm.wakeLock.released) {

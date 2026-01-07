@@ -45,7 +45,7 @@ export function Compatibility () {
       Nodes.GetId(EUI.LinksOpacity)?.toggleAttribute(disabled)
     }
 
-    const toggle = ToggleSettingsItem(t(Translations.perfModeTitle), Enable, Disable, EUI.PerformanceMode)
+    const toggle = ToggleSettingsItem(t(Translations.perfModeTitle), Enable, Disable, EUI.PerformanceMode, { subTitle: t(Translations.perfModeDesc) })
     globalSettings.appendChild(toggle)
   }
 
