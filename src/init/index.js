@@ -26,6 +26,7 @@ import styles from './styles.min.css'
 import ZenMode from '../zenMode'
 import EUIWakeLock from '../wakelock'
 import Vibes from '../vibes'
+import LiquidGlass from '../liquidGlass'
 // import Battery from '../battery'
 
 function isFatalError() {
@@ -57,6 +58,7 @@ function ExecuteSyncFeatures() {
     [AddCanvasStyles, 'AddCanvasStyles'],
     [AddAnimations, 'AddAnimations'],
     [AddColorScheme, 'AddColorScheme'],
+    [LiquidGlass, 'AddLiquidGlass'],
     [Cache, 'Cache'],
     [InitObservers, 'InitObservers'],
     [RemoveBadges, 'RemoveBadges'],

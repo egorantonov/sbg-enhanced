@@ -933,6 +933,7 @@ input[data-type="reference-search"] {
 }
 
 #inventory__close::after {
+  bottom: -1px !important;
   border-top: 1px solid var(--level-9);
   box-shadow: inset 0px 10px 15px -8px var(--level-9);
 }

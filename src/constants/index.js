@@ -63,6 +63,8 @@ export const EUI = {
   Console: 'eui-console',
   ImagesCache: 'eui-images',
   SettingItem: 'eui-setting-item',
+  LiquidGlass: 'eui-liquid-glass',
+  Hide: 'eui-hide',
   Team: '__eui-team' // user can flip color
 }
 
@@ -594,6 +596,14 @@ export const Translations = {
   winterVibes: {
     en: 'Winter vibes ❄',
     ru: 'Зимнее настроение ❄'
+  },
+  liquidGlass: {
+    en: 'Liquid Glass',
+    ru: 'Жидкое стекло'
+  },
+  liquidGlassDesc: {
+    en: 'Yes, just like in iOS',
+    ru: 'Да-да, прямо как в iOS'
   }
 }
 

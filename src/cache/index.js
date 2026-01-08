@@ -88,7 +88,8 @@ export function Cache() {
 
   if (CUI.Loaded()) {
     const hide = document.createElement(Elements.Button)
-    hide.id = 'eui-hide'
+    hide.id = EUI.Hide
+    hide.classList.add(EUI.LiquidGlass)
     hide.addEventListener(Events.onClick, () => {
       Nodes.InventoryPopup.classList.contains(Modifiers.Hidden) && Nodes.InventoryPopup.classList.toggle(Modifiers.Hidden)
       history.pushState({page: '1'}, 'ops', '#_ops')
