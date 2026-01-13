@@ -1,4 +1,4 @@
-import { AddDiscoverProgress } from '../discoverButton'
+//import { AddDiscoverProgress } from '../discoverButton'
 import { CUI, Elements, EUI, Events, IsWebView, Nodes, Sleep, t, Translations } from '../constants'
 import { RemoveBadges, RenderBadges } from '../badges'
 import AddAnimations from '../animations'
@@ -102,7 +102,7 @@ async function ExecuteAsyncFeatures() {
     ExecuteAsyncFeature(BeautifyCloseButtons, 'BeautifyCloseButtons'),
     ExecuteAsyncFeature(ImportExport, 'ImportExport'),
     ExecuteAsyncFeature(AddReferenceSearch, 'AddReferenceSearch'),
-    ExecuteAsyncFeature(AddDiscoverProgress, 'AddDiscoverProgress'),
+    //ExecuteAsyncFeature(AddDiscoverProgress, 'AddDiscoverProgress'),
     ExecuteAsyncFeature(CompactView, 'CompactView'),
     ExecuteAsyncFeature(Compatibility, 'Compatibility'),
     ExecuteAsyncFeature(Actions, 'Actions'),

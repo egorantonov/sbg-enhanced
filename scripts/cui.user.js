@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      26.1.4
+// @version      26.1.5
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -14,6 +14,9 @@
 
 (async function () {
 	'use strict';
+
+	const LATEST_KNOWN_VERSION = '0.6.0' // override
+	const USERSCRIPT_VERSION = '26.1.5'
 
 	const isFirefox = /firefox/i.test(window.navigator.userAgent)
 	if (isFirefox) {
@@ -46,8 +49,6 @@
 	console.error = logDecorator(console.error);
 	window.onerror = (event, source, line, column, error) => { pushMessage([error.message, `Line: ${line}, column: ${column}`]); };
 
-	const LATEST_KNOWN_VERSION = '0.5.3' // override // TODO: угадайка (сменить при 0.5.3+)
-	const USERSCRIPT_VERSION = '26.1.4'
 	window.cuiVersion = USERSCRIPT_VERSION
 	function flavored_fetch(input, options={}) {
 		if (!('headers'in options)) options.headers = {};
@@ -622,8 +623,8 @@
 					return DeviceOrientationEvent ? `${match}return;` : match;
 				case `testuser`: // Line ~1314
 					return `eyemax`;
-				case `timers.info_controls = setInterval(() => {`: // Line ~1443
-					return `timers.info_controls = setTimeout(() => {`;
+				// case `timers.info_controls = setInterval(() => {`: // Line ~1443
+				// 	return `timers.info_controls = setTimeout(() => {`;
 				case `function update() {`: // Line ~1521
 					return `${match} if (guid !== $('.info').attr('data-guid')) { return; }`;
 				case `delete cooldowns[guid]`: // Line ~1532
@@ -671,7 +672,7 @@
 			`(view\\.setCenter\\(ol\\.proj\\.fromLonLat\\(entry\\.c\\)\\))`,
 			`(function initCompass\\(\\) {)`,
 			`(testuser)`,
-			`(timers\\.info_controls = setInterval\\(\\(\\) => {)`,
+			// `(timers\\.info_controls = setInterval\\(\\(\\) => {)`,
 			`(function update\\(\\) {)`,
 			`(delete cooldowns\\[guid\\](?=\\s+?localStorage\\.setItem))`,
 			`(function closeDrawSlider\\(\\) {)`,
@@ -865,7 +866,7 @@
 					this.isVisited = pointData.u.v;
 					this.isCaptured = pointData.u.c;
 
-					drawButton.removeAttribute('sbgcui-possible-lines');
+					//drawButton.removeAttribute('sbgcui-possible-lines');
 					this.updateCores(pointData.co);
 
 					if (this.owner == player.name) { this.getCaptureDate(); }
@@ -959,6 +960,10 @@
 					);
 				}
 
+				/**
+				 * [Deprecated]
+				 * @returns 
+				 */
 				async getPossibleLines() {
 					const settings = JSON.parse(localStorage.getItem('settings'));
 					const isExref = settings.exref ?? false;
@@ -1020,20 +1025,20 @@
 						window.dispatchEvent(customEvent);
 					}
 
-					if (this.isPossibleLinesRequestNeeded) {
-						this.getPossibleLines().then(possibleLines => {
-							this.possibleLines = possibleLines;
-							drawButton.setAttribute('sbgcui-possible-lines', this.possibleLines.length);
-							window.draw_slider.options.pagination = this.possibleLines.length <= 20;
-						});
-					}
+					// if (this.isPossibleLinesRequestNeeded) {
+					// 	this.getPossibleLines().then(possibleLines => {
+					// 		this.possibleLines = possibleLines;
+					// 		//drawButton.setAttribute('sbgcui-possible-lines', this.possibleLines.length);
+					// 		window.draw_slider.options.pagination = this.possibleLines.length <= 20;
+					// 	});
+					// }
 				}
 
 				updateDrawings(endPointGuid, regionsCreated) {
 					this.lines.out += 1;
 					this.regionsAmount += regionsCreated;
 					this.possibleLines = this.possibleLines.filter(line => line.guid != endPointGuid);
-					drawButton.setAttribute('sbgcui-possible-lines', this.possibleLines.length);
+					//drawButton.setAttribute('sbgcui-possible-lines', this.possibleLines.length);
 					linesOutSpan.innerText = this.lines.out;
 					regionsAmountSpan.innerText = this.regionsAmount;
 					pointPopup.dispatchEvent(new Event('lineDrawn'));
@@ -1364,6 +1369,11 @@
 			const invTotalSpan = document.querySelector('#self-info__inv');
 			const leaderboardPopup = document.querySelector('.leaderboard.popup');
 			const notifsButton = document.querySelector('#notifs-menu');
+			const iStat = document.querySelector('.info.popup .i-stat');
+			iStat.style.display = 'flex'
+			const iButtons = iStat.querySelector('.i-buttons')
+			iButtons.style.display = 'flex'
+			iButtons.style.flexDirection = 'column'
 			const linesOutSpan = document.querySelector('#i-stat__line-out');
 			const pointCores = document.querySelector('.i-stat__cores');
 			const pointEnergyValue = document.createElement('span');
@@ -1385,7 +1395,8 @@
 			const selfLvlSpan = document.querySelector('#self-info__explv');
 			const selfNameSpan = document.querySelector('#self-info__name');
 			const tlContainer = document.querySelector('.topleft-container')
-			const toggleFollow = document.querySelector('#toggle-follow');
+			const toggleFollowButton = document.querySelector('#toggle-follow-btn');
+			const toggleFollowInput = document.querySelector('#toggle-follow');
 			const viewportMeta = document.querySelector('meta[name="viewport"]');
 			const xpDiffSpan = document.querySelector('.xp-diff');
 			const zoomContainer = document.querySelector('.ol-zoom');
@@ -1910,7 +1921,9 @@
 				// Отключаются все кнопки и панели кроме зума и фоллоу.
 				tlContainer.classList.add('sbgcui_hidden');
 				blContainer.classList.add('sbgcui_hidden');
-				zoomContainer.childNodes.forEach(e => { !e.matches('.ol-zoom-in, .ol-zoom-out, #toggle-follow') && e.classList.add('sbgcui_hidden'); });
+				zoomContainer.childNodes.forEach(e => { !e.matches('.ol-zoom-in, .ol-zoom-out, #toggle-follow-btn') && e.classList.add('sbgcui_hidden'); });
+				const fitButton = document.getElementById('sbgcui_drawslider_fit')
+				if (fitButton) fitButton.classList.remove('sbgcui_hidden')
 				zoomContainer.style.bottom = '50%';
 				map.removeControl(toolbar);
 			}
@@ -1919,6 +1932,8 @@
 				tlContainer.classList.remove('sbgcui_hidden');
 				blContainer.classList.remove('sbgcui_hidden');
 				zoomContainer.childNodes.forEach(e => { e.classList.remove('sbgcui_hidden'); });
+				const fitButton = document.getElementById('sbgcui_drawslider_fit')
+				if (fitButton) fitButton.classList.add('sbgcui_hidden')
 				zoomContainer.style.bottom = '';
 				map.addControl(toolbar);
 			}
@@ -1932,7 +1947,7 @@
 			function jumpTo(coords) {
 				const olCoords = ol.proj.fromLonLat(coords);
 
-				if (isFollow) { click(toggleFollow); }
+				if (isFollow) { click(toggleFollowButton); }
 
 				document.querySelectorAll('.popup').forEach(popup => { popup.classList.add('hidden'); });
 
@@ -2033,10 +2048,14 @@
 								}
 
 								const mapConfig = JSON.parse(localStorage.getItem('map-config'));
-								const layers = Bitfield.from(mapConfig.l);
 
-								layers.change(1, 1);
-								layers.change(2, 1);
+								// const layers = Bitfield.from(mapConfig.l);
+								const layers = new Bitfield(mapConfig.l);
+
+								// layers.change(1, 1);
+								layers.put(1, 1);
+								// layers.change(2, 1);
+								layers.put(2, 1);
 								url.searchParams.set('l', layers.toString());
 
 								break;
@@ -2227,7 +2246,9 @@
 											if (mapConfig.l == lParam) {
 												resolve(response);
 											} else {
-												const layers = Bitfield.from(mapConfig.l);
+												debugger
+												// const layers = Bitfield.from(mapConfig.l);
+												const layers = new Bitfield(mapConfig.l);
 												if (layers.get(1) == 0) { parsedResponse.l = []; }
 												if (layers.get(2) == 0) { parsedResponse.r = []; }
 
@@ -2739,12 +2760,10 @@
 				});
 				coresListObserver.observe(coresList, { childList: true });
 
-
-				let toggleFollowObserver = new MutationObserver(records => {
-					isFollow = toggleFollow.dataset.active == 'true';
-					dragPanInteraction.setActive(!isFollow);
-				});
-				toggleFollowObserver.observe(toggleFollow, { attributes: true, attributeFilter: ['data-active'] });
+				toggleFollowButton.addEventListener('click', () => {
+					isFollow = toggleFollowInput.checked
+					dragPanInteraction.setActive(!isFollow)
+				})
 			}
 
 
@@ -2791,7 +2810,7 @@
 					setTimeout(() => { counter.innerText = refsAmount; }, 1000);
 				});
 
-				toggleFollow.addEventListener('touchstart', () => {
+				toggleFollowButton.addEventListener('touchstart', () => {
 					function resetView(isCompleted) {
 						if (isCompleted) { return; }
 
@@ -2891,10 +2910,10 @@
 				notifsButton.innerText = '';
 				notifsButton.classList.add('fa', 'fa-solid-envelope');
 
-				zoomContainer.append(rotateArrow, toggleFollow, notifsButton, layersButton);
+				zoomContainer.append(rotateArrow, toggleFollowButton, notifsButton, layersButton);
 
-				toggleFollow.innerText = '';
-				toggleFollow.classList.add('fa', 'fa-solid-location-crosschairs');
+				toggleFollowButton.innerText = '';
+				toggleFollowButton.classList.add('fa', 'fa-solid-location-crosschairs');
 
 				blContainer.appendChild(ops);
 
@@ -3034,9 +3053,8 @@
 					}
 				});
 
-				dragPanInteraction.setActive(toggleFollow.dataset.active != 'true');
+				dragPanInteraction.setActive(!toggleFollowInput.checked);
 				doubleClickZoomInteraction.setActive(Boolean(config.ui.doubleClickZoom));
-
 
 				controls.forEach(control => {
 					switch (control.constructor) {
@@ -3212,12 +3230,12 @@
 						if (data.te == player.team) {
 							e.style.setProperty('--sbgcui-energy', `${data.e}%`);
 							if (data.e < 100) {
-								e.style.setProperty('--sbgcui-display-r-button', 'flex');
+								//e.style.setProperty('--sbgcui-display-r-button', 'flex');
 								e.setAttribute('sbgcui-repairable', '');
 							}
 						} else {
 							e.style.removeProperty('--sbgcui-energy');
-							e.style.removeProperty('--sbgcui-display-r-button', 'flex');
+							//e.style.removeProperty('--sbgcui-display-r-button', 'flex');
 							e.removeAttribute('sbgcui-repairable');
 						}
 
@@ -3263,9 +3281,9 @@
 							console.log('SBG CUI: Ошибка при зарядке.', error);
 
 							if (error.message.match(/полностью|вражеской|fully|enemy/)) {
-								refEntry.style.setProperty('--sbgcui-display-r-button', 'none');
+								//refEntry.style.setProperty('--sbgcui-display-r-button', 'none');
 							} else {
-								refEntry.style.setProperty('--sbgcui-display-r-button', 'flex');
+								//refEntry.style.setProperty('--sbgcui-display-r-button', 'flex');
 							}
 						});
 				}
@@ -3281,30 +3299,30 @@
 					recursiveRepair(pointGuid, refEntry);
 					refEntry.scrollIntoView();
 					refEntry.removeAttribute('sbgcui-repairable');
-					refEntry.style.setProperty('--sbgcui-display-r-button', 'none');
+					//refEntry.style.setProperty('--sbgcui-display-r-button', 'none');
 				}
 
 				window.makeEntry = makeEntryDecorator(window.makeEntry);
 
-				inventoryContent.addEventListener('click', event => {
-					if (!event.currentTarget.matches('.inventory__content[data-tab="3"]')) { return; }
-					if (!event.target.closest('.inventory__item-controls')) { return; }
-					if (!event.target.closest('.inventory__item.loaded')) { return; }
-					if (event.target.className === 'inventory__ic-view') { return; }
+				// inventoryContent.addEventListener('click', event => {
+				// 	if (!event.currentTarget.matches('.inventory__content[data-tab="3"]')) { return; }
+				// 	if (!event.target.closest('.inventory__item-controls')) { return; }
+				// 	if (!event.target.closest('.inventory__item.loaded')) { return; }
+				// 	if (event.target.className === 'inventory__ic-view') { return; }
 
-					// Ширина блока кнопок "V M" около 30 px.
-					// Правее них находится кнопка-псевдоэлемент "R".
-					// Если нажато дальше 30px (50 – с запасом на возможное изменение стиля), значит нажата псевдокнопка, если нет – одна из кнопок V/M.
-					// Приходится указывать конкретное число (50), потому что кнопка V при нажатии получает display: none и не имеет offsetWidth.
-					if (event.offsetX < 50) { return; }
+				// 	// Ширина блока кнопок "V M" около 30 px.
+				// 	// Правее них находится кнопка-псевдоэлемент "R".
+				// 	// Если нажато дальше 30px (50 – с запасом на возможное изменение стиля), значит нажата псевдокнопка, если нет – одна из кнопок V/M.
+				// 	// Приходится указывать конкретное число (50), потому что кнопка V при нажатии получает display: none и не имеет offsetWidth.
+				// 	if (event.offsetX < 50) { return; }
 
-					const pointGuid = event.target.closest('.inventory__item')?.dataset.ref;
-					const refEntry = event.target.closest('.inventory__item');
+				// 	const pointGuid = event.target.closest('.inventory__item')?.dataset.ref;
+				// 	const refEntry = event.target.closest('.inventory__item');
 
-					refEntry.style.setProperty('--sbgcui-display-r-button', 'none');
+				// 	//refEntry.style.setProperty('--sbgcui-display-r-button', 'none');
 
-					recursiveRepair(pointGuid, refEntry);
-				});
+				// 	recursiveRepair(pointGuid, refEntry);
+				// });
 
 				inventoryPopup.addEventListener('inventoryPopupOpened', () => { document.addEventListener('keyup', keyupHandler); });
 				inventoryPopup.addEventListener('inventoryPopupClosed', () => { document.removeEventListener('keyup', keyupHandler); });
@@ -3882,7 +3900,6 @@
 						let clicks = +pointImage.getAttribute('sbgcui_clicks');
 
 						if (clicks + 1 == 5) {
-							let iStat = document.querySelector('.i-stat');
 							let guid = pointPopup.dataset.guid;
 							let guidSpan = document.createElement('span');
 
@@ -4357,8 +4374,8 @@
 				inventoryPopup.addEventListener('inventoryPopupOpened', onInventoryPopupOpened);
 				inventoryContent.addEventListener('pointRepaired', onPointRepaired);
 
-				invDelete.after(select);
-				select.after(sortOrderButton);
+				//invDelete.after(select);
+				//select.after(sortOrderButton);
 			}
 
 
@@ -5013,7 +5030,7 @@
 				}
 
 				arrow.classList.add('sbgcui_swipe-cards-arrow', 'fa', 'fa-solid-angles-left');
-				document.querySelector('.i-stat').appendChild(arrow);
+				iStat.appendChild(arrow);
 
 				pointPopup.addEventListener('pointPopupOpened', pointPopupOpenHandler);
 				pointPopup.addEventListener('pointPopupClosed', pointPopupCloseHandler);
@@ -5139,27 +5156,29 @@
 					refsList.replaceChildren(...refsReversed);
 					window.draw_slider.refresh();
 
-					flipButton.classList.toggle('fa-solid-arrow-down-short-wide');
-					flipButton.classList.toggle('fa-solid-arrow-down-wide-short');
+					//flipButton.classList.toggle('fa-solid-arrow-down-short-wide');
+					//flipButton.classList.toggle('fa-solid-arrow-down-wide-short');
 				}
 
 				function resetIcon() {
-					flipButton.classList.replace('fa-solid-arrow-down-wide-short', 'fa-solid-arrow-down-short-wide');
+					//flipButton.classList.replace('fa-solid-arrow-down-wide-short', 'fa-solid-arrow-down-short-wide');
 				}
 
 				const fitButton = document.createElement('button');
-				const flipButton = document.createElement('button');
+				//const flipButton = document.createElement('button');
 				const sliderButtons = document.querySelector('.draw-slider-buttons');
 
-				fitButton.classList.add('fa', 'fa-solid-up-right-and-down-left-from-center', 'sbgcui_drawslider_fit');
-				flipButton.classList.add('fa', 'fa-solid-arrow-down-short-wide', 'fa-rotate-270', 'sbgcui_drawslider_sort');
+				fitButton.id = 'sbgcui_drawslider_fit'
+				fitButton.classList.add('fa', 'fa-solid-up-right-and-down-left-from-center', 'sbgcui_drawslider_fit', 'sbgcui_hidden');
+				//flipButton.classList.add('fa', 'fa-solid-arrow-down-short-wide', 'fa-rotate-270', 'sbgcui_drawslider_sort');
 
 				fitButton.addEventListener('click', fit);
-				flipButton.addEventListener('click', flip);
+				//flipButton.addEventListener('click', flip);
 
-				drawSlider.addEventListener('drawSliderOpened', resetIcon);
+				//drawSlider.addEventListener('drawSliderOpened', resetIcon);
 
-				sliderButtons.append(flipButton, fitButton);
+				//sliderButtons.append(/*flipButton, */fitButton);
+				toggleFollowButton.after(fitButton)
 			}
 
 
@@ -5169,15 +5188,13 @@
 					destroyRewardDiv.innerText = `${rewardText}: ${formatter.format(lastOpenedPoint.destroyReward)} ${i18next.t('units.pts-xp')}`;
 				}
 
-				const pointControls = document.querySelector('.info.popup .i-buttons');
-				const pointStat = document.querySelector('.info.popup .i-stat');
 				const destroyRewardDiv = document.createElement('div');
 				const rewardText = i18next.language.includes('ru') ? 'Награда' : 'Reward';
 				const formatter = new Intl.NumberFormat(i18next.language);
 
 				destroyRewardDiv.classList.add('i-stat__entry');
 
-				pointStat.insertBefore(destroyRewardDiv, pointControls);
+				iStat.insertBefore(destroyRewardDiv, pointCores);
 
 				pointPopup.addEventListener('pointPopupOpened', updateReward);
 				pointPopup.addEventListener('pointRepaired', updateReward);
@@ -5283,7 +5300,8 @@
 				const formatter = new Intl.DateTimeFormat('ru-RU', formatterOptions);
 
 				timeoutSpan.classList.add('sbgcui_discharge_timeout');
-				document.querySelector('.i-stat').appendChild(timeoutSpan);
+				pointCores.before(timeoutSpan)
+				//document.querySelector('.i-stat').appendChild(timeoutSpan);
 
 				pointPopup.addEventListener('pointPopupOpened', () => { timeoutSpan.innerText = '~'; });
 				window.addEventListener('pointCaptureDateFound', updateCaptureDate);
@@ -5369,7 +5387,8 @@
 				lockRotationButton.classList.add('fa', 'fa-solid-compass', 'sbgcui_lock_rotation');
 				lockRotationButton.addEventListener('click', toggleRotationLock);
 
-				toggleFollow.before(lockRotationButton);
+				toggleFollowButton.before(lockRotationButton);
+				toggleFollowButton.before(toggleFollowInput);
 
 				mapDiv.addEventListener('touchstart', touchStartHandler);
 				mapDiv.addEventListener('touchmove', touchMoveHandler);

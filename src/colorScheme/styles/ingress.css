@@ -42,7 +42,7 @@ body, input, select, button,
 }
 
 #discover,
-.i-buttons>button,
+.i-buttons button,
 .settings.popup button:not(.popup-close),
 .attack-slider-buttons>button,
 .draw-slider-buttons>button,
@@ -66,20 +66,12 @@ select {
   position: relative;
 }
 
-#discover {
-  width: 30% !important;
-}
-
-.pb-sub {
-  width: 60% !important;
-}
-
 #eui-sort:disabled {
   opacity: 0.7;
 }
 
 #discover::before,
-.i-buttons>button::before,
+.i-buttons button::before,
 .attack-slider-buttons>button::before,
 .draw-slider-buttons>button:not(.fa)::before {
   content: '';
@@ -95,7 +87,7 @@ select {
 }
 
 #discover,
-.i-buttons>button,
+.i-buttons button,
 .settings.popup button:not(.popup-close),
 #draw-slider-close,
 #attack-slider-close,
@@ -129,7 +121,7 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 #discover::before,
-.i-buttons>button::before,
+.i-buttons button::before,
 #draw-slider-close::before,
 #attack-slider-close::before {
   background-color: var(--i-btn-border-color);
@@ -172,7 +164,7 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 #discover[disabled],
-.i-buttons>button[disabled], 
+.i-buttons button[disabled], 
 .draw-slider-buttons>button[disabled],
 #draw[sbgcui-possible-lines="0"] { /* CUI Compatibility */
   color: var(--i-btn-disabled-color);
@@ -181,7 +173,7 @@ option:checked { /* WTF? checked is non-documented??? */
 }
 
 #discover[disabled]::before,
-.i-buttons>button[disabled]::before, 
+.i-buttons button[disabled]::before, 
 .draw-slider-buttons>button[disabled]::before,
 #draw[sbgcui-possible-lines="0"]::before { /* CUI Compatibility */
   background-color: var(--i-btn-disabled-accent-color);

@@ -126,6 +126,7 @@ export default function AddColorScheme() {
 	function applyEnhancedUITheme() {
 		const deploySliderTrack = Nodes.GetId('deploy-slider-track')
 		deploySliderTrack?.after(Nodes.GetId('deploy'))
+		deploySliderTrack?.before(Nodes.GetSelector('.deploy.i-multi-button'))
 		const arrows = Nodes.GetSelector('#deploy-slider>.splide__arrows')
 		arrows && arrows.remove()
 		let bottom = document.createElement('div')

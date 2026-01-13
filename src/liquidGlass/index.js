@@ -98,7 +98,7 @@ export default function LiquidGlass() {
   uiSettings.appendChild(toggle)
 
   /* ELEMENTS */
-  const elements = [
+  let elements = [
     Nodes.InventoryPopupClose, 
     Nodes.SettingsPopupClose,
     Nodes.Attack,
@@ -108,8 +108,10 @@ export default function LiquidGlass() {
     Nodes.GetSelector('.profile.popup button.popup-close'),
     Nodes.GetSelector('.notifs.popup button.popup-close'),
     Nodes.GetSelector('.ol-control'),
-    Nodes.GetSelector('.sbgcui_toolbar-control')
+    Nodes.GetSelector('.sbgcui_toolbar-control'),
   ]
+  // let drawSliderButtons = Nodes.GetSelectorAll('.draw-slider-buttons button')
+  // elements = elements.concat(drawSliderButtons)
   elements.forEach(element => {
     element && element.classList.add(EUI.LiquidGlass)
   })

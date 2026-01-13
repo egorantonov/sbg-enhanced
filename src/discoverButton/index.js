@@ -1,4 +1,4 @@
-import { Elements, Events, Modifiers, Nodes, t } from '../constants'
+import { Elements, Modifiers, Nodes, t } from '../constants'
 
 const onDiscoverChanged = 'discoverChanged'
 export const DiscoverChanged = () => ({
@@ -14,7 +14,6 @@ export const DiscoverChanged = () => ({
 })
 
 export const AddDiscoverProgress = async () => {
-
     if (Nodes.InfoPopup && Nodes.Discover) {
         const discoverProgress = document.createElement(Elements.Div)
         discoverProgress.className = Modifiers.DiscoverProgressClassName
@@ -35,27 +34,6 @@ export const AddDiscoverProgress = async () => {
             else {
                 discoverProgress.style.width = 0
             }
-        })
-
-        const pbSub = document.querySelector('div.pb-sub')
-
-        const removeDefaults = () => {
-            pbSub.classList.remove('hidden')
-            var refHidden = pbSub.attributes.getNamedItem('data-popper-reference-hidden')
-            if (refHidden) pbSub.attributes.removeNamedItem(refHidden.name)
-
-            var escaped = pbSub.attributes.getNamedItem('data-popper-escaped')
-            if (escaped) pbSub.attributes.removeNamedItem(escaped.name)
-        }
-
-        removeDefaults();
-
-        [Nodes.Discover, pbSub].forEach(e => {
-            e.addEventListener(Events.onTouchEnd, () => {
-                setTimeout(() => {
-                    removeDefaults()
-                }, 50)
-            })
         })
     }
 }

@@ -169,7 +169,7 @@ class LazyNodes {
   get SelfName() { return this.GetId('self-info__name') }
   get PrName() { return this.GetId('pr-name')}
   get Leaderboard() { return this.GetId('leaderboard') }
-  get ToggleFollow() { return this.GetId('toggle-follow') }
+  get ToggleFollow() { return this.GetId('toggle-follow-btn') }
   get InfoPopupClose() { return this.GetSelector('div.info.popup button.popup-close') }
   get InventoryPopupClose() { return this.GetId('inventory__close') }
   get SettingsPopupClose() { return this.GetSelector('div.settings.popup button.popup-close') }

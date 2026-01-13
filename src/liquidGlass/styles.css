@@ -199,6 +199,9 @@
 #eui-console-close,
 /* .discover-mod, */
 .notifs__entry-view,
+.slider-button__nav,
+#draw-slider-confirm,
+#draw-slider-close,
 .sbgcui_settings-buttons_wrp>button,
 .sbgcui_settings select,
 .cui-clear-cache-button,
@@ -224,6 +227,9 @@ button#sbgcui_forceclear,
 }
 
 /* LIQUID GLASS FROM STYLES */
+.slider-button__nav,
+#draw-slider-confirm,
+#draw-slider-close,
 #sbgcui_settings-save, 
 #sbgcui_settings-close, 
 .sbgcui_button_reset.sbgcui_log-close,
@@ -232,6 +238,7 @@ button#sbgcui_forceclear,
 }
 
 /* CANCEL BUTTONS */
+#draw-slider-close,
 .cui-clear-cache-button,
 button#sbgcui_forceclear {
   background-color: color-mix(in srgb, var(--accent) 12%, transparent) !important;

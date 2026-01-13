@@ -33,7 +33,7 @@ body, input, select, button,
 
 /* BUTTONS */
 #discover,
-.i-buttons>button,
+.i-buttons button,
 .settings.popup button:not(.popup-close),
 .attack-slider-buttons>button,
 .draw-slider-buttons>button,
@@ -66,16 +66,8 @@ select {
   position: relative;
 }
 
-#discover {
-  width: 30% !important;
-}
-
-.pb-sub {
-  width: 60% !important;
-}
-
 #discover[disabled],
-.i-buttons>button[disabled],
+.i-buttons button[disabled],
 #draw[sbgcui-possible-lines="0"] { /* CUI Compatibility */
   filter: opacity(0.5) !important;
 }

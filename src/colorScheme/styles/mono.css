@@ -63,7 +63,7 @@
 }
 
 /* BUTTONS */
-.i-buttons>button,
+.i-buttons button,
 .settings.popup button:not(.popup-close),
 .attack-slider-buttons>button,
 .draw-slider-buttons>button,
@@ -297,7 +297,7 @@ option:checked { /* WTF? checked is non-documented??? */
   background-color: #777;
 }
 
-.discover-mod[data-wish="1"] {
+.discover-mod[data-wish="2"] {
   border-radius: var(--radius10) 0 0 var(--radius10) !important;
 }
 

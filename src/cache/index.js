@@ -28,22 +28,28 @@ export function Cache() {
 		}
     else if (config?.method === GET && resource.includes('/api/draw') && !resource.includes('&sbgcuiPossibleLinesCheck=')) {
       const enrichedResponse = response.clone().json().then(draw => {
-        const images = State.Get(STORE_NAMES.images) ?? []
-        if (!draw.data?.length) {
-          Logger.error('Неожиданный ответ сервера!', draw)
-        }
+        const images = State.Get(STORE_NAMES.images) ?? [] // TODO: 
+        // if (!draw.data?.length) { /* Теперь ванилла ходит сама */
+        //   Logger.error('Неожиданный ответ сервера!', draw)
+        // }
         for (let i = 0; i < draw.data.length; i++) {
           const point = draw.data[i]
           const key = `${SBG.GooglePhoto}${point.i}`
           const image = images.find(i => i.key === key)
           if (image) {
+            continue
+            // TODO: в ваниллу добавлена функция по получению адреса, пока отложим
+            /*
             point.i = null
             // from cache
             setTimeout(async () => {
               const slide = document.querySelector(`#refs-list>li.splide__slide[data-point="${point.p}"]`)
               //slide.querySelector('.refs-list__image').firstChild.style.backgroundImage = `url(${await getBlobUrl(image.value)})`
-              slide.querySelector('.refs-list__image').firstChild.style.backgroundImage = `url("${image.value}")`
+              if (slide) {
+                slide.querySelector('.refs-list__image').firstChild.style.backgroundImage = `url("${image.value}")`
+              }
             }, 0)
+            */
           }
           else {
             // cache image

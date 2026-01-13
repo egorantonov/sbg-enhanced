@@ -37,7 +37,7 @@ export default async function CompactView() {
       n.classList.add('compactview_icon')
     })
 
-    // Move all buttons after 'toggle-follow' button
+    // Move all buttons after 'toggle-follow-btn' button
     Nodes.ToggleFollow.after(Nodes.Settings)
     Nodes.ToggleFollow.after(Nodes.Leaderboard)
     Nodes.ToggleFollow.after(Nodes.Score)

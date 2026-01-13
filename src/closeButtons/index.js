@@ -11,13 +11,6 @@ export default async function BeautifyCloseButtons() {
   const closeButtons = Nodes.GetSelectorAll('button.popup-close, button#inventory__close')
   closeButtons.forEach((button) => beautifyButton(button))
 
-  Nodes.InfoPopupClose.addEventListener(Events.onClick, () => {
-    setTimeout(() => {
-      const pbSub = document.querySelector('div.popping-button div.pb-sub')
-      if (pbSub) pbSub.classList.remove(Modifiers.Hidden)
-    }, 100)
-  })
-
   /* CREDITS POPUP IS BEING FETCHED AS HTML */
   const creditsViewButton = Nodes.GetId('settings-credits')
   creditsViewButton?.addEventListener(
