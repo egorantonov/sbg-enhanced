@@ -4,8 +4,10 @@ import ApplyPolyfills from './polyfill'
 import { Debug } from './private'
 
 window.EUI = {
-  version: version
+	...window.EUI,
+  version
 }
+
 Debug && (Debug())
 
 ApplyPolyfills()

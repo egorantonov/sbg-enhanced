@@ -32,7 +32,8 @@ export function Cache() {
         // if (!draw.data?.length) { /* Теперь ванилла ходит сама */
         //   Logger.error('Неожиданный ответ сервера!', draw)
         // }
-        for (let i = 0; i < draw.data.length; i++) {
+        if (draw.error || !draw.data?.length) return draw
+        for (let i = 0; i < draw.data?.length; i++) {
           const point = draw.data[i]
           const key = `${SBG.GooglePhoto}${point.i}`
           const image = images.find(i => i.key === key)
@@ -169,7 +170,9 @@ export function CacheDrawImage(url, id) {
 
       const slide = document.querySelector(`#refs-list>li.splide__slide[data-point="${id}"]`)
       // slide.querySelector('.refs-list__image').firstChild.style.backgroundImage = `url("${await getBlobUrl(base64)}")`
-      slide.querySelector('.refs-list__image').firstChild.style.backgroundImage = `url("${base64}")`
+      if (slide) {
+        slide.querySelector('.refs-list__image').firstChild.style.backgroundImage = `url("${base64}")`
+      }
       Logger.log(`Закэшировано [${url}]`)
     }
 

@@ -98,11 +98,11 @@ body, input, select, button {
 }
 
 .layers-config__list input {
-  accent-color: var(--sbgcui-branding-color, --selection);
+  accent-color: var(--sbgcui-branding-color, var(--selection));
 }
 
 .layers-config__list input:checked {
-  filter: drop-shadow(0 0 6px var(--sbgcui-branding-color, --selection));
+  filter: drop-shadow(0 0 6px var(--sbgcui-branding-color, var(--selection)));
 }
 
 .layers-config__buttons button {
@@ -415,6 +415,7 @@ body, input, select, button {
 .inventory__controls button,
 .inventory__controls select,
 .inventory__controls input[type="search"],
+.inventory__sorter .popup-buttons button,
 .profile.popup button,
 #eui-console-execute,
 .discover-mod,
@@ -522,7 +523,8 @@ input[type="range"] {
   color: var(--accent);
 }
 
-.inventory__item-controls button {
+.inventory__item-controls button,
+button.inventory__ic-repair {
   background-color: var(--sbgcui-branding-color, var(--selection));
   border-style: solid;
   border-color: var(--sbgcui-branding-color, var(--selection));
@@ -536,7 +538,7 @@ input[type="range"] {
   color: var(--sbgcui-branding-color);
 }
 
-/* .inventory__ic-manage {
+.inventory__ic-manage {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
@@ -544,7 +546,11 @@ input[type="range"] {
 .inventory__ic-view {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-} */
+}
+
+.inventory__ic-repair {
+  border-radius: 5px;
+}
 
 .inventory__content {
   border-radius: 10px 10px 0 0;
@@ -706,10 +712,6 @@ input[type="range"] {
 
 #bottom button.fa::before {
   height: 35%;
-}
-
-.inventory__content[data-tab="3"] .inventory__item-controls::after {
-  background-color: var(--sbgcui-branding-color, var(--selection));
 }
 
 .cui-clear-cache-button, button#sbgcui_forceclear {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      26.1.5
+// @version      26.1.6
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -16,7 +16,7 @@
 	'use strict';
 
 	const LATEST_KNOWN_VERSION = '0.6.0' // override
-	const USERSCRIPT_VERSION = '26.1.5'
+	const USERSCRIPT_VERSION = '26.1.6'
 
 	const isFirefox = /firefox/i.test(window.navigator.userAgent)
 	if (isFirefox) {
@@ -249,8 +249,7 @@
 				pointBgImage: 0,
 				pointBtnsRtl: 0,
 				pointBgImageBlur: 1,
-				pointDischargeTimeout: 1,
-				speedometer: 0
+				pointDischargeTimeout: 1
 			},
 			pointHighlighting: {
 				inner: 'uniqc', // fav || ref || uniqc || uniqv || cores || highlevel || off
@@ -388,15 +387,15 @@
 
 		class Feature extends ol.Feature {
 			setStyle(style) {
-				if (style && playerFeature == undefined && style.length == 3 && style[0].image_?.iconImage_.src_.match(/\/assets\/player/)) {
+				if (style && playerFeature == undefined && style.length == 4 && style[0].image_?.iconImage_.src_.match(/\/assets\/player/)) {
 					let setCenter = style[1].getGeometry().setCenter;
 
 					style[1].getGeometry().setCenter = pos => {
 						setCenter.call(style[1].getGeometry(), pos);
-						style[3].getGeometry().setCenter(pos);
+						style[4].getGeometry().setCenter(pos);
 					};
 
-					style[3] = new ol.style.Style({
+					style[4] = new ol.style.Style({
 						geometry: new ol.geom.Circle(ol.proj.fromLonLat([0, 0]), 0),
 						stroke: new ol.style.Stroke({ color: '#CCCCCC33', width: 4 }),
 					});
@@ -584,6 +583,8 @@
 					return layersReplacements.join('');
 				case `const Catalysers`: // Line ~95
 					return `window.Catalysers`;
+				case `const Weapons`: // Line ~95
+					return `window.Weapons`;
 				case `const TeamColors`: // Line ~101
 					return `window.TeamColors`;
 				case `new ol.Feature({`: // Line ~161, 1891
@@ -631,8 +632,8 @@
 					return `${match}; manageControls();`;
 				case `function closeDrawSlider() {`: // Line ~1558
 					return `${match} window.closePopupDecorator(closePopup);`;
-				case `function makeEntry`: // Line ~1678
-					return `}{window.makeEntry = function`;
+				// case `function makeEntry`: // Line ~1678 // // удалено из замены скрипта
+				// 	return `}{window.makeEntry = function`;
 				case `view.calculateExtent(map.getSize()`: // Line ~1872, 1873
 					return `view.calculateExtent([map.getSize()[0], map.getSize()[1] + ${VIEW_PADDING}]`;
 				case `z: view.getZoom()`: // Line ~1874
@@ -655,6 +656,7 @@
 
 		const regexpReplacements = [
 			`(const Catalysers)`,
+			`(const Weapons)`,
 			`(const TeamColors)`,
 			`((new ol\\.Feature\\({(?=\\s+?geometry: new ol\\.geom\\.Point\\(mpos\\))))`,
 			`(constrainResolution: true)`,
@@ -676,7 +678,7 @@
 			`(function update\\(\\) {)`,
 			`(delete cooldowns\\[guid\\](?=\\s+?localStorage\\.setItem))`,
 			`(function closeDrawSlider\\(\\) {)`,
-			`(function makeEntry)`,
+			// `(function makeEntry)`,
 			`(view\\.calculateExtent\\(map\\.getSize\\(\\))`,
 			`(z: view\\.getZoom\\(\\))`,
 			`(function explodeRange\\(prop\\) {)`,
@@ -1400,6 +1402,33 @@
 			const viewportMeta = document.querySelector('meta[name="viewport"]');
 			const xpDiffSpan = document.querySelector('.xp-diff');
 			const zoomContainer = document.querySelector('.ol-zoom');
+
+			const styleOverrideData = `
+				.inventory__content[data-tab="3"] .inventory__item {
+					grid-template-columns: 1fr 8fr 2fr; /* revert to vanilla */
+					padding-right: unset; /* revert to vanilla */
+				}
+
+				.inventory__item-controls {
+					order: unset;
+				}
+
+				.inventory__item-left {
+					order: unset;
+				}
+
+				#i-stat__guard {
+					display: revert;
+				}
+			`
+
+			const style = document.createElement('style')
+			style.dataset.id = `sgbcui-style-override`
+			style.innerHTML = styleOverrideData
+			
+			setTimeout(() => {
+				document.head.appendChild(style)
+			}, 1000); 
 
 			let isInventoryPopupOpened = !inventoryPopup.classList.contains('hidden');
 			let isPointPopupOpened = !pointPopup.classList.contains('hidden');
@@ -2600,7 +2629,6 @@
       		  --sbgcui-point-image: '';
       		  --sbgcui-point-image-blur: ${ui.pointBgImageBlur ? 2 : 0}px;
       		  --sbgcui-point-btns-rtl: ${ui.pointBtnsRtl ? 'rtl' : 'ltr'};
-						--sbgcui-show-speedometer: ${ui.speedometer};
 						--sbgcui-branding-color: ${mapFilters.branding == 'custom' ? mapFilters.brandingColor : player.teamColor};
 						--team-${player.team}: var(--sbgcui-branding-color);
       		}
@@ -2931,7 +2959,7 @@
 				drawButton.appendChild(drawButtonTextWrapper);
 
 				popupCloseButtons.forEach(button => {
-					if (button.closest('.info, .inventory, .leaderboard, .notifs, .profile, .settings')) {
+					if (button.closest('.info, .inventory, .leaderboard, .notifs, .profile, .settings') && !button.closest('.inventory__sorter')) {
 						button.innerHTML = '';
 						button.classList.add('sbgcui_button_reset', 'fa', 'fa-solid-xmark');
 					}
@@ -3157,20 +3185,19 @@
 
 			/* Автовыбор */
 			{
+				/* добавлено в игру
 				// TODO: угадайка
-				if (LATEST_KNOWN_VERSION == gameVersion) {
+
 					attackSlider.addEventListener('attackSliderOpened', () => {
 						click(chooseCatalyser(config.autoSelect.attack));
 					});
-				}
+				
 
 				pointCores.addEventListener('click', event => {
 					if (event.target.classList.contains('selected')) {
 						const guid = event.target.dataset.guid;
 						const currentLvl = lastOpenedPoint.cores[guid].level;
-
-						// TODO: угадайка
-						if (LATEST_KNOWN_VERSION == gameVersion) lastOpenedPoint.selectCore(config.autoSelect.upgrade, currentLvl);
+						 lastOpenedPoint.selectCore(config.autoSelect.upgrade, currentLvl);
 					}
 				});
 
@@ -3213,22 +3240,21 @@
 					const selectedCoreGuid = lastOpenedPoint.selectedCoreGuid;
 					if (selectedCoreGuid != undefined) {
 						const selectedCoreLvl = lastOpenedPoint.cores[selectedCoreGuid].level;
-						// TODO: угадайка
-						if (LATEST_KNOWN_VERSION == gameVersion) lastOpenedPoint.selectCore(config.autoSelect.upgrade, selectedCoreLvl);
+						lastOpenedPoint.selectCore(config.autoSelect.upgrade, selectedCoreLvl);
 					} else {
-						// TODO: угадайка
-						if (LATEST_KNOWN_VERSION == gameVersion) lastOpenedPoint.selectCore(config.autoSelect.deploy);
+						lastOpenedPoint.selectCore(config.autoSelect.deploy);
 					}
-				});
+				}); */
 			}
 
 
 			/* Зарядка из инвентаря */
 			{
-				function makeEntryDecorator(originalMakeEntry) {
+				function makeEntryDecorator(originalMakeEntry) { /* Удалено из замены скрипта */
+					debugger
 					return function (e, data) {
 						if (data.te == player.team) {
-							e.style.setProperty('--sbgcui-energy', `${data.e}%`);
+							//e.style.setProperty('--sbgcui-energy', `${data.e}%`);
 							if (data.e < 100) {
 								//e.style.setProperty('--sbgcui-display-r-button', 'flex');
 								e.setAttribute('sbgcui-repairable', '');
@@ -3302,7 +3328,7 @@
 					//refEntry.style.setProperty('--sbgcui-display-r-button', 'none');
 				}
 
-				window.makeEntry = makeEntryDecorator(window.makeEntry);
+				// window.makeEntry = makeEntryDecorator(window.makeEntry); // удалено из замены скрипта
 
 				// inventoryContent.addEventListener('click', event => {
 				// 	if (!event.currentTarget.matches('.inventory__content[data-tab="3"]')) { return; }
@@ -3377,7 +3403,6 @@
 
 					html.style.setProperty('--sbgcui-point-btns-rtl', ui.pointBtnsRtl ? 'rtl' : 'ltr');
 					html.style.setProperty('--sbgcui-point-image-blur', ui.pointBgImageBlur ? '2px' : '0px');
-					html.style.setProperty('--sbgcui-show-speedometer', ui.speedometer);
 					html.style.setProperty('--sbgcui-branding-color', mapFilters.branding == 'custom' ? mapFilters.brandingColor : player.teamColor);
 					window.TeamColors[player.team].fill = () => `${mapFilters.branding == 'custom' ? mapFilters.brandingColor : hex326(player.teamColor)}80`;
 					window.TeamColors[player.team].stroke = () => mapFilters.branding == 'custom' ? hex623(mapFilters.brandingColor) : player.teamColor;
@@ -3617,13 +3642,12 @@
 					setStoredInputsValues();
 					tlContainer.appendChild(settingsMenu);
 
-					// TODO: угадайка
-					if (LATEST_KNOWN_VERSION != gameVersion) {
-						const autoSelects = Array.from(settingsMenu.querySelectorAll('select[name^="autoSelect"]'))
-						autoSelects.forEach(s => {
-							s.disabled = true
-							s.parentElement.children[0].innerHTML = `<b><i>Перенесено в настройки игры</i></b><br/>${s.parentElement.children[0].textContent}`
-						})
+					let autoSelect = settingsMenu.querySelector('select[name=autoSelect_attack]')
+					if (autoSelect) {
+						setTimeout(() => {
+							autoSelect.parentElement?.parentElement?.parentElement?.remove()
+							autoSelect = null
+						}, 1000);
 					}
 
 					function createToggleControl(tId, tTextContent, options = {}) {
@@ -4137,6 +4161,10 @@
 							favsList.classList.add('sbgcui_hidden');
 							isFavsListOpened = false;
 						}
+
+						if (event.target.closest('.notifs__entry-view.icon-button')) { // при нажатии из отбивок
+							dragPanInteraction.setActive(localStorage.getItem('follow') !== 'true')
+						}
 					});
 
 					toolbar.addItem(star, 2);
@@ -4286,7 +4314,8 @@
 							break;
 					}
 
-					if (isCompleteData) { refsElements.forEach(element => { window.makeEntry(element, pointsData[element.dataset.ref]); }); }
+					// удалено из замены скрипта
+					// if (isCompleteData) { refsElements.forEach(element => { window.makeEntry(element, pointsData[element.dataset.ref]); }); }
 
 					refsElements.sort(compare);
 					inventoryContent.replaceChildren(...refsElements);
@@ -4519,10 +4548,12 @@
 					const cache = JSON.parse(localStorage.getItem('inventory-cache')) || [];
 					const item = cache.find(e => e.g == activeSlide.dataset.guid);
 					const level = item.l;
-					const range = item.t == 2 ? window.Catalysers[level].range : item.t == 4 ? PLAYER_RANGE : 0;
+					const range = item.t == 2 
+						? window.Catalysers[level].range 
+						: window.Weapons[item.t].range
 
-					playerFeature.getStyle()[3].getGeometry().setRadius(toOLMeters(range));
-					playerFeature.getStyle()[3].getStroke().setColor(`${config.mapFilters.brandingColor}70`);
+					/*playerFeature.getStyle()[4].getGeometry().setRadius(toOLMeters(range));
+					playerFeature.getStyle()[4].getStroke().setColor(`${config.mapFilters.brandingColor}70`);*/ // vanilla
 					playerFeature.changed();
 
 					if (isFollow) { view.fitBlastRange(); }
@@ -4533,7 +4564,8 @@
 					const { beforeAttackZoom, blastRangeZoom } = view.getProperties();
 					onCloseZoom = currentZoom == blastRangeZoom ? beforeAttackZoom : currentZoom;
 
-					playerFeature.getStyle()[3].getGeometry().setRadius(0);
+					//playerFeature.getStyle()[4].getGeometry().setRadius(0); // vanilla
+					playerFeature.getStyle()[3].getGeometry().setRadius(0)
 					playerFeature.changed();
 
 					if (isFollow) { resetView(); }
@@ -4594,25 +4626,12 @@
 				//redraw();
 			}
 
-
-			/* Показ скорости */
 			{
-				const geolocation = new ol.Geolocation({
-					projection: view.getProjection(),
-					tracking: true,
-					trackingOptions: { enableHighAccuracy: true },
-				});
-				const speedSpan = document.createElement('span');
-
-				speedSpan.classList.add('sbgcui_speed');
-				document.querySelector('.self-info').appendChild(speedSpan);
-
-				geolocation.on('change:speed', () => {
-					const speed_mps = geolocation.getSpeed() || 0;
-					speedSpan.innerText = (speed_mps * 3.6).toFixed(0) + ' km/h';
-				});
+				setTimeout(() => {
+					const speed = document.getElementById('ui_speedometer')
+					if (speed) speed.parentElement.remove()
+				}, 1000)
 			}
-
 
 			/* Выбор точки из кластера */
 			{
@@ -5280,6 +5299,7 @@
 
 			/* Дата захвата точки */
 			{
+				/*
 				function updateCaptureDate(event) {
 					const { captureDate, guardDays, guid } = event.detail;
 
@@ -5306,6 +5326,7 @@
 				pointPopup.addEventListener('pointPopupOpened', () => { timeoutSpan.innerText = '~'; });
 				window.addEventListener('pointCaptureDateFound', updateCaptureDate);
 				window.addEventListener('pointCaptured', updateCaptureDate);
+				*/
 			}
 
 
@@ -5518,13 +5539,13 @@
 					}
 				}
 
-				const playerArrow = playerFeature.getStyle()[0].getImage();
+				const playerArrow = playerFeature?.getStyle()[0]?.getImage();
 				let playerArrowRotationDeg = 0;
 
 				if (DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
 					document.body.addEventListener('click', () => { DeviceOrientationEvent.requestPermission(); }, { once: true });
 
-					window.addEventListener('deviceorientation', rotateArrow);
+					if (playerArrow) window.addEventListener('deviceorientation', rotateArrow);
 				}
 			}
 
