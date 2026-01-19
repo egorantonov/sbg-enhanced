@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      26.1.6
+// @version      26.1.7
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -16,7 +16,7 @@
 	'use strict';
 
 	const LATEST_KNOWN_VERSION = '0.6.0' // override
-	const USERSCRIPT_VERSION = '26.1.6'
+	const USERSCRIPT_VERSION = '26.1.7'
 
 	const isFirefox = /firefox/i.test(window.navigator.userAgent)
 	if (isFirefox) {
@@ -1374,8 +1374,6 @@
 			const iStat = document.querySelector('.info.popup .i-stat');
 			iStat.style.display = 'flex'
 			const iButtons = iStat.querySelector('.i-buttons')
-			iButtons.style.display = 'flex'
-			iButtons.style.flexDirection = 'column'
 			const linesOutSpan = document.querySelector('#i-stat__line-out');
 			const pointCores = document.querySelector('.i-stat__cores');
 			const pointEnergyValue = document.createElement('span');
@@ -1419,6 +1417,35 @@
 
 				#i-stat__guard {
 					display: revert;
+				}
+
+				.i-buttons {
+					display: grid;
+					grid-template: 
+						'L R D'
+						'H H H' / 1fr 1fr 1fr;
+				}
+
+				.i-buttons.mirrored {
+					grid-template: 
+						'D R L'
+						'H H H' / 1fr 1fr 1fr;
+				}
+
+				.discover {
+    			order: 1;
+				}
+
+				#draw {
+					grid-area: L;
+				}
+
+				#repair {
+					grid-area: R;
+				}
+
+				#draw, #repair {
+					max-width: 130px;
 				}
 			`
 
