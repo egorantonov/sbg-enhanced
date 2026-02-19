@@ -1,4 +1,4 @@
-import { ClientData, CUI, EUI, Elements, Events, GetLocale, IsPrivate, Modifiers, Nodes, Proposed, SBG, Themes, t, Translations as i18n } from '../constants'
+import { ClientData, CUI, EUI, Elements, Events, GetLocale, Modifiers, Nodes, Proposed, SBG, Themes, t, Translations as i18n } from '../constants'
 import monoStyles from './styles/mono.min.css'
 import ingressStyles from './styles/ingress.min.css'
 import primeStyles from './styles/prime.min.css'
@@ -219,7 +219,7 @@ export default function AddColorScheme() {
 	const cuiRefsOnMap = Nodes.GetSelector('button.sbgcui_show_viewer')
 	if (cuiRefsOnMap) {
 		cuiRefsOnMap.innerText = '🌍'
-		cuiRefsOnMap.style.minWidth = '40px'
+		cuiRefsOnMap.style.minWidth = '45px'
 	}
 	
 	const cuiSortOrder = document.querySelector('button.sbgcui_refs-sort-button')

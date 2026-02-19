@@ -434,6 +434,10 @@ input[type='range']::-webkit-slider-thumb {
   color: var(--i-btn-color);
 }
 
+.inventory__sorter .popup-buttons button {
+  color: var(--text) !important;
+}
+
 #settings-telegram>span {
   color: var(--text) !important;
 }

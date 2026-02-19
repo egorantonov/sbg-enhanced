@@ -1140,24 +1140,29 @@ input[type="range"][name^="mapFilters_"]::after {
   font-weight: bolder;
 }
 
-.inventory__sorter input[type="radio"] {
+.inventory__sorter input[type="radio"]:checked {
   accent-color: var(--sbgcui-branding-color, var(--selection));
+  filter: drop-shadow(0 0 6px var(--sbgcui-branding-color, var(--selection)));
 }
 
-input[type="checkbox"][name="t"][value="0"] {
+input[type="checkbox"][name="t"][value="0"]:checked:not(:disabled) {
   accent-color: var(--team-0);
+  filter: drop-shadow(0 0 6px var(--team-0));
 }
 
-input[type="checkbox"][name="t"][value="1"] {
+input[type="checkbox"][name="t"][value="1"]:checked:not(:disabled) {
   accent-color: var(--team-1);
+  filter: drop-shadow(0 0 6px var(--team-1));
 }
 
-input[type="checkbox"][name="t"][value="2"] {
+input[type="checkbox"][name="t"][value="2"]:checked:not(:disabled) {
   accent-color: var(--team-2);
+  filter: drop-shadow(0 0 6px var(--team-2));
 }
 
-input[type="checkbox"][name="t"][value="3"] {
+input[type="checkbox"][name="t"][value="3"]:checked:not(:disabled) {
   accent-color: var(--team-3);
+  filter: drop-shadow(0 0 6px var(--team-3));
 }
 
 /* Animation */

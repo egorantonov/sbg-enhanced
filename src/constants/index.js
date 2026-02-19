@@ -15,7 +15,7 @@ export const Backend = {
 export const SBG = {
   OutboundLinksLimit: 30,
   DefaultCloseButtonText: '[x]',
-  CompatibleVersion: '0.5.3',
+  CompatibleVersion: '0.6.0',
   Settings: 'settings',
   DefaultLang: 'en',
   GooglePhoto: 'https://lh3.googleusercontent.com/',

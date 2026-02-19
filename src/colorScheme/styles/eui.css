@@ -583,6 +583,54 @@ button.inventory__ic-repair {
   color: var(--sbgcui-branding-color, var(--selection));
 }
 
+.inventory__sorter {
+  justify-content: flex-end;
+  backdrop-filter: blur(10px);
+}
+
+.inventory__sorter .popup-buttons {
+  margin: 10px 0 0;
+  border-radius: var(--radius10);
+  overflow: hidden;
+  gap: 0.1em;
+}
+
+.inventory__sorter .popup-buttons button {
+  min-height: 45px;
+}
+
+.inventory__sorter fieldset {
+  border-radius: var(--radius10);
+  gap: 10px;
+}
+
+.inventory__sorter fieldset legend {
+  margin: 0 auto;
+}
+
+.inventory__sorter fieldset label {
+  padding: 10px 0 10px 10px;
+  background-color: #7773;
+  border-radius: var(--radius5);
+  border: 1px solid var(--border-transp);
+}
+
+.inventory__sorter fieldset label input {
+  margin: 0 6px 0 0;
+}
+
+.inventory__sorter fieldset label span[data-i18n="inventory.sorter.direction.asc"]::before {
+  content: '↗ ';
+}
+
+.inventory__sorter fieldset label span[data-i18n="inventory.sorter.direction.desc"]::before {
+  content: '↘ '
+}
+
+.team-g, .team-b, .team-r, .team-n {
+  font-weight: bold;
+}
+
 /* SETTINGS */
 .settings-section__item input[type="checkbox"],
 .sbgcui_settings input[type="checkbox"] { /* CUI compatibility */
