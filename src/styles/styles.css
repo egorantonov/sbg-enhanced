@@ -754,7 +754,7 @@ input[data-type="reference-search"] {
 }
 
 .bottom-container>button#notifs-menu {
-  margin: initial;
+  margin: 0 0 0 auto;
 }
 
 .compactview_icon {

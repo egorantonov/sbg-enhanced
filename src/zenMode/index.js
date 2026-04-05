@@ -1,8 +1,9 @@
-import { Modifiers, Nodes } from '../constants'
+import { Modifiers, Nodes, SVP } from '../constants'
 import { LongTouchEventListener } from '../helpers'
 import { createToast } from '../utils'
 
 export default function ZenMode() {
+  if (SVP.Detected()) return
   const attackButton = Nodes.GetId('attack-menu')
   const zenClassName = 'zen'
   attackButton && LongTouchEventListener(attackButton, () => {

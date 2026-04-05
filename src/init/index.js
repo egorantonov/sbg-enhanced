@@ -20,7 +20,7 @@ import InitObservers from '../observers'
 import { Private } from '../private'
 import { Progress, UpdateProgressStatus, RemoveProgress } from '../progress'
 import { RepairButton } from '../repairButton'
-import { showToast, Logger } from '../utils'
+import { showToast, Logger, getNativeFetch } from '../utils'
 import SpeedoMeter from '../speedometer'
 import styles from './styles.min.css'
 import ZenMode from '../zenMode'
@@ -229,14 +229,14 @@ export async function RunWithOnlineUpdate() {
   const timeout = 10000
   let onlineInUse = Nodes.GetId(EUI.Id) || IsWebView() /* APK */
 
-  if (!onlineInUse && window.fetch) {
+  if (!onlineInUse) {
     try {
       UpdateProgressStatus(t(Translations.githubCheckingUpdates))
       await Sleep(0) // reset execution queue
       if (CUI.Detected() && CUI.Initializing()) {
         await Sleep(1000) // waiting for 'loading'
       }
-      await fetch(releaseUrl, { signal: AbortSignal.timeout(timeout) })
+      await getNativeFetch()(releaseUrl, { signal: AbortSignal.timeout(timeout) })
       .then(r => r.json())
       .then(x => processResponse(x))
     }

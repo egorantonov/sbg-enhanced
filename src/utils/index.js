@@ -43,7 +43,7 @@ window.EUI = {
  * @returns Browser's native fetch()
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getNativeFetch() {
+export function getNativeFetch() {
 	if (!window._nativeFetch) {
 		const iframe = document.createElement('iframe')
 

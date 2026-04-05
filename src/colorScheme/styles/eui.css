@@ -175,6 +175,9 @@ body, input, select, button {
   background-color: var(--sbgcui-branding-color, var(--selection));
   border: none;
   transition: background-color 0.25s linear;
+  position: unset;
+  width: unset;
+  height: unset;
 }
 
 #deploy:disabled {
@@ -834,6 +837,19 @@ button#sbgcui_settings-close {
 .sbgcui_discharge_timeout {
   font-size: 14px;
   width: 100%;
+}
+
+/* SVP Compatibility */
+.info.popup .i-buttons .svp-next-point-button {
+  border: none;
+  border-radius: var(--radius5);
+  color: var(--text);
+  background-color: var(--selection);
+  bottom: 50%;
+}
+
+.info.popup .i-buttons .svp-next-point-button[disabled] {
+  display: none;
 }
 
 /* DRAW & REPAIR BUTTONS */

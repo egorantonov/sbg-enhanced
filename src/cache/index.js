@@ -2,7 +2,7 @@ import { ButtonSettingsItem } from '../components/settingsItem'
 import { CUI, Elements, EUI, Events, Modifiers, Nodes, SBG, t, Translations as i18n } from '../constants'
 import { AddEntry, ClearStore, GetEntry, StoreInfo, STORE_NAMES, IndexedDb } from '../db'
 import { State } from '../state'
-import { Logger, showToast } from '../utils'
+import { getNativeFetch, Logger, showToast } from '../utils'
 
 const currentImage = 'currentImage'
 const GET = 'get'
@@ -215,7 +215,7 @@ function cacheImage(element, url, id) {
   GetEntry(STORE_NAMES.images, url, successCallback)
 }
 
-const toBase64 = url => fetch(url)
+const toBase64 = url => getNativeFetch()(url)
   .then(response => response.blob())
   .then(blob => new Promise((resolve, reject) => {
     const reader = new FileReader()

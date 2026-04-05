@@ -207,7 +207,8 @@
 .cui-clear-cache-button,
 button#sbgcui_forceclear,
 .sbgcui_button_reset.sbgcui_log-close,
-.sbgcui_log-buttons>button 
+.sbgcui_log-buttons>button,
+.svp-settings-panel.svp-open button
 {
   border: 1px solid rgba(255, 255, 255, .2) !important;
   border-radius: 100px;

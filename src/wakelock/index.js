@@ -1,12 +1,12 @@
 
-import { EUI, Events, t, Translations } from '../constants'
+import { EUI, Events, SVP, t, Translations } from '../constants'
 import { ToggleSettingsItem } from '../components/settingsItem'
 import { Logger } from '../utils'
 
 const noSupport = 'Wake Lock API не поддерживается'
 
 export default async function EUIWakeLock() {
-
+  if (SVP.Detected()) return
   if (!('wakeLock' in navigator)) {
     Logger.log(noSupport)
     return

@@ -1,5 +1,5 @@
 import { ToggleSettingsItem } from '../components/settingsItem'
-import { EUI, Elements, Nodes, t, Translations } from '../constants'
+import { EUI, Elements, Nodes, t, Translations, CUI } from '../constants'
 import { Logger } from '../utils'
 
 export default function SpeedoMeter() {
@@ -41,6 +41,9 @@ export default function SpeedoMeter() {
   const selfInfo = Nodes.GetSelector('.self-info')
   selfInfo.appendChild(speedometer)
   const CUISpeed = Nodes.GetSelector('.sbgcui_speed')
+  if (!CUI.Detected()) {
+    speedometer.style.top = '48px'
+  }
 
   // actions
   const watchSpeed = (pos1) => {

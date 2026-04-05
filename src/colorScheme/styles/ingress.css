@@ -218,7 +218,7 @@ select[data-setting='theme']:disabled {
   box-shadow: inset 0px 0px 6px 3px var(--i-btn-hl-glow-color) !important;
 }
 
-#eui-hide, #ops {
+#eui-hide, .bottom-container #ops {
   min-height: 64px;
 }
 

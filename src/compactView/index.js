@@ -1,13 +1,14 @@
 import { ToggleSettingsItem } from '../components/settingsItem'
-import { EUI, Nodes, Sleep, Translations, t } from '../constants'
+import { EUI, SVP, Nodes, Sleep, Translations, t } from '../constants'
 import { LongTouchEventListener } from '../helpers'
 
 export default async function CompactView() {
+  if (SVP.Detected()) return
 
   if (localStorage.getItem(EUI.CompactView) != 0) localStorage.setItem(EUI.CompactView, 1)
   const checked = localStorage.getItem(EUI.CompactView) == 1
 
-      // CREATE SETTING
+  // CREATE SETTING
   const uiSettings = Nodes.SettingSections.at(0)
 
   const callback = (value) => {

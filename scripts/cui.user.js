@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      26.1.7
+// @version      26.4.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -16,7 +16,7 @@
 	'use strict';
 
 	const LATEST_KNOWN_VERSION = '0.6.0' // override
-	const USERSCRIPT_VERSION = '26.1.7'
+	const USERSCRIPT_VERSION = '26.4.1'
 
 	const isFirefox = /firefox/i.test(window.navigator.userAgent)
 	if (isFirefox) {
@@ -1593,6 +1593,24 @@
 				return parsedResponse;
 			}
 
+			/**
+			 * Принудительная очистка кэша рессурсов скрипта
+			 * @param {boolean} force 
+			 */
+			const clearWebResCache = (force = false) => {
+				for (var key in localStorage){
+					if (key.startsWith(CUI_WEB_RES_CACHE_v) && (!key.includes(USERSCRIPT_VERSION) || force)) {
+						console.log(`Удалён старый кэш: ${key}`)
+						localStorage.removeItem(key)
+					}
+				}
+			}
+
+			/**
+			 * Получение ассетов скрипта из кэша или сайта
+			 * @param {string} filename 
+			 * @returns Элемент для вставки
+			 */
 			async function getHTMLasset(filename) {
 
 				const cached_filename = `${CUI_WEB_RES_CACHE_v}${USERSCRIPT_VERSION}_${filename}`
@@ -1611,12 +1629,7 @@
 				}
 
 				setTimeout(() => { // clear old versions cache
-					for (var key in localStorage){
-						if (key.startsWith(CUI_WEB_RES_CACHE_v) && !key.includes(USERSCRIPT_VERSION)) {
-							console.log(`Удалён старый кэш: ${key}`)
-							localStorage.removeItem(key)
-						}
-					}
+					clearWebResCache()
 				}, 10 * 1e3);
 
 				const parser = new DOMParser();
@@ -3213,12 +3226,10 @@
 			/* Автовыбор */
 			{
 				/* добавлено в игру
-				// TODO: угадайка
 
 					attackSlider.addEventListener('attackSliderOpened', () => {
 						click(chooseCatalyser(config.autoSelect.attack));
 					});
-				
 
 				pointCores.addEventListener('click', event => {
 					if (event.target.classList.contains('selected')) {
@@ -3677,6 +3688,13 @@
 						}, 1000);
 					}
 
+					/**
+					 * Функция создания переключателя в настройках скрипта
+					 * @param {string} tId 
+					 * @param {string} tTextContent 
+					 * @param {Object} options 
+					 * @returns input[type=checkbox]
+					 */
 					function createToggleControl(tId, tTextContent, options = {}) {
 						const { tValue, tDisabled, tCallback } = options
 
@@ -3708,6 +3726,39 @@
 						return tControl
 					}
 
+					/**
+					 * Функция создания кнопки в настройках скрипта
+					 * @param {string} tId 
+					 * @param {string} tTextContent 
+					 * @param {Object} options 
+					 * @returns button
+					 */
+					function createButtonControl(tId, tTextContent, options = {}) {
+						const { tValue, tDisabled, tCallback, tClassName } = options
+
+						const tControl = document.createElement('div')
+						tControl.classList.add('sbgcui_settings-input_wrp')
+						tControl.style.cssText = `margin-bottom: 15px;`
+
+						const tInput = document.createElement('button')
+						tInput.id = tId
+						tInput.name = tId
+						tInput.type = 'button'
+						tInput.textContent = tValue ?? '[No value]'
+						tInput.disabled = tDisabled ? true : false						
+						if (tClassName) tInput.classList.add(tClassName)
+						if (tCallback) {
+							tInput.addEventListener('click', () => tCallback() )
+						}
+						tControl.appendChild(tInput)
+						const tLabel = document.createElement('label')
+						tLabel.htmlFor = tId
+						tLabel.innerHTML = tTextContent
+						tControl.appendChild(tLabel)
+
+						return tControl
+					}
+
 					// Дополнительные контролы
 					const uiDetails = document.querySelectorAll('details.sbgcui_settings-section')[5] // Раздел "Интерфейс"
 					if (uiDetails) {
@@ -3719,6 +3770,17 @@
 						}
 					}
 
+					const firstSection = document.querySelector('details.sbgcui_settings-section')
+					if (firstSection) {
+						const tCallback = () => {
+							clearWebResCache(true)
+							if (confirm('Перезагрузить для применения?')) location.reload()
+						}
+					const cacheTime = JSON.parse(localStorage.getItem(`${CUI_WEB_RES_CACHE_v}${USERSCRIPT_VERSION}_constants`) ?? '{timestamp: 0}')?.timestamp ?? 0
+					const tTextContent = `Кэш ассетов скрипта<br>от ${new Date(cacheTime).toLocaleString()}`
+						const clearWebResCacheControl = createButtonControl('sbgcui_settings-clear_cache', tTextContent, { tValue: 'Очистить', tCallback, tClassName: 'cui-clear-cache-button' })
+						firstSection.before(clearWebResCacheControl)
+					}
 				}
 				catch (error) {
 					console.log('SBG CUI: Ошибка при создании меню настроек.', error);

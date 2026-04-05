@@ -193,11 +193,15 @@ export const IsPrivate = () => document.getElementById('self-info__name').innerT
 export const IsWebView = () => window.navigator.userAgent.toLowerCase().includes('wv')
 const cuiElements = () => window.document.querySelectorAll('*[class^="sbgcui"]')
 const lastElement = () => window.document.querySelector('.sbgcui_inventory__ma-shortcuts')
+const svpElements = () => window.document.querySelectorAll('*[class^="svp-"]')
 export const CUI = {
   Detected: () => window.cuiStatus || window.TeamColors || window.Catalysers || window.attack_slider || window.deploy_slider || window.draw_slider || window.requestEntities || window.cl || window.onerror || cuiElements()?.length, // || getSbgSettings()?.base // нестабильно, тк остаётся в localStorage
   Initializing: () => window.cuiStatus == 'initializing',
   Loaded: () => window.cuiStatus == 'loaded',// || window.TeamColors && window.Catalysers && window.attack_slider && window.deploy_slider && window.draw_slider && window.requestEntities && cuiElements()?.length && lastElement() && !document.querySelector('button.ol-rotate-reset'),
   Error: () => window.cuiStatus == 'error'
+}
+export const SVP = {
+  Detected: () => svpElements()?.length
 }
 
 /**

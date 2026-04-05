@@ -126,7 +126,7 @@ option:checked { /* WTF? checked is non-documented??? */
   font-family: 'Manrope',sans-serif;
 }
 
-#eui-hide, #ops {
+#eui-hide, .bottom-container #ops {
   color: var(--i-btn-color) !important;
   border-radius: 0;
   border: none;
