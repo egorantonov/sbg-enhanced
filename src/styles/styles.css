@@ -723,8 +723,16 @@ input[type='range']::-moz-range-thumb {
   padding: 3px 6px;
 } */
 
+.inventory__item-controls {
+  display: block !important;
+}
+
 .inventory__content[data-tab="3"] .inventory__item-left {
   border-left: none;
+}
+
+.inventory__content[data-tab="3"] .inventory__item-left::before {
+  width: var(--energy) !important;
 }
 
 ul.inventory__ref-actions.popover {

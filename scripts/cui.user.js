@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      26.4.1
+// @version      26.4.2
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -15,8 +15,8 @@
 (async function () {
 	'use strict';
 
-	const LATEST_KNOWN_VERSION = '0.6.0' // override
-	const USERSCRIPT_VERSION = '26.4.1'
+	const LATEST_KNOWN_VERSION = '0.6.1' // override
+	const USERSCRIPT_VERSION = '26.4.2'
 
 	const isFirefox = /firefox/i.test(window.navigator.userAgent)
 	if (isFirefox) {
@@ -3102,7 +3102,7 @@
 			/* Доработка карты */
 			{
 				let attributionControl, rotateControl;
-				var dragPanInteraction, doubleClickZoomInteraction, pinchRotateInteraction;
+				var dragPanInteraction, /*doubleClickZoomInteraction,*/ pinchRotateInteraction;
 				var toolbar = new Toolbar('MainToolbar');
 				const controls = map.getControls();
 				const interactions = map.getInteractions();
@@ -3112,9 +3112,9 @@
 						case ol.interaction.DragPan:
 							dragPanInteraction = interaction;
 							break;
-						case ol.interaction.DoubleClickZoom:
+						/*case ol.interaction.DoubleClickZoom:
 							doubleClickZoomInteraction = interaction;
-							break;
+							break;*/
 						case ol.interaction.PinchRotate:
 							pinchRotateInteraction = interaction;
 							break;
@@ -3122,7 +3122,7 @@
 				});
 
 				dragPanInteraction.setActive(!toggleFollowInput.checked);
-				doubleClickZoomInteraction.setActive(Boolean(config.ui.doubleClickZoom));
+				// doubleClickZoomInteraction.setActive(Boolean(config.ui.doubleClickZoom));
 
 				controls.forEach(control => {
 					switch (control.constructor) {
@@ -3445,7 +3445,7 @@
 					window.TeamColors[player.team].fill = () => `${mapFilters.branding == 'custom' ? mapFilters.brandingColor : hex326(player.teamColor)}80`;
 					window.TeamColors[player.team].stroke = () => mapFilters.branding == 'custom' ? hex623(mapFilters.brandingColor) : player.teamColor;
 
-					doubleClickZoomInteraction.setActive(Boolean(ui.doubleClickZoom));
+					// doubleClickZoomInteraction.setActive(Boolean(ui.doubleClickZoom));
 
 					if (config.tinting.map && !isPointPopupOpened && !isProfilePopupOpened) { addTinting('map'); }
 
@@ -4002,6 +4002,7 @@
 					reloadButton.classList.add('fa', 'fa-solid-rotate');
 					reloadButton.addEventListener('click', _ => { window.location.reload(); });
 					gameMenu.appendChild(reloadButton);
+					document.getElementById('reload').remove()
 				}
 			}
 
