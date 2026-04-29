@@ -17,10 +17,14 @@ export function Cache() {
 
 		if (config?.method === GET && resource.includes('/api/point') && (!resource.includes('status=1'))) {
       const enrichedResponse = response.clone().json().then(point => {
-				const url = `${SBG.GooglePhoto}${point.data.i}`
+        const imageId = point.data.i
+				const url = `${SBG.GooglePhoto}${imageId}`
 				State.Set(currentImage, '')
 				CacheImage(url, point.data.g)
 				point.data.i = null
+        setTimeout(() => {
+          point.data.i = imageId // в ванилле используется та же функция getPointImage, обходим через таймаут, чтобы в navi-floater отображалось
+        }, 100)
 				return point
 			})
 

@@ -1,6 +1,6 @@
 import { ToggleSettingsItem } from '../components/settingsItem'
 import { EUI, SVP, Nodes, Sleep, Translations, t } from '../constants'
-import { LongTouchEventListener } from '../helpers'
+import { LongTouchEventListener, GetSection, Sections } from '../helpers'
 
 export default async function CompactView() {
   if (SVP.Detected()) return
@@ -9,7 +9,7 @@ export default async function CompactView() {
   const checked = localStorage.getItem(EUI.CompactView) == 1
 
   // CREATE SETTING
-  const uiSettings = Nodes.SettingSections.at(0)
+  const uiSettings = GetSection(Sections.Interface)
 
   const callback = (value) => {
     localStorage.setItem(EUI.CompactView, value)
@@ -23,7 +23,7 @@ export default async function CompactView() {
 
   if (uiSettings) {
     const compactViewItem = ToggleSettingsItem(t(Translations.compactView), Enable, Disable, EUI.CompactView, { once: true, subTitle: t(Translations.compactViewDesc) })
-    uiSettings.appendChild(compactViewItem)
+    uiSettings.firstElementChild.after(compactViewItem)
   }
 
   if (checked && Nodes.Settings) {

@@ -1,5 +1,6 @@
 import { EUI } from '../constants'
 import { ButtonSettingsItem } from '../components/settingsItem'
+import { GetSection, Sections } from '../helpers'
 
 export function EuiConsole () {
   const hidden = 'hidden'
@@ -88,7 +89,7 @@ export function EuiConsole () {
   })
   consolePopup.appendChild(closeButton)
 
-  const about = Array.from(document.querySelectorAll('.settings-section')).at(3)
+  const about = GetSection(Sections.About)
   if (about) {
     const callback = () => consolePopup.classList.toggle(hidden)
     setTimeout(() => about.appendChild(ButtonSettingsItem('Debug Console', 'Open', callback, `${EUI.Console}-control`, { subTitle: 'Execute your own code, use with caution' })), 1000)

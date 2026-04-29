@@ -89,6 +89,11 @@ select {
   font-weight: bold;
 }
 
+#magic-deploy-btn, #i-navigate {
+  background-color: var(--i-bg-color-cc) !important;
+  color: var(--i-color) !important;
+}
+
 button.inventory__ic-view,
 button.inventory__ic-manage {
   backdrop-filter: none!important;

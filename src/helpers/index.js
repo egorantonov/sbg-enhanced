@@ -1,4 +1,4 @@
-import { Events, EUI, SBG } from '../constants'
+import { Events, EUI, SBG, Nodes } from '../constants'
 
 export function LongTouchEventListener(target, callback, delay = 1500) {
   if (!target || !callback) {
@@ -34,4 +34,21 @@ export function flavored_fetch(input, options={}) {
 		options.headers[SBG.Headers.FLAVOR] = flavors.join(' ')
 	}
 	return fetch(input,options)
+}
+
+/**
+ * Returns section by its i18n short name: settings.${name}.header
+ * @param {string} name 
+ */
+export function GetSection(name) {
+  return Nodes.GetSelector(`h4[data-i18n^="settings.${name}"]`)?.parentElement
+}
+
+export const Sections = {
+  Global: 'global',
+  Interface: 'interface',
+  Automation: 'automation',
+  Privacy: 'privacy',
+  Account: 'account',
+  About: 'about'
 }

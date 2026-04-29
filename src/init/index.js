@@ -25,7 +25,7 @@ import SpeedoMeter from '../speedometer'
 import styles from './styles.min.css'
 import ZenMode from '../zenMode'
 import EUIWakeLock from '../wakelock'
-import Vibes from '../vibes'
+// import Vibes from '../vibes'
 import LiquidGlass from '../liquidGlass'
 // import Battery from '../battery'
 
@@ -106,7 +106,7 @@ async function ExecuteAsyncFeatures() {
     ExecuteAsyncFeature(CompactView, 'CompactView'),
     ExecuteAsyncFeature(Compatibility, 'Compatibility'),
     ExecuteAsyncFeature(Actions, 'Actions'),
-    ExecuteAsyncFeature(Vibes, 'Vibes')
+    //ExecuteAsyncFeature(Vibes, 'Vibes')
   ])
 
   Private && (result.push(await ExecuteAsyncFeature(Private, 'Debug')))

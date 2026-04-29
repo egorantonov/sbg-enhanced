@@ -1,7 +1,7 @@
 import { Backend, EUI, IsWebView, Nodes, SBG, Translations as i18n, t } from '../constants'
 import { InfoSettingsItem, ButtonSettingsItem } from '../components/settingsItem'
 import { Logger, showToast } from '../utils'
-import { flavored_fetch } from '../helpers'
+import { flavored_fetch, GetSection, Sections } from '../helpers'
 
 export default async function Informer() {
     Logger.log(`SBG Enhanced UI, version ${EUI.Version}`)
@@ -25,60 +25,10 @@ export default async function Informer() {
     })
     .then(json => localStorage.setItem(EUI.Team, json.t ?? 0))
 
-    const about = Nodes.SettingSections.at(3)
+    const about = GetSection(Sections.About)
     if (about) {
         const euiVersionInfo = InfoSettingsItem(t(i18n.enhancedUIVersion), `v${EUI.Version}`, 'eui-version')
         about.appendChild(euiVersionInfo)
-
-        const donateCallback = async () => {
-  
-          let amount = +prompt(t(i18n.donateDialogue), 200)
-          if (!amount || amount < 0) {
-              showToast('Введено некорректное значение!')
-              return
-          }
-  
-          const userName = Nodes.GetId('self-info__name').innerText
-          setTimeout(() => {
-              fetch(`${Backend.Host}${Backend.Endpoints.Donate}?amount=${amount}&userName=${userName}`)
-          }, 100)
-          await fetch(Backend.DonationService.replace('{amount}', amount))
-              .then(r => r.json())
-              .then(json => {
-                  if (json && json.formUrl && json.formUrl.includes('https')) {
-                      if (IsWebView()) {
-                          if (window['__sbg_share']['open'](json.formUrl) === false) {
-                              const share = {
-                                  title: 'Ссылка на донат',
-                                  url: json.formUrl,
-                              }
-                              if ('share' in navigator) {
-                                  navigator.share(share).then(...args => {
-                                      console.log(args)
-                                      showToast('Ссылка скопирована!')
-                                  })
-                              }
-                              else {
-                                  navigator.clipboard.writeText(json.formUrl)
-                                      .then(() => {
-                                          showToast('Ссылка скопирована!')
-                                      })
-                              }
-                          }
-                      }
-                      else {
-                          location.assign(json.formUrl)
-                      }
-                  }
-              })
-              .catch(err => {
-                  Logger.error(err.message, err)
-                  showToast(t(i18n.donateError))
-              })
-        }
-
-        const donateButtonItem = ButtonSettingsItem(t(i18n.donations), t(i18n.donate), donateCallback, EUI.Donate, { subTitle: t(i18n.donationsDesc) })
-        euiVersionInfo.after(donateButtonItem)
 
         const connection = navigator.connection
         if (connection) {
@@ -100,5 +50,57 @@ export default async function Informer() {
 
             localStorage.removeItem(EUI.Connection)
         }
+    }
+
+    const account = GetSection(Sections.Account)
+    if (account) {
+        const donateCallback = async () => {
+            let amount = +prompt(t(i18n.donateDialogue), 200)
+            if (!amount || amount < 0) {
+                showToast('Введено некорректное значение!')
+                return
+            }
+
+            const userName = Nodes.GetId('self-info__name').innerText
+            setTimeout(() => {
+                fetch(`${Backend.Host}${Backend.Endpoints.Donate}?amount=${amount}&userName=${userName}`)
+            }, 100)
+            await fetch(Backend.DonationService.replace('{amount}', amount))
+                .then(r => r.json())
+                .then(json => {
+                    if (json && json.formUrl && json.formUrl.includes('https')) {
+                        if (IsWebView()) {
+                            if (window['__sbg_share']['open'](json.formUrl) === false) {
+                                const share = {
+                                    title: 'Ссылка на донат',
+                                    url: json.formUrl,
+                                }
+                                if ('share' in navigator) {
+                                    navigator.share(share).then(...args => {
+                                        console.log(args)
+                                        showToast('Ссылка скопирована!')
+                                    })
+                                }
+                                else {
+                                    navigator.clipboard.writeText(json.formUrl)
+                                        .then(() => {
+                                            showToast('Ссылка скопирована!')
+                                        })
+                                }
+                            }
+                        }
+                        else {
+                            location.assign(json.formUrl)
+                        }
+                    }
+                })
+                .catch(err => {
+                    Logger.error(err.message, err)
+                    showToast(t(i18n.donateError))
+                })
+        }
+
+        const donateButtonItem = ButtonSettingsItem(t(i18n.donations), t(i18n.donate), donateCallback, EUI.Donate, { subTitle: t(i18n.donationsDesc) })
+        account.appendChild(donateButtonItem)
     }
 }

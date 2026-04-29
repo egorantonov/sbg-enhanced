@@ -8,7 +8,7 @@ export default async function BeautifyCloseButtons() {
     button.innerText = EUI.CloseButtonText
   }
 
-  const closeButtons = Nodes.GetSelectorAll('button.popup-close, button#inventory__close')
+  const closeButtons = Nodes.GetSelectorAll('button.popup-close, button#inventory__close, button.svp-settings-close, button.svp-refs-on-map-close')
   closeButtons.forEach((button) => beautifyButton(button))
 
   /* CREDITS POPUP IS BEING FETCHED AS HTML */

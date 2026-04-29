@@ -422,6 +422,8 @@ body, input, select, button {
 .profile.popup button,
 #eui-console-execute,
 .discover-mod,
+#i-navigate,
+#garbage-save,
 .slider-button__nav,
 #draw-slider-confirm,
 #draw-slider-close,
@@ -485,7 +487,7 @@ input[type="range"] {
   border-radius: var(--radius10) !important;
   overflow: hidden;
   padding: 10px 0 0 0 !important;
-  z-index: 2;
+  z-index: 3;
   background: var(--background-transp);
   backdrop-filter: blur(10px);
 }
@@ -526,12 +528,18 @@ input[type="range"] {
   color: var(--accent);
 }
 
-.inventory__item-controls button,
-button.inventory__ic-repair {
-  background-color: var(--sbgcui-branding-color, var(--selection));
+button.inventory__item-controls,
+button.inventory__ic-repair,
+.inventory__ra-item button {
+  background-color: var(--sbgcui-branding-color, var(--bg));
   border-style: solid;
-  border-color: var(--sbgcui-branding-color, var(--selection));
-  color: #fff;
+  border-color: var(--sbgcui-branding-color, var(--bg));
+  border-radius: var(--radius5);
+}
+
+button.inventory__item-controls,
+button.inventory__ic-repair {
+  color: var(--background, #fff);
 }
 
 .sbgcui_inventory__ma-shortcuts>span {
@@ -549,10 +557,6 @@ button.inventory__ic-repair {
 .inventory__ic-view {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-}
-
-.inventory__ic-repair {
-  border-radius: 5px;
 }
 
 .inventory__content {
@@ -635,8 +639,9 @@ button.inventory__ic-repair {
 }
 
 /* SETTINGS */
-.settings-section__item input[type="checkbox"],
-.sbgcui_settings input[type="checkbox"] { /* CUI compatibility */
+.sbgcui_settings input[type="checkbox"], /* CUI compatibility */
+.svp-settings-panel.svp-open input[type="checkbox"], /* SVP compatibility */
+.settings-section__item input[type="checkbox"] { 
   width: 0px;
   height: 0px;
   filter: none;
@@ -645,8 +650,14 @@ button.inventory__ic-repair {
   appearance: none;
 }
 
-.settings-section__item input[type="checkbox"]::before,
-.sbgcui_settings input[type="checkbox"]::before { /* CUI compatibility */
+
+.svp-settings-panel.svp-open input[type="checkbox"] /* SVP compatibility */ {
+  margin: 20px;
+}
+
+.sbgcui_settings input[type="checkbox"]::before, /* CUI compatibility */
+.svp-settings-panel.svp-open input[type="checkbox"]::before, /* SVP compatibility */
+.settings-section__item input[type="checkbox"]::before {
   content: "";
   -webkit-mask: var(--on);
   mask: var(--on);
@@ -664,8 +675,9 @@ button.inventory__ic-repair {
   transition: background-color 0.15s ease-in-out;
 }
 
-.settings-section__item input[type="checkbox"]:not(:checked)::before,
-.sbgcui_settings input[type="checkbox"]:not(:checked)::before { /* CUI compatibility */
+.sbgcui_settings input[type="checkbox"]:not(:checked)::before,  /* CUI compatibility */
+.svp-settings-panel.svp-open input[type="checkbox"]:not(:checked)::before, /* SVP compatibility */
+.settings-section__item input[type="checkbox"]:not(:checked)::before {
   -webkit-mask: var(--off);
   mask: var(--off);
   -webkit-mask-size: contain;
@@ -680,8 +692,9 @@ button.inventory__ic-repair {
   background-color: #777c;
 }
 
-.settings-section__item input[type="checkbox"]:disabled::before,
-.sbgcui_settings input[type="checkbox"]:disabled::before { /* CUI compatibility */
+.sbgcui_settings input[type="checkbox"]:disabled::before , /* CUI compatibility */
+.svp-settings-panel.svp-open input[type="checkbox"]:disabled::before, /* SVP compatibility */
+.settings-section__item input[type="checkbox"]:disabled::before {
   opacity: 0.5;
 }
 

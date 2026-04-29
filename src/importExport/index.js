@@ -1,6 +1,6 @@
 import { ClientData, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t, Translations } from '../constants'
 import { getSbgSettings, setSbgSettings } from '../utils'
-import { flavored_fetch } from '../helpers'
+import { flavored_fetch, GetSection, Sections } from '../helpers'
 import { InfoSettingsItem } from '../components/settingsItem'
 import { GetWebGpu } from '../utils/unsafeImport'
 
@@ -139,7 +139,7 @@ export default async function ImportExport() {
     downloadLink.click()
   }
 
-  const about = Nodes.SettingSections.at(3)
+  const about = GetSection(Sections.About)
 
   if (about) {
     // appendLine(about, t('cloudSync'), (new Date(+localStorage.getItem(EUI.CloudSync))).toLocaleString(), EUI.LastSynced)
@@ -185,11 +185,12 @@ export default async function ImportExport() {
     Nodes.GetId('layers-config__save')?.addEventListener(Events.onClick, () => CloudSync(true))
   }
 
-  if (IsWebView()){
-    return
-  }
+  // if (IsWebView()){
+  //   return
+  // }
 
-  if (about) {
+  const account = GetSection(Sections.Account)
+  if (account) {
     const key = document.createElement(Elements.Div)
     key.classList.add(`${EUI.SettingItem}__label`)
 
@@ -235,7 +236,7 @@ export default async function ImportExport() {
     item.classList.add(Modifiers.SettingsSectionItemClassName, EUI.SettingItem)
     item.appendChild(key)
     item.appendChild(value)
-    about.appendChild(item)
+    account.appendChild(item)
   }
 
   await CloudSync()
