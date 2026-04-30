@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      26.4.2
+// @version      26.4.3
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -16,7 +16,7 @@
 	'use strict';
 
 	const LATEST_KNOWN_VERSION = '0.6.1' // override
-	const USERSCRIPT_VERSION = '26.4.2'
+	const USERSCRIPT_VERSION = '26.4.3'
 
 	const isFirefox = /firefox/i.test(window.navigator.userAgent)
 	if (isFirefox) {
@@ -604,8 +604,8 @@
 					return 'movePlayer([0,0]); undefined?';
 				case `const attack_slider`: // Line ~409
 					return `window.attack_slider`;
-				case `const deploy_slider`: // Line ~427
-					return `window.deploy_slider`;
+				// case `const deploy_slider`: // Line ~427
+				// 	return `window.deploy_slider`;
 				case `const draw_slider`: // Line ~442
 					return `window.draw_slider`;
 				// case `closePopup($('.info'))`: // Line ~674
@@ -664,7 +664,7 @@
 			`(function movePlayer)`,
 			`(\\$\\('body'\\)\\.empty\\(\\))`,
 			`(const attack_slider)`,
-			`(const deploy_slider)`,
+			// `(const deploy_slider)`,
 			`(const draw_slider)`,
 			// `(closePopup\\(\\$\\('\\.info'\\)\\))`,
 			// `(if \\(new_val < 1\\) new_val = 1)`,
@@ -1421,15 +1421,11 @@
 
 				.i-buttons {
 					display: grid;
-					grid-template: 
-						'L R D'
-						'H H H' / 1fr 1fr 1fr;
+					grid-template: 'R D''L H' / 1fr 2fr;
 				}
 
 				.i-buttons.mirrored {
-					grid-template: 
-						'D R L'
-						'H H H' / 1fr 1fr 1fr;
+					grid-template: 'D R''H L' / 2fr 1fr;
 				}
 
 				.discover {
@@ -2967,7 +2963,7 @@
 
 					toDelete.forEach(e => { e.remove(); });
 				});
-				document.querySelector('.i-stat__tools').remove();
+				//document.querySelector('.i-stat__tools').remove();
 
 				attackSliderClose.remove(); // Кнопка закрытия слайдера не нужна.
 				attackButton.childNodes[0].remove(); // Надпись Attack.
@@ -3079,9 +3075,9 @@
 				window.attack_slider.options = {
 					speed: 200,
 				};
-				window.deploy_slider.options = {
-					speed: 200,
-				};
+				// window.deploy_slider.options = {
+				// 	speed: 200,
+				// };
 				window.draw_slider.options = {
 					height: '120px',
 					pagination: true,
@@ -3680,11 +3676,20 @@
 					setStoredInputsValues();
 					tlContainer.appendChild(settingsMenu);
 
+					/* Удаление элементов доступных в ванилле */
 					let autoSelect = settingsMenu.querySelector('select[name=autoSelect_attack]')
 					if (autoSelect) {
 						setTimeout(() => {
 							autoSelect.parentElement?.parentElement?.parentElement?.remove()
 							autoSelect = null
+						}, 1000);
+					}
+
+					let highlight = document.querySelector('select[name=pointHighlighting_text]')
+					if (highlight) {
+						setTimeout(() => {
+							highlight.parentElement?.parentElement?.parentElement?.remove()
+							highlight = null
 						}, 1000);
 					}
 
@@ -4499,7 +4504,7 @@
 
 
 			/* Подсветка точек */
-			{
+			/*{
 				class PointFeature extends ol.Feature {
 					constructor(arg) {
 						super(arg);
@@ -4629,7 +4634,7 @@
 
 				ol.PointFeature = PointFeature;
 			}
-
+			*/
 
 			/* Показ радиуса катализатора */
 			{
@@ -4989,7 +4994,7 @@
 
 			/* Переключение между точками и автооткрытие */
 			{
-				const arrow = document.createElement('i');
+				// const arrow = document.createElement('i');
 				const shownPoints = new Set();
 				let touchMoveCoords = [];
 
@@ -5022,18 +5027,18 @@
 					return pointsInRange;
 				}
 
-				function keydownHandler(event) {
-					event.code == 'KeyN' && showNextPointInRange();
-				}
+				// function keydownHandler(event) {
+				// 	event.code == 'KeyN' && showNextPointInRange();
+				// }
 
-				function pointPopupCloseHandler() {
-					window.removeEventListener('playerMove', toggleArrowVisibility);
-				}
+				// function pointPopupCloseHandler() {
+				// 	window.removeEventListener('playerMove', toggleArrowVisibility);
+				// }
 
-				function pointPopupOpenHandler() {
-					toggleArrowVisibility();
-					window.addEventListener('playerMove', toggleArrowVisibility);
-				}
+				// function pointPopupOpenHandler() {
+				// 	toggleArrowVisibility();
+				// 	window.addEventListener('playerMove', toggleArrowVisibility);
+				// }
 
 				function checkPopupsAndShowPoint() {
 					!isAnyOverlayActive() && showNextPointInRange(true);
@@ -5060,30 +5065,30 @@
 
 					shownPoints.add(nextPoint.getId());
 
-					/* ЗАМЕНЕНО НА window.showInfo
-					const fakeEvent = {};
+					//* ЗАМЕНЕНО НА window.showInfo
+					// const fakeEvent = {};
 
-					fakeEvent.type = 'click';
-					fakeEvent.pixel = map.getPixelFromCoordinate(nextPoint.getGeometry().getCoordinates());
-					fakeEvent.originalEvent = {};
-					fakeEvent.isSilent = true; // Такой эвент будет проигнорирован функцией показа ромашки для кластера.
+					// fakeEvent.type = 'click';
+					// fakeEvent.pixel = map.getPixelFromCoordinate(nextPoint.getGeometry().getCoordinates());
+					// fakeEvent.originalEvent = {};
+					// fakeEvent.isSilent = true; // Такой эвент будет проигнорирован функцией показа ромашки для кластера.
 
-					nextPoint.set('sbgcui_chosenFeature', true, true);
-					pointPopup.classList.add('hidden');
-					map.dispatchEvent(fakeEvent);
-					*/
+					// nextPoint.set('sbgcui_chosenFeature', true, true);
+					// pointPopup.classList.add('hidden');
+					// map.dispatchEvent(fakeEvent);
+					//*
 					pointPopup.classList.add('hidden');
 					window.showInfo(nextPoint.getId());
 					highlightFeature(nextPoint, undefined, { once: true });
 				}
 
-				function toggleArrowVisibility() {
-					if (getPointsInRange().length > 1) {
-						arrow.classList.remove('sbgcui_hidden');
-					} else {
-						arrow.classList.add('sbgcui_hidden');
-					}
-				}
+				// function toggleArrowVisibility() {
+				// 	if (getPointsInRange().length > 1) {
+				// 		arrow.classList.remove('sbgcui_hidden');
+				// 	} else {
+				// 		arrow.classList.add('sbgcui_hidden');
+				// 	}
+				// }
 
 				function toggleAutoShowPoints() {
 					state.isAutoShowPoints = !state.isAutoShowPoints;
@@ -5092,39 +5097,39 @@
 					showToast(`${state.isAutoShowPoints ? 'В' : 'От'}ключено открытие точки при приближении к ней.`);
 				}
 
-				function touchEndHandler() {
-					if (Object.isSealed(touchMoveCoords) || touchMoveCoords.length == 0) { return; }
+				// function touchEndHandler() {
+				// 	if (Object.isSealed(touchMoveCoords) || touchMoveCoords.length == 0) { return; }
 
-					const isRtlSwipe = touchMoveCoords.every((coords, i, arr) => coords.x <= arr[i - 1]?.x || i == 0);
-					if (!isRtlSwipe) { return; }
+				// 	const isRtlSwipe = touchMoveCoords.every((coords, i, arr) => coords.x <= arr[i - 1]?.x || i == 0);
+				// 	if (!isRtlSwipe) { return; }
 
-					const xCoords = touchMoveCoords.map(coords => coords.x);
-					const yCoords = touchMoveCoords.map(coords => coords.y);
-					const minX = Math.min(...xCoords);
-					const maxX = Math.max(...xCoords);
-					const minY = Math.min(...yCoords);
-					const maxY = Math.max(...yCoords);
+				// 	const xCoords = touchMoveCoords.map(coords => coords.x);
+				// 	const yCoords = touchMoveCoords.map(coords => coords.y);
+				// 	const minX = Math.min(...xCoords);
+				// 	const maxX = Math.max(...xCoords);
+				// 	const minY = Math.min(...yCoords);
+				// 	const maxY = Math.max(...yCoords);
 
-					if (maxY - minY > 70) { return; }
-					if (maxX - minX < 50) { return; }
+				// 	if (maxY - minY > 70) { return; }
+				// 	if (maxX - minX < 50) { return; }
 
-					showNextPointInRange();
-				}
+				// 	showNextPointInRange();
+				// }
 
-				function touchMoveHandler(event) {
-					if (Object.isSealed(touchMoveCoords)) { return; }
+				// function touchMoveHandler(event) {
+				// 	if (Object.isSealed(touchMoveCoords)) { return; }
 
-					const { clientX: x, clientY: y } = event.touches.item(0);
+				// 	const { clientX: x, clientY: y } = event.touches.item(0);
 
-					touchMoveCoords.push({ x, y });
-				}
+				// 	touchMoveCoords.push({ x, y });
+				// }
 
-				function touchStartHandler(event) {
-					touchMoveCoords = [];
-					if (event.touches.length > 1 || event.touches.item(0).target.closest('.deploy-slider-wrp') !== null) {
-						Object.seal(touchMoveCoords);
-					}
-				}
+				// function touchStartHandler(event) {
+				// 	touchMoveCoords = [];
+				// 	if (event.touches.length > 1 || event.touches.item(0).target.closest('.deploy-slider-wrp') !== null) {
+				// 		Object.seal(touchMoveCoords);
+				// 	}
+				// }
 
 				function turnAutoShowPointsOff() {
 					autoShowPointsButton.style.opacity = 0.5;
@@ -5138,17 +5143,17 @@
 					window.addEventListener('playerMove', checkPopupsAndShowPoint);
 				}
 
-				arrow.classList.add('sbgcui_swipe-cards-arrow', 'fa', 'fa-solid-angles-left');
-				iStat.appendChild(arrow);
+				// arrow.classList.add('sbgcui_swipe-cards-arrow', 'fa', 'fa-solid-angles-left');
+				// iStat.appendChild(arrow);
 
-				pointPopup.addEventListener('pointPopupOpened', pointPopupOpenHandler);
-				pointPopup.addEventListener('pointPopupClosed', pointPopupCloseHandler);
+				// pointPopup.addEventListener('pointPopupOpened', pointPopupOpenHandler);
+				// pointPopup.addEventListener('pointPopupClosed', pointPopupCloseHandler);
 
-				pointPopup.addEventListener('touchstart', touchStartHandler);
-				pointPopup.addEventListener('touchmove', touchMoveHandler);
-				pointPopup.addEventListener('touchend', touchEndHandler);
+				// pointPopup.addEventListener('touchstart', touchStartHandler);
+				// pointPopup.addEventListener('touchmove', touchMoveHandler);
+				// pointPopup.addEventListener('touchend', touchEndHandler);
 
-				document.addEventListener('keydown', keydownHandler);
+				// document.addEventListener('keydown', keydownHandler);
 
 				const autoShowPointsButton = document.createElement('button');
 

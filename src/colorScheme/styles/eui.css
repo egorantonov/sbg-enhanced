@@ -141,6 +141,10 @@ body, input, select, button {
   border-radius: var(--radius10);
 }
 
+.i-buttons {
+  display: flex !important;
+}
+
 .deploy-slider-wrp {
   margin: 0;
 }
@@ -188,6 +192,10 @@ body, input, select, button {
   background-color: #777;
   border: none;
   transition: background-color 0.25s linear;
+}
+
+.discover.i-multi-button {
+  width: 100%;
 }
 
 #discover {
@@ -422,7 +430,7 @@ body, input, select, button {
 .profile.popup button,
 #eui-console-execute,
 .discover-mod,
-#i-navigate,
+#i-navigate,#i-copy-pos,#i-share,
 #garbage-save,
 .slider-button__nav,
 #draw-slider-confirm,

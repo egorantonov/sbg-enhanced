@@ -170,7 +170,9 @@ export default function AddColorScheme() {
 			owner?.addEventListener('pointOwnerChanged', () => {
 				let buttons = Array.from(document.querySelectorAll('#bottom>button'))
 				buttons.push(Nodes.Discover)
-				buttons = buttons.concat(Array.from(document.querySelectorAll('button.discover-mod.icon-button')))
+				buttons.push(Nodes.GetId('magic-deploy-btn'))
+				buttons = buttons.concat(Array.from(document.querySelectorAll('button.discover-mod')))
+				buttons = buttons.concat(Array.from(document.querySelectorAll('.i-stat__tools button')))
 				buttons.forEach(button => {
 					button.style.backgroundColor = owner.style.color === 'var(--team-0)'
 						? 'var(--sbgcui-branding-color)'

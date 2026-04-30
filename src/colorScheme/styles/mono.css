@@ -89,7 +89,8 @@ select {
   font-weight: bold;
 }
 
-#magic-deploy-btn, #i-navigate {
+#magic-deploy-btn, 
+#i-navigate, #i-copy-pos, #i-share {
   background-color: var(--i-bg-color-cc) !important;
   color: var(--i-color) !important;
 }

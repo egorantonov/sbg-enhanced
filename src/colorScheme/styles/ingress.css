@@ -41,6 +41,10 @@ body, input, select, button,
   font-family: 'Coda', 'Manrope', sans-serif;
 }
 
+.i-buttons {
+  margin: .5em;
+}
+
 #discover,
 .i-buttons button,
 .settings.popup button:not(.popup-close),
@@ -98,6 +102,7 @@ select {
 .inventory__manage-amount button,
 #eui-console-execute,
 .discover-mod,
+#i-navigate,#i-copy-pos,#i-share,
 .notifs__entry-view.icon-button, /* View point [notification list] */
 input:not(input[name^="maxAmountInBag"]), .sbgcui_drawslider_sort, .sbgcui_drawslider_fit, .cui-clear-cache-button, /* CUI Compatibility */
 select {

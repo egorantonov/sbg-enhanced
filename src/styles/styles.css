@@ -386,12 +386,12 @@ button.svp-settings-close, button.svp-refs-on-map-close, /* SVP */
 }
 
 .i-buttons {
-  order: 1;
+  /* order: 1;
   margin: 0 0 0.5em;
-  display: flex !important;
+  display: flex;
   flex-direction: row !important;
   flex-wrap: wrap;
-  gap: 0.25em !important;
+  gap: 0.25em !important; */
   width: 100% !important;
 }
 
@@ -399,7 +399,7 @@ button.svp-settings-close, button.svp-refs-on-map-close, /* SVP */
   padding: 6px 2px;
   min-width: fit-content;
   min-height: 45px;
-  width: 30%;
+  /* width: 30%; */
   flex-basis: unset !important;
 }
 
@@ -421,7 +421,7 @@ button.svp-settings-close, button.svp-refs-on-map-close, /* SVP */
 }
 
 .discover.i-multi-button {
-  width: 100%;
+  /* width: 100%; */
   margin-bottom: var(--margin);
 }
 
