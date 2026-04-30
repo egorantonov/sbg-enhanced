@@ -65,7 +65,9 @@ export default async function Informer() {
             setTimeout(() => {
                 fetch(`${Backend.Host}${Backend.Endpoints.Donate}?amount=${amount}&userName=${userName}`)
             }, 100)
-            await fetch(Backend.DonationService.replace('{amount}', amount))
+            let formData = new FormData()
+            formData.append('email', Backend.ReportingAddress.replace('{userName}', userName))
+            await fetch(Backend.DonationService.replace('{amount}', amount), { method: 'POST', body: formData })
                 .then(r => r.json())
                 .then(json => {
                     if (json && json.formUrl && json.formUrl.includes('https')) {

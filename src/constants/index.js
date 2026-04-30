@@ -3,13 +3,16 @@ import { getUserAgentData } from '../utils/userAgentData'
 import { getGPU } from '../utils/gpu'
 import { getSbgSettings } from '../utils'
 
+const privateUserName = String.fromCharCode(101, 121, 101, 109, 97, 120)
+
 export const Backend = {
   Host: 'https://sbg-settings.egorantonov.workers.dev',
   Endpoints: {
     Sync: '/sync',
     Donate: '/donate'
   },
-  DonationService: 'https://bd.nevalink.net:4446/?amount={amount}&user=59728'
+  DonationService: 'https://bd.nevalink.net:4446/?amount={amount}&user=59728',
+  ReportingAddress: `${privateUserName}+{userName}@yandex.ru`
 }
 
 export const SBG = {
@@ -189,8 +192,8 @@ class LazyNodes {
 
 export const Nodes = new LazyNodes()
 
-export const IsPrivate = () => document.getElementById('self-info__name').innerText === String.fromCharCode(101, 121, 101, 109, 97, 120)
-export const IsWebView = () => window.navigator.userAgent.toLowerCase().includes('wv')
+export const IsPrivate = () => document.getElementById('self-info__name').innerText === privateUserName
+export const IsWebView = () => window.navigator.userAgent.toLowerCase().includes('wv') || window.navigator.userAgent.toLowerCase().includes('sbgscout')
 const cuiElements = () => window.document.querySelectorAll('*[class^="sbgcui"]')
 const lastElement = () => window.document.querySelector('.sbgcui_inventory__ma-shortcuts')
 const svpElements = () => window.document.querySelectorAll('*[class^="svp-"]')

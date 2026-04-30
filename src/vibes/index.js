@@ -5,8 +5,8 @@ import { CanvasSnowfall } from './snowflakes'
 export default async function Vibes() {
 
   const now = new Date()
-  const start = new Date('2025.12.24') // TODO: переписать на vibes array
-  const finish = new Date('2026.01.08')
+  const start = new Date('2026.12.24') // TODO: переписать на vibes array
+  const finish = new Date('2027.01.08')
 
   if ((now < start || now > finish) && !IsPrivate()) return
 

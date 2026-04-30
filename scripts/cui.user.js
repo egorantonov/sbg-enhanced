@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      26.4.3
+// @version      26.5.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -16,7 +16,7 @@
 	'use strict';
 
 	const LATEST_KNOWN_VERSION = '0.6.1' // override
-	const USERSCRIPT_VERSION = '26.4.3'
+	const USERSCRIPT_VERSION = '26.5.1'
 
 	const isFirefox = /firefox/i.test(window.navigator.userAgent)
 	if (isFirefox) {
@@ -70,6 +70,9 @@
 		FLAVOR: 'x-sbg-flavor'
 	}
 
+	const IsWebView = () => window.navigator.userAgent.toLowerCase().includes('wv') || window.navigator.userAgent.toLowerCase().includes('sbgscout')
+	const CanShare = () => '__sbg_share' in window
+	const Share = (target) => window['__sbg_share']['open'](target)
 	const CUI_WEB_RES_CACHE_v = '__CUI_WEB_RES_CACHE_v';
 	const HOME_DIR = 'https://sbg-game.ru/plugins/sbg-cui'; // const HOME_DIR = 'https://nicko-v.github.io/sbg-cui';
 	const __CUI_WEB_RES_CACHE_TIMEOUT = 7 * 24 * 60 * 60 * 1000 // 7d
@@ -5604,7 +5607,12 @@
 					submitButton.addEventListener('click', () => {
 						const url = createURL(submitButton.dataset.app, submitButton.dataset.routetype);
 						if (url != undefined) {
-							window.location.href = url;
+							if (IsWebView() && CanShare()) {
+								Share(url)
+							}
+							else {
+								window.location.href = url;
+							}
 							closeNavPopup();
 						}
 					});
