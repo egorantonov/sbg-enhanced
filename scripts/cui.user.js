@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      26.5.1
+// @version      26.5.2
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -16,7 +16,7 @@
 	'use strict';
 
 	const LATEST_KNOWN_VERSION = '0.6.1' // override
-	const USERSCRIPT_VERSION = '26.5.1'
+	const USERSCRIPT_VERSION = '26.5.2'
 
 	const isFirefox = /firefox/i.test(window.navigator.userAgent)
 	if (isFirefox) {
@@ -2091,29 +2091,29 @@
 						let isBroom;
 
 						switch (url.pathname) {
-							case '/api/attack2':
-								const guid = JSON.parse(options.body).guid;
-								const invCache = JSON.parse(localStorage.getItem('inventory-cache'));
-								const message = `Использовать "${i18next.t('items.brooms_one')}"?`;
+							// case '/api/attack2':
+							// 	const guid = JSON.parse(options.body).guid;
+							// 	const invCache = JSON.parse(localStorage.getItem('inventory-cache'));
+							// 	const message = `Использовать "${i18next.t('items.brooms_one')}"?`;
 
-								isBroom = invCache.find(e => e.t == 4 && e.g == guid) !== undefined;
+							// 	isBroom = invCache.find(e => e.t == 4 && e.g == guid) !== undefined;
 
-								if (isBroom && !confirm(message)) {
-									resolve();
-									attackSlider.dispatchEvent(new Event('attackSliderOpened'));
-									return;
-								}
+							// 	if (isBroom && !confirm(message)) {
+							// 		resolve();
+							// 		attackSlider.dispatchEvent(new Event('attackSliderOpened'));
+							// 		return;
+							// 	}
 
-								break;
+							// 	break;
 							case '/api/inview':
 								if (isRefsViewerOpened) { resolve(); return; }
 
-								let uniqsHighlighting = Object.values(config.pointHighlighting).find(e => e.match(/uniqc|uniqv/));
+								// let uniqsHighlighting = Object.values(config.pointHighlighting).find(e => e.match(/uniqc|uniqv/));
 
-								if (uniqsHighlighting) {
-									const hParam = uniqsHighlighting == 'uniqc' ? 4 : 2;
-									url.searchParams.set('h', hParam);
-								}
+								// if (uniqsHighlighting) {
+								// 	const hParam = uniqsHighlighting == 'uniqc' ? 4 : 2;
+								// 	url.searchParams.set('h', hParam);
+								// }
 
 								const mapConfig = JSON.parse(localStorage.getItem('map-config'));
 
@@ -3091,10 +3091,6 @@
 				window.highlightFeature = highlightFeature;
 
 				viewportMeta.setAttribute('content', viewportMeta.getAttribute('content') + ', shrink-to-fit=no');
-
-				const mapConfig = JSON.parse(localStorage.getItem('map-config'));
-				mapConfig.h = 0;
-				localStorage.setItem('map-config', JSON.stringify(mapConfig));
 			}
 
 
