@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      26.5.2
+// @version      26.5.3
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -16,7 +16,7 @@
 	'use strict';
 
 	const LATEST_KNOWN_VERSION = '0.6.1' // override
-	const USERSCRIPT_VERSION = '26.5.2'
+	const USERSCRIPT_VERSION = '26.5.3'
 
 	const isFirefox = /firefox/i.test(window.navigator.userAgent)
 	if (isFirefox) {
@@ -1405,6 +1405,38 @@
 			const zoomContainer = document.querySelector('.ol-zoom');
 
 			const styleOverrideData = `
+				.i-stat {
+    			flex-direction: row;
+    			flex-wrap: wrap;
+				}
+				.i-stat__entry:not(.i-stat__cores) {
+    			margin: 0 5px;
+    			min-width: 45%;
+				}
+				.i-stat__cores {
+				  display: grid;
+				  margin-bottom: .5em;
+				  padding: 5px 0;
+				  grid-template-columns: minmax(0, 2.5fr) 1fr 1fr minmax(0, 2.5fr);
+				  width: inherit;
+				}
+				.deploy-slider-wrp {
+					width: inherit;
+				}
+			  .inventory__manage-amount {
+					min-width: 250px;
+					z-index: 3;
+				}
+
+				.inventory__manage-amount button {
+					min-height: 32px;
+					min-width: 32px;
+				}
+
+				.info.popup>.popup-touch {
+    			backdrop-filter: blur(5px);
+				}
+
 				.inventory__content[data-tab="3"] .inventory__item {
 					grid-template-columns: 1fr 8fr 2fr; /* revert to vanilla */
 					padding-right: unset; /* revert to vanilla */
@@ -1423,6 +1455,10 @@
 				}
 
 				.i-buttons {
+					width: 100%;
+				}
+
+				.i-buttons, html[lang="ru"] .i-buttons {
 					display: grid;
 					grid-template: 'R D''L H' / 1fr 2fr;
 				}
@@ -1445,6 +1481,47 @@
 
 				#draw, #repair {
 					max-width: 130px;
+				}
+
+				.settings-section__item select, .settings-section__item>button:not(.popup-close) {
+				  min-height: 25px;
+				}
+
+				.pr-stats__section-header, .settings-section__header {
+				  color: var(--sbgcui-branding-color);
+				}
+
+				@media screen and (max-height: 668px) and (max-width: 384px)  {
+					body {
+						font-family: 'Roboto Condensed', 'Noto Sans', 'Manrope', sans-serif;
+					}
+				  .i-stat__entry {
+    				font-size: smaller;
+  				}
+
+					.i-buttons button {
+					  font-size: smaller;
+        		font-weight: lighter;
+        		min-height: 35px;
+					}
+
+					.catalysers-list__amount, .cores-list__amount {
+        		font-size: .75em;
+    			}
+
+					.i-header {
+					  border-bottom-style: hidden;
+					  z-index: 1;
+					}
+					.i-image-box {
+					  margin-top: -32px;
+					}
+					#i-title {
+					  filter: drop-shadow(2px 4px 6px var(--text-shadow));
+					}
+					#i-level, .sbgcui_point_star {
+					    margin-top: 25px;
+					}
 				}
 			`
 
