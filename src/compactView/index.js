@@ -33,10 +33,13 @@ export default async function CompactView() {
       await Sleep(250)
     }
 
-    [Nodes.Leaderboard, Nodes.Score, Nodes.Settings, Nodes.Notifs, Nodes.Layers, Nodes.ToggleFollow].forEach(n => {
+    [Nodes.Leaderboard, Nodes.Score, Nodes.Settings, Nodes.Layers, Nodes.ToggleFollow].forEach(n => {
       n.innerText = ''
       n.classList.add('compactview_icon')
     })
+
+    Nodes.Notifs.classList.add('compactview_icon')
+    Nodes.Notifs.querySelector('span[data-i18n="menu.notifs"]').innerText = ''
 
     // Move all buttons after 'toggle-follow-btn' button
     Nodes.ToggleFollow.after(Nodes.Settings)

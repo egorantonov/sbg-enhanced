@@ -1454,6 +1454,10 @@
 					display: revert;
 				}
 
+				button.sbgcui_point_star {
+					display: none;
+				}
+
 				.i-buttons {
 					width: 100%;
 				}
@@ -1491,6 +1495,23 @@
 				  color: var(--sbgcui-branding-color);
 				}
 
+				.notifs__entry {
+					grid-template-columns: 2fr 5fr;
+				}
+
+				.notifs__header {
+    			margin-bottom: 1em;
+				}
+
+				.tabs.notifs__tabs {
+					justify-content: space-between;
+				}
+
+				#notifs-menu[data-active] #nm-overview,
+				#nm-overview {
+					font-size: 10px;
+				}
+
 				@media screen and (max-height: 668px) and (max-width: 384px)  {
 					body {
 						font-family: 'Roboto Condensed', 'Noto Sans', 'Manrope', sans-serif;
@@ -1498,6 +1519,10 @@
 				  .i-stat__entry {
     				font-size: smaller;
   				}
+
+					html[lang="ru"] .i-buttons {
+    				grid-template-columns: unset;
+					}
 
 					.i-buttons button {
 					  font-size: smaller;
@@ -3051,7 +3076,7 @@
 				layersButton.innerText = '';
 				layersButton.classList.add('fa', 'fa-solid-layer-group');
 
-				notifsButton.innerText = '';
+				document.querySelector('#notifs-menu').querySelector('span[data-i18n="menu.notifs"]').innerText = ''
 				notifsButton.classList.add('fa', 'fa-solid-envelope');
 
 				zoomContainer.append(rotateArrow, toggleFollowButton, notifsButton, layersButton);

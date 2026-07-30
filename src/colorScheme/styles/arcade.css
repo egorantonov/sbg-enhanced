@@ -10,6 +10,7 @@
   --radius0: 0;
   --radius5: 0;
   --radius10: 0;
+  --radius100: 0;
 
   --on: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" ><path d="m424-292 304-304-74-74-230 230-116-116-74 74 190 190ZM88-88v-784h784v784H88Zm106-106h572v-572H194v572Zm0 0v-572 572Z"/></svg>');
   --off: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" ><path d="M88-88v-784h784v784H88Zm106-106h572v-572H194v572Z"/></svg>');

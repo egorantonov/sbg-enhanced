@@ -330,6 +330,12 @@ option:checked { /* WTF? checked is non-documented??? */
   filter: grayscale(1) !important;
 }
 
+.i-stat__tools>button,
+#notifs-send {
+  background-color: var(--i-bg-color-cc) !important;
+  color: var(--i-color) !important;
+}
+
 /* POINT DATA */
 .deploy-slider-error {
   color: var(--i-color) !important;

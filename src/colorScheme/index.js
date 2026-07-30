@@ -17,7 +17,15 @@ class Theme {
 	innerHTML = ''
 }
 
+function moveToolsMenu() {
+	const toolsMenu = document.querySelector('.i-stat__tools')
+	const pointLevel = document.getElementById('i-level')
+	if (pointLevel && toolsMenu) pointLevel.after(toolsMenu)
+}
+
 export default function AddColorScheme() {
+	moveToolsMenu()
+
 	const i18next = window.i18next
 	const applyTranslations = (target) => {
 		let tCache = JSON.parse(localStorage.getItem(target))
@@ -125,8 +133,8 @@ export default function AddColorScheme() {
 
 	function applyEnhancedUITheme() {
 		const deploySliderTrack = Nodes.GetId('deploy-slider-track')
-		deploySliderTrack?.after(Nodes.GetId('deploy'))
-		deploySliderTrack?.before(Nodes.GetSelector('.deploy.i-multi-button'))
+		//deploySliderTrack?.after(Nodes.GetId('deploy'))
+		deploySliderTrack?.after(Nodes.GetSelector('.deploy.i-multi-button'))
 		const arrows = Nodes.GetSelector('#deploy-slider>.splide__arrows')
 		arrows && arrows.remove()
 		let bottom = document.createElement('div')
@@ -147,7 +155,7 @@ export default function AddColorScheme() {
 			}
 			else {
 				const share = Nodes.GetId('i-share')
-				share.dataset.i18n = t(i18n.sharePointButton)
+				//share.dataset.i18n = t(i18n.sharePointButton)
 				draw.before(share)
 			}
 
@@ -157,7 +165,7 @@ export default function AddColorScheme() {
 			}
 			else {
 				const copyPos = Nodes.GetId('i-copy-pos')
-				copyPos.dataset.i18n = t(i18n.copyPosPointButton)
+				//copyPos.dataset.i18n = t(i18n.copyPosPointButton)
 				repair.after(copyPos)
 			}
 		}
@@ -170,10 +178,10 @@ export default function AddColorScheme() {
 			owner?.addEventListener('pointOwnerChanged', () => {
 				let buttons = Array.from(document.querySelectorAll('#bottom>button'))
 				buttons.push(Nodes.Discover)
-				buttons.push(Nodes.GetId('magic-deploy-btn'))
+				//buttons.push(Nodes.GetSelector('.deploy.i-multi-button'))
 				buttons = buttons.concat(Array.from(document.querySelectorAll('button.discover-mod')))
 				buttons = buttons.concat(Array.from(document.querySelectorAll('.i-stat__tools button')))
-				buttons.forEach(button => {
+				buttons.filter(x=>x).forEach(button => {
 					button.style.backgroundColor = owner.style.color === 'var(--team-0)'
 						? 'var(--sbgcui-branding-color)'
 						: owner.style.color

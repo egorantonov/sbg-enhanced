@@ -102,6 +102,7 @@ function setCustomFetch() {
  * Actions Feature
  */
 export async function Actions() {
+	return
 	const input = document.createElement(Elements.Input)
 	const notifsHeader = Nodes.GetSelector('.notifs>.popup-header')
 	if (notifsHeader) {
