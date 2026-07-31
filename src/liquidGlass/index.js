@@ -110,7 +110,8 @@ export default function LiquidGlass() {
     Nodes.GetSelector('.ol-control'),
     Nodes.GetSelector('.sbgcui_toolbar-control'),
     Nodes.GetSelector('.game-menu .fa.fa-solid-rotate'),
-    Nodes.GetSelector('.svp-settings-panel button.popup-close')
+    Nodes.GetSelector('.svp-settings-panel button.popup-close'),
+    Nodes.GetSelector('.notifs__header')
   ]
   // let drawSliderButtons = Nodes.GetSelectorAll('.draw-slider-buttons button')
   // elements = elements.concat(drawSliderButtons)

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      26.7.1
+// @version      26.7.2
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -15,8 +15,8 @@
 (async function () {
 	'use strict';
 
-	const LATEST_KNOWN_VERSION = '0.6.1' // override
-	const USERSCRIPT_VERSION = '26.7.1'
+	const LATEST_KNOWN_VERSION = '0.7.0' // override
+	const USERSCRIPT_VERSION = '26.7.2'
 
 	const isFirefox = /firefox/i.test(window.navigator.userAgent)
 	if (isFirefox) {
