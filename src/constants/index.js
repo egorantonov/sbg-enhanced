@@ -68,7 +68,8 @@ export const EUI = {
   SettingItem: 'eui-setting-item',
   LiquidGlass: 'eui-liquid-glass',
   Hide: 'eui-hide',
-  Team: '__eui-team' // user can flip color
+  Team: '__eui-team', // user can flip color
+  UserName: '__eui-username'
 }
 
 export const Events = {
@@ -79,6 +80,7 @@ export const Events = {
   onTouchStart: 'touchstart',
   onTouchMove: 'touchmove',
   onTouchEnd: 'touchend',
+  onTouchCancel: 'touchend',
   onBackButton: 'backbutton',
   onScroll: 'scroll',
   onProfileStatsChanged: 'profileStatsChanged',
@@ -88,7 +90,8 @@ export const Events = {
   onLevelChange: 'levelchange',
   onChargingTimeChange: 'chargingtimechange',
   onDischargingTimeChange: 'dischargingtimechange',
-  onBeforeUnload: 'beforeunload'
+  onBeforeUnload: 'beforeunload',
+  onTabChange: 'tabchange'
 }
 
 export const Modifiers = {

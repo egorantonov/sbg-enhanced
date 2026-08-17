@@ -272,7 +272,7 @@ button.svp-settings-close, button.svp-refs-on-map-close, /* SVP */
   bottom: -10px;
   border: none;
   border-radius: 0 var(--radius10) 0 0;
-  color: var(--sbgcui-branding-color, var(--selection));
+  color: var(--sbgcui-branding-color, var(--team-color));
   background-color: var(--background-transp);
   font-size: 2em;
 }
@@ -577,8 +577,8 @@ button.svp-settings-close, button.svp-refs-on-map-close, /* SVP */
 
 .i-stat__core.selected {
   border-width: 2px;
-  border-color: var(--sbgcui-branding-color, var(--selection));
-  box-shadow: 0px 0px 2px 2px var(--sbgcui-branding-color, var(--selection));
+  border-color: var(--sbgcui-branding-color, var(--team-color));
+  box-shadow: 0px 0px 2px 2px var(--sbgcui-branding-color, var(--team-color));
   animation: blink 2s linear infinite;
 }
 
@@ -653,8 +653,8 @@ input[type='range']::-webkit-slider-thumb {
   height: 16px;
   width: 16px;
   border-radius: 3px;
-  background: var(--sbgcui-branding-color, var(--selection));
-  box-shadow: -250px 0 0 250px var(--sbgcui-branding-color, var(--selection));
+  background: var(--sbgcui-branding-color, var(--team-color));
+  box-shadow: -250px 0 0 250px var(--sbgcui-branding-color, var(--team-color));
   cursor: pointer;
 }
 
@@ -663,8 +663,8 @@ input[type='range']::-moz-range-thumb {
   height: 16px;
   width: 16px;
   border-radius: 3px;
-  background: var(--sbgcui-branding-color, var(--selection));
-  box-shadow: -250px 0 0 250px var(--sbgcui-branding-color, var(--selection));
+  background: var(--sbgcui-branding-color, var(--team-color));
+  box-shadow: -250px 0 0 250px var(--sbgcui-branding-color, var(--team-color));
   cursor: pointer;
 }
 
@@ -694,7 +694,7 @@ input[type='range']::-moz-range-thumb {
   height: 64px;
   width: 25%;
   border-top: 2px solid var(--border);
-  border-top-color: var(--sbgcui-branding-color, var(--selection));
+  border-top-color: var(--sbgcui-branding-color, var(--team-color));
 }
 
 .inventory__tab::before {
@@ -727,7 +727,7 @@ input[type='range']::-moz-range-thumb {
   background-color: var(--background-transp);
   border-top: none !important;
   border-bottom: 2px solid;
-  border-color: var(--sbgcui-branding-color, var(--selection));
+  border-color: var(--sbgcui-branding-color, var(--team-color));
   font-weight: bolder;
 }
 
@@ -1234,8 +1234,8 @@ input[type="range"][name^="mapFilters_"]::after {
 }
 
 .inventory__sorter input[type="radio"]:checked {
-  accent-color: var(--sbgcui-branding-color, var(--selection));
-  filter: drop-shadow(0 0 6px var(--sbgcui-branding-color, var(--selection)));
+  accent-color: var(--sbgcui-branding-color, var(--team-color));
+  filter: drop-shadow(0 0 6px var(--sbgcui-branding-color, var(--team-color)));
 }
 
 input[type="checkbox"][name="t"][value="0"]:checked:not(:disabled) {

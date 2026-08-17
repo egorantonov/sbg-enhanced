@@ -1,6 +1,9 @@
 import { Events, EUI, SBG, Nodes } from '../constants'
 
-export function LongTouchEventListener(target, callback, delay = 1500) {
+/**
+ * Obsolete
+ */
+export function LongTouchEventListenerOld(target, callback, delay = 1500) {
   if (!target || !callback) {
     console.warn('Can\'t set LongTouch event listener: target or callback is missing!')
     return
@@ -20,6 +23,52 @@ export function LongTouchEventListener(target, callback, delay = 1500) {
     }, { once: true })
   })
 
+}
+
+export function LongTouchEventListener(target, callback, delay = 1500) {
+  let timer = null
+  let startX = 0
+  let startY = 0
+  let moved = false
+
+  const MOVE_THRESHOLD = 10 // px
+
+  function start(e) {
+    const touch = e.touches?.[0] ?? e
+    startX = touch.clientX
+    startY = touch.clientY
+    moved = false
+
+    timer = setTimeout(() => {
+      if (!moved) {
+        callback(e)
+      }
+    }, delay)
+  }
+
+  function move(e) {
+    if (!timer) return
+
+    const touch = e.touches?.[0] ?? e
+    const dx = touch.clientX - startX
+    const dy = touch.clientY - startY
+
+    if (Math.hypot(dx, dy) > MOVE_THRESHOLD) {
+      moved = true
+      clearTimeout(timer)
+      timer = null
+    }
+  }
+
+  function end() {
+    clearTimeout(timer)
+    timer = null
+  }
+
+  target.addEventListener(Events.onTouchStart, start, { passive: true })
+  target.addEventListener(Events.onTouchMove, move, { passive: true })
+  target.addEventListener(Events.onTouchEnd, end)
+  target.addEventListener(Events.onTouchCancel, end)
 }
 
 export function flavored_fetch(input, options={}) {

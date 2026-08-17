@@ -99,11 +99,11 @@ body, input, select, button {
 }
 
 .layers-config__list input {
-  accent-color: var(--sbgcui-branding-color, var(--selection));
+  accent-color: var(--sbgcui-branding-color, var(--team-color));
 }
 
 .layers-config__list input:checked {
-  filter: drop-shadow(0 0 6px var(--sbgcui-branding-color, var(--selection)));
+  filter: drop-shadow(0 0 6px var(--sbgcui-branding-color, var(--team-color)));
 }
 
 .layers-config__buttons button {
@@ -146,7 +146,7 @@ body, input, select, button {
   color: #fff !important;
   border-radius: var(--radius5);
   border: none !important;
-  background-color: var(--sbgcui-branding-color, var(--selection));
+  background-color: var(--sbgcui-branding-color, var(--team-color));
   filter: var(--button-filter);
   padding: 5px;
   text-transform: uppercase;
@@ -181,13 +181,13 @@ body, input, select, button {
 
 #deploy {
   grid-area: Deploy;
-  background-color: var(--sbgcui-branding-color, var(--selection));
+  background-color: var(--sbgcui-branding-color, var(--team-color));
   border: none;
   transition: background-color 0.25s linear;
 }
 
 #magic-deploy-btn {
-  background-color: var(--sbgcui-branding-color, var(--selection));
+  background-color: var(--sbgcui-branding-color, var(--team-color));
   border: none;
   transition: background-color 0.25s linear;
   position: unset;
@@ -215,7 +215,7 @@ div.deploy.i-multi-button[data-magic=0] {
 }
 
 div.deploy.i-multi-button[data-magic=1] {
-  background-color: var(--sbgcui-branding-color, var(--selection));
+  background-color: var(--sbgcui-branding-color, var(--team-color));
 }
 
 .discover.i-multi-button {
@@ -223,7 +223,7 @@ div.deploy.i-multi-button[data-magic=1] {
 }
 
 #discover {
-  background-color: var(--sbgcui-branding-color, var(--selection));
+  background-color: var(--sbgcui-branding-color, var(--team-color));
   min-height: var(--button-height);
   border: none;
   /* border-radius: var(--radius10); */
@@ -234,7 +234,7 @@ div.deploy.i-multi-button[data-magic=1] {
 }
 
 #discover > .discovery-ring {
-  stroke: var(--sbgcui-branding-color, var(--selection));
+  stroke: var(--sbgcui-branding-color, var(--team-color));
   stroke-width: 10px;
 }
 
@@ -299,7 +299,7 @@ div.deploy.i-multi-button[data-magic=1] {
   width: 100%;
   border: none !important;
   border-radius: 0 !important;
-  background-color: var(--sbgcui-branding-color, var(--selection));
+  background-color: var(--sbgcui-branding-color, var(--team-color));
   font-weight: bold;
   font-size: small;
   min-height: var(--button-height);
@@ -443,8 +443,8 @@ div.deploy.i-multi-button[data-magic=1] {
 
 .popup-close[data-round=true], #inventory__close[data-round=true] {
   color: #fff !important;
-  border-color: var(--sbgcui-branding-color, var(--selection)) !important;
-  background-color: var(--sbgcui-branding-color, var(--selection));
+  border-color: var(--sbgcui-branding-color, var(--team-color)) !important;
+  background-color: var(--sbgcui-branding-color, var(--team-color));
 }
 
 .settings-section__item select, 
@@ -467,7 +467,7 @@ div.deploy.i-multi-button[data-magic=1] {
   color: #fff !important;
   border-radius: var(--radius5);
   border: none !important;
-  background-color: var(--sbgcui-branding-color, var(--selection));
+  background-color: var(--sbgcui-branding-color, var(--team-color));
   filter: var(--button-filter);
   padding: 5px;
   text-transform: uppercase;
@@ -601,7 +601,7 @@ button.inventory__ic-repair {
 
 .inventory__content {
   border-radius: 10px 10px 0 0;
-  border-color: var(--sbgcui-branding-color, var(--selection));
+  border-color: var(--sbgcui-branding-color, var(--team-color));
 }
 
 
@@ -627,7 +627,7 @@ button.inventory__ic-repair {
 }
 
 .inventory__tab.active span:not(.inventory__tab-counter) {
-  color: var(--sbgcui-branding-color, var(--selection));
+  color: var(--sbgcui-branding-color, var(--team-color));
 }
 
 .inventory__sorter {
@@ -710,7 +710,7 @@ button.inventory__ic-repair {
   display: block;
   height: 2.5em;
   width: 2.5em;
-  background-color: var(--sbgcui-branding-color, var(--selection));
+  background-color: var(--sbgcui-branding-color, var(--team-color));
   transform: translate(-1.25em, -1.25em);
   transition: background-color 0.15s ease-in-out;
 }
@@ -743,7 +743,7 @@ button.inventory__ic-repair {
 }
 
 .settings-section__header, .pr-stats__section-header {
-  color: var(--sbgcui-branding-color, var(--selection));
+  color: var(--sbgcui-branding-color, var(--team-color));
 }
 
 /* HOME SCREEN BUTTONS */
@@ -839,7 +839,7 @@ button.inventory__ic-repair {
 /* Notifs */
 .notifs__header {
   margin-top: 1em;
-  background-color: var(--background-transp);
+  background-color: color-mix(in srgb, var(--sbgcui-branding-color, var(--team-color)) 10%, var(--background-transp)) ;
   border-radius: var(--radius100);
 }
 
@@ -857,7 +857,7 @@ button.inventory__ic-repair {
 
 .notifs__tab.active,
 .notifs__tab.active::before {
-  color: var(--sbgcui-branding-color, var(--selection));
+  color: var(--sbgcui-branding-color, var(--team-color));
 }
 
 .notifs__tab {
@@ -898,6 +898,81 @@ button.inventory__ic-repair {
 
 .notifs__tab[data-tab="3"]::before {
   --tab-icon: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160ZM480-80q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM80-560q0-100 44.5-183.5T244-882l47 64q-60 44-95.5 111T160-560H80Zm720 0q0-80-35.5-147T669-818l47-64q75 55 119.5 138.5T880-560h-80Z"/></svg>');
+}
+
+/* notifs chat */
+.notifs__list:not([data-tab="3"]) {
+  gap: 5px;
+}
+
+.notifs__list:not([data-tab="3"]) .notifs__entry {
+  border: none !important;
+  border-radius: var(--radius10);
+  border-bottom-left-radius: 0px;
+  background-color: var(--background-transp);
+  background: linear-gradient(45deg, color-mix(in srgb, var(--message-team-color, var(--selection)) 25%, var(--background-transp)), color-mix(in srgb, var(--message-team-color, var(--selection)) 10%, var(--background-transp)));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: fit-content;
+  max-width: 85%;
+  padding: 8px 12px;
+}
+
+.notifs__list:not([data-tab="3"]) .notifs__entry.own
+{
+  place-self: self-end;
+  border-bottom-left-radius: var(--radius10);
+  border-bottom-right-radius: 0px;
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--sbgcui-branding-color, var(--team-color)) 25%, var(--background-transp)), color-mix(in srgb, var(--sbgcui-branding-color, var(--team-color)) 10%, var(--background-transp)));
+}
+
+.notifs__list:not([data-tab="3"]) .notifs__entry.same
+{
+  margin-top: -3px;
+}
+
+.notifs__list:not([data-tab="3"]):not([data-tab="2"]) .notifs__entry.own .notifs__entry-title .profile-link,
+.notifs__list:not([data-tab="3"]):not([data-tab="2"]) .notifs__entry.same .notifs__entry-title .profile-link,
+.notifs__entry-report {
+  display: none;
+}
+
+.notifs__list:not([data-tab="3"]) .notifs__entry.ping {
+  background: linear-gradient(45deg, color-mix(in srgb, var(--selection) 50%, var(--background-transp)), color-mix(in srgb, var(--selection) 25%, var(--background-transp)));
+}
+
+.notifs__list:not([data-tab="3"]) .notifs__entry .notifs__entry-title {
+  width: 100%;
+  font-size: 0.8em;
+}
+
+.notifs__list:not([data-tab="3"]) .notifs__entry .notifs__entry-text {
+  order: 1;
+  word-wrap: break-word;
+}
+
+.notifs__list:not([data-tab="3"]) .notifs__entry .notifs__entry-stamp {
+  order: 2;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-left: auto;
+  place-self: unset;
+}
+
+.notifs__list:not([data-tab="3"]) .notifs__entry .notifs__entry-stamp .notifs__entry-time
+{
+  order: 1;
+  font-size: .7em;
+  line-height: 1;
+}
+
+.notifs__controls {
+  margin-top: 1em
 }
 
 /* CUI: Settings */

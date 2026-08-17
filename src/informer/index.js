@@ -1,7 +1,40 @@
-import { Backend, EUI, IsWebView, Nodes, SBG, Translations as i18n, t } from '../constants'
+import { Backend, EUI, Events, IsWebView, Nodes, SBG, Sleep, Translations as i18n, t } from '../constants'
 import { InfoSettingsItem, ButtonSettingsItem } from '../components/settingsItem'
 import { Logger, showToast } from '../utils'
-import { flavored_fetch, GetSection, Sections } from '../helpers'
+import { LongTouchEventListener, flavored_fetch, GetSection, Sections } from '../helpers'
+
+async function colorMessages(target) {
+    const limit = 30
+    for (let i = 1; i <= limit; i++) {
+        if (target.dataset.state != 'loading') break
+        else { await Sleep(25) }
+    }
+
+    if (target.dataset.tab == 3) return
+
+    const messages = Array.from(document.querySelectorAll('.notifs__entry:not(.colored)'))
+    let previous = ''
+    messages.forEach(message => {
+        const reportButton = message.querySelector('.notifs__entry-report')
+        reportButton && LongTouchEventListener(message, () => reportButton.click())
+
+        const link = message.querySelector('.notifs__entry-title .profile-link:not(.recipient)')
+        const current = link.dataset.name
+        const username = localStorage.getItem(EUI.UserName)
+
+        if (previous == current) {
+            message.classList.add('same')
+        }
+        else {
+            previous = current
+        }
+        const color = link.style.color
+        message.style.setProperty('--message-team-color', color) 
+        message.classList.add('colored')
+        //const own = message.querySelector(`.notifs__entry-title .profile-link[data-name="${username}"]`)
+        if (link.dataset.name == username) message.classList.add('own')
+    })
+}
 
 export default async function Informer() {
     Logger.log(`SBG Enhanced UI, version ${EUI.Version}`)
@@ -23,7 +56,16 @@ export default async function Informer() {
 
         return r.json()
     })
-    .then(json => localStorage.setItem(EUI.Team, json.t ?? 0))
+    .then(json => {
+        document.documentElement.style.setProperty('--team-color', `var(--team-${+json?.t})`)
+        localStorage.setItem(EUI.Team, json.t ?? 0)
+        localStorage.setItem(EUI.UserName, json.n ?? 0)
+        let notifsList = document.querySelector('.notifs__list')
+        if (notifsList) {
+            notifsList.addEventListener(Events.onScroll, async e => colorMessages(e.target))
+            notifsList.addEventListener(Events.onTabChange, async e => colorMessages(e.target))
+        }
+    })
 
     const about = GetSection(Sections.About)
     if (about) {

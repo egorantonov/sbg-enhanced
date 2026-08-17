@@ -77,7 +77,7 @@ export function Compatibility () {
         padding: 5px;
         border: none!important;
         border-radius: var(--radius5);
-        color: var(--sbgcui-branding-color, var(--selection));
+        color: var(--sbgcui-branding-color, var(--team-color));
         background: var(--ol-subtle-background-color, #7777);
         text-transform: uppercase;
         text-align: center;
