@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SBG CUI fix
 // @namespace    https://sbg-game.ru/app/
-// @version      26.7.2
+// @version      26.9.1
 // @downloadURL  https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @updateURL    https://github.com/egorantonov/sbg-enhanced/releases/latest/download/cui.user.js
 // @description  SBG Custom UI
@@ -15,8 +15,8 @@
 (async function () {
 	'use strict';
 
-	const LATEST_KNOWN_VERSION = '0.7.0' // override
-	const USERSCRIPT_VERSION = '26.7.2'
+	const LATEST_KNOWN_VERSION = '0.7.1' // override
+	const USERSCRIPT_VERSION = '26.9.1'
 
 	const isFirefox = /firefox/i.test(window.navigator.userAgent)
 	if (isFirefox) {
@@ -621,8 +621,8 @@
 					return `$('.layers-config__list').on('change', '[name="baselayer"]', e`;
 				case `hour: '2-digit'`: // Line ~1244
 					return `${match}, hourCycle: 'h23', second: '2-digit'`;
-				case `view.setCenter(ol.proj.fromLonLat(entry.c))`: // Line ~1257
-					return `${match}; window.sbgcuiHighlightFeature(undefined, entry.c);`;
+				// case `view.setCenter(ol.proj.fromLonLat(entry.c))`: // Line ~1257
+				// 	return `${match}; window.sbgcuiHighlightFeature(undefined, entry.c);`;
 				case `function initCompass() {`: // Line ~1280
 					return DeviceOrientationEvent ? `${match}return;` : match;
 				case `testuser`: // Line ~1314
@@ -674,7 +674,7 @@
 			`(if \\(\\$\\('\\.attack-slider-wrp'\\)\\.hasClass\\('hidden'\\)\\) {)`,
 			`(\\$\\('\\[name="baselayer"\\]'\\)\\.on\\('change', e)`,
 			`(hour: '2-digit')`,
-			`(view\\.setCenter\\(ol\\.proj\\.fromLonLat\\(entry\\.c\\)\\))`,
+			// `(view\\.setCenter\\(ol\\.proj\\.fromLonLat\\(entry\\.c\\)\\))`,
 			`(function initCompass\\(\\) {)`,
 			`(testuser)`,
 			// `(timers\\.info_controls = setInterval\\(\\(\\) => {)`,

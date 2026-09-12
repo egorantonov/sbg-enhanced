@@ -1,4 +1,4 @@
-import { ClientData, Elements, Events, EUI, IsWebView, Modifiers, Nodes, Sleep, t, Translations } from '../constants'
+import { ClientData, Elements, Events, EUI, Modifiers, Nodes, Sleep, t, Translations } from '../constants'
 import { getSbgSettings, setSbgSettings } from '../utils'
 import { flavored_fetch, GetSection, Sections } from '../helpers'
 import { InfoSettingsItem } from '../components/settingsItem'
@@ -143,9 +143,13 @@ export default async function ImportExport() {
 
   if (about) {
     // appendLine(about, t('cloudSync'), (new Date(+localStorage.getItem(EUI.CloudSync))).toLocaleString(), EUI.LastSynced)
-    about.appendChild(InfoSettingsItem('User ID', `${(await GetUserId()).slice(0,4)}...`, 'eui-userId'))
+    // about.appendChild(InfoSettingsItem('User ID', `${(await GetUserId()).slice(0,4)}...`, 'eui-userId'))
     about.appendChild(InfoSettingsItem('Client', userAgent, 'eui-clientId'))
     if (navigator.hardwareConcurrency) about.appendChild(InfoSettingsItem('CPU (logical cores)', `${navigator.hardwareConcurrency}`, 'eui-hardwareConcurrency'))
+    if (navigator.cpuPerformance) {
+      const levels = ['Unknown', 'Low', 'Medium', 'High', 'Ultra']
+      about.appendChild(InfoSettingsItem('CPU Performance Level', `${levels[navigator.cpuPerformance]} (${navigator.cpuPerformance})`), 'eui-cpuPerf')
+    }
     if (navigator.deviceMemory) about.appendChild(InfoSettingsItem('RAM (at least)', `${navigator.deviceMemory} Gb`, 'eui-deviceMemory'))
 
     const webGpu = await GetWebGpu()
